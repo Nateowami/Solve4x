@@ -40,7 +40,7 @@ public class Algebra {
 	    equationField.setColumns(30);
 	    mainPanel.add(buttonPanel);
 	    
-	    //EvaluateButton
+	    //EvaluateButton lets equations evaluate.
 	    JButton btnEvaluate = new JButton("Evaluate");
 	    btnEvaluate.addActionListener(new ActionListener(){
 	        public void actionPerformed(ActionEvent e) {
