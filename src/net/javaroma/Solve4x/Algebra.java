@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class Algebra {
+	//adding a comment just so git will think something is different.
 	Algebra(){
 		//TODO Clean GUI code
 		startGUI();
