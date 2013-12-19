@@ -1,15 +1,16 @@
 package net.javaroma.Solve4x;
 import net.javaroma.Solve4x.Main;
+
 /**
  * Checks for the validity of an equation.
  * @param equation The equation to validate.
  * @return if the if the equation is valid
  */
-public class Solver {
+public class Validator {
 	public static boolean eqIsValid(String equation){
-		//XXX debugging
-		System.out.println("eqIsValid()" + equation);
-		Main.debugMsg("Testing Equation Validity: "+equation);
+		//debugging
+		Solve4x.debug("eqIsValid()" + equation);
+		Solve4x.debug("Testing Equation Validity: "+equation);
 		int numbOfEquals = 0;
 		int indexOfEquals = 0;
 		for(int i = 0; i < equation.length(); i++){
@@ -21,7 +22,7 @@ public class Solver {
 		if(numbOfEquals == 1){
 			//check the validity of the
 			return (exprIsValid(equation.substring(0, indexOfEquals)) 
-					&& exprIsValid(equation.substring(indexOfEquals + 1, equation.length())));
+					&& exprIsValid(equation.substring(indexOfEquals + 2, equation.length())));//pretty sure +2 is right
 		} 
 		else {
 			return false;
@@ -34,8 +35,10 @@ public class Solver {
 	 *@return if the expression is valid
 	 */
 	public static boolean exprIsValid(String expr) {
-		//XXX debugging
-		System.out.println("exprIsValid()" + expr);
+		//FIXME This method still allows expressions such as "+5" to be considered valid and 
+		//for some reason "+?" is valid but not "5+?" or "?". 
+		//debugging
+		Solve4x.debug("exprIsValid()" + expr);
 		/*
 		 * This method is VERY complex if it ever works. What we need to do is 
 		 * chop up the expression into terms, which can be thought of as 
@@ -123,9 +126,8 @@ public class Solver {
 						//if the next char is a numeral, then we must have a power here
 						if(isNumeral(expr.charAt(i+1))){
 							//figure out where the power ends so we can cut it right
-							int cutAt = getNextNonNumeral(expr, i) - 1;
+							int cutAt = getNextNonNumeral(expr, i) + 1;
 							//cut it after the end of the power
-							//XXX Nate was doing debugging of String.substring() calls and got this far
 							if(!exprIsValid(expr.substring(lastCut, cutAt))){
 								valid = false;
 							}
@@ -135,14 +137,14 @@ public class Solver {
 					}
 				}
 				//if we've gotten to the end and we've cut part off, we need to take care of the remaining part
-				else if(i == expr.length() && cut == true){
-					if(!exprIsValid(expr.substring(lastCut, i))){
+				else if(i == expr.length() - 1 && cut == true){
+					if(!exprIsValid(expr.substring(lastCut, i+1))){
 						valid = false;
 					}
 				}
 			}
 
-			//again, division
+			//again, this time division
 			//using the parDepth variable again so reseting
 			parDepth = 0;
 			lastCut = 0;
@@ -159,9 +161,9 @@ public class Solver {
 					parDepth--;
 				}
 
-				//if we're at the place of a division 
+				//if we're at the place of a division
 				if(parDepth == 0 && expr.charAt(i) == '/'){
-					if(!exprIsValid(expr.substring(lastCut, i))){
+					if(!exprIsValid(expr.substring(lastCut, i+1))){
 						valid = false;
 					}
 					lastCut = i+1;
@@ -169,7 +171,7 @@ public class Solver {
 				}
 				//if we've gotten to the end and we've cut part off, we need to take care of the remaining part
 				else if(i == expr.length() && cut == true){
-					if(!exprIsValid(expr.substring(lastCut, i))){
+					if(!exprIsValid(expr.substring(lastCut, i+1))){
 						valid = false;
 					}
 				}
@@ -192,24 +194,17 @@ public class Solver {
 	 * @return If the term is valid
 	 */
 	public static boolean termIsValid(String term) {
-		//XXX
-		System.out.println("termIsValid()" + term);
-		//remove all numerals at beginning
-		while(term.length() > 0 && isNumeral(term.charAt(0))){
-			term = term.substring(1, term.length());
+		//debugging
+		Solve4x.debug("termIsValid()" + term);
+		boolean returnSatus = true;
+		for(int i = 0; i < term.length(); i++){
+			//if the char is neither a number or letter
+			if(!(isNumeral(term.charAt(i))) && !(isLetter(term.charAt(i)))){
+				returnSatus = false;
+				break;
+			}
 		}
-		//remove all numerals at end
-		while(term.length() > 0 && isNumeral(term.charAt(term.length()-1))){
-			term = term.substring(0, term.length() - 2);//-2 (one for array indices start at 0, one for cutting extra char
-		}
-		//remove all letters
-		while(term.length() > 0 && isLetter(term.charAt(0))){
-			term = term.substring(1, term.length());
-		}
-		if(term.length() == 0){
-			return true;
-		}
-		else return false;
+		return returnSatus;
 	}
 
 	/**
@@ -218,12 +213,14 @@ public class Solver {
 	 * @return If the char is a numeral
 	 */
 	public static boolean isNumeral(char c){
-		//XXX
-		System.out.println("eqNumeral()"+ c);
+		//debugging
+		Solve4x.debug("isNumeral()"+ c);
 		if(c <= 9 && c >= 0){
+			Solve4x.debug("isNumeral Returns true");
 			return true;
 		}
 		else{
+			Solve4x.debug("isNumeral Returns false");
 			return false;
 		}
 	}
@@ -234,12 +231,14 @@ public class Solver {
 	 * @return If the char is a a-z or A-Z
 	 */
 	public static boolean isLetter(char c){
-		//XXX
-		System.out.println("isLetter()" + c);
+		//debugging
+		Solve4x.debug("isLetter()" + c);
 		if(c <= 'z' && c >= 'a' || c <= 'Z' && c >= 'A'){
+			Solve4x.debug("isLetter Returns true");
 			return true;
 		}
 		else{
+			Solve4x.debug("isLetter Returns false");
 			return false;
 		}
 	}
@@ -250,8 +249,8 @@ public class Solver {
 	 * @return If the equation has an equals sign
 	 */
 	public static boolean isEq(String str){
-		//XXX
-		System.out.println("isEq()");
+		//debugging
+		Solve4x.debug("isEq()");
 		boolean hasEqualsSign = false;
 		for(int i=0; i < str.length(); i++){
 			if(str.charAt(i) == '='){
@@ -266,9 +265,10 @@ public class Solver {
 	 * in which case they will be removed for easier parsing
 	 */
 	public static String removePar(String expr){ 
-		//XXX
-		System.out.println("removePar()" + expr);
+		//debugging
+		Solve4x.debug("removePar()" + expr);
 		//FIXME: Strings are sent with length 0
+		//Is that still an issue?
 
 		//remove any spaces at beginning and end
 		expr.trim();
@@ -298,7 +298,7 @@ public class Solver {
 			}
 
 			if(!parDepthReached0){
-				return expr.substring(1, expr.length() - 1);
+				return expr.substring(1, expr.length());
 			}
 			else{
 				return expr;
@@ -316,8 +316,8 @@ public class Solver {
 	 * @return The first non-space char in str after index
 	 */
 	public static char getNextRealChar(String str, int index){
-		//XXX
-		System.out.println("getNextRealChar) String: "+str+"index:" + index);
+		//debugging
+		Solve4x.debug("getNextRealChar) String: "+str+"index:" + index);
 		char firstChar = ' ';
 		for(int i = index; i < str.length(); i++){
 			if(str.charAt(i) != ' '){
@@ -336,8 +336,8 @@ public class Solver {
 	 * @return The first non-numerical char after the given index
 	 */
 	public static int getNextNonNumeral(String str, int index){
-		//XXX
-		System.out.println("getNextNonNumeral" + "str:"+str+"index:"+index);
+		//debugging
+		Solve4x.debug("getNextNonNumeral" + "str:"+str+"index:"+index);
 		int answer = str.length();//if there is no answer, default is the last index
 		for(int i = 0; i < str.length(); i++){
 			if(str.charAt(i) >= '0' && str.charAt(i) <= '9'){
