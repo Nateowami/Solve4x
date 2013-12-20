@@ -1,5 +1,4 @@
 package net.javaroma.Solve4x;
-import net.javaroma.Solve4x.Main;
 
 /**
  * Checks for the validity of an equation.
@@ -11,6 +10,8 @@ public class Validator {
 		//debugging
 		Solve4x.debug("eqIsValid()" + equation);
 		Solve4x.debug("Testing Equation Validity: "+equation);
+		
+		//check for one and only one equals sign
 		int numbOfEquals = 0;
 		int indexOfEquals = 0;
 		for(int i = 0; i < equation.length(); i++){
@@ -49,6 +50,11 @@ public class Validator {
 		 * in ((2x + 4) + 3), it would quickly reach a depth of two. It won't cut
 		 * expressions at a + sign unless the parentheses depth is 0. 
 		 */
+		
+		//remove white space
+		
+		expr = expr.replaceAll(" ","");
+				
 		int lastCut = 0; //we're cutting strings up into little little
 		int parDepth = 0; //the depth we've gone into parentheses 
 		boolean valid = true; //if the expression is valid
@@ -213,16 +219,14 @@ public class Validator {
 	 * @return If the char is a numeral
 	 */
 	public static boolean isNumeral(char c){
-		//debugging
-		Solve4x.debug("isNumeral()"+ c);
-		if(c <= 9 && c >= 0){
-			Solve4x.debug("isNumeral Returns true");
-			return true;
+		
+		try{ 
+			Integer.parseInt(c + "");
 		}
-		else{
-			Solve4x.debug("isNumeral Returns false");
+		catch(NumberFormatException e){
 			return false;
 		}
+		return true;
 	}
 
 	/**
