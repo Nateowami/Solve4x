@@ -1,10 +1,10 @@
-package net.javaroma.Solve4x;
+package com.github.nateowami.solve4x;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import net.javaroma.Solve4x.Validator;
+import com.github.nateowami.solve4x.Solve4x;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -45,6 +45,7 @@ public class Solve4x {
 	    JButton btnEvaluate = new JButton("Evaluate");
 	    btnEvaluate.addActionListener(new ActionListener(){
 	        public void actionPerformed(ActionEvent e) {
+	        	 lblEnterEquation.setText("");
 	        	String equation = equationField.getText();
 	        	Boolean isValid;
 	        	//Check to see if the input was an equation or an expression

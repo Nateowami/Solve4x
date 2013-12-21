@@ -1,4 +1,4 @@
-package net.javaroma.Solve4x;
+package com.github.nateowami.solve4x;
 
 /**
  * Checks for the validity of an equation.
