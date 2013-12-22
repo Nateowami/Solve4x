@@ -268,11 +268,12 @@ public class Validator {
 	 * Checks to see if the entire expression is surrounded by parentheses,
 	 * in which case they will be removed for easier parsing
 	 */
-	public static String removePar(String expr){ 
+	public static String removePar(String expr){
+		String arg = expr;
 		//debugging
 		Solve4x.debug("removePar()" + expr);
 		//FIXME: Strings are sent with length 0
-		//Is that still an issue?
+		//XXX Is that still an issue?
 
 		//remove any spaces at beginning and end
 		expr.trim();
@@ -302,13 +303,18 @@ public class Validator {
 			}
 
 			if(!parDepthReached0){
-				return expr.substring(1, expr.length());
+				Solve4x.debug("***XXX*** removePar(" + arg + ") -> " + expr.substring(1, expr.length()));
+				return expr.substring(1, expr.length()-1);
 			}
 			else{
+				//debugging XXX
+				Solve4x.debug("***XXX*** removePar(" + arg + ") -> " + expr);
 				return expr;
 			}
 		}
 		else{
+			//debugging XXX
+			Solve4x.debug("***XXX*** removePar(" + arg + ") -> " + expr);
 			return expr;
 		}
 	}
