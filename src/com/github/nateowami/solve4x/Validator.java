@@ -23,7 +23,7 @@ public class Validator {
 		if(numbOfEquals == 1){
 			//check the validity of the
 			return (exprIsValid(equation.substring(0, indexOfEquals)) 
-					&& exprIsValid(equation.substring(indexOfEquals + 2, equation.length())));//pretty sure +2 is right
+					&& exprIsValid(equation.substring(indexOfEquals + 1, equation.length())));//pretty sure +2 is right
 		} 
 		else {
 			return false;
@@ -117,8 +117,8 @@ public class Validator {
 
 				//if we're at the place of a multiplication
 				if(parDepth == 0 && (expr.charAt(i) == ')' || expr.charAt(i) == ']' 
-						|| expr.charAt(i) == '}') || (getNextRealChar(expr, i + 1) == '(' 
-						|| getNextRealChar(expr, i+1) == '[' || getNextRealChar(expr, i+1) == '{')){
+						|| expr.charAt(i) == '}') || (expr.charAt(i+1) == '(' )
+						|| isNextCharClosePar(expr, i)){
 					//if it's an opening parentheses 
 					if(expr.charAt(i) == '(' || expr.charAt(i) == '[' || expr.charAt(i) == '{'){
 						if(!exprIsValid(expr.substring(lastCut, i))){
@@ -318,25 +318,20 @@ public class Validator {
 			return expr;
 		}
 	}
-
+	
 	/**
-	 * Finds the next char (that is not a space) after the given index in the given string.
+	 * Figures out if the next char (after index) is is ), ], }, or >
 	 * @param str The string to search through
 	 * @param index The index to start searching from
-	 * @return The first non-space char in str after index
+	 * @return true the next char is ), ], }, or >, false if it isn't or if the string
+	 * has reached the end.
 	 */
-	public static char getNextRealChar(String str, int index){
-		//debugging
-		Solve4x.debug("getNextRealChar) String: "+str+"index:" + index);
-		char firstChar = ' ';
-		for(int i = index; i < str.length(); i++){
-			if(str.charAt(i) != ' '){
-				firstChar = str.charAt(i);
-				break;
-			}
-		}
-		return firstChar;
-
+	public static boolean isNextCharClosePar(String str, int index){
+		
+		//TODO write method; see doc above
+		//watch out for array index out of bound exception (return false if the 
+		//string isn't long enough)
+		return true;//TODO fix this
 	}
 
 	/**
