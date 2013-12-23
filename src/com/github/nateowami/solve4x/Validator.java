@@ -37,7 +37,8 @@ public class Validator {
 	 */
 	public static boolean exprIsValid(String expr) {
 		//FIXME This method still allows expressions such as "+5" to be considered valid and 
-		//for some reason "+?" is valid but not "5+?" or "?". 
+		//for some reason "+?" is valid but not "5+?" or "?". Not sure if this is still and 
+		//issue
 		//debugging
 		Solve4x.debug("exprIsValid()" + expr);
 		/*
@@ -117,8 +118,7 @@ public class Validator {
 
 				//if we're at the place of a multiplication
 				if(parDepth == 0 && (expr.charAt(i) == ')' || expr.charAt(i) == ']' 
-						|| expr.charAt(i) == '}') || (expr.charAt(i+1) == '(' )
-						|| isNextCharClosePar(expr, i)){
+						|| expr.charAt(i) == '}') || isNextCharOpenPar(expr, i)){
 					//if it's an opening parentheses 
 					if(expr.charAt(i) == '(' || expr.charAt(i) == '[' || expr.charAt(i) == '{'){
 						if(!exprIsValid(expr.substring(lastCut, i))){
@@ -219,7 +219,8 @@ public class Validator {
 	 * @return If the char is a numeral
 	 */
 	public static boolean isNumeral(char c){
-		
+		//TODO catching exceptions is too slow
+		//try a switch statement
 		try{ 
 			Integer.parseInt(c + "");
 		}
@@ -320,18 +321,24 @@ public class Validator {
 	}
 	
 	/**
-	 * Figures out if the next char (after index) is is ), ], }, or >
+	 * Figures out if the next char (after index) is is (, [, {, or <
 	 * @param str The string to search through
 	 * @param index The index to start searching from
-	 * @return true the next char is ), ], }, or >, false if it isn't or if the string
+	 * @return true the next char is (, [, {, or <, false if it isn't or if the string
 	 * has reached the end.
 	 */
-	public static boolean isNextCharClosePar(String str, int index){
-		
-		//TODO write method; see doc above
-		//watch out for array index out of bound exception (return false if the 
-		//string isn't long enough)
-		return true;//TODO fix this
+	public static boolean isNextCharOpenPar(String str, int index){
+		boolean isPar = false;
+		//if there is another char to check
+		if(str.length()-1>index){
+			//if the next char is a parentheses
+			if(str.charAt(index+1)=='(' || str.charAt(index+1)=='[' ||
+					str.charAt(index+1)=='{' || str.charAt(index+1)=='<'){
+				//the next char is a paretheses
+				isPar = true;
+			}
+		}
+		return isPar;
 	}
 
 	/**
