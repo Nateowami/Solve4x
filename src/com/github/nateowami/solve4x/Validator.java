@@ -219,15 +219,29 @@ public class Validator {
 	 * @return If the char is a numeral
 	 */
 	public static boolean isNumeral(char c){
-		//TODO catching exceptions is too slow
-		//try a switch statement
-		try{ 
-			Integer.parseInt(c + "");
+		switch (c){
+			case '0':
+				return true;
+			case '1':
+				return true;
+			case '2':
+				return true;
+			case '3':
+				return true;
+			case '4':
+				return true;
+			case '5':
+				return true;
+			case '6':
+				return true;
+			case '7':
+				return true;
+			case '8':
+				return true;
+			case '9':
+				return true;
 		}
-		catch(NumberFormatException e){
-			return false;
-		}
-		return true;
+		return false;
 	}
 
 	/**
@@ -274,12 +288,8 @@ public class Validator {
 		//debugging
 		Solve4x.debug("removePar()" + expr);
 		//FIXME: Strings are sent with length 0
-		//XXX Is that still an issue?
-
-		//remove any spaces at beginning and end
-		expr.trim();
-
-
+		//Is that still an issue?
+		
 		//check to see if it starts and ends with parentheses
 		if((expr.length() >= 1) && (expr.charAt(0) == '(' || expr.charAt(0) == '[' 
 				|| expr.charAt(0) == '{' || expr.charAt(0) == '<') 
