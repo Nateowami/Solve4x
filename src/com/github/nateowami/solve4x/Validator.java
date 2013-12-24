@@ -1,11 +1,21 @@
 package com.github.nateowami.solve4x;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Checks for the validity of an equation.
  * @param equation The equation to validate.
  * @return if the if the equation is valid
  */
 public class Validator {
+	
+	/**
+	 * Tells whether a given equation is valid
+	 * @param equation The equation to check
+	 * @return true if the equation is valid, otherwise false
+	 */
 	public static boolean eqIsValid(String equation){
 		//debugging
 		Solve4x.debug("eqIsValid()" + equation);
@@ -36,163 +46,54 @@ public class Validator {
 	 *@return if the expression is valid
 	 */
 	public static boolean exprIsValid(String expr) {
-		//FIXME This method still allows expressions such as "+5" to be considered valid and 
-		//for some reason "+?" is valid but not "5+?" or "?". Not sure if this is still and 
-		//issue
-		//debugging
-		Solve4x.debug("exprIsValid()" + expr);
-		/*
-		 * This method is VERY complex if it ever works. What we need to do is 
-		 * chop up the expression into terms, which can be thought of as 
-		 * sub-expressions. For example, in the expression 3x2 + 4 + 3(23 + x), 
-		 * 3(23 + x) needs to be dealt with as its own expression. To do this,
-		 * This method will call itself. In order to determine where to cut it, this
-		 * method will keep track of how deep into a parentheses it gets. For example,
-		 * in ((2x + 4) + 3), it would quickly reach a depth of two. It won't cut
-		 * expressions at a + sign unless the parentheses depth is 0. 
-		 */
 		
-		//remove white space
-		
+		//remove spaces
 		expr = expr.replaceAll(" ","");
-				
-		int lastCut = 0; //we're cutting strings up into little little
-		int parDepth = 0; //the depth we've gone into parentheses 
-		boolean valid = true; //if the expression is valid
-		boolean cut = false; //if the expression was cut into smaller pieces in this method.
-		//if it hasn't been cut into small pieces, it is ready to be sent to the 
-		//termIsValid() method.
-
-		//remove parentheses if the entire expression is enclosed by them
+		
+		//remove parentheses from both ends if they surround the entire expression
 		expr = removePar(expr);
-
-		for(int i=0; i < expr.length(); i++){
-			//([{ are all valid parentheses in algebra. They mean the same thing, 
-			//but they help give clarity when they're nested. '<' has about the same meaning
-			//within this program.
-			if(expr.charAt(i) == '(' || expr.charAt(i) == '[' 
-					|| expr.charAt(i) == '{' || expr.charAt(i) == '<'){
-				parDepth++;
-			}
-			else if(expr.charAt(i) == ')' || expr.charAt(i) == ']' 
-					|| expr.charAt(i) == '}' || expr.charAt(i) == '>'){
-				parDepth--;
-			}
-
-			//if the parDepth is 0 we're at the lowest level of operators, so we can dice things up
-			if((expr.charAt(i) == '+' || expr.charAt(i) == '-') && parDepth == 0){
-				if(!exprIsValid(expr.substring(lastCut, i))){
-					valid = false;
-				}
-				lastCut = i+1;
-				cut = true;
-			}
-
-			//if we've gotten to the end and we've cut part off, we need to take care of the remaining part
-			else if(i == expr.length() && cut == true){
-				if(!exprIsValid(expr.substring(lastCut, expr.length()))){
-					valid = false;
-				}
-			}
-
+		
+		int cutAt = -1;
+		
+		//if we can cut based on addition or subtraction
+		cutAt = findCutAtAdditionOrSubtraction(expr);
+		//if the cut was successful
+		if(cutAt != -1){
+			//return true if both expressions are found valid
+			return cut(expr, cutAt);
 		}
-
-		//if the for loop above has failed to cut the expression, this next one
-		//will try with multiplication
-
-		//using the parDepth variable again so reseting
-		parDepth = 0;
-		lastCut = 0;
-		if(!cut){
-			for(int i=0; i < expr.length(); i++){
-				//check to see if parDepth needs to change
-				//in this program '<' has about the same meaning as parentheses 
-				if(expr.charAt(i) == '(' || expr.charAt(i) == '[' 
-						|| expr.charAt(i) == '{' || expr.charAt(i) == '<'){
-					parDepth++;
-				}
-				else if(expr.charAt(i) == ')' || expr.charAt(i) == ']' 
-						|| expr.charAt(i) == '}' || expr.charAt(i)== '>'){
-					parDepth--;
-				}
-
-				//if we're at the place of a multiplication
-				if(parDepth == 0 && (expr.charAt(i) == ')' || expr.charAt(i) == ']' 
-						|| expr.charAt(i) == '}') || isNextCharOpenPar(expr, i)){
-					//if it's an opening parentheses 
-					if(expr.charAt(i) == '(' || expr.charAt(i) == '[' || expr.charAt(i) == '{'){
-						if(!exprIsValid(expr.substring(lastCut, i))){
-							valid = false;
-						}
-						lastCut = i+1;
-						cut = true;
-					}
-					//it must be a closing parentheses then
-					else{
-						//if the next char is a numeral, then we must have a power here
-						if(isNumeral(expr.charAt(i+1))){
-							//figure out where the power ends so we can cut it right
-							int cutAt = getNextNonNumeral(expr, i) + 1;
-							//cut it after the end of the power
-							if(!exprIsValid(expr.substring(lastCut, cutAt))){
-								valid = false;
-							}
-							lastCut = cutAt + 1;
-							cut = true;
-						}
-					}
-				}
-				//if we've gotten to the end and we've cut part off, we need to take care of the remaining part
-				else if(i == expr.length() - 1 && cut == true){
-					if(!exprIsValid(expr.substring(lastCut, i+1))){
-						valid = false;
-					}
-				}
-			}
-
-			//again, this time division
-			//using the parDepth variable again so reseting
-			parDepth = 0;
-			lastCut = 0;
-			for(int i=0; i < expr.length(); i++){
-
-				//check to see if parDepth needs to change
-				//In this program < and > are similar to parentheses
-				if(expr.charAt(i) == '(' || expr.charAt(i) == '[' 
-						|| expr.charAt(i) == '{' || expr.charAt(i) == '<'){
-					parDepth++;
-				}
-				else if(expr.charAt(i) == ')' || expr.charAt(i) == ']' 
-						|| expr.charAt(i) == '}' || expr.charAt(i) == '>'){
-					parDepth--;
-				}
-
-				//if we're at the place of a division
-				if(parDepth == 0 && expr.charAt(i) == '/'){
-					if(!exprIsValid(expr.substring(lastCut, i+1))){
-						valid = false;
-					}
-					lastCut = i+1;
-					cut = true;
-				}
-				//if we've gotten to the end and we've cut part off, we need to take care of the remaining part
-				else if(i == expr.length() && cut == true){
-					if(!exprIsValid(expr.substring(lastCut, i+1))){
-						valid = false;
-					}
-				}
-			}
+		
+		//cut at division
+		cutAt = findCutAtDivision(expr);
+		//if the cut was successful
+		if(cutAt != -1){
+			return cut(expr, cutAt);
 		}
-
-
-		//if it still can't be cut, it must be a term and will be set for validation
-		if(!cut){
-			if (!termIsValid(expr)){
-				valid = false;
-			}
+		
+		//cut at multiplication
+		cutAt = findCutAtMultiplication(expr);
+		//if the cut was successful
+		if(cutAt != -1){
+			return cutMultiplication(expr, cutAt);
 		}
-		return valid;
+		
+		//if it still wasn't cut
+		return termIsValid(expr);
+
+		
 	}
+	
+	/**
+	 * Validates both sides of an expression. 
+	 * @param expr The expression to evaluate
+	 * @param cut The index to cut at. The char at this index IS included
+	 * in the first substring, unlike Validator.cut()
+	 * @return if both sides of the expression are valid
+	 */
+	private static boolean cutMultiplication(String expr, int cut) {
+		return exprIsValid(expr.substring(0, cut+1)) && exprIsValid(expr.substring(cut+1, expr.length())); 
+	}
+	
 
 	/**
 	 * Evaluates the algebraic validity of the given term
@@ -212,6 +113,7 @@ public class Validator {
 		}
 		return returnSatus;
 	}
+
 
 	/**
 	 * Evaluates a char to see if it is a numeral
@@ -244,7 +146,9 @@ public class Validator {
 		return false;
 	}
 
+
 	/**
+
 	 * Evaluates a char to see if it is between a-z or A-Z
 	 * @param c The char to evaluate
 	 * @return If the char is a a-z or A-Z
@@ -261,6 +165,7 @@ public class Validator {
 			return false;
 		}
 	}
+
 
 	/**
 	 * Evaluates a given string to determine if it has an = sign
@@ -279,6 +184,7 @@ public class Validator {
 		return hasEqualsSign;
 	}
 
+
 	/**
 	 * Checks to see if the entire expression is surrounded by parentheses,
 	 * in which case they will be removed for easier parsing
@@ -291,10 +197,7 @@ public class Validator {
 		//Is that still an issue?
 		
 		//check to see if it starts and ends with parentheses
-		if((expr.length() >= 1) && (expr.charAt(0) == '(' || expr.charAt(0) == '[' 
-				|| expr.charAt(0) == '{' || expr.charAt(0) == '<') 
-				&& (expr.charAt(expr.length()-1) == ')' || expr.charAt(expr.length()-1) == ']' 
-				|| expr.charAt(expr.length()-1) == '}' || expr.charAt(expr.length()-1) == '>')){
+		if((expr.length() >= 1) && isOpenPar(expr.charAt(0)) && isClosePar(expr.charAt(expr.length()-1))){
 
 			int parDepth = 1; //how deep we are into parentheses nesting
 			boolean parDepthReached0 = false;//if parDepth ever reaches 0 we're outside all parentheses
@@ -330,6 +233,7 @@ public class Validator {
 		}
 	}
 	
+
 	/**
 	 * Figures out if the next char (after index) is is (, [, {, or <
 	 * @param str The string to search through
@@ -351,23 +255,168 @@ public class Validator {
 		return isPar;
 	}
 
+
 	/**
-	 * Finds the index of the first char following the given index that is not a numeral
+	 * Finds the index of the end of a power
 	 * @param str The string to search in
 	 * @param index The index to start the search at
-	 * @return The first non-numerical char after the given index
+	 * @return The last char that is part of the power
 	 */
-	public static int getNextNonNumeral(String str, int index){
+	public static int getEndOfPower(String str, int index){
 		//debugging
-		Solve4x.debug("getNextNonNumeral" + "str:"+str+"index:"+index);
-		int answer = str.length();//if there is no answer, default is the last index
-		for(int i = 0; i < str.length(); i++){
-			if(str.charAt(i) >= '0' && str.charAt(i) <= '9'){
-				answer = i;
+		Solve4x.debug("getNextNonNumeral str: "+str+" index: "+index);
+		int answer = str.length()-1;//if there is no answer, default is the last index
+		//loop through the chars starting at index
+		for(int i = index; i < str.length(); i++){
+			//if the char isn't a numeral
+			if(!isNumeral(str.charAt(i))){
+				//then the one before must have been the last
+				answer = i-1;
+				//but the answer should never be less than the original index
+				if(answer < index){
+					answer = index;
+				}
 				break;
 			}
 		}
+		Solve4x.debug("getNextNonNumeral returns: " + answer);
 		return answer;
 	}
-}
 
+
+	/**
+	 * Evaluates a char to see if it's a closing parentheses (or root)
+	 * @param c The char to evaluate
+	 * @return If the char is a closing parentheses
+	 */
+	private static boolean isClosePar(char c){
+		if(c == ')' || c == ']' || c == '}' || c == '>' || c == '^'){
+			return true;
+		}
+		else return false;
+	}
+	
+
+	/**
+	 * Evaluates a char to see if it's a opening parentheses (or root)
+	 * @param c The char to evaluate
+	 * @return If the char is a opening parentheses
+	 */
+	private static boolean isOpenPar(char c){
+		if(c == '(' || c == '[' || c == '{' || c == '<' || c == '√'){
+			return true;
+		}
+		else return false;
+	}
+	
+
+	
+	//XXX: BEGIN TRIBEX TEST REGEX CODE :XXX\\
+	//Just leave this stuff here and bypass it if necessary, this seems to be working quite well.
+	
+	//XXX: END TRIBEX TEST REGEX CODE :XXX\\
+	
+	
+
+	/**
+	 * Finds the index of where a given expression has a + or - sign that is not nested
+	 *@param expr The expression to evaluate
+	 *@return The index of non-nested addition or subtraction
+	 */
+	private static int findCutAtAdditionOrSubtraction(String expr){
+		int parDepth = 0;//count how nested in parentheses we get
+		//loop through chars, keeping track of how far into parentheses nesting we get
+		for (int i = 0; i < expr.length(); i++){
+			//if it's an opening par
+			if(isOpenPar(expr.charAt(i))){
+				parDepth++;
+			}
+			//if it's a closing par
+			else if (isClosePar(expr.charAt(i))){
+				parDepth--;
+			}
+			//if it's addition or subtraction AND parDepth (nesting) is 0
+			if((expr.charAt(i) == '+' || expr.charAt(i) == '-') && parDepth == 0)
+				return i;
+		}
+		return -1;//There is no non-nested addition or subtraction
+	}
+	
+
+	/**
+	 * Finds the index of the last char in an expression that is multiplied by another.
+	 * For example, if expr is (5)2(6) it will return 3.
+	 *@param expr The expression to evaluate
+	 *@return The index of non-nested multiplication
+	 */
+	private static int findCutAtMultiplication(String expr){
+		//debug
+		Solve4x.debug(" *  " + expr);
+		int parDepth = 0;//how deep into par nesting we get
+		for (int i = 0; i < expr.length(); i++){
+			
+			//watch the parDepth
+			if(isOpenPar(expr.charAt(i))){
+				parDepth++;
+			}
+			//and watch the parDepth for going down
+			if(isClosePar(expr.charAt(i))){
+				parDepth--;
+			}
+			
+			//if it's a closing parentheses
+			if(isClosePar(expr.charAt(i)) && parDepth == 0){
+				//find the end of a power (if any)
+				//FIXME this is wrong!
+				return getEndOfPower(expr, i);//because there could be powers after it
+			}
+			else if(isOpenPar(expr.charAt(i)) && parDepth == 1 /*because it's an opening par*/&& i != 0/*Don't cut if it's the first time*/){
+				//so it parDepth must be at least 1
+				Solve4x.debug("HERE");
+				Solve4x.debug(" * returns " + (i -1));
+				return i-1;
+			}
+		}
+		Solve4x.debug(" * returns " + -1);
+		return -1;
+	}
+	
+
+	/**
+	 * Finds the index of where a given expression has a division sign that is not nested
+	 *@param expr The expression to evaluate
+	 *@return The index of a non-nested division
+	 */
+	private static int findCutAtDivision(String expr){
+		int parDepth = 0;//count how nested in parentheses we get
+		//loop through chars, keeping track of how far into parentheses nesting we get
+		for (int i = 0; i < expr.length(); i++){
+			//if it's an opening par
+			if(isOpenPar(expr.charAt(i))){
+				parDepth++;
+			}
+			//if it's a closing par
+			else if (isClosePar(expr.charAt(i))){
+				parDepth--;
+			}
+			//if it's division AND parDepth (nesting) is 0
+			else if(expr.charAt(i) == '/' && parDepth == 0){
+				return i;
+			}
+		}
+		return -1;//There is no non-nested division
+	}
+	
+
+	/**
+	 * Validates both sides of an expression. 
+	 * @param expr The expression to evaluate
+	 * @param cut The index to cut at. The char at this index
+	 * will not be in either of the sub strings
+	 * @return if both sides of the expression are valid
+	 */
+	private static boolean cut(String expr, int cut){
+		//check both sides of the expression dividing at cut
+		return exprIsValid(expr.substring(0, cut)) && exprIsValid(expr.substring(cut+1, expr.length()));
+	}
+}
