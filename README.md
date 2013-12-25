@@ -32,8 +32,4 @@ Why didn't we use parentheses? Well, it turns out that there is a certain inconv
 TODO
 ====
 
-We need to decide how to handle square roots. Powers are handled without the ^ sign. For example; "2x2" means "x squared multiplied by two." square roots are going to be a bit more complicated though. It's kinda hard to make them 1d (i.e. turn them into strings). If you have ideas, please share them. 
-
-The equation validator (Validator.java) needs to be finished debugging. However, it will likely have to be modified once we take square roots into account.
-
-Almost everything else remains. Sorry that's VERY vague; I'll try to update this soon.
+Almost everything remains. Sorry that's VERY vague; I'll try to update this soon.
