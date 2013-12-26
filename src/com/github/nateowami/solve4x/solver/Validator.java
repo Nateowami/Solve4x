@@ -16,8 +16,9 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.nateowami.solve4x;
+package com.github.nateowami.solve4x.solver;
 
+import com.github.nateowami.solve4x.Solve4x;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

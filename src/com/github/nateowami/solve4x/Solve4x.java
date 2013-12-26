@@ -17,6 +17,8 @@
  */
 
 package com.github.nateowami.solve4x;
+
+import com.github.nateowami.solve4x.solver.Validator;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
