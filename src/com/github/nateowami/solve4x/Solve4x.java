@@ -92,8 +92,12 @@ public class Solve4x {
 	    evaluateFrame.setVisible(true);
 	}
 	
+	/**
+	 * Prints a debug message in the form of [Solve4x] MESSAGE - LINE: LINENUMBER
+	 * @param msg The debug message to print
+	 */
 	public static void debug(Object msg) {
 		if (DEBUG)
-			System.out.println("[Solve4x] "+msg+" - LINE: "+Thread.currentThread().getStackTrace()[2].getLineNumber() + "-" + Thread.currentThread().getStackTrace()[3].getLineNumber());
+			System.out.println("[Solve4x] "+msg+" - LINE: "+Thread.currentThread().getStackTrace()[2].getLineNumber());
 	}
 }
