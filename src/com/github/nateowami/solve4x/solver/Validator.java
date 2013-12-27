@@ -142,27 +142,18 @@ public class Validator {
 	public static boolean isNumeral(char c){
 		switch (c){
 			case '0':
-				return true;
 			case '1':
-				return true;
 			case '2':
-				return true;
 			case '3':
-				return true;
 			case '4':
-				return true;
 			case '5':
-				return true;
 			case '6':
-				return true;
 			case '7':
-				return true;
 			case '8':
-				return true;
 			case '9':
 				return true;
+			default: return false;
 		}
-		return false;
 	}
 
 
@@ -212,8 +203,6 @@ public class Validator {
 		String arg = expr;
 		//debugging
 		Solve4x.debug("removePar()" + expr);
-		//FIXME: Strings are sent with length 0
-		//Is that still an issue?
 		
 		//check to see if it starts and ends with parentheses
 		if((expr.length() >= 1) && isOpenPar(expr.charAt(0)) && isClosePar(expr.charAt(expr.length()-1))){
@@ -236,18 +225,19 @@ public class Validator {
 			}
 
 			if(!parDepthReached0){
-				Solve4x.debug("***XXX*** removePar(" + arg + ") -> " + expr.substring(1, expr.length()));
+				//debugging
+				Solve4x.debug("removePar(" + arg + ") -> " + expr.substring(1, expr.length()));
 				return expr.substring(1, expr.length()-1);
 			}
 			else{
-				//debugging XXX
-				Solve4x.debug("***XXX*** removePar(" + arg + ") -> " + expr);
+				//debugging
+				Solve4x.debug("removePar(" + arg + ") -> " + expr);
 				return expr;
 			}
 		}
 		else{
-			//debugging XXX
-			Solve4x.debug("***XXX*** removePar(" + arg + ") -> " + expr);
+			//debugging
+			Solve4x.debug("removePar(" + arg + ") -> " + expr);
 			return expr;
 		}
 	}
@@ -332,7 +322,8 @@ public class Validator {
 	
 	//XXX: BEGIN TRIBEX TEST REGEX CODE :XXX\\
 	//Just leave this stuff here and bypass it if necessary, this seems to be working quite well.
-	
+	//removed because it wouldn't compile. Tribex appears to have it working, but what was here
+	//wasn't finished
 	//XXX: END TRIBEX TEST REGEX CODE :XXX\\
 	
 	
@@ -386,7 +377,6 @@ public class Validator {
 			//if it's a closing parentheses
 			if(isClosePar(expr.charAt(i)) && parDepth == 0){
 				//find the end of a power (if any)
-				//FIXME this is wrong!
 				return getEndOfPower(expr, i);//because there could be powers after it
 			}
 			else if(isOpenPar(expr.charAt(i)) && parDepth == 1 /*because it's an opening par*/&& i != 0/*Don't cut if it's the first time*/){
