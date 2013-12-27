@@ -32,4 +32,7 @@ Why didn't we use parentheses? Well, it turns out that there is a certain inconv
 TODO
 ====
 
-Almost everything remains. Sorry that's VERY vague; I'll try to update this soon.
+The validator for the equation is mostly done and working, although it may be completely changed for another one that works differently.
+A temporary GUI is in place for testing, but later there will need to be a lot of work on the GUI.
+Solver.java is not started; neither are the solving strategies (a group of classes). Solver.java is now top priority; hopefully finished by the end of the week.
+The A/V generator is still a long way down the road.
