@@ -72,6 +72,21 @@ public class Validator {
 		//remove parentheses from both ends if they surround the entire expression
 		expr = removePar(expr);
 		
+		//Before doing the regular recursive check, there are a few misc things
+		//to check first
+		
+		//make sure the length isn't 0
+		if(expr.length()==0){
+			//then it can't be valid
+			return false;
+		}
+		//the expression also shouldn't start with a + sing (- is OK because it means negative)
+		//we already know the length isn't 0, so this is safe
+		if(expr.charAt(0)== '+'){
+			//then it can't be valid
+			return false;
+		}
+		
 		int cutAt = -1;
 		
 		//if we can cut based on addition or subtraction
@@ -318,15 +333,13 @@ public class Validator {
 		else return false;
 	}
 	
-
 	
 	//XXX: BEGIN TRIBEX TEST REGEX CODE :XXX\\
 	//Just leave this stuff here and bypass it if necessary, this seems to be working quite well.
 	//removed because it wouldn't compile. Tribex appears to have it working, but what was here
 	//wasn't finished
 	//XXX: END TRIBEX TEST REGEX CODE :XXX\\
-	
-	
+		
 
 	/**
 	 * Finds the index of where a given expression has a + or - sign that is not nested
@@ -346,7 +359,7 @@ public class Validator {
 				parDepth--;
 			}
 			//if it's addition or subtraction AND parDepth (nesting) is 0
-			if((expr.charAt(i) == '+' || expr.charAt(i) == '-') && parDepth == 0)
+			if((expr.charAt(i) == '+' || expr.charAt(i) == '-' || expr.charAt(i) == '±') && parDepth == 0)
 				return i;
 		}
 		return -1;//There is no non-nested addition or subtraction
