@@ -34,5 +34,10 @@ TODO
 
 The validator for the equation is mostly done and working, although it may be completely changed for another one that works differently.
 A temporary GUI is in place for testing, but later there will need to be a lot of work on the GUI.
-Solver.java is not started; neither are the solving strategies (a group of classes). Solver.java is now top priority; hopefully finished by the end of the week.
+Solver.java is not started; neither are the solving strategies (a group of classes). Solver.java is now top priority, but first we need to work on Solution.java and Step.java, as Solver.java will use the two and it's hard to tell just how they'll work before they're there.
 The A/V generator is still a long way down the road.
+
+Program Flow
+============
+
+If you're wondering how the program works/should work, checkout [an article about program flow](https://github.com/Nateowami/Solve4x/wiki/Program-Flow) and how its general structure. I feel this is the single most important thing to understand in order to understand the code.
