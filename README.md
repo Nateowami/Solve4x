@@ -5,39 +5,16 @@ A Java-based program to solve and explain algebra problems
 
 The goal of this program is to generate an audio-visual lesson explaining how to solve the given problem. It aims to be simple to use, but very intuitive.
 
-Why Carets (<>)
-===============
-Carets (<>) aren't used in normal algebra, but they are in this program. That's because algebra problems are 2d, while strings are 1d. Look at the following example:
-
-    4x+5
-    ----
-    3x-5
-
-Now convert it to a one-dimensional string:
-
-    4x+5/3x-5
-
-Now this string could just as easily be interpreted (wrongly) as the following:
-
-        5 
-    4x+--- -5
-       3x
-
-To end the confusion we will use carets as parentheses:
-
-    <4x+5>/<3x-5>
-
-Why didn't we use parentheses? Well, it turns out that there is a certain inconvenient rule in algebra that says when you nest parentheses you should nest in the following order: {[()]}. They all mean the same thing; it's just a matter of style. Since we don't want the parentheses we added to be shown to the user, we use carets to distinguish which ones should be shown. I hope this makes sense.
-
 TODO
 ====
 
 The validator for the equation is mostly done and working, although it may be completely changed for another one that works differently.
 A temporary GUI is in place for testing, but later there will need to be a lot of work on the GUI.
-Solver.java is not started; neither are the solving strategies (a group of classes). Solver.java is now top priority, but first we need to work on Solution.java and Step.java, as Solver.java will use the two and it's hard to tell just how they'll work before they're there.
+Solver.java is started; Solution.java is tentatively done; as is Step.java. Solver.java is what we need to work on next.
 The A/V generator is still a long way down the road.
 
-Program Flow
-============
+If you're wondering what's next, read [how the solver works](https://github.com/Nateowami/Solve4x/wiki/Solving) on the wiki and then work on Solver.java.
 
-If you're wondering how the program works/should work, checkout [an article about program flow](https://github.com/Nateowami/Solve4x/wiki/Program-Flow) and how its general structure. I feel this is the single most important thing to understand in order to understand the code.
+Documentation
+=============
+There currently isn't very much documentation, but you can find some on [the wiki](https://github.com/Nateowami/Solve4x/wiki). If you're wondering how the program works/should work, checkout [an article about program flow and its general structure](https://github.com/Nateowami/Solve4x/wiki/Program-Flow) (which is also on the wiki). I feel this is the single most important thing to understand in order to understand the code. 
