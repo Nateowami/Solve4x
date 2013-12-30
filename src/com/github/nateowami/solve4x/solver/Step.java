@@ -29,6 +29,7 @@ public class Step {
 	//can cause there to be 2 stages in a step; possibly more in the future.
 	private ArrayList <String>stages = new ArrayList<String>();
 	private String explanation;
+	private int difficulty;//the difficulty of the step
 	
 	/**
 	 * Constructs a Step object
@@ -37,11 +38,13 @@ public class Step {
 	 * @param explain The explanation for this step. It needs to be written in a particular 
 	 * syntax.
 	 */
-	public Step(ArrayList <String>step, String explanation){
+	public Step(ArrayList <String>step, String explanation, int difficulty){
 		//init the stages ArrayList
 		this.stages = step;
 		//init the explanation for this step
 		this.explanation = explanation;
+		//init the difficulty
+		this.difficulty = difficulty;
 	}
 	
 	/**
@@ -70,6 +73,20 @@ public class Step {
 	 */
 	public String getExplanation(){
 		return this.explanation;
+	}
+
+	/**
+	 * @return the difficulty of this step (0-9)
+	 */
+	public int getDifficulty() {
+		return difficulty;
+	}
+
+	/**
+	 * @param difficulty the difficulty to set for this step (0-9)
+	 */
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
 	}
 	
 }
