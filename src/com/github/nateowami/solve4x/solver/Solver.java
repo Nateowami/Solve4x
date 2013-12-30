@@ -1,5 +1,5 @@
 /*
-    Solve4x - A Java-based program to solve and explain algebra problems
+    Solve4x - A Java program to solve and explain algebra problems
     Copyright (C) 2013 Nathaniel Paulus
 
     This program is free software: you can redistribute it and/or modify
@@ -15,18 +15,20 @@
     You should have received a copy of the GNU General Public License
     along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
-package com.github.nateowami.solve4x;
+package com.github.nateowami.solve4x.solver;
 
 /**
- * Starts program flow by creating a new Solve4x
+ * Solves equations and simplifies expressions
  * @author Nateowami
  */
-public class Main {
-
-	public static void main(String[] args) {
-		new Solve4x();
-
+public class Solver {
+	
+	/**
+	 * Solves the given equation or simplifies it if it is an expression
+	 * @return A Solution object that contains the steps for solving
+	 */
+	public static Solution solve(){
+		//TODO write this method. Top priority right now.
+		return null;
 	}
-
 }

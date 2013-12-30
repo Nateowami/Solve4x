@@ -24,9 +24,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Checks for the validity of an equation.
- * @param equation The equation to validate.
- * @return if the if the equation is valid
+ * Checks to see if an expression or equaiton is valid. 
+ * @autor Nateowami, Tribex
  */
 public class Validator {
 	

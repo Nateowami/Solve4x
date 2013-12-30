@@ -35,6 +35,7 @@ import javax.swing.SwingConstants;
 
 /**
  * A temporary GUI
+ * @autor Tribex, Nateowami
  */
 public class GUI {
 
