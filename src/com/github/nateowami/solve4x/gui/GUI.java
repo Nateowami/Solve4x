@@ -40,7 +40,6 @@ import javax.swing.SwingConstants;
 public class GUI {
 
 	public GUI(){
-		//TODO Clean GUI code (possibly not necessary as it will need to be modified anyway)
 		startGUI();
 	}
 
