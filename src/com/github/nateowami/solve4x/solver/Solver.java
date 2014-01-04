@@ -18,12 +18,18 @@
 package com.github.nateowami.solve4x.solver;
 
 import java.nio.charset.MalformedInputException;
+import java.util.ArrayList;
 
 /**
  * Solves equations and simplifies expressions
  * @author Nateowami
  */
 public class Solver {
+	
+	//a list of solutions that may work. Whichever one is best will be used in the end
+	ArrayList <Solution> list = new ArrayList<Solution>();
+	//A list of strategies that can be used for solving
+	ArrayList <Strategy> strat = new ArrayList<Strategy>();
 	
 	/**
 	 * Solves the given equation or simplifies it if it is an expression
@@ -54,4 +60,21 @@ public class Solver {
 		}
 		return null;//XXX fix this later
 	}
+	
+	/**
+	 * Makes a list of solving strategies.
+	 * @return An ArrayList of strategies
+	 */
+	private static <Strategy>ArrayList getStratetyList(){
+		
+		//the list of strategies
+		ArrayList <Strategy>stratList = new ArrayList<Strategy>();
+		
+		//TODO add stuff to stratList
+		
+		
+		return stratList;
+		
+	}
+	
 }

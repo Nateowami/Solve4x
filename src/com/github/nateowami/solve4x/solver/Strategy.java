@@ -1,0 +1,36 @@
+/*
+    Solve4x - A Java-based program to solve and explain algebra problems
+    Copyright (C) 2013 Nathaniel Paulus
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.github.nateowami.solve4x.solver;
+
+/**
+ * An abstract type for all solving strategies to extend. Basically it's a template
+ * for classes that will define a particular way to solve (e.g. simplifying). Doing it 
+ * this way should allow us to loop through solving strategies. If you can think of a 
+ * better name let me know.
+ * @author Nateowami
+ */
+public abstract class Strategy {
+	
+	/**
+	 * To return the approximate difficulty of performing the solving technique.
+	 * @param expr The expression or equation to 
+	 */
+	public abstract Step getStep(String expr);
+	
+
+}

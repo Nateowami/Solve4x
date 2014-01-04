@@ -18,7 +18,6 @@
 package com.github.nateowami.solve4x.gui;
 
 import com.github.nateowami.solve4x.solver.Solver;
-import com.github.nateowami.solve4x.solver.Validator;
 import com.github.nateowami.solve4x.gui.GUI;
 
 import java.awt.BorderLayout;
