@@ -17,6 +17,7 @@
  */
 package com.github.nateowami.solve4x.gui;
 
+import com.github.nateowami.solve4x.solver.Solver;
 import com.github.nateowami.solve4x.solver.Validator;
 import com.github.nateowami.solve4x.gui.GUI;
 
@@ -24,6 +25,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.charset.MalformedInputException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -79,14 +81,15 @@ public class GUI {
 
 				//Check to see if the input was an equation or an expression
 
-				if(Validator.isEq(equation)){
-					isValid = Validator.eqIsValid(equation);
-				}
-				else{
-					isValid = Validator.exprIsValid(equation);
+				try {
+					Solver.solve(equation);
+				} catch (MalformedInputException err) {
+					// TODO After GUI is done, make this do something useful
+					err.printStackTrace();
+					lblEnterEquation.setText("Equation Evaluation Status: "+ false);
 				}
 
-				lblEnterEquation.setText("Equation Evaluation Status: "+ isValid.toString());
+				lblEnterEquation.setText("Equation Evaluation Status: "+ true);
 			}
 		});
 		buttonPanel.add(btnEvaluate);

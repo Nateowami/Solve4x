@@ -190,25 +190,6 @@ public class Validator {
 		}
 	}
 
-
-	/**
-	 * Evaluates a given string to determine if it has an = sign
-	 * @param The string to evaluate
-	 * @return If the equation has an equals sign
-	 */
-	public static boolean isEq(String str){
-		//debugging
-		Solve4x.debug("isEq()");
-		boolean hasEqualsSign = false;
-		for(int i=0; i < str.length(); i++){
-			if(str.charAt(i) == '='){
-				hasEqualsSign = true;
-			}
-		}
-		return hasEqualsSign;
-	}
-
-
 	/**
 	 * Checks to see if the entire expression is surrounded by parentheses,
 	 * in which case they will be removed for easier parsing

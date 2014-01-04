@@ -17,6 +17,8 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import java.nio.charset.MalformedInputException;
+
 /**
  * Solves equations and simplifies expressions
  * @author Nateowami
@@ -25,10 +27,31 @@ public class Solver {
 	
 	/**
 	 * Solves the given equation or simplifies it if it is an expression
+	 * @param expr The expression or equation to solve or simplify
 	 * @return A Solution object that contains the steps for solving
+	 * @throws MalformedInputException 
 	 */
-	public static Solution solve(){
-		//TODO write this method. Top priority right now.
-		return null;
+	public static Solution solve(String expr) throws MalformedInputException{
+		
+		//if it's an equation
+		if(Util.isEq(expr)){
+			//make sure the equation is valid
+			if(!Validator.eqIsValid(expr)){
+				//if it's not, throw an exception
+				throw new MalformedInputException(expr.length());
+			}
+			else{
+				//TODO solve it
+			}
+		}
+		//then it's not an equation; maybe an expression
+		else{
+			//make sure the expression is valid
+			if(!Validator.exprIsValid(expr)){
+				throw new MalformedInputException(expr.length());
+			}
+			//TODO simplify it
+		}
+		return null;//XXX fix this later
 	}
 }
