@@ -17,6 +17,8 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import java.util.ArrayList;
+
 import com.github.nateowami.solve4x.Solve4x;
 
 /**
@@ -41,6 +43,18 @@ public class Util {
 			}
 		}
 		return hasEqualsSign;
+	}
+	
+	/**
+	 * Compiles a list of terms in a given expression. Don't send this
+	 * method an equation.
+	 * @return An ArrayList of Terms.
+	 */
+	public static <Term>ArrayList getTerms(){
+		
+		return null;//TODO
+		
+		
 	}
 
 
