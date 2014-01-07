@@ -17,6 +17,7 @@
  */
 package com.github.nateowami.solve4x.gui;
 
+import com.github.nateowami.solve4x.solver.SolveFor;
 import com.github.nateowami.solve4x.solver.Solver;
 import com.github.nateowami.solve4x.gui.GUI;
 
@@ -81,7 +82,8 @@ public class GUI {
 				//Check to see if the input was an equation or an expression
 
 				try {
-					Solver.solve(equation);
+					Solver solver = new Solver(equation, SolveFor.SOLVE);
+					solver.solve();
 				} catch (MalformedInputException err) {
 					// TODO After GUI is done, make this do something useful
 					err.printStackTrace();

@@ -26,10 +26,40 @@ import java.util.ArrayList;
  */
 public class Solver {
 	
+	//the expression or equation to solve ore simplify
+	String eq;
 	//a list of solutions that may work. Whichever one is best will be used in the end
 	ArrayList <Solution> list = new ArrayList<Solution>();
 	//A list of strategies that can be used for solving
-	ArrayList <Strategy> strat = new ArrayList<Strategy>();
+	ArrayList <Strategy> strat;
+	
+	
+	/**
+	 * Creates a new Solver so you can call solve and get the solution.
+	 * @param equation The equation or expression to solve, simplify, 
+	 * factor, multiply, etc
+	 * @param selection The users selection. Do they want this to be 
+	 * factored, solved, simplified, or what?
+	 * @see com.github.nateowami.solve4x.solver.SolveFor
+	 */
+	public Solver(String equation, SolveFor selection){
+		
+		//set the variables
+		this.eq = equation;
+		
+		//set the solving strategies list based on what the user selected
+		//if they wanted it solved
+		if(selection == SolveFor.SOLVE){
+			strat = getSolvingList();
+		}
+		//if the user wanted it simplified
+		else if(selection == SolveFor.SIMPLIFY){
+			strat = getSimplifyingList();
+		}
+		
+		//TODO solve
+		
+	}
 	
 	/**
 	 * Solves the given equation or simplifies it if it is an expression
@@ -37,14 +67,14 @@ public class Solver {
 	 * @return A Solution object that contains the steps for solving
 	 * @throws MalformedInputException 
 	 */
-	public static Solution solve(String expr) throws MalformedInputException{
+	public Solution solve() throws MalformedInputException{
 		
 		//if it's an equation
-		if(Util.isEq(expr)){
+		if(Util.isEq(this.eq)){
 			//make sure the equation is valid
-			if(!Validator.eqIsValid(expr)){
+			if(!Validator.eqIsValid(this.eq)){
 				//if it's not, throw an exception
-				throw new MalformedInputException(expr.length());
+				throw new MalformedInputException(this.eq.length());
 			}
 			else{
 				//TODO solve it
@@ -53,8 +83,8 @@ public class Solver {
 		//then it's not an equation; maybe an expression
 		else{
 			//make sure the expression is valid
-			if(!Validator.exprIsValid(expr)){
-				throw new MalformedInputException(expr.length());
+			if(!Validator.exprIsValid(this.eq)){
+				throw new MalformedInputException(this.eq.length());
 			}
 			//TODO simplify it
 		}
@@ -62,19 +92,37 @@ public class Solver {
 	}
 	
 	/**
-	 * Makes a list of solving strategies.
-	 * @return An ArrayList of strategies
+	 * Makes a list of solving strategies
+	 * @return An ArrayList of strategies for solving
+	 * @see getSimplifyingList()
 	 */
-	private static <Strategy>ArrayList getStratetyList(){
+	private static <Strategy>ArrayList getSolvingList(){
 		
 		//the list of strategies
 		ArrayList <Strategy>stratList = new ArrayList<Strategy>();
 		
-		//TODO add stuff to stratList
+		//add the list of simplifying strategies (all simplifying strategies are also for solving)
+		stratList.addAll(getSimplifyingList());
+		
+		//TODO add more stuff to stratList
 		
 		
 		return stratList;
 		
+	}
+	
+	/**
+	 * Makes a list of strategies for simplifying
+	 * @return An ArrayList of strategies for simplifying
+	 * @see getSolvingList()
+	 */
+	private static <Strategy>ArrayList getSimplifyingList(){
+		
+		//make the list of strategies
+		ArrayList <Strategy>stratList = new ArrayList<Strategy>();
+		//add stuff to the stratList
+		
+		return stratList;
 	}
 	
 }
