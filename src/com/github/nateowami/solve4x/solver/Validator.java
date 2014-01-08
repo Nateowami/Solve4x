@@ -139,7 +139,7 @@ public class Validator {
 		boolean returnSatus = true;
 		for(int i = 0; i < term.length(); i++){
 			//if the char is neither a number or letter
-			if(!(isNumeral(term.charAt(i))) && !(isLetter(term.charAt(i)))){
+			if(!(Util.isNumeral(term.charAt(i))) && !(isLetter(term.charAt(i)))){
 				returnSatus = false;
 				break;
 			}
@@ -147,32 +147,7 @@ public class Validator {
 		return returnSatus;
 	}
 
-
 	/**
-	 * Evaluates a char to see if it is a numeral
-	 * @param c The char to evaluate
-	 * @return If the char is a numeral
-	 */
-	public static boolean isNumeral(char c){
-		switch (c){
-			case '0':
-			case '1':
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				return true;
-			default: return false;
-		}
-	}
-
-
-	/**
-
 	 * Evaluates a char to see if it is between a-z or A-Z
 	 * @param c The char to evaluate
 	 * @return If the char is a a-z or A-Z
@@ -273,7 +248,7 @@ public class Validator {
 		//loop through the chars starting at index
 		for(int i = index; i < str.length(); i++){
 			//if the char isn't a numeral
-			if(!isNumeral(str.charAt(i))){
+			if(!Util.isNumeral(str.charAt(i))){
 				//then the one before must have been the last
 				answer = i-1;
 				//but the answer should never be less than the original index

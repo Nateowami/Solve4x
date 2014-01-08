@@ -31,15 +31,34 @@ public class Term {
 	private String coe = "";
 	//the body of the term
 	private String expr = "";
-	//the exponent of the term
-	private String expon = "";
 	
 	/**
 	 * Creates a new term from a String
-	 * @param expression The term to create
+	 * @param term The term to create
 	 */
-	public Term(String expression){
-		//
-		//TODO finish this class @Nateowami
+	public Term(String expr){
+		
+		//parse any int from the beginning of the expr and put in in coe
+		//then take the rest and stuff it in expr.
+		for(int i=0; i< expr.length(); i++){
+			
+			//if it's not a numeral
+			if(!Util.isNumeral(expr.charAt(i))){
+				
+				//set the coefficient to a substring (the beginning
+				//of the expr to i-1). The method substring()
+				//will subtract 1 for us.
+				this.coe = expr.substring(0, i);
+				
+				//it's possible there is still a fraction in the coefficient
+				
+				
+				//then make this.expr equal to the rest of the string
+				this.expr = expr.substring(i, expr.length());
+				
+				//wer're done
+				break;
+			}
+		}
 	}
 }
