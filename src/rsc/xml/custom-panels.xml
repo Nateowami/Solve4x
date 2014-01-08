@@ -1,0 +1,57 @@
+<synth>
+	<object id="roundPainter" class="rsc.uiClasses.CustomPainter" />
+
+	<!-- Solver Panel Style -->
+	<style id="solvePanelStyle">
+		<opaque value="false" />
+		<insets top="7" left="10" right="7" bottom="7" />
+
+		<state>
+			<color value="#EE0000" type="BACKGROUND" />
+			<painter method="panelBackground" idref="roundPainter" />
+		</state>
+	</style>
+	<bind style="solvePanelStyle" type="name" key="Panel.solve" />
+	<!-- End Solver Panel Style -->
+	
+	
+	<!-- Info Panel Style -->
+	<style id="infoPanelStyle">
+		<opaque value="false" />
+		<insets top="12" left="12" right="12" bottom="6" />
+
+		<state>
+			<color value="#222222" type="BACKGROUND" />
+			<painter method="panelBackground" idref="roundPainter" />
+		</state>
+	</style>
+	<bind style="infoPanelStyle" type="name" key="Panel.info" />
+	<!-- End Info Panel Style -->
+	
+	<!-- Playback Controls Panel Style -->
+	<style id="playbackControlsPanelStyle">
+		<opaque value="false" />
+		<insets top="5" left="5" right="10" bottom="5" />
+
+		<state>
+			<color value="#00EE22" type="BACKGROUND" />
+			<painter method="panelBackground" idref="roundPainter" />
+		</state>
+	</style>
+	<bind style="playbackControlsPanelStyle" type="name" key="Panel.playbackControls" />
+	<!-- End Playback Controls Panel Style -->
+
+
+	<!-- Drawing Panel Style -->
+	<style id="drawingPanelStyle">
+		<opaque value="false" />
+		<insets top="5" left="2" right="3" bottom="6" />
+
+		<state>
+			<color value="ORANGE" type="BACKGROUND" />
+			<painter method="panelBackground" idref="roundPainter" />
+		</state>
+	</style>
+	<bind style="drawingPanelStyle" type="name" key="Panel.draw" />
+	<!-- End Drawing Panel Style -->
+</synth>

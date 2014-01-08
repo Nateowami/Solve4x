@@ -18,7 +18,7 @@
 
 package com.github.nateowami.solve4x;
 
-import com.github.nateowami.solve4x.gui.GUI;
+import com.github.nateowami.solve4x.av.ui.GUI;
 import com.github.nateowami.solve4x.Solve4x;
 
 /**
