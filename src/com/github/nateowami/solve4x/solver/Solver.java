@@ -120,7 +120,8 @@ public class Solver {
 		
 		//make the list of strategies
 		ArrayList <Strategy>stratList = new ArrayList<Strategy>();
-		//add stuff to the stratList
+		
+		//TODO add stuff to the stratList
 		
 		return stratList;
 	}

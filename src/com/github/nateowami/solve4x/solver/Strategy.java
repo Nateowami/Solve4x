@@ -1,5 +1,5 @@
 /*
-    Solve4x - A Java-based program to solve and explain algebra problems
+    Solve4x - A Java program to solve and explain algebra problems
     Copyright (C) 2013 Nathaniel Paulus
 
     This program is free software: you can redistribute it and/or modify

@@ -1,5 +1,5 @@
 /*
-    Solve4x - A Java-based program to solve and explain algebra problems
+    Solve4x - A Java program to solve and explain algebra problems
     Copyright (C) 2013 Nathaniel Paulus
 
     This program is free software: you can redistribute it and/or modify
@@ -18,15 +18,28 @@
 package com.github.nateowami.solve4x.solver;
 
 /**
+ * Provides a way to work with terms in equations.
  * @author Nateowami
  */
 public class Term {
+	
+	//all properties are strings because there's no way to have an empty int
+	//but you can have an empty string. Example: 2x has no coefficient. We can't 
+	//represent that if we use an int.
+	
+	//the coefficient of the term (it's a String because the coefficient could be a fraction)
+	private String coe = "";
+	//the body of the term
+	private String expr = "";
+	//the exponent of the term
+	private String expon = "";
 	
 	/**
 	 * Creates a new term from a String
 	 * @param expression The term to create
 	 */
 	public Term(String expression){
+		//
 		//TODO finish this class @Nateowami
 	}
 }
