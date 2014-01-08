@@ -79,5 +79,22 @@ public class Util {
 		}
 	}
 
+	/**
+	 * Tells if a string can be parsed as an integer
+	 * @param intager The string to check 
+	 * @return If the string can be parsed as an integer
+	 */
+	public static boolean isIntager(String integer) {
+		//iterate through chars
+		for(int i = 0; i<integer.length(); i++){
+			//if it's not a numeral
+			if(!isNumeral(integer.charAt(i))){
+				return false;
+			}
+		}
+		//if we get here everything was a numeral
+		return true;
+	}
+
 
 }

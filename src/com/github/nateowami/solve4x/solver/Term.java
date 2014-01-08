@@ -51,7 +51,7 @@ public class Term {
 				this.coe = expr.substring(0, i);
 				
 				//it's possible there is still a fraction in the coefficient
-				
+				//TODO check for fractions @Nateowami
 				
 				//then make this.expr equal to the rest of the string
 				this.expr = expr.substring(i, expr.length());
@@ -60,5 +60,47 @@ public class Term {
 				break;
 			}
 		}
+	}
+	
+	/**
+	 * Tells if a given expression is a fraction AND that both the top and bottom of 
+	 * the fraction contain ONLY INTAGERS
+	 * @param frac The expression to evaluate
+	 * @return If the expression is a fraction with only ints on top and bottom.
+	 */
+	private boolean parseFraction(String frac){
+		
+		//first find the fraction bar
+		for(int i=0; i<frac.length(); i++){
+			//if the current char is '/'
+			if (frac.charAt(i) == '/'){
+				//TODO check both sides of it
+			}
+		}
+		//there's not '/'
+		return false;
+		
+	}
+	
+	/**
+	 * Tells if a given expression is in the form of <integer>. Example: <56> This is useful
+	 * for determining if an expression is part of a fraction.
+	 * @param side The expression to evaluate
+	 * @return If side is in the form of <integer>.
+	 */
+	private boolean parseFracSide(String side){
+		//if the first char is '<' AND the last char is '>'
+		if(side.charAt(0) == '<' && side.charAt(side.length()-1) == '>'){
+			//if what's in the carets is is an integer
+			if(Util.isIntager(side.substring(1, side.length()-1))){
+				return true;
+			}
+			//it's not then
+			else{
+				return false;
+			}
+		}
+		//if it's not, then it's in the wrong form
+		else return false;
 	}
 }
