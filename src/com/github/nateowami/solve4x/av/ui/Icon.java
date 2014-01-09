@@ -88,4 +88,76 @@ public class Icon {
 		//return the image
 		return image;
 	}
+	
+	/**
+	 * Makes an icon that looks like a fast-forward button
+	 * @return The icon
+	 */
+	public static BufferedImage getFastForwardIcon(){
+		//create our image and Graphics2D
+		BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = image.createGraphics();
+		//set the drawing color to black
+		g2d.setColor(new Color(0,0,0));
+		//set rendering hints
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHints(rh);
+		
+		//Create the left-most triangle polygon
+		Polygon triangle1 = new Polygon();
+		triangle1.addPoint(2, 4);
+		triangle1.addPoint(2, 27);
+		triangle1.addPoint(21, 16);
+		
+		//Create the right-most triangle polygon
+		Polygon triangle2 = new Polygon();
+		triangle2.addPoint(10, 4);
+		triangle2.addPoint(10, 27);
+		triangle2.addPoint(29, 16);
+
+		//draw the polygons
+		g2d.fillPolygon(triangle1);
+		g2d.fillPolygon(triangle2);
+		
+		//Draw the bar at the end
+		g2d.fillRect(26, 4, 3, 23);
+		//return the image
+		return image;
+	}
+	
+	/**
+	 * Makes an icon that looks like a fast-backward button
+	 * @return The icon
+	 */
+	public static BufferedImage getFastBackwardIcon(){
+		//create our image and Graphics2D
+		BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = image.createGraphics();
+		//set the drawing color to black
+		g2d.setColor(new Color(0,0,0));
+		//set rendering hints
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHints(rh);
+		
+		//Create the left-most triangle polygon
+		Polygon triangle1 = new Polygon();
+		triangle1.addPoint(21, 4);
+		triangle1.addPoint(21, 27);
+		triangle1.addPoint(2, 16);
+		
+		//Create the right-most triangle polygon
+		Polygon triangle2 = new Polygon();
+		triangle2.addPoint(29, 4);
+		triangle2.addPoint(29, 27);
+		triangle2.addPoint(10, 16);
+
+		//draw the polygons
+		g2d.fillPolygon(triangle1);
+		g2d.fillPolygon(triangle2);
+		
+		//Draw the bar at the end
+		g2d.fillRect(2, 4, 3, 23);
+		//return the image
+		return image;
+	}
 }
