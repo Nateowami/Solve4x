@@ -250,11 +250,11 @@ public class GUI {
 
 		JButton btnPlay = new JButton("");
 		playbackControlButtons.add(btnPlay);
-		btnPlay.setIcon(new ImageIcon(Main.class.getResource("/rsc/icons/icon-play.png")));
+		btnPlay.setIcon(new ImageIcon(Icon.getPlayIcon()));//changed to a rendered image
 
 		JButton btnPause = new JButton("");
 		playbackControlButtons.add(btnPause);
-		btnPause.setIcon(new ImageIcon(Main.class.getResource("/rsc/icons/icon-pause.png")));
+		btnPause.setIcon(new ImageIcon(Icon.getPauseIcon()));
 
 		JButton btnBtnend = new JButton("");
 		playbackControlButtons.add(btnBtnend);
