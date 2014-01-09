@@ -44,17 +44,25 @@ import com.github.nateowami.solve4x.solver.Solver;
 
 
 /**
- * A temporary GUI
- * @autor Tribex, Nateowami
+ * The GUI for this program
+ * @author Tribex, Nateowami
  */
 public class GUI {
+	
+	/**
+	 * Starts the GUI
+	 */
 	public GUI(){
 		startGUI();
 	}
 	
 	private static JTextField txtfEquationEntry;
 
+	/**
+	 * Makes all the GUI widgets and puts the the GUI on-screen
+	 */
 	private void startGUI() {
+		
 		initLookAndFeel();
 		JFrame MainFrame = new JFrame();
 		MainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/rsc/icons/icon-play.png")));
@@ -318,6 +326,10 @@ public class GUI {
 
 	}
 
+	/**
+	 * Sets the look and feel to the Solve4x look and feel with Synths.
+	 * Loads the xml files that define the look and feel,
+	 */
 	private static void initLookAndFeel() {
 		SynthLookAndFeel lookAndFeel = new SynthLookAndFeel();
 
