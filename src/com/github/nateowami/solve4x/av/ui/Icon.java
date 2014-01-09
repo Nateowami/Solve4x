@@ -25,7 +25,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Creates icons at runtime
- * @author Nateowami
+ * @author Nateowami, Tribex
  */
 public class Icon {
 	
@@ -93,6 +93,7 @@ public class Icon {
 	 * Makes an icon that looks like a fast-forward button
 	 * @return The icon
 	 */
+	//XXX this is not currently being used. Just putting a note so we easily remember. Remove this note if this changes
 	public static BufferedImage getFastForwardIcon(){
 		//create our image and Graphics2D
 		BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
@@ -129,6 +130,7 @@ public class Icon {
 	 * Makes an icon that looks like a fast-backward button
 	 * @return The icon
 	 */
+	//XXX this is not currently being used. Just putting a note so we easily remember. Remove this note if this changes
 	public static BufferedImage getFastBackwardIcon(){
 		//create our image and Graphics2D
 		BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
