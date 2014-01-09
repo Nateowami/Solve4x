@@ -41,6 +41,8 @@ import javax.swing.plaf.synth.SynthLookAndFeel;
 import com.github.nateowami.solve4x.Main;
 import com.github.nateowami.solve4x.solver.SolveFor;
 import com.github.nateowami.solve4x.solver.Solver;
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
 
 
 /**
@@ -51,7 +53,7 @@ public class GUI {
 	public GUI(){
 		startGUI();
 	}
-	
+
 	private static JTextField txtfEquationEntry;
 
 	private void startGUI() {
@@ -212,7 +214,7 @@ public class GUI {
 		GridBagLayout gbl_panelBottom = new GridBagLayout();
 		gbl_panelBottom.columnWidths = new int[]{0, 0, 0};
 		gbl_panelBottom.rowHeights = new int[]{0, 0, 0};
-		gbl_panelBottom.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelBottom.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 		gbl_panelBottom.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		panelBottom.setLayout(gbl_panelBottom);
 
@@ -225,45 +227,64 @@ public class GUI {
 		gbc_panelPlaybackControls.gridy = 0;
 		panelBottom.add(panelPlaybackControls, gbc_panelPlaybackControls);
 		GridBagLayout gbl_panelPlaybackControls = new GridBagLayout();
-		gbl_panelPlaybackControls.rowHeights = new int[]{0, 0, 0};
+		gbl_panelPlaybackControls.rowHeights = new int[]{0, 0};
 		gbl_panelPlaybackControls.columnWeights = new double[]{1.0};
-		gbl_panelPlaybackControls.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelPlaybackControls.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		panelPlaybackControls.setLayout(gbl_panelPlaybackControls);
 
+		JPanel playbackControlButtons = new JPanel();
+		GridBagConstraints gbc_playbackControlButtons = new GridBagConstraints();
+		gbc_playbackControlButtons.fill = GridBagConstraints.BOTH;
+		gbc_playbackControlButtons.gridx = 0;
+		gbc_playbackControlButtons.gridy = 0;
+		panelPlaybackControls.add(playbackControlButtons, gbc_playbackControlButtons);
+		GridBagLayout gbl_playbackControlButtons = new GridBagLayout();
+		gbl_playbackControlButtons.columnWidths = new int[]{66, 210, 0};
+		gbl_playbackControlButtons.rowHeights = new int[]{42, 0};
+		gbl_playbackControlButtons.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_playbackControlButtons.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		playbackControlButtons.setLayout(gbl_playbackControlButtons);
+
+		final JButton btnPlay = new JButton();
+		GridBagConstraints gbc_btnPlay = new GridBagConstraints();
+		gbc_btnPlay.fill = GridBagConstraints.BOTH;
+		gbc_btnPlay.insets = new Insets(0, 0, 0, 5);
+		gbc_btnPlay.gridx = 0;
+		gbc_btnPlay.gridy = 0;
+		playbackControlButtons.add(btnPlay, gbc_btnPlay);
+		btnPlay.setIcon(new ImageIcon(Icon.getPlayIcon()));
+		
+		//Switch between pause and play on click
+		btnPlay.addActionListener(new ActionListener() {
+			Boolean play = false;
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (play == false) {
+					btnPlay.setIcon(new ImageIcon(Icon.getPauseIcon()));
+					play = true;
+				} else {
+					btnPlay.setIcon(new ImageIcon(Icon.getPlayIcon()));
+					play = false;
+				}
+			}
+			
+		});
+
+		JPanel panelSlider = new JPanel();
+		panelSlider.setName("Panel.slider");
+		GridBagConstraints gbc_panelSlider = new GridBagConstraints();
+		gbc_panelSlider.fill = GridBagConstraints.BOTH;
+		gbc_panelSlider.gridx = 1;
+		gbc_panelSlider.gridy = 0;
+		playbackControlButtons.add(panelSlider, gbc_panelSlider);
+		panelSlider.setLayout(new BorderLayout(0, 0));
+
 		JSlider slider = new JSlider();
+		panelSlider.add(slider);
 		slider.setToolTipText("Lesson Timeline");
 		slider.setValue(0);
 		slider.setMinimum(1);
 		slider.setFont(new Font("SansSerif", Font.BOLD, 14));
-		GridBagConstraints gbc_slider = new GridBagConstraints();
-		gbc_slider.insets = new Insets(0, 0, 5, 0);
-		gbc_slider.gridx = 0;
-		gbc_slider.gridy = 0;
-		panelPlaybackControls.add(slider, gbc_slider);
-
-		JPanel playbackControlButtons = new JPanel();
-		GridBagConstraints gbc_playbackControlButtons = new GridBagConstraints();
-		gbc_playbackControlButtons.anchor = GridBagConstraints.WEST;
-		gbc_playbackControlButtons.fill = GridBagConstraints.VERTICAL;
-		gbc_playbackControlButtons.gridx = 0;
-		gbc_playbackControlButtons.gridy = 1;
-		panelPlaybackControls.add(playbackControlButtons, gbc_playbackControlButtons);
-
-		JButton btnBtnstart = new JButton();
-		playbackControlButtons.add(btnBtnstart);
-		btnBtnstart.setIcon(new ImageIcon(Icon.getFastBackwardIcon()));
-
-		JButton btnPlay = new JButton();
-		playbackControlButtons.add(btnPlay);
-		btnPlay.setIcon(new ImageIcon(Icon.getPlayIcon()));//changed to a rendered image
-
-		JButton btnPause = new JButton();
-		playbackControlButtons.add(btnPause);
-		btnPause.setIcon(new ImageIcon(Icon.getPauseIcon()));
-
-		JButton btnBtnend = new JButton();
-		playbackControlButtons.add(btnBtnend);
-		btnBtnend.setIcon(new ImageIcon(Icon.getFastForwardIcon()));
 
 		JPanel panelInfo = new JPanel();
 		panelInfo.setName("Panel.info");
@@ -283,7 +304,8 @@ public class GUI {
 		JButton btnHelp_Btm = new JButton("Help");
 		btnHelp_Btm.setToolTipText("Solve4x Help");
 		GridBagConstraints gbc_btnHelp_Btm = new GridBagConstraints();
-		gbc_btnHelp_Btm.anchor = GridBagConstraints.SOUTHEAST;
+		gbc_btnHelp_Btm.fill = GridBagConstraints.VERTICAL;
+		gbc_btnHelp_Btm.anchor = GridBagConstraints.EAST;
 		gbc_btnHelp_Btm.insets = new Insets(0, 0, 0, 5);
 		gbc_btnHelp_Btm.gridx = 0;
 		gbc_btnHelp_Btm.gridy = 0;
@@ -292,7 +314,8 @@ public class GUI {
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.setToolTipText("Update Solve4x");
 		GridBagConstraints gbc_btnUpdate = new GridBagConstraints();
-		gbc_btnUpdate.anchor = GridBagConstraints.SOUTHEAST;
+		gbc_btnUpdate.fill = GridBagConstraints.VERTICAL;
+		gbc_btnUpdate.anchor = GridBagConstraints.EAST;
 		gbc_btnUpdate.insets = new Insets(0, 0, 0, 5);
 		gbc_btnUpdate.gridx = 1;
 		gbc_btnUpdate.gridy = 0;
@@ -301,7 +324,8 @@ public class GUI {
 		JButton btnWebsite = new JButton("Website");
 		btnWebsite.setToolTipText("Solve4x Website");
 		GridBagConstraints gbc_btnWebsite = new GridBagConstraints();
-		gbc_btnWebsite.anchor = GridBagConstraints.SOUTHEAST;
+		gbc_btnWebsite.fill = GridBagConstraints.VERTICAL;
+		gbc_btnWebsite.anchor = GridBagConstraints.EAST;
 		gbc_btnWebsite.insets = new Insets(0, 0, 0, 5);
 		gbc_btnWebsite.gridx = 2;
 		gbc_btnWebsite.gridy = 0;
@@ -310,7 +334,8 @@ public class GUI {
 		JButton btnAbout = new JButton("About");
 		btnAbout.setToolTipText("About Solve4x");
 		GridBagConstraints gbc_btnAbout = new GridBagConstraints();
-		gbc_btnAbout.anchor = GridBagConstraints.SOUTHEAST;
+		gbc_btnAbout.fill = GridBagConstraints.VERTICAL;
+		gbc_btnAbout.anchor = GridBagConstraints.EAST;
 		gbc_btnAbout.gridx = 3;
 		gbc_btnAbout.gridy = 0;
 		panelInfo.add(btnAbout, gbc_btnAbout);
