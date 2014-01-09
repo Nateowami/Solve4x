@@ -59,7 +59,7 @@ public class GUI {
 	private void startGUI() {
 		initLookAndFeel();
 		JFrame MainFrame = new JFrame();
-		MainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/rsc/icons/icon-play.png")));
+		MainFrame.setIconImage(Icon.getPlayIcon());
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0};
