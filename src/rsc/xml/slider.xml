@@ -1,0 +1,25 @@
+<synth>
+	<style id="SliderTrackStyle">
+		<opaque value="TRUE" />
+		<insets right="5"/>
+		<state>
+			<color type="BACKGROUND" value="ORANGE" />
+		</state>
+	</style>
+	<bind style="SliderTrackStyle" type="region" key="SliderTrack" />
+
+	<style id="SliderThumbStyle">
+		<opaque value="TRUE" />
+		<state>
+			<color type="BACKGROUND" value="#DF0000" />
+		</state>
+		<state value="PRESSED">
+			<color type="BACKGROUND" value="#D00000" />
+		</state>
+		<state value="MOUSE_OVER">
+			<color type="BACKGROUND" value="#FF0000" />
+		</state>
+    
+	</style>
+	<bind style="SliderThumbStyle" type="region" key="SliderThumb" />
+</synth>

@@ -1,0 +1,55 @@
+<synth>
+	<object id="roundPainter" class="rsc.uiClasses.CustomPainter" />
+
+	<!-- Configure Button Style -->
+	<style id="configureButtonStyle">
+		<opaque value="false" />
+		<insets top="5" left="8" right="11" bottom="8" />
+
+		<state>
+			<color value="#00aaFF" type="BACKGROUND" />
+			<font name="SansSerif" size="32" style="BOLD" />
+			<painter method="buttonBackground" idref="roundPainter" />
+		</state>
+		
+		<state value="PRESSED and MOUSE_OVER">
+			<color value="#0088BB" type="BACKGROUND" />
+			<color value="#555555" type="FOREGROUND" />
+			<painter method="buttonBackground" idref="roundPainter" />
+		</state>
+		
+		<state value="MOUSE_OVER">
+			<color value="#00ccFF" type="BACKGROUND" />
+			<painter method="buttonBackground" idref="roundPainter" />
+		</state>
+	</style>
+	<bind style="configureButtonStyle" type="name" key="Button.configure" />
+	<!-- End Configure Button Style -->
+	
+	
+	<!-- Help Button Style (Top Toolbar) -->
+	<style id="helpButtonStyle">
+		<opaque value="false" />
+		<insets top="5" left="11" right="14" bottom="8" />
+
+		<state>
+			<color value="ORANGE" type="BACKGROUND" />
+			<font name="SansSerif" size="32" style="BOLD" />
+			<painter method="buttonBackground" idref="roundPainter" />
+		</state>
+
+		<state value="PRESSED and MOUSE_OVER">
+			<color value="#DFAF00" type="BACKGROUND" />
+			<color value="#555555" type="FOREGROUND" />
+			<painter method="buttonBackground" idref="roundPainter" />
+		</state>
+				
+		<state value="MOUSE_OVER">
+			<color value="#FFDF00" type="BACKGROUND" />
+			<painter method="buttonBackground" idref="roundPainter" />
+		</state>
+		
+	</style>
+	<bind style="helpButtonStyle" type="name" key="Button.help" />
+	<!-- End Help Button Style -->
+</synth>
