@@ -18,4 +18,4 @@ If you're wondering what's next, read [how the solver works](https://github.com/
 
 Documentation
 =============
-You can find documentation on [the wiki](https://github.com/Nateowami/Solve4x/wiki). If you're wondering how the program works/should work, checkout [an article about program flow and its general  structure](https://github.com/Nateowami/Solve4x/wiki/Program-Flow) (which is also on the wiki).
+You can find documentation on [the wiki](https://github.com/Nateowami/Solve4x/wiki). If you're wondering how the program works/should work, check out [an article about program flow and its general  structure](https://github.com/Nateowami/Solve4x/wiki/Program-Flow) (also on the wiki).
