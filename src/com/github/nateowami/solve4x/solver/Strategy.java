@@ -1,6 +1,6 @@
 /*
-    Solve4x - A Java program to solve and explain algebra problems
-    Copyright (C) 2013 Nathaniel Paulus
+    Solve4x - An audio-visual algebra solver
+    Copyright (C) 2014 Nathaniel Paulus
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
