@@ -1,5 +1,5 @@
 <synth>
-	<object id="roundPainter" class="rsc.uiClasses.CustomPainter" />
+	<object id="roundPainter" class="com.github.nateowami.solve4x.ui.CustomPainter" />
 
 	<!-- Configure Button Style -->
 	<style id="configureButtonStyle">

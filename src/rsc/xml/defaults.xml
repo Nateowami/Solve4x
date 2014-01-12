@@ -1,5 +1,5 @@
 <synth>
-	<object id="myPainter" class="rsc.uiClasses.CustomPainter" />
+	<object id="myPainter" class="com.github.nateowami.solve4x.ui.CustomPainter" />
 
 	<!-- Default Panel Style -->
 	<style id="defaultPanelStyle">

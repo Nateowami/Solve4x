@@ -16,7 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package rsc.uiClasses;
+package com.github.nateowami.solve4x.ui;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
