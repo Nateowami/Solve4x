@@ -28,7 +28,8 @@ public class Term {
 	//represent that if we use an int.
 	
 	//the coefficient of the term (it's a String because the coefficient could be a fraction)
-	private String coe = "";
+	private String coeInt = "";
+	private String coeFrac = "";
 	//the body of the term
 	private String expr = "";
 	
@@ -37,31 +38,36 @@ public class Term {
 	 * @param term The term to create
 	 */
 	public Term(String expr){
+
+		//parse the expression and set coe and expr
 		
-		//parse any int from the beginning of the expr and put in in coe
-		//then take the rest and stuff it in expr.
+		//look for an integer an the beginning
 		for(int i=0; i< expr.length(); i++){
 			
 			//if it's not a numeral
 			if(!Util.isNumeral(expr.charAt(i))){
-				
 				//set the coefficient to a substring (the beginning
-				//of the expr to i-1). The method substring()
-				//will subtract 1 for us.
-				this.coe = expr.substring(0, i);
-				
-				//it's possible there is still a fraction in the coefficient
-				//TODO check for fractions @Nateowami
-				
-				//then make this.expr equal to the rest of the string
-				this.expr = expr.substring(i, expr.length());
-				
-				//wer're done
+				//of the expr to i-1). The method substring() will subtract 1 for us.
+				this.coeInt = expr.substring(0, i);
+				//remove the integer from the beginning of the string
+				expr = expr.substring(i, expr.length());
+				//set the integer part of the coefficient
 				break;
 			}
 		}
+		
+		//now check for a fraction that could come after the integer
+		for(int i=0; i<expr.length(); i++){
+			//if 0 to i+1 is a nice and neat fraction
+			if(parseFraction(expr.substring(0, i))){
+				//if it's a fraction set coeFrac to it
+				this.coeFrac = expr.substring(0, i);
+				//remove the fraction from the string and set the body of the term
+				this.expr = expr.substring(i, expr.length());
+			}
+		}
 	}
-	
+
 	/**
 	 * Tells if a given expression is a fraction AND that both the top and bottom of 
 	 * the fraction contain ONLY INTAGERS
@@ -74,10 +80,11 @@ public class Term {
 		for(int i=0; i<frac.length(); i++){
 			//if the current char is '/'
 			if (frac.charAt(i) == '/'){
-				//TODO check both sides of it
+				//if both sides are valid fraction sides
+				return parseFracSide(frac.substring(0, i)) && parseFracSide(frac.substring(i, frac.length()));
 			}
 		}
-		//there's not '/'
+		//there's not a '/'
 		return false;
 		
 	}
@@ -89,18 +96,41 @@ public class Term {
 	 * @return If side is in the form of <integer>.
 	 */
 	private boolean parseFracSide(String side){
-		//if the first char is '<' AND the last char is '>'
+
+		//if it's an integer
+		if(Util.isInteger(side)){
+			return true;
+		}
+		
+		//if it's surrounded by carets and inside is an integer
 		if(side.charAt(0) == '<' && side.charAt(side.length()-1) == '>'){
 			//if what's in the carets is is an integer
 			if(Util.isInteger(side.substring(1, side.length()-1))){
 				return true;
 			}
-			//it's not then
+			//it's surrounded by carets but it's not an integer
 			else{
 				return false;
 			}
 		}
-		//if it's not, then it's in the wrong form
+		//it's not a fraction side
 		else return false;
 	}
+
+	/**
+	 * @return The coefficient of the term (may include a fraction)
+	 */
+	public String getCoe(){
+		return coeInt+coeFrac;
+	}
+
+	/**
+	 * @return the expr
+	 */
+	public String getBody() {
+		return expr;
+	}
+	
+	
+
 }

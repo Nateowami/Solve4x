@@ -80,8 +80,9 @@ public class Util {
 	}
 
 	/**
-	 * Tells if a string can be parsed as an integer
-	 * @param intager The string to check 
+	 * Tells if a string can be parsed as an integer. Supports commas as a 
+	 * separator in numbers. Example: 2,345
+	 * @param integer The string to check 
 	 * @return If the string can be parsed as an integer
 	 */
 	public static boolean isInteger(String integer) {
@@ -127,6 +128,76 @@ public class Util {
 		Solve4x.debug("returns" + (allAreNumerals || commasInOrder));
 		return allAreNumerals || commasInOrder;
 	}
+	
+	/**
+	 * Checks to see if the entire expression is surrounded by parentheses,
+	 * in which case they will be removed for easier parsing
+	 */
+	public static String removePar(String expr){
+		String arg = expr;
+		//debugging
+		Solve4x.debug("removePar()" + expr);
+		
+		//check to see if it starts and ends with parentheses
+		if((expr.length() >= 1) && isOpenPar(expr.charAt(0)) && isClosePar(expr.charAt(expr.length()-1))){
 
+			int parDepth = 1; //how deep we are into parentheses nesting
+			boolean parDepthReached0 = false;//if parDepth ever reaches 0 we're outside all parentheses
+			//check to see if the entire expr is enclosed with parentheses
+			for (int i = 1; i < expr.length() - 1; i++){
+				if(isOpenPar(expr.charAt(i))){
+					parDepth++;
+				}
+				else if(isClosePar(expr.charAt(i))){
+					parDepth--;
+				}
+				if (parDepth == 0){
+					parDepthReached0 = true;
+				}
+			}
+
+			if(!parDepthReached0){
+				//debugging
+				Solve4x.debug("removePar(" + arg + ") -> " + expr.substring(1, expr.length()-1));
+				return expr.substring(1, expr.length()-1);
+			}
+			else{
+				//debugging
+				Solve4x.debug("removePar(" + arg + ") -> " + expr);
+				return expr;
+			}
+		}
+		else{
+			//debugging
+			Solve4x.debug("removePar(" + arg + ") -> " + expr);
+			return expr;
+		}
+	}
+	
+	/**
+	 * Evaluates a char to see if it's a opening parentheses (or root)
+	 * @param c The char to evaluate
+	 * @return If the char is a opening parentheses
+	 */
+	public static boolean isOpenPar(char c){
+		if(c == '(' || c == '[' || c == '{' || c == '<' || c == '√'){
+			return true;
+		}
+		else return false;
+	}
+	
+
+	/**
+	 * Evaluates a char to see if it's a closing parentheses (or root)
+	 * @param c The char to evaluate
+	 * @return If the char is a closing parentheses
+	 */
+	public static boolean isClosePar(char c){
+		if(c == ')' || c == ']' || c == '}' || c == '>' || c == '^'){
+			return true;
+		}
+		else return false;
+	}
+	
 
 }

@@ -56,9 +56,7 @@ public class Solver {
 		else if(selection == SolveFor.SIMPLIFY){
 			strat = getSimplifyingList();
 		}
-		
-		//TODO solve
-		
+
 	}
 	
 	/**
@@ -77,7 +75,7 @@ public class Solver {
 				throw new MalformedInputException(this.eq.length());
 			}
 			else{
-				//TODO solve it
+				
 			}
 		}
 		//then it's not an equation; maybe an expression

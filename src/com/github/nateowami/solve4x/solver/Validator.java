@@ -82,7 +82,7 @@ public class Validator {
 	private static boolean exprIsValid(String expr) {
 		
 		//remove parentheses from both ends if they surround the entire expression
-		expr = removePar(expr);
+		expr = Util.removePar(expr);
 		
 		//Before doing the regular recursive check, there are a few misc things
 		//to check first
@@ -205,52 +205,7 @@ public class Validator {
 		}
 	}
 
-	/**
-	 * Checks to see if the entire expression is surrounded by parentheses,
-	 * in which case they will be removed for easier parsing
-	 */
-	public static String removePar(String expr){
-		String arg = expr;
-		//debugging
-		Solve4x.debug("removePar()" + expr);
-		
-		//check to see if it starts and ends with parentheses
-		if((expr.length() >= 1) && isOpenPar(expr.charAt(0)) && isClosePar(expr.charAt(expr.length()-1))){
-
-			int parDepth = 1; //how deep we are into parentheses nesting
-			boolean parDepthReached0 = false;//if parDepth ever reaches 0 we're outside all parentheses
-			//check to see if the entire expr is enclosed with parentheses
-			for (int i = 1; i < expr.length() - 1; i++){
-				if(expr.charAt(i) == '(' || expr.charAt(i) == '[' 
-						|| expr.charAt(i) == '{' || expr.charAt(i) == '<'){
-					parDepth++;
-				}
-				else if(expr.charAt(i) == ')' || expr.charAt(i) == ']' 
-						|| expr.charAt(i) == '}' || expr.charAt(i) == '>'){
-					parDepth--;
-				}
-				if (parDepth == 0){
-					parDepthReached0 = true;
-				}
-			}
-
-			if(!parDepthReached0){
-				//debugging
-				Solve4x.debug("removePar(" + arg + ") -> " + expr.substring(1, expr.length()));
-				return expr.substring(1, expr.length()-1);
-			}
-			else{
-				//debugging
-				Solve4x.debug("removePar(" + arg + ") -> " + expr);
-				return expr;
-			}
-		}
-		else{
-			//debugging
-			Solve4x.debug("removePar(" + arg + ") -> " + expr);
-			return expr;
-		}
-	}
+	
 	
 
 	/**
@@ -303,30 +258,7 @@ public class Validator {
 	}
 
 
-	/**
-	 * Evaluates a char to see if it's a closing parentheses (or root)
-	 * @param c The char to evaluate
-	 * @return If the char is a closing parentheses
-	 */
-	private static boolean isClosePar(char c){
-		if(c == ')' || c == ']' || c == '}' || c == '>' || c == '^'){
-			return true;
-		}
-		else return false;
-	}
-	
 
-	/**
-	 * Evaluates a char to see if it's a opening parentheses (or root)
-	 * @param c The char to evaluate
-	 * @return If the char is a opening parentheses
-	 */
-	private static boolean isOpenPar(char c){
-		if(c == '(' || c == '[' || c == '{' || c == '<' || c == '√'){
-			return true;
-		}
-		else return false;
-	}
 	
 	
 	/**
@@ -339,11 +271,11 @@ public class Validator {
 		//loop through chars, keeping track of how far into parentheses nesting we get
 		for (int i = 0; i < expr.length(); i++){
 			//if it's an opening par
-			if(isOpenPar(expr.charAt(i))){
+			if(Util.isOpenPar(expr.charAt(i))){
 				parDepth++;
 			}
 			//if it's a closing par
-			else if (isClosePar(expr.charAt(i))){
+			else if (Util.isClosePar(expr.charAt(i))){
 				parDepth--;
 			}
 			//if it's addition or subtraction AND parDepth (nesting) is 0
@@ -367,20 +299,20 @@ public class Validator {
 		for (int i = 0; i < expr.length(); i++){
 			
 			//watch the parDepth
-			if(isOpenPar(expr.charAt(i))){
+			if(Util.isOpenPar(expr.charAt(i))){
 				parDepth++;
 			}
 			//and watch the parDepth for going down
-			if(isClosePar(expr.charAt(i))){
+			if(Util.isClosePar(expr.charAt(i))){
 				parDepth--;
 			}
 			
 			//if it's a closing parentheses
-			if(isClosePar(expr.charAt(i)) && parDepth == 0){
+			if(Util.isClosePar(expr.charAt(i)) && parDepth == 0){
 				//find the end of a power (if any)
 				return getEndOfPower(expr, i);//because there could be powers after it
 			}
-			else if(isOpenPar(expr.charAt(i)) && parDepth == 1 /*because it's an opening par*/&& i != 0/*Don't cut if it's the first time*/){
+			else if(Util.isOpenPar(expr.charAt(i)) && parDepth == 1 /*because it's an opening par*/&& i != 0/*Don't cut if it's the first time*/){
 				//so it parDepth must be at least 1
 				Solve4x.debug("HERE");
 				Solve4x.debug(" * returns " + (i -1));
@@ -402,11 +334,11 @@ public class Validator {
 		//loop through chars, keeping track of how far into parentheses nesting we get
 		for (int i = 0; i < expr.length(); i++){
 			//if it's an opening par
-			if(isOpenPar(expr.charAt(i))){
+			if(Util.isOpenPar(expr.charAt(i))){
 				parDepth++;
 			}
 			//if it's a closing par
-			else if (isClosePar(expr.charAt(i))){
+			else if (Util.isClosePar(expr.charAt(i))){
 				parDepth--;
 			}
 			//if it's division AND parDepth (nesting) is 0
