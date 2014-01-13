@@ -192,7 +192,7 @@ public class GUI {
 		final JButton btnVol = new JButton();
 		btnVol.setToolTipText("Adjust the Volume");
 		//set the image for the volume button
-		btnVol.setIcon(new ImageIcon(Main.class.getResource("/rsc/icons/icon-volume-medium.png")));
+		btnVol.setIcon(new ImageIcon(Icon.getVolumeIcon(2)));
 		//and set the layout
 		GridBagConstraints gbc_btnVol = new GridBagConstraints();
 		gbc_btnVol.insets = new Insets(0, 0, 5, 0);
@@ -208,20 +208,20 @@ public class GUI {
 
 				//figure out the current state of the button and change the image on the button
 				case 0: 
-					btnVol.setIcon(new ImageIcon(Main.class.getResource("/rsc/icons/icon-volume-high.png")));
+					btnVol.setIcon(new ImageIcon(Icon.getVolumeIcon(3)));
 					cnt = 1;
 					break;
 
 				case 1: 
-					btnVol.setIcon(new ImageIcon(Main.class.getResource("/rsc/icons/icon-volume-mute.png")));
+					btnVol.setIcon(new ImageIcon(Icon.getVolumeIcon(0)));
 					cnt = 2;
 					break;
 				case 2: 
-					btnVol.setIcon(new ImageIcon(Main.class.getResource("/rsc/icons/icon-volume-low.png")));
+					btnVol.setIcon(new ImageIcon(Icon.getVolumeIcon(1)));
 					cnt = 3;
 					break;
 				case 3: 
-					btnVol.setIcon(new ImageIcon(Main.class.getResource("/rsc/icons/icon-volume-medium.png")));
+					btnVol.setIcon(new ImageIcon(Icon.getVolumeIcon(2)));
 					cnt = 0;
 					break;
 				}
@@ -424,7 +424,7 @@ public class GUI {
 		//set a background color
 		MainFrame.setBackground(new Color(230, 230, 230));
 		//set the title of the window
-		MainFrame.setTitle("Solve4x - GUI Prototype");
+		MainFrame.setTitle("Solve4x - An Audio-Visual Algebra Solver");
 		//make the window visible
 		MainFrame.setVisible(true);
 
