@@ -85,16 +85,47 @@ public class Util {
 	 * @return If the string can be parsed as an integer
 	 */
 	public static boolean isInteger(String integer) {
-		//FIXME 45,346 should be counted an integer because it has 
+		Solve4x.debug("isInteger(" + integer + ")");
 		//iterate through chars
+		
+		boolean allAreNumerals = true;
 		for(int i = 0; i<integer.length(); i++){
 			//if it's not a numeral
 			if(!isNumeral(integer.charAt(i))){
-				return false;
+				allAreNumerals = false;
+				//no use going farther
+				break;
 			}
 		}
-		//if we get here everything was a numeral
-		return true;
+		
+		//check to see if it has commas (which would have caused the above to fail)
+		
+		//start  be reversing the integer. This will make it easier to check the commas
+		integer = new StringBuilder(integer).reverse().toString();
+		boolean commasInOrder = true;
+		//now iterate through the string
+		for(int i = 0; i<integer.length(); i++){
+			//every fourth char should be a comma
+			//i+1 is the actual iteration number
+			if((i+1) % 4 == 0){
+				//then it should be a comma
+				if(integer.charAt(i) != ','){
+					//if it's not a comma
+					commasInOrder = false;
+					//no use going farther
+					break;
+				}
+			}
+			//if should be an integer but isn't
+			else if(!isNumeral(integer.charAt(i))){
+				commasInOrder = false;
+				//no use going farther
+				break;
+			}
+		}
+		//only one of the above needs algorithms needs to have succeeded
+		Solve4x.debug("returns" + (allAreNumerals || commasInOrder));
+		return allAreNumerals || commasInOrder;
 	}
 
 

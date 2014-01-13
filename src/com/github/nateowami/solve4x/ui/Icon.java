@@ -53,6 +53,8 @@ public class Icon {
 		poly.addPoint(27, 16);
 		//draw the polygon
 		g2d.fillPolygon(poly);
+		//dispose of g2d
+		g2d.dispose();
 		//return the image
 		return image;
 	}
@@ -88,7 +90,8 @@ public class Icon {
 		poly2.addPoint(23, 4);
 		//draw the polygon
 		g2d.fillPolygon(poly2);
-		
+		//dispose of g2d
+		g2d.dispose();
 		//return the image
 		return image;
 	}
@@ -126,6 +129,8 @@ public class Icon {
 		
 		//Draw the bar at the end
 		g2d.fillRect(26, 4, 3, 23);
+		//dispose of g2d
+		g2d.dispose();
 		//return the image
 		return image;
 	}
@@ -163,6 +168,8 @@ public class Icon {
 		
 		//Draw the bar at the end
 		g2d.fillRect(2, 4, 3, 23);
+		//dispose of g2d
+		g2d.dispose();
 		//return the image
 		return image;
 	}
@@ -248,7 +255,8 @@ public class Icon {
 			g2d.draw(new Arc2D.Double(21, 6.5, 4, 18, 90, -180, Arc2D.OPEN));
 			g2d.draw(new Arc2D.Double(25, 3.5, 5, 24, 90, -180, Arc2D.OPEN));
 		}
-		
+		//dispose of g2d
+		g2d.dispose();
 		//return the image
 		return image;
 	}

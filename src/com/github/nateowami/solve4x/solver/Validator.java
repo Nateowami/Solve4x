@@ -151,33 +151,32 @@ public class Validator {
 		Solve4x.debug("termIsValid()" + term);
 		
 		//keep track of the first letter in the term
-		int checkfrom = 0;
+		int checkFrom = 0;
 		
 		//check the exponent
 		for(int i=0; i<term.length(); i++){
-			//if it's a letter or the last term
+			//if it's a letter
 			if (isLetter(term.charAt(i))){
 				//check the first part of the term (everything before i)
 				//and make sure it's an integer (in the form of 34,546)
 				if(!Util.isInteger(term.substring(0, i))){
-					//XXX debuging
-					Solve4x.debug("Util.isInteger \"" + term.substring(0, i) + "\" returns " + Util.isInteger(term.substring(0, i)) + " i is:  " + i);
 					//if it's not an integer, return false
 					Solve4x.debug("termIsValid returns " + false);
 					return false;
 				}
 				//set the location to check (from here on still needs to be checked by another loop)
-				checkfrom=i;
+				checkFrom=i;
 				break;
 			}
 			//else if it's the last char in the string
-			else if(i==term.length()){
+			else if(i==term.length()-1){
 				Solve4x.debug("termIsValid returns " + Util.isInteger(term.substring(0, i+1)));
 				return Util.isInteger(term.substring(0, i+1));
 			}
 		}
 		//check the rest of the term (everything following the exponent)
-		for (int i=checkfrom; i<term.length(); i++){
+		for (int i=checkFrom; i<term.length(); i++){
+			Solve4x.debug("isTerm is checking the rest of the term from " + checkFrom);
 			if (!Util.isNumeral(term.charAt(i)) && !isLetter(term.charAt(i))){
 				Solve4x.debug("termIsValid returns " + false);
 				return false;
