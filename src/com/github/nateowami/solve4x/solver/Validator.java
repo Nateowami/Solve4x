@@ -35,6 +35,10 @@ public class Validator {
 	 * @return true if the equation is valid, otherwise false
 	 */
 	public static boolean eqIsValid(String equation){
+		
+		//remove spaces
+		equation = equation.replaceAll(" ","");
+				
 		//debugging
 		Solve4x.debug("eqIsValid()" + equation);
 		Solve4x.debug("Testing Equation Validity: "+equation);
@@ -51,11 +55,23 @@ public class Validator {
 		if(numbOfEquals == 1){
 			//check the validity of the
 			return (exprIsValid(equation.substring(0, indexOfEquals)) 
-					&& exprIsValid(equation.substring(indexOfEquals + 1, equation.length())));//pretty sure +2 is right
+					&& exprIsValid(equation.substring(indexOfEquals + 1, equation.length())));
 		} 
 		else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Evaluates the algebraic validity of a given expression
+	 * @param expr The expression to check
+	 * @return if the expression is valid
+	 */
+	public static boolean checkExpr(String expr){
+		//remove spaces
+		expr = expr.replaceAll(" ","");
+		//check the expression
+		return exprIsValid(expr);
 	}
 
 	/**
@@ -63,10 +79,7 @@ public class Validator {
 	 *@param expr The expression to check
 	 *@return if the expression is valid
 	 */
-	public static boolean exprIsValid(String expr) {
-		
-		//remove spaces
-		expr = expr.replaceAll(" ","");
+	private static boolean exprIsValid(String expr) {
 		
 		//remove parentheses from both ends if they surround the entire expression
 		expr = removePar(expr);
@@ -129,22 +142,50 @@ public class Validator {
 	
 
 	/**
-	 * Evaluates the algebraic validity of the given term
+	 * Evaluates the algebraic validity of the given term. A term may have commas in its exponent.
 	 * @param term The term to be evaluated
 	 * @return If the term is valid
 	 */
 	public static boolean termIsValid(String term) {
 		//debugging
 		Solve4x.debug("termIsValid()" + term);
-		boolean returnSatus = true;
-		for(int i = 0; i < term.length(); i++){
-			//if the char is neither a number or letter
-			if(!(Util.isNumeral(term.charAt(i))) && !(isLetter(term.charAt(i)))){
-				returnSatus = false;
+		
+		//keep track of the first letter in the term
+		int checkfrom = 0;
+		
+		//check the exponent
+		for(int i=0; i<term.length(); i++){
+			//if it's a letter or the last term
+			if (isLetter(term.charAt(i))){
+				//check the first part of the term (everything before i)
+				//and make sure it's an integer (in the form of 34,546)
+				if(!Util.isInteger(term.substring(0, i))){
+					//XXX debuging
+					Solve4x.debug("Util.isInteger \"" + term.substring(0, i) + "\" returns " + Util.isInteger(term.substring(0, i)) + " i is:  " + i);
+					//if it's not an integer, return false
+					Solve4x.debug("termIsValid returns " + false);
+					return false;
+				}
+				//set the location to check (from here on still needs to be checked by another loop)
+				checkfrom=i;
 				break;
 			}
+			//else if it's the last char in the string
+			else if(i==term.length()){
+				Solve4x.debug("termIsValid returns " + Util.isInteger(term.substring(0, i+1)));
+				return Util.isInteger(term.substring(0, i+1));
+			}
 		}
-		return returnSatus;
+		//check the rest of the term (everything following the exponent)
+		for (int i=checkfrom; i<term.length(); i++){
+			if (!Util.isNumeral(term.charAt(i)) && !isLetter(term.charAt(i))){
+				Solve4x.debug("termIsValid returns " + false);
+				return false;
+			}
+		}
+		//if we din't hit any problems above, return true now
+		Solve4x.debug("termIsValid returns " + true);
+		return true;
 	}
 
 	/**
@@ -289,13 +330,6 @@ public class Validator {
 	}
 	
 	
-	//XXX: BEGIN TRIBEX TEST REGEX CODE :XXX\\
-	//Just leave this stuff here and bypass it if necessary, this seems to be working quite well.
-	//removed because it wouldn't compile. Tribex appears to have it working, but what was here
-	//wasn't finished
-	//XXX: END TRIBEX TEST REGEX CODE :XXX\\
-		
-
 	/**
 	 * Finds the index of where a given expression has a + or - sign that is not nested
 	 *@param expr The expression to evaluate

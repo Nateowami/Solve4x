@@ -84,7 +84,8 @@ public class Util {
 	 * @param intager The string to check 
 	 * @return If the string can be parsed as an integer
 	 */
-	public static boolean isIntager(String integer) {
+	public static boolean isInteger(String integer) {
+		//FIXME 45,346 should be counted an integer because it has 
 		//iterate through chars
 		for(int i = 0; i<integer.length(); i++){
 			//if it's not a numeral

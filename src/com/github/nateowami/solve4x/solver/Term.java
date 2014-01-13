@@ -92,7 +92,7 @@ public class Term {
 		//if the first char is '<' AND the last char is '>'
 		if(side.charAt(0) == '<' && side.charAt(side.length()-1) == '>'){
 			//if what's in the carets is is an integer
-			if(Util.isIntager(side.substring(1, side.length()-1))){
+			if(Util.isInteger(side.substring(1, side.length()-1))){
 				return true;
 			}
 			//it's not then

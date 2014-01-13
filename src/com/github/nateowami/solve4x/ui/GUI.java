@@ -137,15 +137,15 @@ public class GUI {
 					//run the solver
 					Solver solver = new Solver(equation, SolveFor.SOLVE);
 					solver.solve();
+					//notify the user of the equation evaluation status
+					txtfEquationEntry.setText("Equation Evaluation Status: "+ true);
+					
 				} catch (MalformedInputException err) {
 					//there must have been a problem with the equation the user entered
 					// TODO After GUI is done, make this do something useful
 					err.printStackTrace();
 					txtfEquationEntry.setText("ERROR: Malformed Entry.");
 				}
-
-				//notify the user of the equation evaluation status
-				txtfEquationEntry.setText("Equation Evaluation Status: "+ true);
 			}
 		});
 		//set the layout for the solving button

@@ -83,7 +83,7 @@ public class Solver {
 		//then it's not an equation; maybe an expression
 		else{
 			//make sure the expression is valid
-			if(!Validator.exprIsValid(this.eq)){
+			if(!Validator.checkExpr(this.eq)){
 				throw new MalformedInputException(this.eq.length());
 			}
 			//TODO simplify it
