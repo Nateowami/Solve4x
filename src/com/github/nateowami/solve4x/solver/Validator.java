@@ -38,6 +38,8 @@ public class Validator {
 		
 		//remove spaces
 		equation = equation.replaceAll(" ","");
+		//remove commas
+		equation = equation.replaceAll(",", "");
 				
 		//debugging
 		Solve4x.debug("eqIsValid()" + equation);

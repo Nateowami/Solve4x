@@ -80,8 +80,8 @@ public class Util {
 	}
 
 	/**
-	 * Tells if a string can be parsed as an integer. Supports commas as a 
-	 * separator in numbers. Example: 2,345
+	 * Tells if a string can be parsed as an integer. No longer supports commas as a 
+	 * separator in numbers. Example: "2,345" will return false
 	 * @param integer The string to check 
 	 * @return If the string can be parsed as an integer
 	 */
@@ -99,6 +99,8 @@ public class Util {
 			}
 		}
 		
+		//commented out because currently we don't need  to support commas
+		/*
 		//check to see if it has commas (which would have caused the above to fail)
 		
 		//start  be reversing the integer. This will make it easier to check the commas
@@ -127,6 +129,8 @@ public class Util {
 		//only one of the above needs algorithms needs to have succeeded
 		Solve4x.debug("returns" + (allAreNumerals || commasInOrder));
 		return allAreNumerals || commasInOrder;
+		*/
+		return allAreNumerals;
 	}
 	
 	/**
