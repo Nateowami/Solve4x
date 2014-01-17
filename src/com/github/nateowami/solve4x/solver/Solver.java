@@ -24,12 +24,13 @@ import java.util.ArrayList;
  * Solves equations and simplifies expressions
  * @author Nateowami
  */
+
 public class Solver {
 	
-	//the expression or equation to solve ore simplify
-	String eq;
+	//the final solution
+	private Solution finalSolution;
 	//a list of solutions that may work. Whichever one is best will be used in the end
-	ArrayList <Solution> list = new ArrayList<Solution>();
+	ArrayList <Solution> solutions = new ArrayList<Solution>();
 	//A list of strategies that can be used for solving
 	ArrayList <Strategy> strat;
 	
@@ -44,9 +45,6 @@ public class Solver {
 	 */
 	public Solver(String equation, SolveFor selection){
 		
-		//set the variables
-		this.eq = equation;
-		
 		//set the solving strategies list based on what the user selected
 		//if they wanted it solved
 		if(selection == SolveFor.SOLVE){
@@ -56,7 +54,14 @@ public class Solver {
 		else if(selection == SolveFor.SIMPLIFY){
 			strat = getSimplifyingList();
 		}
-
+		
+		//OK, now to solve. Nateowami is scared
+		//add an initial solution to the solution list
+		solutions.add(new Solution(equation));
+		
+		//OK, now iterate through the solving strategies AND the solutions 
+		//(currently only 1 solution, but this could grow as we take forks in the road)
+		//TODO
 	}
 	
 	/**
@@ -65,28 +70,9 @@ public class Solver {
 	 * @return A Solution object that contains the steps for solving
 	 * @throws MalformedInputException 
 	 */
-	public Solution solve() throws MalformedInputException{
+	public Solution getSolution() throws MalformedInputException{
 		
-		//if it's an equation
-		if(Util.isEq(this.eq)){
-			//make sure the equation is valid
-			if(!Validator.eqIsValid(this.eq)){
-				//if it's not, throw an exception
-				throw new MalformedInputException(this.eq.length());
-			}
-			else{
-				
-			}
-		}
-		//then it's not an equation; maybe an expression
-		else{
-			//make sure the expression is valid
-			if(!Validator.checkExpr(this.eq)){
-				throw new MalformedInputException(this.eq.length());
-			}
-			//TODO simplify it
-		}
-		return null;//XXX fix this later
+		return finalSolution;
 	}
 	
 	/**
@@ -122,6 +108,38 @@ public class Solver {
 		//TODO add stuff to the stratList
 		
 		return stratList;
+	}
+	
+	/**
+	 * Tells if an equation is solved 
+	 * TODO tell is an expression is fully simplified
+	 * @return If the equation is solved
+	 */
+	private boolean isSolved(String equation){
+		//XXX We're assuming this is an equation, which currently is
+		//true, but we need to support more late. Possibly in another method
+		//create a new equation
+		Equation eq = new Equation(equation);
+		
+		//check for an identity (i.e. 1=1, 3/4=3/4)
+		if(eq.getExpression(0) == eq.getExpression(1)){
+			return true; //if it's an identity it's SOLVED (technically)
+		}
+		
+		//if the first is a variable and the second is a number
+		else if(Util.isLetter(eq.getExpression(0).getExpression()) && Util.isNumber(eq.getExpression(1))){
+			return true;
+		}
+		
+		//if the second is a variable and the first is a number
+		else if(Util.isLetter(eq.getExpression(1).getExpression()) && Util.isNumber(eq.getExpression(0))){
+			return true;
+		}
+		
+		//At this time the above three are all that I can think of. If there are more
+		//we will need to talk about them and add them.
+		else return false;
+		
 	}
 	
 }

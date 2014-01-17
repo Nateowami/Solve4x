@@ -136,7 +136,7 @@ public class GUI {
 				try {
 					//run the solver
 					Solver solver = new Solver(equation, SolveFor.SOLVE);
-					solver.solve();
+					solver.getSolution();
 					//notify the user of the equation evaluation status
 					txtfEquationEntry.setText("Equation Evaluation Status: "+ true);
 					

@@ -24,46 +24,63 @@ package com.github.nateowami.solve4x.solver;
 public class Term {
 	
 	//all properties are strings because there's no way to have an empty int
-	//but you can have an empty string. Example: 2x has no coefficient. We can't 
+	//but you can have an empty string. Example: 2x has no power. We can't 
 	//represent that if we use an int.
 	
 	//the coefficient of the term (it's a String because the coefficient could be a fraction)
-	private String coeInt = "";
-	private String coeFrac = "";
-	//the body of the term
-	private String expr = "";
+	//and the expression/body part of the term
+	private String coeInt = "", coeFrac = "", expr = "";
+	//the positive or negative value of the term
+	private boolean value;
 	
 	/**
 	 * Creates a new term from a String
 	 * @param term The term to create
 	 */
-	public Term(String expr){
+	public Term(String term){
 
-		//parse the expression and set coe and expr
+		//parse the expression and set coe and term
+		
+		//set the term's positive or negative value
+		//if it's negative
+		if(term.charAt(0) == '-'){
+			value = false;
+			//remove the - from term
+			term = term.substring(1, term.length());
+		}
+		else{
+			//positive is default
+			value = true;
+			//the + may or may not exist, but it's positive if it doesn't
+			if(term.charAt(0) == '+'){
+				//remove the +
+				term = term.substring(1, term.length());
+			}
+		}
 		
 		//look for an integer an the beginning
-		for(int i=0; i< expr.length(); i++){
+		for(int i=0; i< term.length(); i++){
 			
 			//if it's not a numeral
-			if(!Util.isNumeral(expr.charAt(i))){
+			if(!Util.isNumeral(term.charAt(i))){
 				//set the coefficient to a substring (the beginning
-				//of the expr to i-1). The method substring() will subtract 1 for us.
-				this.coeInt = expr.substring(0, i);
+				//of the term to i-1). The method substring() will subtract 1 for us.
+				this.coeInt = term.substring(0, i);
 				//remove the integer from the beginning of the string
-				expr = expr.substring(i, expr.length());
+				term = term.substring(i, term.length());
 				//set the integer part of the coefficient
 				break;
 			}
 		}
 		
 		//now check for a fraction that could come after the integer
-		for(int i=0; i<expr.length(); i++){
+		for(int i=0; i<term.length(); i++){
 			//if 0 to i+1 is a nice and neat fraction
-			if(parseFraction(expr.substring(0, i))){
+			if(parseFraction(term.substring(0, i))){
 				//if it's a fraction set coeFrac to it
-				this.coeFrac = expr.substring(0, i);
+				this.coeFrac = term.substring(0, i);
 				//remove the fraction from the string and set the body of the term
-				this.expr = expr.substring(i, expr.length());
+				this.expr = term.substring(i, term.length());
 			}
 		}
 	}
@@ -125,12 +142,17 @@ public class Term {
 	}
 
 	/**
-	 * @return the expr
+	 * @return the term
 	 */
 	public String getBody() {
 		return expr;
 	}
 	
-	
-
+	/**
+	 * @return The positive or negative value of this term
+	 * true is positive, false is negative.
+	 */
+	public boolean getValue(){
+		return value;
+	}
 }

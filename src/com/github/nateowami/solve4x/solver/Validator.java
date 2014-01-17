@@ -158,7 +158,7 @@ public class Validator {
 		//check the exponent
 		for(int i=0; i<term.length(); i++){
 			//if it's a letter
-			if (isLetter(term.charAt(i))){
+			if (Util.isLetter(term.charAt(i))){
 				//check the first part of the term (everything before i)
 				//and make sure it's an integer (in the form of 34,546)
 				if(!Util.isInteger(term.substring(0, i))){
@@ -179,7 +179,7 @@ public class Validator {
 		//check the rest of the term (everything following the exponent)
 		for (int i=checkFrom; i<term.length(); i++){
 			Solve4x.debug("isTerm is checking the rest of the term from " + checkFrom);
-			if (!Util.isNumeral(term.charAt(i)) && !isLetter(term.charAt(i))){
+			if (!Util.isNumeral(term.charAt(i)) && !Util.isLetter(term.charAt(i))){
 				Solve4x.debug("termIsValid returns " + false);
 				return false;
 			}
@@ -189,25 +189,7 @@ public class Validator {
 		return true;
 	}
 
-	/**
-	 * Evaluates a char to see if it is between a-z or A-Z
-	 * @param c The char to evaluate
-	 * @return If the char is a a-z or A-Z
-	 */
-	public static boolean isLetter(char c){
-		//debugging
-		Solve4x.debug("isLetter()" + c);
-		if(c <= 'z' && c >= 'a' || c <= 'Z' && c >= 'A'){
-			Solve4x.debug("isLetter Returns true");
-			return true;
-		}
-		else{
-			Solve4x.debug("isLetter Returns false");
-			return false;
-		}
-	}
 
-	
 	
 
 	/**

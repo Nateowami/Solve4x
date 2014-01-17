@@ -48,18 +48,6 @@ public class Solution {
 	}
 	
 	/**
-	 * Creates a new Solution
-	 * @param equation The equation that is being solved
-	 * @param step A Step to add to the begging of the 
-	 * list of solving steps.
-	 * @see Solution(String equation)
-	 */
-	public Solution(String equation, Step step){
-		this.equation = equation;
-		this.steps.add(step);
-	}
-	
-	/**
 	 * Gets the list of steps for solving
 	 * @return The lsit of steps for solving
 	 */

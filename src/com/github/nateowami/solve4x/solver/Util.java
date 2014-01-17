@@ -46,18 +46,6 @@ public class Util {
 	}
 	
 	/**
-	 * Compiles a list of terms in a given expression. Don't send this
-	 * method an equation.
-	 * @return An ArrayList of Terms.
-	 */
-	public static <Term>ArrayList getTerms(){
-		
-		return null;//TODO
-		
-		
-	}
-	
-	/**
 	 * Evaluates a char to see if it is a numeral
 	 * @param c The char to evaluate
 	 * @return If the char is a numeral
@@ -179,7 +167,7 @@ public class Util {
 	}
 	
 	/**
-	 * Evaluates a char to see if it's a opening parentheses (or root)
+	 * Evaluates a char to see if it's a opening parentheses (or root or caret)
 	 * @param c The char to evaluate
 	 * @return If the char is a opening parentheses
 	 */
@@ -192,7 +180,7 @@ public class Util {
 	
 
 	/**
-	 * Evaluates a char to see if it's a closing parentheses (or root)
+	 * Evaluates a char to see if it's a closing parentheses (or root or caret)
 	 * @param c The char to evaluate
 	 * @return If the char is a closing parentheses
 	 */
@@ -200,6 +188,52 @@ public class Util {
 		if(c == ')' || c == ']' || c == '}' || c == '>' || c == '^'){
 			return true;
 		}
+		else return false;
+	}
+
+	/**
+	 * Tells if a string is a number. Examples: 
+	 * 1,234
+	 * 1234
+	 * <123>/<34>
+	 * 34/34
+	 * 12<23>/<67>
+	 * 
+	 * @param The number to check
+	 * @return If it's a number and/or fraction combination
+	 * ******WARNING****** THIS IS STILL TODO!!!!
+	 */
+	public static boolean isNumber(Expression expression) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	/**
+	 * Evaluates a char to see if it is between a-z or A-Z
+	 * @param c The char to evaluate
+	 * @return If the char is a a-z or A-Z
+	 */
+	public static boolean isLetter(char c){
+		//debugging
+		Solve4x.debug("isLetter()" + c);
+		if(c <= 'z' && c >= 'a' || c <= 'Z' && c >= 'A'){
+			Solve4x.debug("isLetter Returns true");
+			return true;
+		}
+		else{
+			Solve4x.debug("isLetter Returns false");
+			return false;
+		}
+	}
+
+	/**
+	 * Tells if a String has only one char and that char is a letter
+	 * @param c The String to check
+	 * @return If it only has one char which is a letter
+	 */
+	public static boolean isLetter(String c){
+		if(c.length() == 1 && isLetter(c.charAt(0)))
+			return true;
 		else return false;
 	}
 	
