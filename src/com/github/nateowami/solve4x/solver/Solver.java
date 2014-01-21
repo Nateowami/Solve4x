@@ -43,7 +43,8 @@ public class Solver {
 	 * factored, solved, simplified, or what?
 	 * @see com.github.nateowami.solve4x.solver.SolveFor
 	 */
-	public Solver(String equation, SolveFor selection){
+	public Solver(String equation, SolveFor selection) throws MalformedInputException{
+		
 		
 		//set the solving strategies list based on what the user selected
 		//if they wanted it solved
@@ -70,7 +71,7 @@ public class Solver {
 	 * @return A Solution object that contains the steps for solving
 	 * @throws MalformedInputException 
 	 */
-	public Solution getSolution() throws MalformedInputException{
+	public Solution getSolution(){
 		
 		return finalSolution;
 	}
@@ -118,6 +119,7 @@ public class Solver {
 	private boolean isSolved(String equation){
 		//XXX We're assuming this is an equation, which currently is
 		//true, but we need to support more late. Possibly in another method
+		
 		//create a new equation
 		Equation eq = new Equation(equation);
 		
@@ -127,12 +129,12 @@ public class Solver {
 		}
 		
 		//if the first is a variable and the second is a number
-		else if(Util.isLetter(eq.getExpression(0).getExpression()) && Util.isNumber(eq.getExpression(1))){
+		else if(Util.isLetter(eq.getExpression(0).getExpression()) && Util.isNumber(eq.getExpression(1).getExpression())){
 			return true;
 		}
 		
 		//if the second is a variable and the first is a number
-		else if(Util.isLetter(eq.getExpression(1).getExpression()) && Util.isNumber(eq.getExpression(0))){
+		else if(Util.isLetter(eq.getExpression(1).getExpression()) && Util.isNumber(eq.getExpression(0).getExpression())){
 			return true;
 		}
 		

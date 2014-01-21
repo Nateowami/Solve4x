@@ -59,7 +59,7 @@ public class CustomPainter extends SynthPainter {
     public void paintListBackground(SynthContext context, Graphics g, int x, int y, int w, int h) {
         try {
             // load image XXX what image is this??? What list is it painting for?
-            BufferedImage bim = ImageIO.read(getClass().getResourceAsStream("/img/duke.jpg"));
+            BufferedImage bim = ImageIO.read(getClass().getResourceAsStream("/img/duke.jpg"));//is this the Oracle logo thing?
             // create image to use for painting
             BufferedImage used = new BufferedImage(bim.getWidth(), bim.getHeight(), BufferedImage.TRANSLUCENT);
             // create graphics for panting from used image

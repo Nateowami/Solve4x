@@ -66,7 +66,7 @@ public class GUI {
 	 * Makes all the GUI widgets and puts the the GUI on-screen
 	 */
 	private void startGUI() {
-		
+
 		//set the look and feel
 		initLookAndFeel();
 		//create the window
@@ -333,8 +333,7 @@ public class GUI {
 		slider.setToolTipText("Lesson Timeline");
 		slider.setValue(0);
 		slider.setMinimum(0);
-		slider.setFont(new Font("SansSerif", Font.BOLD, 14));
-		panelSlider.add(slider);
+		panelSlider.add(slider);		
 
 		//create the panel for holding buttons on the bottom right
 		JPanel panelInfo = new JPanel();
@@ -456,7 +455,7 @@ public class GUI {
 			System.err.println("Using the default look and feel.");
 			e.printStackTrace();
 		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
+			//print the error
 			e.printStackTrace();
 		}
 	}

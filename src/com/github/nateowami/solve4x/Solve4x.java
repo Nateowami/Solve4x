@@ -32,7 +32,7 @@ public class Solve4x {
 	 * Starts the program rolling by starting the GUI
 	 */
 	Solve4x(){
-		//TODO Clean GUI code
+		//launch the GUI
 		new GUI();
 	}
 	

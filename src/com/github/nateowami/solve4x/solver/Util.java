@@ -77,8 +77,17 @@ public class Util {
 		Solve4x.debug("isInteger(" + integer + ")");
 		//iterate through chars
 		
+		//this let's us control where the loop starts
+		int i = 0;
+		//if the first char is -
+		if(integer.charAt(0) == '-'){
+			//then make the loop start at 1
+			i++;
+		}
+		
+		//allAreNumerals may not count the first char if it's -, but thats GOOD
 		boolean allAreNumerals = true;
-		for(int i = 0; i<integer.length(); i++){
+		for(; i<integer.length(); i++){
 			//if it's not a numeral
 			if(!isNumeral(integer.charAt(i))){
 				allAreNumerals = false;
@@ -193,7 +202,6 @@ public class Util {
 
 	/**
 	 * Tells if a string is a number. Examples: 
-	 * 1,234
 	 * 1234
 	 * <123>/<34>
 	 * 34/34
@@ -201,11 +209,34 @@ public class Util {
 	 * 
 	 * @param The number to check
 	 * @return If it's a number and/or fraction combination
-	 * ******WARNING****** THIS IS STILL TODO!!!!
 	 */
-	public static boolean isNumber(Expression expression) {
-		// TODO Auto-generated method stub
-		return false;
+	public static boolean isNumber(String number) {
+		
+		//i is our marker for how far we've checked
+		int i = 0;
+		//check for the first char being -
+		if(number.charAt(i) == '-'){
+			//if it is, pass past it
+			i++;
+		}
+		
+		//now iterate through the first part as long as all are 0-9
+		for(;i<number.length()&& isNumeral(number.charAt(i)); i++){
+			//if we've reached the end
+			if(i==number.length()){
+				//we've reached the end without problems
+				return true;
+			}
+		}
+		
+		//if we've gotten this far at least part of the number must be a fraction, or
+		//it's not a number at all. Check the rest of it for being a fraction.
+		if(isFraction(number.substring(i, number.length()))){
+			return true;
+		}
+		
+		//the end. if it didn't work, then, well, it wasn't a nice number
+		else return false;
 	}
 	
 	/**
@@ -237,5 +268,53 @@ public class Util {
 		else return false;
 	}
 	
+	/**
+	 * Tells if a given expression is a fraction AND that both the top and bottom of 
+	 * the fraction contain ONLY INTAGERS
+	 * @param frac The expression to evaluate
+	 * @return If the expression is a fraction with only ints on top and bottom.
+	 */
+	public static boolean isFraction(String frac){
+		
+		//first find the fraction bar
+		for(int i=0; i<frac.length(); i++){
+			//if the current char is '/'
+			if (frac.charAt(i) == '/'){
+				//if both sides are valid fraction sides
+				return isFracSide(frac.substring(0, i)) && isFracSide(frac.substring(i, frac.length()));
+			}
+		}
+		//there's not a '/'
+		return false;
+		
+	}
+	
+	/**
+	 * Tells if a given expression is in the form of <integer>. Example: <56> This is useful
+	 * for determining if an expression is part of a fraction.
+	 * @param side The expression to evaluate
+	 * @return If side is in the form of <integer>.
+	 */
+	public static boolean isFracSide(String side){
+
+		//if it's an integer
+		if(Util.isInteger(side)){
+			return true;
+		}
+		
+		//if it's surrounded by carets and inside is an integer
+		if(side.charAt(0) == '<' && side.charAt(side.length()-1) == '>'){
+			//if what's in the carets is is an integer
+			if(Util.isInteger(side.substring(1, side.length()-1))){
+				return true;
+			}
+			//it's surrounded by carets but it's not an integer
+			else{
+				return false;
+			}
+		}
+		//it's not a fraction side
+		else return false;
+	}	
 
 }
