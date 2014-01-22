@@ -320,14 +320,48 @@ public class Util {
 	 * @return
 	 */
 	public static boolean isFullySimplified(String expr) {
-		//TODO
 		//first check that we're dealing with a number/mixed number/fraction
 		if(isNumber(expr)){
 			//it's a number; make sure it's simplified
-			//first find out if there's a fraction part
-			return true;//TODO
+			
+			//the index of the first non-numeral
+			int i =0;
+			//update i if there's a - sign
+			if(expr.charAt(0) == '-'){
+				i++;
+			}
+			//tell if we actually found a non-numeral
+			boolean found = false;
+			for(; i<expr.length(); i++){
+				//if it's not a numeral
+				if(!isNumeral(expr.charAt(i))){
+					//we found a non-numeral
+					found = true;
+					break;
+				}
+			}
+			//if we didn't find a non-numeral it's just a number
+			if(!found){
+				return true;
+			}
+			//we did find a non-numeral
+			else{
+				//check if the fraction is simplified
+				return isFracSimplified(expr.substring(i, expr.length()));
+			}
 		}
 		//it's not even a number; return false		
+		return false;
+	}
+
+	/**
+	 * Tells if a fraction is fully simplified. If it contains variables it may return false
+	 * even when it's fully simplified
+	 * @param frac The fraction to check
+	 * @return If it's fully simplified (may be hard to tell; see above)
+	 */
+	private static boolean isFracSimplified(String frac) {
+		// TODO Auto-generated method stub
 		return false;
 	}	
 

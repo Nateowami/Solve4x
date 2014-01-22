@@ -189,6 +189,7 @@ public class Solver {
 			if(Util.isFullySimplified(expr)){
 				return true;
 			}
+			//not fully simplified
 			else{
 				return false;
 			}
@@ -197,7 +198,7 @@ public class Solver {
 		else if(expr.length() == 0 && Util.isLetter(expr.charAt(0))){
 			return true;
 		}
-		//I can't think of anything else
+		//I can't think of any other way for it to be fully simplified
 		else return false;
 	}
 	
