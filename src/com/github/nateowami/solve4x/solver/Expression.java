@@ -66,13 +66,6 @@ public class Expression {
 	}
 	
 	/**
-	 * @return the list of terms
-	 */
-	public ArrayList<Term> getExprList() {
-		return termList;
-	}
-
-	/**
 	 * @return The number of terms in this expression
 	 */
 	public int numbOfTerms(){
@@ -88,7 +81,10 @@ public class Expression {
 	}
 	
 	/**
+	 * Fetches the expression in the form of a String
 	 * @return The expression in String form
+	 * Probably don't want to use this
+	 * @deprecated Un-depricate if needed, otherwise remove
 	 */
 	public String getExpression(){
 		return this.expression;

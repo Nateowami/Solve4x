@@ -23,26 +23,43 @@ package com.github.nateowami.solve4x.solver;
  */
 public class Equation {
 	
-	private Expression[] exprs = new Expression[2];
+	//exprs holds expressions (one if this equation is just representing an 
+	//expression, two if it's representing an equation
+	private Expression exprs[];
 	
 	/**
 	 * Creates an equation by turning it into two expressions
-	 * @param eq
+	 * @param eq The equation (or expression) to turn into an
+	 * equation, which can be just an expression if necessary
 	 */
 	public Equation(String eq){
 		//find the = sign
 		int i; //needs to be used outside loop
+		//tells if an = sign was even found
+		boolean found = false;
 		for(i = 0; i < eq.length(); i++){
 			//if it's an equals sign
 			if(eq.charAt(i) == '='){
+				//say we found it
+				found = true;
 				//we found the = sign, we're done now (i is index of =)
 				break;
 			}
 		}
-		//set the two slots in the exprs array with expressions 
-		//from before and after the = sign
-		exprs[0] = new Expression(eq.substring(0, i));
-		exprs[1] = new Expression(eq.substring(0, i));
+		
+		//if an = sign was found
+		if(found){
+			//create the array and add two expressions to it
+			exprs = new Expression[2];
+			exprs[0] = new Expression(eq.substring(0, i));
+			exprs[1] = new Expression(eq.substring(0, i));
+		}
+		//no = sign found
+		else{
+			exprs = new Expression[1];
+			exprs[0] = new Expression(eq);
+		}
+		
 	}
 	
 	/**
@@ -53,4 +70,16 @@ public class Equation {
 	public Expression getExpression(int i){
 		return exprs[i];
 	}
+	
+	/**
+	 * Tells the length/number of expressions in this Equation
+	 * This seems unnecessary (there would usually be two) but there could be only
+	 * one if Equation holds only one expression, or more if it represents a system
+	 * of equations.
+	 * @return The number of expressions in this Equation
+	 */
+	public int getSize(){
+		return exprs.length;
+	}
+	
 }

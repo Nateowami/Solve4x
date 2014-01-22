@@ -28,7 +28,7 @@ public class Step {
 	//list of stages in a step. Normally length will be 1; however cancelling factors
 	//can cause there to be 2 stages in a step; possibly more in the future.
 	private ArrayList <String>stages = new ArrayList<String>();
-	private String explanation;
+	private ArrayList <String> explanation = new ArrayList<String>();
 	private int difficulty;//the difficulty of the step
 	
 	/**
@@ -42,7 +42,7 @@ public class Step {
 		//init the stages ArrayList
 		this.stages = step;
 		//init the explanation for this step
-		this.explanation = explanation;
+		this.explanation.add(explanation);
 		//init the difficulty
 		this.difficulty = difficulty;
 	}
@@ -68,11 +68,12 @@ public class Step {
 	}
 	
 	/**
-	 * Returns the explanation for this solving step
+	 * Returns the explanation for a particular stage of this solving step
+	 * @param i The stage of the step you want explained
 	 * @return The explanation
 	 */
-	public String getExplanation(){
-		return this.explanation;
+	public String getExplanation(int i){
+		return this.explanation.get(i);
 	}
 
 	/**

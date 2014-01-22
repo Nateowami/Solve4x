@@ -84,7 +84,6 @@ public class Term {
 			}
 		}
 	}
-
 	
 	/**
 	 * @return The coefficient of the term (may include a fraction)
@@ -104,7 +103,8 @@ public class Term {
 	 * @return The positive or negative value of this term
 	 * true is positive, false is negative.
 	 */
-	public boolean getValue(){
+	public boolean getIsPositive(){
 		return value;
 	}
+
 }
