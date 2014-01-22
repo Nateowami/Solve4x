@@ -41,8 +41,8 @@ public class CustomPainter extends SynthPainter {
 
     @Override
     public void paintPanelBackground(SynthContext context, Graphics g, int x, int y, int w, int h) {
-    	//create a round rectangle
-    	RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
+        //create a round rectangle
+        RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
         rect.setRoundRect(x, y, w-5, h-5, 15, 15);
         //find the color needed
         Color col = context.getStyle().getColor(context, ColorType.BACKGROUND);
@@ -79,7 +79,7 @@ public class CustomPainter extends SynthPainter {
 
     @Override
     public void paintButtonBackground(SynthContext context, Graphics g, int x, int y, int w, int h) {
-    	//create a round rectangle
+        //create a round rectangle
         RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
         rect.setRoundRect(x, y, w-5, h-5, 10, 10);
         //find the needed color
@@ -93,10 +93,10 @@ public class CustomPainter extends SynthPainter {
         g2.fill(rect);
     }
 
-    
-    @Override//XXX is this method still used?
+    //XXX is this method still used? Possibly.
+    @Override
     public void paintButtonBorder(SynthContext context, Graphics g, int x, int y, int w, int h) {
-    	//create a round rectangle
+        //create a round rectangle
         RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
         rect.setRoundRect(x, y, w-5, h-5, 10, 10);
         Graphics2D g2 = (Graphics2D)g;
@@ -108,12 +108,12 @@ public class CustomPainter extends SynthPainter {
         g2.setStroke(new BasicStroke(2));
         //draw the rectangle border
         g2.draw(rect);
-        
+
     }
-    
+
     @Override
     public void paintTextFieldBackground(SynthContext context, Graphics g, int x, int y, int w, int h) {
-    	//create a round rectangle
+        //create a round rectangle
         RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
         rect.setRoundRect(x, y, w-5, h-5, 10, 10);
         //get the color we need to use
@@ -126,22 +126,54 @@ public class CustomPainter extends SynthPainter {
         //draw/fill the round rectangle
         g2.fill(rect);
     }
-    
-    //XXX is this method still used?
-    public void paintTextFieldBorder(SynthContext context, Graphics g, int x, int y, int w, int h) {
-    	//create a round rectangle
+
+    @Override
+    public void paintSliderThumbBackground(SynthContext context, Graphics g, int x, int y, int w, int h, int orientation) {
+        //create a round rectangle
         RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
-        rect.setRoundRect(x, y, w-5, h-5, 10, 10);
+        rect.setRoundRect(x+7, y-8, 16, 32, 14, 14);
+        //get the color we need to use
+        Color col = context.getStyle().getColor(context, ColorType.BACKGROUND);
         Graphics2D g2 = (Graphics2D)g;
-        //set the color to black
-        g2.setColor(Color.BLACK);
+        //set the color from the one found above
+        g2.setColor(col);
         //set rendering hints
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        //set the stroke to use for painting
-        g2.setStroke(new BasicStroke(2));
+        //draw/fill the round rectangle
+        g2.fill(rect);
+    }
+
+    @Override
+    public void paintSliderTrackBackground(SynthContext context, Graphics g, int x, int y, int w, int h) {
+        //create a round rectangle
+        RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
+        rect.setRoundRect(x+3, y, w-7, h, 10, 10);
+        //get the color we need to use
+        Color col = context.getStyle().getColor(context, ColorType.BACKGROUND);
+        Graphics2D g2 = (Graphics2D)g;
+        //set the color from the one found above
+        g2.setColor(col);
+        //set rendering hints
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //draw/fill the round rectangle
+        g2.fill(rect);
+    }
+
+    @Override
+    public void paintSliderTrackBorder(SynthContext context, Graphics g, int x, int y, int w, int h) {
+        //create a round rectangle
+        RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
+        rect.setRoundRect(x+1, y, w-7, h, 10, 10);
+        Graphics2D g2 = (Graphics2D)g;
+        //set the color to black
+        g2.setColor(Color.RED);
+        //set the rendering hints
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //set the stroke for painting the border
+        g2.setStroke(new BasicStroke(3));
         //draw the rectangle border
         g2.draw(rect);
-        
+
     }
-    
+
 }
