@@ -131,13 +131,13 @@ public class CustomPainter extends SynthPainter {
     public void paintSliderThumbBackground(SynthContext context, Graphics g, int x, int y, int w, int h, int orientation) {
         //create a round rectangle
         RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
-        rect.setRoundRect(x+7, y-8, 16, 32, 14, 14);
-        //get the color we need to use
+        rect.setRoundRect(x, y, w, h, w, 10);
+        //find the needed color
         Color col = context.getStyle().getColor(context, ColorType.BACKGROUND);
         Graphics2D g2 = (Graphics2D)g;
-        //set the color from the one found above
+        //set the color to the one found above
         g2.setColor(col);
-        //set rendering hints
+        //set the rendering hints
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //draw/fill the round rectangle
         g2.fill(rect);
@@ -147,7 +147,7 @@ public class CustomPainter extends SynthPainter {
     public void paintSliderTrackBackground(SynthContext context, Graphics g, int x, int y, int w, int h) {
         //create a round rectangle
         RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
-        rect.setRoundRect(x+3, y, w-7, h, 10, 10);
+        rect.setRoundRect(x+3, y+5, w-7, h-10, 10, 10);
         //get the color we need to use
         Color col = context.getStyle().getColor(context, ColorType.BACKGROUND);
         Graphics2D g2 = (Graphics2D)g;
@@ -157,13 +157,14 @@ public class CustomPainter extends SynthPainter {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //draw/fill the round rectangle
         g2.fill(rect);
+        rect.setRoundRect(x+3, y+5, w, h, 10, 10);
     }
 
     @Override
     public void paintSliderTrackBorder(SynthContext context, Graphics g, int x, int y, int w, int h) {
         //create a round rectangle
         RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
-        rect.setRoundRect(x+1, y, w-7, h, 10, 10);
+        rect.setRoundRect(x+1, y+5, w-7, h-10, 10, 10);
         Graphics2D g2 = (Graphics2D)g;
         //set the color to black
         g2.setColor(Color.RED);

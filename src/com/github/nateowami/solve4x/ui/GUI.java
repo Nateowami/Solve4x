@@ -59,6 +59,8 @@ public class GUI {
      */
     public GUI(){
         UIManager.put("Slider.paintValue", false);
+
+        //All this because of the reflection needed for the silly slider.
         try {
             startGUI();
         } catch (SecurityException e) {
@@ -68,6 +70,12 @@ public class GUI {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -80,8 +88,10 @@ public class GUI {
      * @throws ClassNotFoundException
      * @throws NoSuchFieldException
      * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
      */
-    private void startGUI() throws ClassNotFoundException, SecurityException, NoSuchFieldException {
+    private void startGUI() throws ClassNotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         Class<?> sliderUIClass;
         sliderUIClass = Class.forName("javax.swing.plaf.synth.SynthSliderUI");
         final Field paintValue = sliderUIClass.getDeclaredField("paintValue");
@@ -348,23 +358,20 @@ public class GUI {
         gbc_panelSlider.gridx = 1;
         gbc_panelSlider.gridy = 0;
         playbackControlButtons.add(panelSlider, gbc_panelSlider);
-        panelSlider.setLayout(new BorderLayout(0, 0));
-
-        //create the JSlider
-        JSlider slider = new JSlider();
-        slider.setToolTipText("Lesson Timeline");
         try {
-            paintValue.set(slider.getUI(), false);
         } catch (IllegalArgumentException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
-        } catch (IllegalAccessException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
         }
-        slider.setValue(0);
-        slider.setMinimum(0);
-        panelSlider.add(slider);
+
+                //create the JSlider
+                JSlider slider = new JSlider();
+                slider.setToolTipText("Lesson Timeline");
+                paintValue.set(slider.getUI(), false);
+                panelSlider.setLayout(new BorderLayout(0, 0));
+                slider.setValue(0);
+                slider.setMinimum(0);
+                panelSlider.add(slider);
 
         //create the panel for holding buttons on the bottom right
         JPanel panelInfo = new JPanel();
