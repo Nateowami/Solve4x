@@ -162,4 +162,43 @@ public class Solver {
 		
 	}
 	
+	/**
+	 * TODO NOT FINISHED!!!!!!!*********
+	 * Tells if we're done solving. It looks through the list of solutions and finds one that is 
+	 * solved, simplified, or whatever needs to be done to it. Returns true if it finds one, false
+	 * any other time.
+	 * @param solList The list of Solutions to check
+	 * @return If one of the solutions is solved/simplified
+	 */
+	private boolean isFinished(ArrayList<Solution> solList){
+		
+		
+		return false;//TODO
+		
+	}
+	
+	/**
+	 * Tells if an expression is fully simplified. Examples: 23&lt;2&gt;/&lt;3&gt;
+	 * @param expr
+	 * @return
+	 */
+	private boolean isFullySimplified(String expr){
+		//if it's a number
+		if(Util.isNumber(expr)){
+			//AND it's fully simplified (TODO)
+			if(Util.isFullySimplified(expr)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		//if it's a variable
+		else if(expr.length() == 0 && Util.isLetter(expr.charAt(0))){
+			return true;
+		}
+		//I can't think of anything else
+		else return false;
+	}
+	
 }

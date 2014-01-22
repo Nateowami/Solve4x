@@ -201,12 +201,7 @@ public class Util {
 	}
 
 	/**
-	 * Tells if a string is a number. Examples: 
-	 * 1234
-	 * <123>/<34>
-	 * 34/34
-	 * 12<23>/<67>
-	 * 
+	 * Tells if a string is a number. Examples: 1234, &lt;123&gt;/&lt;34&gt;, 34/34, 12&lt;23&gt;/&lt;67&gt;
 	 * @param The number to check
 	 * @return If it's a number and/or fraction combination
 	 */
@@ -315,6 +310,25 @@ public class Util {
 		}
 		//it's not a fraction side
 		else return false;
+	}
+
+	
+	/**
+	 * Tells if a number, fraction, or mixed number is fully simplified. 
+	 * If it's a complicated fraction and it's unsure it will return false
+	 * @param expr The number/fraction/mixed number to evaluate
+	 * @return
+	 */
+	public static boolean isFullySimplified(String expr) {
+		//TODO
+		//first check that we're dealing with a number/mixed number/fraction
+		if(isNumber(expr)){
+			//it's a number; make sure it's simplified
+			//first find out if there's a fraction part
+			return true;//TODO
+		}
+		//it's not even a number; return false		
+		return false;
 	}	
 
 }
