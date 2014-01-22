@@ -1,25 +1,32 @@
 <synth>
-	<style id="SliderTrackStyle">
-		<opaque value="TRUE" />
-		<insets right="5"/>
-		<state>
-			<color type="BACKGROUND" value="ORANGE" />
-		</state>
-	</style>
-	<bind style="SliderTrackStyle" type="region" key="SliderTrack" />
+    <object id="myPainter" class="com.github.nateowami.solve4x.ui.CustomPainter" />
+    <style id="SliderTrackStyle">
+        <opaque value="FALSE" />
+        <insets right="5" top="10" bottom="10"/>
+        <state>
+            <color type="BACKGROUND" value="WHITE" />
+            <painter method="sliderTrackBackground" idref="myPainter" />
+            <painter method="sliderTrackBorder" idref="myPainter" />
+        </state>
+    </style>
+    <bind style="SliderTrackStyle" type="region" key="SliderTrack" />
 
-	<style id="SliderThumbStyle">
-		<opaque value="TRUE" />
-		<state>
-			<color type="BACKGROUND" value="#DF0000" />
-		</state>
-		<state value="PRESSED">
-			<color type="BACKGROUND" value="#D00000" />
-		</state>
-		<state value="MOUSE_OVER">
-			<color type="BACKGROUND" value="#FF0000" />
-		</state>
-    
-	</style>
-	<bind style="SliderThumbStyle" type="region" key="SliderThumb" />
+    <style id="SliderThumbStyle">
+        <opaque value="FALSE" />
+        <insets right="10" top="10" bottom="10"/>
+        <state>
+            <color type="BACKGROUND" value="#0000E4" />
+            <painter method="sliderThumbBackground" idref="myPainter" />
+        </state>
+        <state value="PRESSED">
+            <color type="BACKGROUND" value="#0000D0" />
+            <painter method="sliderThumbBackground" idref="myPainter" />
+        </state>
+        <state value="MOUSE_OVER">
+            <color type="BACKGROUND" value="#0000FF" />
+            <painter method="sliderThumbBackground" idref="myPainter" />
+        </state>
+
+    </style>
+    <bind style="SliderThumbStyle" type="region" key="SliderThumb" />
 </synth>
