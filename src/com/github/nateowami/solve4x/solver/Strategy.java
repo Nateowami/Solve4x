@@ -27,10 +27,19 @@ package com.github.nateowami.solve4x.solver;
 public abstract class Strategy {
 	
 	/**
-	 * To return the approximate difficulty of performing the solving technique.
-	 * @param expr The expression or equation to 
+	 * Creates a Step object for performing this algorithm on
+	 * a given expression or equation
+	 * @param expr The expression or equation to do a bit of solving on
+	 * @return The Step for solving this little bit
 	 */
 	public abstract Step getStep(String expr);
+	
+	/**
+	 * To return the approximate smartness of performing the solving technique
+	 * on the given Step
+	 * @param expr The Step to evaluate
+	 */
+	public abstract int getSmarts(Step expr);
 	
 
 }

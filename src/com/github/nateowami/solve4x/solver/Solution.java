@@ -26,8 +26,10 @@ import java.util.ArrayList;
  */
 public class Solution {
 	
-	private String equation;//the original equation or expression
+	private Equation equation;//the original equation or expression
 	ArrayList <Step>steps = new ArrayList<Step>();//a list of steps
+	//holds the latest equation (which would also be in the form of a string in Step)
+	Equation lastEquation;
 	
 	/**
 	 * Creates a new Solution from another Solution
@@ -36,20 +38,22 @@ public class Solution {
 	public Solution(Solution solution){
 		this.equation = solution.getEquation();
 		this.steps = solution.getList();
+		this.lastEquation = solution.getLastEquation();
 	}
 	
 	/**
 	 * Creates a new Solution
 	 * @param equation The equation that is being solved
-	 * @see Solution(String equation, Step step)
 	 */
-	public Solution(String equation){
+	public Solution(Equation equation){
 		this.equation = equation;
+		//the first and the last are the same
+		this.lastEquation = equation;
 	}
 	
 	/**
 	 * Gets the list of steps for solving
-	 * @return The lsit of steps for solving
+	 * @return The list of steps for solving
 	 */
 	private ArrayList<Step> getList() {
 		return this.steps;
@@ -59,7 +63,7 @@ public class Solution {
 	 * Gets the original equation that the user entered
 	 * @return The original equation
 	 */
-	public String getEquation(){
+	public Equation getEquation(){
 		return this.equation;
 	}
 	
@@ -69,6 +73,7 @@ public class Solution {
 	 */
 	public void addStep(Step step){
 		this.steps.add(step);
+		this.lastEquation = new Equation(step.getLastStage());
 	}
 	
 	/**
@@ -86,5 +91,20 @@ public class Solution {
 	 */
 	public Step getStepAt(int index){
 		return this.steps.get(index);
+	}
+	
+	/**
+	 * @return The last Step currently in this Solution
+	 */
+	public Step getLastStep(){
+		return this.steps.get(steps.size()-1);
+	}
+
+	/**
+	 * @return
+	 */
+	public Equation getLastEquation() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

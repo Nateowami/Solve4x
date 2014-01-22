@@ -58,11 +58,29 @@ public class Solver {
 		
 		//OK, now to solve. Nateowami is scared
 		//add an initial solution to the solution list
-		solutions.add(new Solution(equation));
+		solutions.add(new Solution(new Equation(equation)));
 		
 		//OK, now iterate through the solving strategies AND the solutions 
 		//(currently only 1 solution, but this could grow as we take forks in the road)
-		//TODO
+		//here goes...
+		
+		//loop through the solutions
+		for(int a=0; a<solutions.size(); a++){
+			//first copy the current solution
+			Solution currentSol = solutions.get(a);
+			//then delete it from the list. It will once again exist after being
+			//modified and/or multiplied, but it won't again exist in its current state
+			//XXX which means we have to be careful to main two lists, then copy them over to original
+			solutions.remove(a);
+			Equation currentEq = currentSol.getLastEquation();
+			
+			//now loop through the strategies
+			for(int b=0; b<strat.size(); b++){
+				
+			}
+			
+		}
+		
 	}
 	
 	/**

@@ -88,5 +88,12 @@ public class Step {
 	public void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;
 	}
+
+	/**
+	 * @return
+	 */
+	public String getLastStage() {
+		return getStageAt(this.stages.size()-1);
+	}
 	
 }
