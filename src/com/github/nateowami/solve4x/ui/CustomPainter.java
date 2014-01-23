@@ -131,7 +131,7 @@ public class CustomPainter extends SynthPainter {
     public void paintSliderThumbBackground(SynthContext context, Graphics g, int x, int y, int w, int h, int orientation) {
         //create a round rectangle
         RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
-        rect.setRoundRect(x, y, w, h, w, 10);
+        rect.setRoundRect(x+2, y, w-2, h, w, 10);
         //find the needed color
         Color col = context.getStyle().getColor(context, ColorType.BACKGROUND);
         Graphics2D g2 = (Graphics2D)g;

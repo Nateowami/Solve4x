@@ -5,7 +5,7 @@
 
         <state>
             <property key="Slider.paintValue" type="boolean" value="false" />
-            <property key="Slider.thumbWidth" type="integer" value="12" />
+            <property key="Slider.thumbWidth" type="integer" value="14" />
             <property key="Slider.thumbHeight" type="integer" value="28" />
         </state>
 
@@ -17,7 +17,7 @@
         <opaque value="FALSE" />
         <insets right="5" />
         <state>
-            <color type="BACKGROUND" value="WHITE" />
+            <color type="BACKGROUND" value="#F5F5F5" />
             <painter method="sliderTrackBackground" idref="myPainter" />
             <painter method="sliderTrackBorder" idref="myPainter" />
         </state>
@@ -29,7 +29,7 @@
         <property key="Slider.thumbHeight" type="integer" value="221" />
         <opaque value="FALSE" />
         <state>
-            <color type="BACKGROUND" value="#0000DF" />
+            <color type="BACKGROUND" value="#0000D2" />
             <painter method="sliderThumbBackground" idref="myPainter" />
         </state>
         <state value="PRESSED">
@@ -37,7 +37,7 @@
             <painter method="sliderThumbBackground" idref="myPainter" />
         </state>
         <state value="MOUSE_OVER">
-            <color type="BACKGROUND" value="#0000FF" />
+            <color type="BACKGROUND" value="#0020FF" />
             <painter method="sliderThumbBackground" idref="myPainter" />
         </state>
 
