@@ -1,20 +1,16 @@
 Solve4x
 =======
-
 An audio-visual algebra solver
 
-The goal of this program is to generate an audio-visual lesson explaining how to solve a given problem. It aims to be simple to use, but very intuitive.
+The goal of this program is to generate an audio-visual lesson explaining how to solve a given problem. It aims to be simple to use, but very intuitive. It should solve the way a person would, and should _not_ include unnecessary steps. Equations should be displayed as a person would write them, rather than as single line of text.
 
 TODO
 ====
-
-GUI - 90% finished.  
-Solver - Started (about 30%); relies on classes that contain solving strategies  
-Equation validator - (95%) appears to be working; will need a few changes and updates  
-Solving strategies - not started; they all need to extend Strategies (which is abstract)  
-A/V Generator - Not started; a long way down the road  
-
-If you're wondering what's next, read [how the solver works](https://github.com/Nateowami/Solve4x/wiki/Solving) on the wiki.
+* GUI - 98% finished.  Colors need some changing, but otherwise it's finished. Some soft colors would be good.
+* Solver - Started (about 50%); relies on classes that contain solving strategies  
+* Equation validator - (95%) appears to be working; will likely need a few changes and updates  
+* Solving strategies - not started; they all need to extend Strategies (which is abstract)  We can start them as soon as the solver is done and a wiki article or two are written about how to make them.
+* A/V Generator - Not started; a long way down the road. We may want to create a make-shift one while working on the solver.
 
 Documentation
 =============
