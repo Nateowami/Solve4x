@@ -17,11 +17,14 @@
  */
 package com.github.nateowami.solve4x.algorithm;
 
+import java.util.ArrayList;
+
 import com.github.nateowami.solve4x.solver.Algorithm;
 import com.github.nateowami.solve4x.solver.Equation;
 import com.github.nateowami.solve4x.solver.Expression;
 import com.github.nateowami.solve4x.solver.Step;
 import com.github.nateowami.solve4x.solver.Term;
+import com.github.nateowami.solve4x.solver.Util;
 
 /**
  * @author Nateowami
@@ -35,7 +38,73 @@ public class CombineLikeTerms extends Algorithm{
 	 */
 	@Override
 	public Step getStep(Equation equation) {
-		// TODO Auto-generated method stub
+		//figure out how many like terms there are in each expression
+		
+		//which expression has the most like terms
+		int whichHasMost = 0;
+		//and how many like terms it has
+		int numOfLikeTerms = 0;
+		//now loop through to figure out which expression needs to be simplified the most
+		for(int i = 0; i< equation.getSize(); i++){
+			//if the current expression needs simplifying more than any up to this point
+			if(howManyLike(equation.getExpression(i)) > numOfLikeTerms){
+				//set the vars most and numbOfLikeTerms
+				whichHasMost = i;
+				numOfLikeTerms = howManyLike(equation.getExpression(i));
+			}
+		}
+		
+		//now that we've done that we know that we need to simplify the expression at index whichHasMost
+		Expression expr = equation.getExpression(whichHasMost);
+		
+		//now figure out which type of term needs to be combined most
+		
+		//how many there are of a particular type
+		int numOfType = 0;
+		//and what that type is
+		String type = "";
+		//loop through the terms
+		for(int i = 0; i< expr.numbOfTerms(); i++){
+			//if the number of of the current type is greater than any found earlier
+			if(numLikeThis(expr, expr.termAt(i)) > numOfType){
+				//update vars numOfType and type
+				numOfType = numLikeThis(expr, expr.termAt(i));
+				type = expr.termAt(i).getBody();
+			}
+		}
+		
+		//now we know that we need to combine all terms of type body
+		//array of terms for the output
+		ArrayList <Term>terms = new ArrayList<Term>();
+		//and the index for us to combine terms at
+		int index = 0;
+		//ArrayList of terms we combined
+		ArrayList <Term>combinedTerms = new ArrayList<Term>();
+		for(int i = 0; i<expr.numbOfTerms(); i++){
+			//if the current term is not the type that we're combining
+			if(!expr.termAt(i).getBody().equals(type)){
+				terms.add(expr.termAt(i));
+			}
+			//this is one of the terms we need to combine
+			else{
+				//add it to the list of the terms to combine
+				combinedTerms.add(expr.termAt(i));
+				//and if this is the first term we've added
+				if(index == 0){
+					//set the index of the first term that we're combining
+					index = i;
+				}
+			}
+		}
+		
+		//now we need to combine the all the terms in combinedTerms and add the result to 
+		//terms at the index specified by index
+		
+		//first make a list of the numbers/coefficients of the terms to combine
+		String coefficients[] = new String[combinedTerms.size()];
+		terms.toArray(coefficients);
+		//now add those numbers
+		//TODO
 		return null;
 	}
 
