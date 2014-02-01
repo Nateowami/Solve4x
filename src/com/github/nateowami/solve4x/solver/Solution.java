@@ -101,10 +101,9 @@ public class Solution {
 	}
 
 	/**
-	 * @return
+	 * @return The last equation of this solution
 	 */
 	public Equation getLastEquation() {
-		// TODO Auto-generated method stub
-		return null;
+		return lastEquation;
 	}
 }

@@ -24,7 +24,7 @@ package com.github.nateowami.solve4x.solver;
  * better name let me know.
  * @author Nateowami
  */
-public abstract class Strategy {
+public abstract class Algorithm {
 	
 	/**
 	 * Creates a Step object for performing this algorithm on
@@ -32,14 +32,14 @@ public abstract class Strategy {
 	 * @param expr The expression or equation to do a bit of solving on
 	 * @return The Step for solving this little bit
 	 */
-	public abstract Step getStep(String expr);
+	public abstract Step getStep(Equation equation);
 	
 	/**
 	 * To return the approximate smartness of performing the solving technique
 	 * on the given Step
-	 * @param expr The Step to evaluate
+	 * @param currentEq The Step to evaluate
 	 */
-	public abstract int getSmarts(Step expr);
+	public abstract int getSmarts(Equation equation);
 	
 
 }

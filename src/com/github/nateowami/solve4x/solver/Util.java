@@ -18,6 +18,9 @@
 package com.github.nateowami.solve4x.solver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.github.nateowami.solve4x.Solve4x;
 
@@ -187,7 +190,6 @@ public class Util {
 		else return false;
 	}
 	
-
 	/**
 	 * Evaluates a char to see if it's a closing parentheses (or root or caret)
 	 * @param c The char to evaluate
@@ -311,7 +313,6 @@ public class Util {
 		//it's not a fraction side
 		else return false;
 	}
-
 	
 	/**
 	 * Tells if a number, fraction, or mixed number is fully simplified. 
@@ -361,8 +362,101 @@ public class Util {
 	 * @return If it's fully simplified (may be hard to tell; see above)
 	 */
 	private static boolean isFracSimplified(String frac) {
-		// TODO Auto-generated method stub
-		return false;
+		//TODO
+		//first find the /
+		int i = 0;
+		for(; i < frac.length(); i++){
+			if(frac.charAt(i) == '/'){
+				break;
+			}
+		}
+		//i is now the index of the /
+		//if they have common factors
+		if(getGCF(Integer.parseInt(frac.substring(0, i)), Integer.parseInt(frac.substring(i+1, frac.length()))) > 1){
+			return false;
+		}
+		else return true;
 	}	
-
+	
+	/**
+	 * @param a The first number
+	 * @param b The second number
+	 * @return The GCF (greatest common factor) of the two numbers
+	 */
+	public static int getGCF(int a, int b){
+		
+		int commonFactors[] = getCommonFactors(a,b);
+		//the final answer
+		int answer = 1;
+		//now multiply all the common factors together
+		for(int i = 0; i < commonFactors.length; i++){
+			answer *= commonFactors[i];
+		}
+		return answer;
+	}
+	
+	/**
+	 * Finds common prime factors of two numbers
+	 * @param a The first number
+	 * @param b The second number
+	 * @return And int[] array of common factors
+	 */
+	public static int[] getCommonFactors(int a, int b){
+		
+		//XXX on debug check this (4 lines). don't know if it really works
+		//perform intersection logic on two sets
+		Set<Integer> s1 = new HashSet<Integer>(Arrays.asList(a));
+		Set<Integer> s2 = new HashSet<Integer>(Arrays.asList(b));
+		s1.retainAll(s2);
+		Integer[] intersection = s1.toArray(new Integer[s1.size()]);
+		
+		//convert Integer[] to int[]
+		int commonFactors[] = new int[intersection.length];
+		for(int i = 0; i < intersection.length; i++){
+			commonFactors[i] = intersection[i].intValue();
+		}
+		return commonFactors;		
+	}
+	
+	/**
+	 * Returns the factors of a given number
+	 * @param num1 The number  for which you want the factors
+	 * @return An array of factors for the number
+	 */
+	public static int[] factors(int num){
+		//loop through from high to low
+		for(int i = num-1; i > 1; i--){
+			if(num % i == 0){
+				//factors must be i and num/i (try it)
+				//return the factors of the two factors we just found
+				return concat(factors(i), factors(num/i));
+			}
+		}
+		//if we get here there are no factors
+		int ans[] = {};
+		return ans;
+	}
+	
+	/**
+	 * Concatenates two arrays
+	 * @param a The first array
+	 * @param b The second array
+	 * @return The two arrays concatenated
+	 */
+	private static int[] concat(int a[], int b[]){
+		int out[] = new int[a.length + b.length];
+		int i; //we need to keep track of i outside the loop
+		//Iterate through the first one and add the elements to out[]
+		for(i = 0; i < a.length; i++){
+			out[i] = a [i];
+		}
+		//and the second array
+		//we have to keep track of two vars, the place we are in out and the place in b
+		for(int j = 0; j<b.length; j++){
+			i++;//keeping track of i still so we know where to add things to out
+			out[i] = b[j];
+		}
+		return out;
+	}
+	
 }

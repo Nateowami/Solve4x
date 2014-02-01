@@ -83,10 +83,9 @@ public class Expression {
 	/**
 	 * Fetches the expression in the form of a String
 	 * @return The expression in String form
-	 * Probably don't want to use this
-	 * @deprecated Un-depricate if needed, otherwise remove
+	 * Don't use this for most situations
 	 */
-	public String getExpression(){
+	public String getAsString(){
 		return this.expression;
 	}
 }

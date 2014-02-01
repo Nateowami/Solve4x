@@ -32,7 +32,7 @@ public class Solver {
 	//a list of solutions that may work. Whichever one is best will be used in the end
 	ArrayList <Solution> solutions = new ArrayList<Solution>();
 	//A list of strategies that can be used for solving
-	ArrayList <Strategy> strat;
+	ArrayList <Algorithm> strat;
 	
 	
 	/**
@@ -63,24 +63,37 @@ public class Solver {
 		//OK, now iterate through the solving strategies AND the solutions 
 		//(currently only 1 solution, but this could grow as we take forks in the road)
 		//here goes...
-		
-		//loop through the solutions
-		for(int a=0; a<solutions.size(); a++){
-			//first copy the current solution
-			Solution currentSol = solutions.get(a);
-			//then delete it from the list. It will once again exist after being
-			//modified and/or multiplied, but it won't again exist in its current state
-			//XXX which means we have to be careful to main two lists, then copy them over to original
-			solutions.remove(a);
-			Equation currentEq = currentSol.getLastEquation();
+
+		//as long as it's not solved/simplified
+		//currently only loops 25 times
+		for(int i = 0; whichIsFinished(solutions) == -1 && i<25; i++){
 			
-			//now loop through the strategies
-			for(int b=0; b<strat.size(); b++){
+			//take out/copy all the solutions and remove them from the list
+			ArrayList <Solution>copy = new ArrayList<Solution>(solutions);
+			solutions = new ArrayList<Solution>();
+			
+			//loop through the solutions
+			for(int a=0; a<solutions.size(); a++){
 				
+				//now loop through the strategies
+				for(int b=0; b<strat.size(); b++){
+					//if this strategy thinks it should be used in this situation
+					if(strat.get(b).getSmarts(copy.get(a).getLastEquation()) > 4){
+						//use this strategy
+						
+						//create a solution
+						Solution solution = copy.get(a);
+						//create a step to add to it
+						Step step = strat.get(b).getStep(copy.get(a).getLastEquation());
+						//add the step
+						solution.addStep(step);
+						//add it to the solution list
+						solutions.add(solution);
+					}
+				}
+
 			}
-			
 		}
-		
 	}
 	
 	/**
@@ -142,17 +155,18 @@ public class Solver {
 		Equation eq = new Equation(equation);
 		
 		//check for an identity (i.e. 1=1, 3/4=3/4)
-		if(eq.getExpression(0) == eq.getExpression(1)){
+		//in other words, see if they're the same on both sides of the = sign
+		if(eq.getExpression(0).getAsString().equals(eq.getExpression(1).getAsString())){
 			return true; //if it's an identity it's SOLVED (technically)
 		}
 		
 		//if the first is a variable and the second is a number
-		else if(Util.isLetter(eq.getExpression(0).getExpression()) && Util.isNumber(eq.getExpression(1).getExpression())){
+		else if(Util.isLetter(eq.getExpression(0).getAsString()) && Util.isNumber(eq.getExpression(1).getAsString())){
 			return true;
 		}
 		
 		//if the second is a variable and the first is a number
-		else if(Util.isLetter(eq.getExpression(1).getExpression()) && Util.isNumber(eq.getExpression(0).getExpression())){
+		else if(Util.isLetter(eq.getExpression(1).getAsString()) && Util.isNumber(eq.getExpression(0).getAsString())){
 			return true;
 		}
 		
@@ -163,26 +177,33 @@ public class Solver {
 	}
 	
 	/**
-	 * TODO NOT FINISHED!!!!!!!*********
 	 * Tells if we're done solving. It looks through the list of solutions and finds one that is 
-	 * solved, simplified, or whatever needs to be done to it. Returns true if it finds one, false
-	 * any other time.
+	 * solved, simplified, or whatever needs to be done to it. Returns positive int if it finds one, -1
+	 * if there is no solution yet
 	 * @param solList The list of Solutions to check
-	 * @return If one of the solutions is solved/simplified
+	 * @return The index of a Solution that is fully solved
 	 */
-	private boolean isFinished(ArrayList<Solution> solList){
+	private int whichIsFinished(ArrayList<Solution> solList){
 		
-		
-		return false;//TODO
-		
+		//check all solutions
+		for(int i=0; i<solList.size(); i++){
+			
+			//check the first and second expressions
+			if(isSimplified(solList.get(i).getEquation().getExpression(0).getAsString())
+					&& isSimplified(solList.get(i).getEquation().getExpression(1).getAsString())){
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 	/**
 	 * Tells if an expression is fully simplified. Examples: 23&lt;2&gt;/&lt;3&gt;
+	 * Works best for fractions. If it's complicated it's unreliable and will return false
 	 * @param expr
 	 * @return
 	 */
-	private boolean isFullySimplified(String expr){
+	private boolean isSimplified(String expr){
 		//if it's a number
 		if(Util.isNumber(expr)){
 			//AND it's fully simplified (TODO)
