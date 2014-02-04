@@ -28,6 +28,8 @@ public class Number {
 	
 	//The numerical part of a mixed number (could be a decimal)
 	String wholeNumber;
+	//the positive/negative value on the number
+	boolean sign = true;
 	//the top of a fraction
 	String top;
 	//and the bottom
@@ -35,7 +37,14 @@ public class Number {
 	
 	public Number(String num){
 		//parse the number
-		int i;
+		int i = 0;
+		//check for a negative sign
+		if(num.length() > 0 && num.charAt(0) == '-'){
+			//make i move past the - sign
+			i++;
+			//and set the sign negative
+			this.sign = false;
+		}
 		for(i = 0; i<num.length(); i++){
 			//if the current char is not a numeral
 			if(!Util.isNumeral(num.charAt(i))){
@@ -108,8 +117,28 @@ public class Number {
 	 * (if they have fractions, that is) are not equal
 	 */
 	public Number add(Number n1, Number n2) throws IllegalArgumentException{
+		//make sure the denominators (if any) are identical
+		if(!n1.getBottom().equals(n2.getBottom()))
+			//if they're not identical
+			throw new IllegalArgumentException("Cannot add two fractions with different denominators.");
+		//Now that we have that out of the way...
+		Number number = new Number("");
+		//if there is a whole number part in either one
+		if(n1.wholeNumber.length() > 0 || n2.wholeNumber.length() > 0)
+			//add the whole number parts
+			//make sure to put the - sign in if it's applicable
+			number.wholeNumber = add((n1.sign ? "" : "-") + n1.bottom, (n2.sign ? "" : "-") + n2.bottom);
+		//if there is numerator and denominator in BOTH fractions
+		//we'll just say if there's a numerator there's a denominator
+		if(n1.top.length() > 1 && n2.top.length() > 1){
+			//add the tops, then copy the bottom
+			number.top = add(n1.top, n2.top);
+			//n1.bottom is equal to n2.bottom
+			number.bottom = n1.bottom;
+		}
+		//if only one (or none) of the numbers has a fraction
 		
-		
+		//TODO
 		return new Number("");
 	}
 	
@@ -119,7 +148,8 @@ public class Number {
 	 * @param n1 The first number to add
 	 * @param n2 The second number to add
 	 * @return The value of two numbers added
-	 * @throws IllegalArgumentException If the Strings cannot be parsed as ints or decimals
+	 * @throws IllegalArgumentException If the Strings cannot be parsed as ints or decimals. An empty String
+	 * will throw an exception.
 	 */
 	private String add(String n1, String n2) throws IllegalArgumentException{
 		//first see if they are both ints
@@ -127,6 +157,15 @@ public class Number {
 			//since they can be parsed as ints just convert to ints, add, and convert to String
 			return (Integer.parseInt(n1) + Integer.parseInt(n2)) + "";
 		}
+		//if they're not ints, try adding them with BigDecimal
+		BigDecimal dec1 = new BigDecimal(n1);
+		BigDecimal dec2 = new BigDecimal(n2);
+		//we don't need to worry about being too overly accurate. Assuming the number of 
+		//decimal places is already realistic, it won't change a whole lot since we're just adding
+		return dec1.add(dec2).toString();
+		
+		/*
+		 * Commented out because it's too inefficient. I'll try a different way
 		//they're not ints then.
 		//First make the decimal places line up.
 		//we do this by finding the first instance of a decimal in each
@@ -167,8 +206,12 @@ public class Number {
 		//now we know the numbers look something like this: 23.576
 		//                                                  04.57
 		//we still need to add zeros to the end of whichever one is shorter
-		//TODO
-		return null;
+		if(n1.length() > n2.length()){
+			//add a 0 to the beginning of 
+			for(int i = 0; i < n1.length() - n2.length(); i++){
+				
+			}
+		}*/
 	}
 	
 }
