@@ -21,20 +21,29 @@ import java.math.BigDecimal;
 
 /**
  * Represents a number/fraction/mixed-number such as 35, 45/6, 56&lt;36&gt;&lt;32&gt;, and 
- * provides methods for adding, subtracting, multiplying, and dividing numbers. TODO
+ * provides methods for adding, subtracting, multiplying, and dividing numbers.
  * @author Nateowami
  */
 public class Number {
 	
 	//The numerical part of a mixed number (could be a decimal)
-	String wholeNumber;
+	private String wholeNumber = "";
 	//the positive/negative value on the number
-	boolean sign = true;
+	private boolean sign = true;
 	//the top of a fraction
-	String top;
+	private String top = "";
 	//and the bottom
-	String bottom;
+	private String bottom = "";
 	
+	/**
+	 * Constructs a new empty Number
+	 */
+	public Number(){}
+	
+	/**
+	 * Constructs a new number. Calling it with an empty string will throw errors (index out of bounds)
+	 * @param num The number to parse into a Number. Example: 45&lt;67&gt;/&lt;98&gt;
+	 */
 	public Number(String num){
 		//parse the number
 		int i = 0;
@@ -45,7 +54,7 @@ public class Number {
 			//and set the sign negative
 			this.sign = false;
 		}
-		for(i = 0; i<num.length(); i++){
+		for(; i<num.length(); i++){
 			//if the current char is not a numeral
 			if(!Util.isNumeral(num.charAt(i))){
 				break;
@@ -55,7 +64,7 @@ public class Number {
 		//(if they're all numerals)
 		wholeNumber = num.substring(0, i);
 		//parse the fraction part
-		parseFraction(num.substring(i+1, num.length()));
+		parseFraction(num.substring(i, num.length()));
 	}
 	
 	/**
@@ -79,7 +88,7 @@ public class Number {
 			if(i == 0) sideOfFrac = frac.substring(0, indexOfDiv);
 			else sideOfFrac = frac.substring(indexOfDiv+1, frac.length());
 			//remove any carets that may be on both sides
-			if(sideOfFrac.charAt(0) == '<' && sideOfFrac.charAt(sideOfFrac.length()) == '>'){
+			if(sideOfFrac.charAt(0) == '<' && sideOfFrac.charAt(sideOfFrac.length()-1) == '>'){
 				sideOfFrac = sideOfFrac.substring(1, sideOfFrac.length()-1);
 			}
 			if(i == 0) top = sideOfFrac;
@@ -116,14 +125,16 @@ public class Number {
 	 * @throws IllegalArgumentException If the denominators of the fractions of the two numbers 
 	 * (if they have fractions, that is) are not equal
 	 */
-	public Number add(Number n1, Number n2) throws IllegalArgumentException{
+	public static Number add(Number n1, Number n2) throws IllegalArgumentException{
+		//FIXME This method is TOTALLY broken
 		//make sure the denominators (if any) are identical
 		if(!n1.getBottom().equals(n2.getBottom()))
 			//if they're not identical
 			throw new IllegalArgumentException("Cannot add two fractions with different denominators.");
-		//Now that we have that out of the way...
-		Number number = new Number("");
-		//if there is a whole number part in either one
+		//Now that we have that out of the way
+		//create a new blank number
+		Number number = new Number();
+		//if there is a whole number part in either one of the arguments passed
 		if(n1.wholeNumber.length() > 0 || n2.wholeNumber.length() > 0)
 			//add the whole number parts
 			//make sure to put the - sign in if it's applicable
@@ -136,10 +147,18 @@ public class Number {
 			//n1.bottom is equal to n2.bottom
 			number.bottom = n1.bottom;
 		}
-		//if only one (or none) of the numbers has a fraction
-		
-		//TODO
-		return new Number("");
+		//if none of the numbers has a fraction
+		else if(n1.top.length() == 0 && n2.top.length() == 0){
+			//neither has a fraction; we can just return the number now
+			return number;
+		}
+		//if we've gotten here one of the numbers is a fraction, the other isn't
+		//if n1 has a fraction, numWithFraction = n1, otherwise it's n2
+		Number numWithFraction = n1.top.length() > 0 ? n1 : n2;
+		//now make the fraction in the var "number" be equal to the fraction in numWithFraction
+		number.top = numWithFraction.top;
+		number.bottom = numWithFraction.top;
+		return number;
 	}
 	
 	/**
@@ -151,7 +170,7 @@ public class Number {
 	 * @throws IllegalArgumentException If the Strings cannot be parsed as ints or decimals. An empty String
 	 * will throw an exception.
 	 */
-	private String add(String n1, String n2) throws IllegalArgumentException{
+	private static String add(String n1, String n2) throws IllegalArgumentException{
 		//first see if they are both ints
 		if(Util.isInteger(n1) && Util.isInteger(n2)){
 			//since they can be parsed as ints just convert to ints, add, and convert to String
@@ -163,55 +182,6 @@ public class Number {
 		//we don't need to worry about being too overly accurate. Assuming the number of 
 		//decimal places is already realistic, it won't change a whole lot since we're just adding
 		return dec1.add(dec2).toString();
-		
-		/*
-		 * Commented out because it's too inefficient. I'll try a different way
-		//they're not ints then.
-		//First make the decimal places line up.
-		//we do this by finding the first instance of a decimal in each
-		//whichever one has the decimal earlier needs zeros put at the beginning of it to align the decimal places
-		//set where the decimal place belongs
-		int index1 = n1.indexOf('.') == -1 ? n1.length() : n1.indexOf('.');
-		int index2 = n2.indexOf('.') == -1 ? n2.length() : n2.indexOf('.');
-		
-		//now insert the decimals if they're not already there
-		if(index1 == n1.length()){
-			//There is no decimal at the end. Add it.
-			n1 = n1 + ".";
-		}
-		if(index2 == n2.length()){
-			//There is no decimal at the end. Add it.
-			n2 = n2 + ".";
-		}
-		//Now they both have decimals. We can use index1 and index2 to figure out where they are.
-		if(index1 > index2){
-			//the numbers look something like this: 23.56
-			//                                      2.04
-			//so we need to add (index1 - index2) # of zeros to the beginning of n2
-			for(int i = 0; i < index1 - index2; i++){
-				//add index1 - inex2 # of zeros to the beginning of n2
-				n2 = "0" + n2;
-			}
-		}
-		//now do the reverse if index1 < index2
-		else if(index1 < index2){
-			//the numbers look something like this: 2.56
-			//                                      23.04
-			//so we need to add (index2 - index1) # of zeros to the beginning of n1
-			for(int i = 0; i < index2 - index1; i++){
-				//add index1 - inex2 # of zeros to the beginning of n2
-				n1 = "0" + n1;
-			}
-		}
-		//now we know the numbers look something like this: 23.576
-		//                                                  04.57
-		//we still need to add zeros to the end of whichever one is shorter
-		if(n1.length() > n2.length()){
-			//add a 0 to the beginning of 
-			for(int i = 0; i < n1.length() - n2.length(); i++){
-				
-			}
-		}*/
 	}
 	
 }

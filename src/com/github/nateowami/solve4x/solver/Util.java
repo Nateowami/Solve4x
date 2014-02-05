@@ -98,38 +98,6 @@ public class Util {
 				break;
 			}
 		}
-		
-		//commented out because currently we don't need  to support commas
-		/*
-		//check to see if it has commas (which would have caused the above to fail)
-		
-		//start  be reversing the integer. This will make it easier to check the commas
-		integer = new StringBuilder(integer).reverse().toString();
-		boolean commasInOrder = true;
-		//now iterate through the string
-		for(int i = 0; i<integer.length(); i++){
-			//every fourth char should be a comma
-			//i+1 is the actual iteration number
-			if((i+1) % 4 == 0){
-				//then it should be a comma
-				if(integer.charAt(i) != ','){
-					//if it's not a comma
-					commasInOrder = false;
-					//no use going farther
-					break;
-				}
-			}
-			//if should be an integer but isn't
-			else if(!isNumeral(integer.charAt(i))){
-				commasInOrder = false;
-				//no use going farther
-				break;
-			}
-		}
-		//only one of the above needs algorithms needs to have succeeded
-		Solve4x.debug("returns" + (allAreNumerals || commasInOrder));
-		return allAreNumerals || commasInOrder;
-		*/
 		return allAreNumerals;
 	}
 	
