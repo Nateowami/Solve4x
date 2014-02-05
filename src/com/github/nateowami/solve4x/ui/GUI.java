@@ -43,6 +43,7 @@ import javax.swing.plaf.synth.SynthLookAndFeel;
 import com.github.nateowami.solve4x.Main;
 import com.github.nateowami.solve4x.solver.SolveFor;
 import com.github.nateowami.solve4x.solver.Solver;
+import com.github.nateowami.solve4x.visual.Visual;
 
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
@@ -167,7 +168,8 @@ public class GUI {
                 try {
                     //run the solver
                     Solver solver = new Solver(equation, SolveFor.SOLVE);
-                    solver.getSolution();
+                    //get the solution and display it to the user
+                    Visual.render(solver.getSolution());
                     //notify the user of the equation evaluation status
                     txtfEquationEntry.setText("Equation Evaluation Status: "+ true);
 

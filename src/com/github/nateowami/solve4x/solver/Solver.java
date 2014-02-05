@@ -20,6 +20,8 @@ package com.github.nateowami.solve4x.solver;
 import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 
+import com.github.nateowami.solve4x.algorithm.CombineLikeTerms;
+
 /**
  * Solves equations and simplifies expressions
  * @author Nateowami
@@ -31,7 +33,7 @@ public class Solver {
 	private Solution finalSolution;
 	//a list of solutions that may work. Whichever one is best will be used in the end
 	ArrayList <Solution> solutions = new ArrayList<Solution>();
-	//A list of strategies that can be used for solving
+	//A list of algorithms that can be used for solving
 	ArrayList <Algorithm> strat;
 	
 	
@@ -45,8 +47,28 @@ public class Solver {
 	 */
 	public Solver(String equation, SolveFor selection) throws MalformedInputException{
 		
+		//remove spaces
+		equation = equation.replaceAll(" ", "");
+		//remove commas (they may be in numbers)
+		equation = equation.replaceAll(",", "");
 		
-		//set the solving strategies list based on what the user selected
+		//validate the equation
+		//if there is an equals sign (=)
+		if(equation.indexOf('=') != -1){
+			//if it isn't valid as an equation
+			if(!Validator.eqIsValid(equation)){
+					throw new MalformedInputException(0);
+			}
+		}
+		//it must be an expression
+		else{
+			//if it's not valid as an expression
+			if(!Validator.exprIsValid(equation)){
+				throw new MalformedInputException(0);
+			}
+		}
+		
+		//set the solving algorithms list based on what the user selected
 		//if they wanted it solved
 		if(selection == SolveFor.SOLVE){
 			strat = getSolvingList();
@@ -60,7 +82,7 @@ public class Solver {
 		//add an initial solution to the solution list
 		solutions.add(new Solution(new Equation(equation)));
 		
-		//OK, now iterate through the solving strategies AND the solutions 
+		//OK, now iterate through the solving algorithms AND the solutions 
 		//(currently only 1 solution, but this could grow as we take forks in the road)
 		//here goes...
 
@@ -75,11 +97,11 @@ public class Solver {
 			//loop through the solutions
 			for(int a=0; a<solutions.size(); a++){
 				
-				//now loop through the strategies
+				//now loop through the algorithms
 				for(int b=0; b<strat.size(); b++){
-					//if this strategy thinks it should be used in this situation
+					//if this Algorithm thinks it should be used in this situation
 					if(strat.get(b).getSmarts(copy.get(a).getLastEquation()) > 4){
-						//use this strategy
+						//use this Algorithm
 						
 						//create a solution
 						Solution solution = copy.get(a);
@@ -108,16 +130,16 @@ public class Solver {
 	}
 	
 	/**
-	 * Makes a list of solving strategies
-	 * @return An ArrayList of strategies for solving
+	 * Makes a list of solving algorithms
+	 * @return An ArrayList of algorithms for solving
 	 * @see getSimplifyingList()
 	 */
-	private static <Strategy>ArrayList getSolvingList(){
+	private static <Algorithm>ArrayList getSolvingList(){
 		
-		//the list of strategies
-		ArrayList <Strategy>stratList = new ArrayList<Strategy>();
+		//the list of algorithms
+		ArrayList <Algorithm>stratList = new ArrayList<Algorithm>();
 		
-		//add the list of simplifying strategies (all simplifying strategies are also for solving)
+		//add the list of simplifying algorithms (all simplifying algorithms are also for solving)
 		stratList.addAll(getSimplifyingList());
 		
 		//TODO add more stuff to stratList
@@ -128,16 +150,16 @@ public class Solver {
 	}
 	
 	/**
-	 * Makes a list of strategies for simplifying
-	 * @return An ArrayList of strategies for simplifying
+	 * Makes a list of algorithms for simplifying
+	 * @return An ArrayList of algorithms for simplifying
 	 * @see getSolvingList()
 	 */
-	private static <Strategy>ArrayList getSimplifyingList(){
+	private static <Algorithm>ArrayList getSimplifyingList(){
 		
-		//make the list of strategies
-		ArrayList <Strategy>stratList = new ArrayList<Strategy>();
-		
-		//TODO add stuff to the stratList
+		//make the list of algorithms
+		ArrayList <Algorithm>stratList = new ArrayList<Algorithm>();
+		stratList.add((Algorithm) new CombineLikeTerms());
+		//TODO more add stuff to the stratList
 		
 		return stratList;
 	}

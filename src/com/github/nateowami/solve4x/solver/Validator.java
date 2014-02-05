@@ -24,7 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Checks to see if an expression or equaiton is valid. 
+ * Checks to see if an expression or equation is valid. 
  * @autor Nateowami, Tribex
  */
 public class Validator {
@@ -35,11 +35,6 @@ public class Validator {
 	 * @return true if the equation is valid, otherwise false
 	 */
 	public static boolean eqIsValid(String equation){
-		
-		//remove spaces
-		equation = equation.replaceAll(" ","");
-		//remove commas
-		equation = equation.replaceAll(",", "");
 				
 		//debugging
 		Solve4x.debug("eqIsValid()" + equation);
@@ -65,23 +60,11 @@ public class Validator {
 	}
 	
 	/**
-	 * Evaluates the algebraic validity of a given expression
-	 * @param expr The expression to check
-	 * @return if the expression is valid
-	 */
-	public static boolean checkExpr(String expr){
-		//remove spaces
-		expr = expr.replaceAll(" ","");
-		//check the expression
-		return exprIsValid(expr);
-	}
-
-	/**
 	 *Evaluates the algebraic validity of a give expression.
 	 *@param expr The expression to check
 	 *@return if the expression is valid
 	 */
-	private static boolean exprIsValid(String expr) {
+	public static boolean exprIsValid(String expr) {
 		
 		//remove parentheses from both ends if they surround the entire expression
 		expr = Util.removePar(expr);
@@ -142,13 +125,12 @@ public class Validator {
 		return exprIsValid(expr.substring(0, cut+1)) && exprIsValid(expr.substring(cut+1, expr.length())); 
 	}
 	
-
 	/**
 	 * Evaluates the algebraic validity of the given term. A term may have commas in its exponent.
 	 * @param term The term to be evaluated
 	 * @return If the term is valid
 	 */
-	public static boolean termIsValid(String term) {
+	private static boolean termIsValid(String term) {
 		//debugging
 		Solve4x.debug("termIsValid()" + term);
 		
@@ -159,9 +141,9 @@ public class Validator {
 		for(int i=0; i<term.length(); i++){
 			//if it's a letter
 			if (Util.isLetter(term.charAt(i))){
-				//check the first part of the term (everything before i)
+				//check the first part of the term (everything before i) ONLY IF IT EXISTS
 				//and make sure it's an integer (in the form of 34,546)
-				if(!Util.isInteger(term.substring(0, i))){
+				if(term.substring(0, i).length() != 0 && !Util.isInteger(term.substring(0, i))){
 					//if it's not an integer, return false
 					Solve4x.debug("termIsValid returns " + false);
 					return false;
@@ -189,9 +171,6 @@ public class Validator {
 		return true;
 	}
 
-
-	
-
 	/**
 	 * Figures out if the next char (after index) is is (, [, {, or <
 	 * @param str The string to search through
@@ -199,7 +178,7 @@ public class Validator {
 	 * @return true the next char is (, [, {, or <, false if it isn't or if the string
 	 * has reached the end.
 	 */
-	public static boolean isNextCharOpenPar(String str, int index){
+	private static boolean isNextCharOpenPar(String str, int index){
 		boolean isPar = false;
 		//if there is another char to check
 		if(str.length()-1>index){
@@ -213,14 +192,13 @@ public class Validator {
 		return isPar;
 	}
 
-
 	/**
 	 * Finds the index of the end of a power
 	 * @param str The string to search in
 	 * @param index The index to start the search at
 	 * @return The last char that is part of the power
 	 */
-	public static int getEndOfPower(String str, int index){
+	private static int getEndOfPower(String str, int index){
 		//debugging
 		Solve4x.debug("getNextNonNumeral str: "+str+" index: "+index);
 		int answer = str.length()-1;//if there is no answer, default is the last index
@@ -241,10 +219,6 @@ public class Validator {
 		return answer;
 	}
 
-
-
-	
-	
 	/**
 	 * Finds the index of where a given expression has a + or - sign that is not nested
 	 *@param expr The expression to evaluate
@@ -269,7 +243,6 @@ public class Validator {
 		return -1;//There is no non-nested addition or subtraction
 	}
 	
-
 	/**
 	 * Finds the index of the last char in an expression that is multiplied by another.
 	 * For example, if expr is (5)2(6) it will return 3.
@@ -307,7 +280,6 @@ public class Validator {
 		return -1;
 	}
 	
-
 	/**
 	 * Finds the index of where a given expression has a division sign that is not nested
 	 *@param expr The expression to evaluate
@@ -333,7 +305,6 @@ public class Validator {
 		return -1;//There is no non-nested division
 	}
 	
-
 	/**
 	 * Validates both sides of an expression. 
 	 * @param expr The expression to evaluate

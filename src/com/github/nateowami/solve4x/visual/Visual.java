@@ -32,11 +32,17 @@ public class Visual {
 	 */
 	public static void render(Solution solution){
 		System.out.println("************************");
-		System.out.println("Solution for " + solution.getEquation() + "/n");
-		//print stuff out
-		for(int i=0; i<solution.getNumbOfSteps(); i++){
-			System.out.println("Step " + i+1 + ": ");
-			printStep(solution.getStepAt(i));
+		try{
+			System.out.println("Solution for " + solution.getEquation() + "/n");
+			//print stuff out
+			for(int i=0; i<solution.getNumbOfSteps(); i++){
+				System.out.println("Step " + i+1 + ": ");
+				printStep(solution.getStepAt(i));
+			}
+		}
+		//null pointer exceptions will be thrown if there is no solution
+		catch(NullPointerException e){
+			System.out.println("***NO SOLUTION FOUND***");
 		}
 	}
 	
