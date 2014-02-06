@@ -63,8 +63,10 @@ public class Number {
 		//now we have the index of the first non-numeral, or else just the end of the string
 		//(if they're all numerals)
 		wholeNumber = num.substring(0, i);
-		//parse the fraction part
-		parseFraction(num.substring(i, num.length()));
+		//parse the fraction part if it exists
+		if(num.substring(i, num.length()).length() != 0){
+			parseFraction(num.substring(i, num.length()));
+		}
 	}
 	
 	/**
@@ -128,36 +130,47 @@ public class Number {
 	public static Number add(Number n1, Number n2) throws IllegalArgumentException{
 		//FIXME This method is TOTALLY broken
 		//make sure the denominators (if any) are identical
-		if(!n1.getBottom().equals(n2.getBottom()))
-			//if they're not identical
+		//make sure that if they both have denominators they are equal
+		if(!n1.getBottom().equals(n2.getBottom()) 
+				//and they both exist
+				&& n1.bottom.length() != 0 && n2.bottom.length() != 0){
+			//if they're not identical AND they both exist
 			throw new IllegalArgumentException("Cannot add two fractions with different denominators.");
+		}
 		//Now that we have that out of the way
 		//create a new blank number
 		Number number = new Number();
-		//if there is a whole number part in either one of the arguments passed
-		if(n1.wholeNumber.length() > 0 || n2.wholeNumber.length() > 0)
-			//add the whole number parts
-			//make sure to put the - sign in if it's applicable
-			number.wholeNumber = add((n1.sign ? "" : "-") + n1.bottom, (n2.sign ? "" : "-") + n2.bottom);
-		//if there is numerator and denominator in BOTH fractions
-		//we'll just say if there's a numerator there's a denominator
-		if(n1.top.length() > 1 && n2.top.length() > 1){
-			//add the tops, then copy the bottom
-			number.top = add(n1.top, n2.top);
-			//n1.bottom is equal to n2.bottom
-			number.bottom = n1.bottom;
+		//ADD THE WHOLE NUMBERS
+		//it's not guaranteed that they both have a whole number/decimal part, so add carefully
+		//if it's found that the whole number part doesn't exist, just count it as 0
+		number.wholeNumber = add(
+				//the first value, and if it's "", just 0
+				n1.wholeNumber.length() == 0 ? "0" : n1.wholeNumber,
+				//and the second number, with the same requirements
+				n2.wholeNumber.length() == 0 ? "0" : n2.wholeNumber);
+		//IF THERE ARE FRACTIONS
+		if(n1.top.length() != 0 || n2.top.length() != 0){
+			//if they both have fractions
+			if(n1.top.length() != 0 && n2.top.length() != 0){
+				//add the two fractions; they're both there
+				//add the tops
+				number.top = add(n1.top, n2.top);
+				//and copy the bottom (which we know are the same; there would be an exception if they weren't)
+				number.bottom = n1.bottom;
+			}
+			//else if only the first has a fraction
+			else if(n1.top.length() != 0){
+				//copy the fraction from the first number; it's the only one that has a fraction
+				number.top = n1.top;
+				number.bottom = n1.bottom;
+			}
+			//else it must be the second one that has a fraction
+			else{
+				//copy the fraction form the second number; it's the only one that has a fraction
+				number.top = n2.top;
+				number.bottom = n2.bottom;
+			}
 		}
-		//if none of the numbers has a fraction
-		else if(n1.top.length() == 0 && n2.top.length() == 0){
-			//neither has a fraction; we can just return the number now
-			return number;
-		}
-		//if we've gotten here one of the numbers is a fraction, the other isn't
-		//if n1 has a fraction, numWithFraction = n1, otherwise it's n2
-		Number numWithFraction = n1.top.length() > 0 ? n1 : n2;
-		//now make the fraction in the var "number" be equal to the fraction in numWithFraction
-		number.top = numWithFraction.top;
-		number.bottom = numWithFraction.top;
 		return number;
 	}
 	
