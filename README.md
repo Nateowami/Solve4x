@@ -7,9 +7,9 @@ The goal of this program is to generate an audio-visual lesson explaining how to
 TODO
 ====
 * GUI - 98% finished.  Colors need some changing, but otherwise it's mostly finished. Some soft colors would be good.
-* Solver - Started (about 60%); relies on classes that contain solving strategies  
+* Solver - Started (about 60%); relies on classes that contain solving algorithms  
 * Equation validator - (95%) appears to be working; will likely need a few changes and updates  
-* Solving strategies - Barely started; they all need to extend Algorithm (which is abstract)  We can start them as soon as the solver is done.
+* Solving algorithms - Barely started; they all need to extend Algorithm (which is abstract)  We can start them as soon as the solver is done.
 * A/V Generator - Not started; a long way down the road. We will need to create a make-shift one while working on the solver.
 
 Documentation
