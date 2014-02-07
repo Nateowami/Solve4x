@@ -145,6 +145,10 @@ public class CustomPainter extends SynthPainter {
 
     @Override
     public void paintSliderTrackBackground(SynthContext context, Graphics g, int x, int y, int w, int h) {
+    	//XXX Jerry-rigging this to paint it in a nicer location
+    	x+=2;
+    	w+=2;
+    	//end Jerry-rig
         //create a round rectangle
         RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
         rect.setRoundRect(x+3, y+5, w-7, h-10, 10, 10);
@@ -162,6 +166,10 @@ public class CustomPainter extends SynthPainter {
 
     @Override
     public void paintSliderTrackBorder(SynthContext context, Graphics g, int x, int y, int w, int h) {
+    	//XXX Jerry-rigging this to paint it in a nicer location
+    	x+=2;
+    	w+=2;
+    	//end Jerry-rig
         //create a round rectangle
         RoundRectangle2D.Double rect = new RoundRectangle2D.Double();
         rect.setRoundRect(x+1, y+5, w-7, h-10, 10, 10);

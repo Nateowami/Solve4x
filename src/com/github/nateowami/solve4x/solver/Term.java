@@ -93,7 +93,7 @@ public class Term {
 	}
 
 	/**
-	 * @return the term
+	 * @return The body of the term. For example, in "4x" this would return "x".
 	 */
 	public String getBody() {
 		return expr;

@@ -24,7 +24,7 @@ import com.github.nateowami.solve4x.solver.Equation;
 import com.github.nateowami.solve4x.solver.Expression;
 import com.github.nateowami.solve4x.solver.Step;
 import com.github.nateowami.solve4x.solver.Term;
-import com.github.nateowami.solve4x.solver.Util;
+import com.github.nateowami.solve4x.solver.Number;
 
 /**
  * @author Nateowami
@@ -102,10 +102,18 @@ public class CombineLikeTerms extends Algorithm{
 		
 		//first make a list of the numbers/coefficients of the terms to combine
 		String coefficients[] = new String[combinedTerms.size()];
-		terms.toArray(coefficients);
-		//now add those numbers
-		//TODO
-		return null;
+		//add the coefficients of each term to thecoefficients array
+		for(int i = 0; i < coefficients.length; i++){
+			coefficients[i] = combinedTerms.get(i).getCoe();
+		}
+		//the value of all the coefficients we'll add
+		Number numSoFar = new Number("0");
+		//add all the coefficients
+		for(int i = 0; i < coefficients.length; i++){
+			//add numSoFar and the current number
+			numSoFar = Number.add(numSoFar, new Number(coefficients[i]));
+		}
+		return null;//TODO
 	}
 
 	/**
