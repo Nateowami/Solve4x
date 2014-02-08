@@ -41,7 +41,12 @@ public class Solve4x {
 	 * @param msg The debug message to print
 	 */
 	public static void debug(Object msg) {
-		if (DEBUG)
-			System.out.println("[Solve4x] "+msg+" - LINE: "+Thread.currentThread().getStackTrace()[2].getLineNumber());
+		if (DEBUG){
+			String className = Thread.currentThread().getStackTrace()[2].getClassName();
+			//remove the package stuff at the beginning
+			className = className.substring(className.lastIndexOf('.') + 1, className.length());
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			System.out.println("["+ className + "." + methodName + "]" +msg+" - LINE: "+Thread.currentThread().getStackTrace()[2].getLineNumber());
+		}
 	}
 }

@@ -24,7 +24,7 @@ package com.github.nateowami.solve4x.solver;
  * better name let me know.
  * @author Nateowami
  */
-public abstract class Algorithm {
+public abstract interface Algorithm {
 	
 	/**
 	 * Creates a Step object for performing this algorithm on

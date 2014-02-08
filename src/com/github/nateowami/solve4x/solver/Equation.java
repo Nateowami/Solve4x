@@ -17,6 +17,8 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import com.github.nateowami.solve4x.Solve4x;
+
 /**
  * Represents an algebraic equation
  * @author Nateowami
@@ -33,6 +35,7 @@ public class Equation {
 	 * equation, which can be just an expression if necessary
 	 */
 	public Equation(String eq){
+		Solve4x.debug("Creating Equation from String: " + eq);
 		//find the = sign
 		int i; //needs to be used outside loop
 		//tells if an = sign was even found
@@ -52,13 +55,14 @@ public class Equation {
 			//create the array and add two expressions to it
 			exprs = new Expression[2];
 			exprs[0] = new Expression(eq.substring(0, i));
-			exprs[1] = new Expression(eq.substring(0, i));
+			exprs[1] = new Expression(eq.substring(i+1, eq.length()));
 		}
 		//no = sign found
 		else{
 			exprs = new Expression[1];
 			exprs[0] = new Expression(eq);
 		}
+		Solve4x.debug("Equation created. First expression: " + exprs[0].getAsString() + " second expression: " + exprs[1].getAsString());
 		
 	}
 	

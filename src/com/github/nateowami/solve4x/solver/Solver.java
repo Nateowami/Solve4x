@@ -20,6 +20,7 @@ package com.github.nateowami.solve4x.solver;
 import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 
+import com.github.nateowami.solve4x.Solve4x;
 import com.github.nateowami.solve4x.algorithm.CombineLikeTerms;
 
 /**
@@ -34,7 +35,7 @@ public class Solver {
 	//a list of solutions that may work. Whichever one is best will be used in the end
 	ArrayList <Solution> solutions = new ArrayList<Solution>();
 	//A list of algorithms that can be used for solving
-	ArrayList <Algorithm> strat;
+	ArrayList <Algorithm> algor;
 	
 	
 	/**
@@ -46,6 +47,9 @@ public class Solver {
 	 * @see com.github.nateowami.solve4x.solver.SolveFor
 	 */
 	public Solver(String equation, SolveFor selection) throws MalformedInputException{
+		
+		//reset the solution from any previous solving
+		finalSolution = null;
 		
 		//remove spaces
 		equation = equation.replaceAll(" ", "");
@@ -68,15 +72,19 @@ public class Solver {
 			}
 		}
 		
+		Solve4x.debug("Equation successfully validated");
+		
 		//set the solving algorithms list based on what the user selected
 		//if they wanted it solved
 		if(selection == SolveFor.SOLVE){
-			strat = getSolvingList();
+			algor = getSolvingList();
 		}
 		//if the user wanted it simplified
 		else if(selection == SolveFor.SIMPLIFY){
-			strat = getSimplifyingList();
+			algor = getSimplifyingList();
 		}
+		
+		Solve4x.debug(algor.size()+" algorithms are going to be used"); 
 		
 		//OK, now to solve. Nateowami is scared
 		//add an initial solution to the solution list
@@ -89,28 +97,32 @@ public class Solver {
 		//as long as it's not solved/simplified
 		//currently only loops 25 times
 		for(int i = 0; whichIsFinished(solutions) == -1 && i<25; i++){
-			
+			Solve4x.debug("Solution iteration begun: " + i);
 			//take out/copy all the solutions and remove them from the list
 			ArrayList <Solution>copy = new ArrayList<Solution>(solutions);
 			solutions = new ArrayList<Solution>();
 			
 			//loop through the solutions
-			for(int a=0; a<solutions.size(); a++){
-				
+			for(int a=0; a<copy.size(); a++){
+				Solve4x.debug("Looping through the solutions: " + a);
 				//now loop through the algorithms
-				for(int b=0; b<strat.size(); b++){
-					//if this Algorithm thinks it should be used in this situation
-					if(strat.get(b).getSmarts(copy.get(a).getLastEquation()) > 4){
+				for(int b=0; b<algor.size(); b++){
+					Solve4x.debug("Looping through the algorithms: " + b);
+					//if this algorithm thinks it should be used in this situation
+					if(algor.get(b).getSmarts(copy.get(a).getLastEquation()) >= 4){
 						//use this Algorithm
-						
+						Solve4x.debug("Using an algorithm");
 						//create a solution
 						Solution solution = copy.get(a);
 						//create a step to add to it
-						Step step = strat.get(b).getStep(copy.get(a).getLastEquation());
+						Step step = algor.get(b).getStep(copy.get(a).getLastEquation());
 						//add the step
 						solution.addStep(step);
 						//add it to the solution list
 						solutions.add(solution);
+					}
+					else{
+						Solve4x.debug("Algorithm not used");
 					}
 				}
 
@@ -122,7 +134,6 @@ public class Solver {
 	 * Solves the given equation or simplifies it if it is an expression
 	 * @param expr The expression or equation to solve or simplify
 	 * @return A Solution object that contains the steps for solving
-	 * @throws MalformedInputException 
 	 */
 	public Solution getSolution(){
 		
@@ -137,15 +148,15 @@ public class Solver {
 	private static <Algorithm>ArrayList getSolvingList(){
 		
 		//the list of algorithms
-		ArrayList <Algorithm>stratList = new ArrayList<Algorithm>();
+		ArrayList <Algorithm>algorList = new ArrayList<Algorithm>();
 		
 		//add the list of simplifying algorithms (all simplifying algorithms are also for solving)
-		stratList.addAll(getSimplifyingList());
+		algorList.addAll(getSimplifyingList());
 		
-		//TODO add more stuff to stratList
+		//TODO add more stuff to algorList
 		
 		
-		return stratList;
+		return algorList;
 		
 	}
 	
@@ -157,11 +168,11 @@ public class Solver {
 	private static <Algorithm>ArrayList getSimplifyingList(){
 		
 		//make the list of algorithms
-		ArrayList <Algorithm>stratList = new ArrayList<Algorithm>();
-		stratList.add((Algorithm) new CombineLikeTerms());
-		//TODO more add stuff to the stratList
+		ArrayList <Algorithm>algorList = new ArrayList<Algorithm>();
+		algorList.add((Algorithm) new CombineLikeTerms());
+		//TODO more add stuff to the algorList
 		
-		return stratList;
+		return algorList;
 	}
 	
 	/**

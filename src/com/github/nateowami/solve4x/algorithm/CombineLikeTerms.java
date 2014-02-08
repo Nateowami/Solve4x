@@ -19,6 +19,7 @@ package com.github.nateowami.solve4x.algorithm;
 
 import java.util.ArrayList;
 
+import com.github.nateowami.solve4x.Solve4x;
 import com.github.nateowami.solve4x.solver.Algorithm;
 import com.github.nateowami.solve4x.solver.Equation;
 import com.github.nateowami.solve4x.solver.Expression;
@@ -29,7 +30,7 @@ import com.github.nateowami.solve4x.solver.Number;
 /**
  * @author Nateowami
  */
-public class CombineLikeTerms extends Algorithm{
+public class CombineLikeTerms implements Algorithm{
 
 	/**
 	 * Combines like terms in a given equation
@@ -152,6 +153,7 @@ public class CombineLikeTerms extends Algorithm{
 	 */
 	@Override
 	public int getSmarts(Equation equation) {
+		Solve4x.debug("CombineLikeTerms.getSmarts("+equation.getExpression(0).getAsString()+"=" + equation.getExpression(1).getAsString()+")");
 		//find which expression needs simplifying the most
 		int num = 0;
 		for(int i=0; i<equation.getSize(); i++){
@@ -163,18 +165,23 @@ public class CombineLikeTerms extends Algorithm{
 		}
 		//figure out the smartness based on number of like terms
 		if(num == 2){
+			Solve4x.debug("Returns 4");
 			return 4;
 		}
 		else if(num == 3){
+			Solve4x.debug("Returns 6");
 			return 6;
 		}
 		else if(num == 4){
+			Solve4x.debug("Returns 8");
 			return 8;
 		}
 		else if(num > 4){
+			Solve4x.debug("Returns 9");
 			return 9;
 		}
 		else{
+			Solve4x.debug("Returns 0");
 			return 0;
 		}
 	}
@@ -186,6 +193,7 @@ public class CombineLikeTerms extends Algorithm{
 	 * @return The number of like terms
 	 */
 	private int howManyLike(Expression expr){
+		Solve4x.debug(expr.getAsString());
 		int num = 0;
 		for(int i = 0; i< expr.numbOfTerms(); i++){
 			//update num
@@ -195,6 +203,7 @@ public class CombineLikeTerms extends Algorithm{
 				num = temp;
 			}
 		}
+		Solve4x.debug("Returns " + num);
 		return num;
 	}
 	
@@ -205,6 +214,7 @@ public class CombineLikeTerms extends Algorithm{
 	 * @return The number of terms in expr that are the same type as term
 	 */
 	private int numLikeThis(Expression expr, Term term){
+		Solve4x.debug("Arg1: " + expr.getAsString() + " Arg2: " + term.getBody());
 		int num = 0;
 		//check all terms in the expression for being like term
 		for(int i =0;  i< expr.numbOfTerms(); i++){
@@ -212,6 +222,7 @@ public class CombineLikeTerms extends Algorithm{
 				i++;
 			}
 		}
+		Solve4x.debug("Returns " + num);
 		return num;
 	}
 }

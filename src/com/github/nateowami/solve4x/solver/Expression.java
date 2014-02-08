@@ -19,6 +19,8 @@ package com.github.nateowami.solve4x.solver;
 
 import java.util.ArrayList;
 
+import com.github.nateowami.solve4x.Solve4x;
+
 /**
  * Represents an algebraic expression with positive and negative terms
  * @author Nateowami
@@ -56,12 +58,17 @@ public class Expression {
 				//take everything from the beginning of the expression until i
 				//and make a new Term. Add it to the term list
 				this.termList.add(new Term(expr.substring(0, i)));
+				Solve4x.debug("Created new Term: " + expr.substring(0, i));
 				//delete that term from expr
 				expr = expr.substring(i, expr.length());
 				//now reset i to 0
 				//this is necessary because the expr.length() just changed
 				i = 0;
 			}
+		}
+		Solve4x.debug("Expression created: " + expression + " Terms are as follows:");
+		for(int i = 0; i < termList.size(); i++){
+			System.out.println(termList.get(i).getAsString());
 		}
 	}
 	

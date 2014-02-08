@@ -17,6 +17,8 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import com.github.nateowami.solve4x.Solve4x;
+
 /**
  * Provides a way to work with terms in equations.
  * @author Nateowami
@@ -31,26 +33,28 @@ public class Term {
 	//and the expression/body part of the term
 	private String coeInt = "", coeFrac = "", expr = "";
 	//the positive or negative value of the term
-	private boolean value;
+	private boolean sign;
 	
 	/**
 	 * Creates a new term from a String
 	 * @param term The term to create
 	 */
 	public Term(String term){
+		//FIXME Fails to parse term correctly. expr remains empty
+		Solve4x.debug("Creating term: " + term);
 
 		//parse the expression and set coe and term
 		
 		//set the term's positive or negative value
 		//if it's negative
 		if(term.charAt(0) == '-'){
-			value = false;
+			sign = false;
 			//remove the - from term
 			term = term.substring(1, term.length());
 		}
 		else{
 			//positive is default
-			value = true;
+			sign = true;
 			//the + may or may not exist, but it's positive if it doesn't
 			if(term.charAt(0) == '+'){
 				//remove the +
@@ -83,8 +87,18 @@ public class Term {
 				this.expr = term.substring(i, term.length());
 			}
 		}
+		Solve4x.debug("Term created: " + this.toString());
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Term [coeInt=" + coeInt + ", coeFrac=" + coeFrac + ", expr="
+				+ expr + ", sign=" + sign + "]";
+	}
+
 	/**
 	 * @return The coefficient of the term (may include a fraction)
 	 */
@@ -104,7 +118,14 @@ public class Term {
 	 * true is positive, false is negative.
 	 */
 	public boolean getIsPositive(){
-		return value;
+		return sign;
+	}
+
+	/**
+	 * @return The Term as a String.
+	 */
+	public String getAsString() {
+		return (sign? "" : "-") + coeInt + coeFrac + expr;
 	}
 
 }
