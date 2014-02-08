@@ -197,4 +197,13 @@ public class Number {
 		return dec1.add(dec2).toString();
 	}
 	
+	/**
+	 * Gives a string representation of this number
+	 * @return This number in a string format. For example, 3.46&lt;45&gt;/&lt;56&gt;
+	 */
+	public String getAsString(){
+		//combine all the major fields into a string
+		return (sign ? "" : "-") + this.wholeNumber+ this.top + this.bottom;
+	}
+	
 }

@@ -46,11 +46,13 @@ public class CombineLikeTerms extends Algorithm{
 		int numOfLikeTerms = 0;
 		//now loop through to figure out which expression needs to be simplified the most
 		for(int i = 0; i< equation.getSize(); i++){
+			//temp variable
+			int temp;
 			//if the current expression needs simplifying more than any up to this point
-			if(howManyLike(equation.getExpression(i)) > numOfLikeTerms){
+			if((temp = howManyLike(equation.getExpression(i))) > numOfLikeTerms){
 				//set the vars most and numbOfLikeTerms
 				whichHasMost = i;
-				numOfLikeTerms = howManyLike(equation.getExpression(i));
+				numOfLikeTerms = temp;
 			}
 		}
 		
@@ -65,24 +67,27 @@ public class CombineLikeTerms extends Algorithm{
 		String type = "";
 		//loop through the terms
 		for(int i = 0; i< expr.numbOfTerms(); i++){
+			//temp variable
+			int temp;
 			//if the number of of the current type is greater than any found earlier
-			if(numLikeThis(expr, expr.termAt(i)) > numOfType){
+			if((temp = numLikeThis(expr, expr.termAt(i))) > numOfType){
 				//update vars numOfType and type
-				numOfType = numLikeThis(expr, expr.termAt(i));
+				numOfType = temp;
 				type = expr.termAt(i).getBody();
 			}
 		}
 		
 		//now we know that we need to combine all terms of type body
-		//array of terms for the output
+		//arraylist of terms for the output
 		ArrayList <Term>terms = new ArrayList<Term>();
 		//and the index for us to combine terms at
 		int index = 0;
-		//ArrayList of terms we combined
+		//ArrayList of terms we will combine
 		ArrayList <Term>combinedTerms = new ArrayList<Term>();
 		for(int i = 0; i<expr.numbOfTerms(); i++){
 			//if the current term is not the type that we're combining
 			if(!expr.termAt(i).getBody().equals(type)){
+				//add it to the list of terms that we don't modify
 				terms.add(expr.termAt(i));
 			}
 			//this is one of the terms we need to combine
@@ -92,6 +97,7 @@ public class CombineLikeTerms extends Algorithm{
 				//and if this is the first term we've added
 				if(index == 0){
 					//set the index of the first term that we're combining
+					//we do this so all of these terms combined into one will be at the index the first one was found at
 					index = i;
 				}
 			}
@@ -102,7 +108,7 @@ public class CombineLikeTerms extends Algorithm{
 		
 		//first make a list of the numbers/coefficients of the terms to combine
 		String coefficients[] = new String[combinedTerms.size()];
-		//add the coefficients of each term to thecoefficients array
+		//add the coefficients of each term to the coefficients array
 		for(int i = 0; i < coefficients.length; i++){
 			coefficients[i] = combinedTerms.get(i).getCoe();
 		}
@@ -110,10 +116,33 @@ public class CombineLikeTerms extends Algorithm{
 		Number numSoFar = new Number("0");
 		//add all the coefficients
 		for(int i = 0; i < coefficients.length; i++){
+			//if coefficients[i] is "", then it should be 1, because no coefficient is the same as a coefficient of 1
+			if(coefficients[i].equals("")){
+				//set it to 1
+				coefficients[i] = "1";
+			}
 			//add numSoFar and the current number
 			numSoFar = Number.add(numSoFar, new Number(coefficients[i]));
 		}
-		return null;//TODO
+		//now the coefficient of the combined term will be numSoFar
+		//add the coefficient and the term type to create a term
+		Term finalTerm = new Term(numSoFar.getAsString()+type);
+		//now add that to the list of terms at index "index"
+		terms.add(index, finalTerm);
+		
+		//convert that to an expression
+		String finalExpression = "";
+		//put the expression together
+		for(int i = 0; i < terms.size(); i++){
+			//XXX probably doesn't take signs into account
+			finalExpression += terms.get(i);
+		}
+		//the explanation for this algorithm
+		String lameExplanation = "We're combining the terms and the result is " + finalTerm + ".";
+		//an array containing only one expression
+		String steps[] = {finalExpression};
+		//the final step
+		return new Step(steps, lameExplanation, 4);
 	}
 
 	/**
@@ -126,8 +155,10 @@ public class CombineLikeTerms extends Algorithm{
 		//find which expression needs simplifying the most
 		int num = 0;
 		for(int i=0; i<equation.getSize(); i++){
-			if(howManyLike(equation.getExpression(i)) > num){
-				num = howManyLike(equation.getExpression(i));
+			//temp variable
+			int temp;
+			if((temp = howManyLike(equation.getExpression(i))) > num){
+				num = temp;
 			}
 		}
 		//figure out the smartness based on number of like terms
@@ -158,8 +189,10 @@ public class CombineLikeTerms extends Algorithm{
 		int num = 0;
 		for(int i = 0; i< expr.numbOfTerms(); i++){
 			//update num
-			if(num < numLikeThis(expr, expr.termAt(i))){
-				num = numLikeThis(expr, expr.termAt(i));
+			//temp variable
+			int temp;
+			if(num < (temp = numLikeThis(expr, expr.termAt(i)))){
+				num = temp;
 			}
 		}
 		return num;
