@@ -61,10 +61,17 @@ public class Expression {
 				Solve4x.debug("Created new Term: " + expr.substring(0, i));
 				//delete that term from expr
 				expr = expr.substring(i, expr.length());
-				//now reset i to 0
-				//this is necessary because the expr.length() just changed
+				//now reset i to 0 (it will get incremented to 1 when the loop continues)
+				//this is necessary because the expr.length() just changed, and the char it's
+				//about to check is a + or - (we just checked it but it gets passed over the next 
+				//time because i will be 1)
 				i = 0;
 			}
+		}
+		//take the rest of the expression that may be left and create a term with it
+		if(expr.length()>0){
+			//create the term and add it
+			this.termList.add(new Term(expr));
 		}
 		Solve4x.debug("Expression created: " + expression + " Terms are as follows:");
 		for(int i = 0; i < termList.size(); i++){

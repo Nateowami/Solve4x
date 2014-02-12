@@ -41,7 +41,7 @@ public class Term {
 	 */
 	public Term(String term){
 		//FIXME Fails to parse term correctly. expr remains empty
-		Solve4x.debug("Creating term: " + term);
+		Solve4x.debug("Creating term: \"" + term + "\"");
 
 		//parse the expression and set coe and term
 		
@@ -62,13 +62,15 @@ public class Term {
 			}
 		}
 		
+		Solve4x.debug("Here term is: " + term);
+		
 		//look for an integer an the beginning
 		for(int i=0; i< term.length(); i++){
 			
 			//if it's not a numeral
 			if(!Util.isNumeral(term.charAt(i))){
 				//set the coefficient to a substring (the beginning
-				//of the term to i-1). The method substring() will subtract 1 for us.
+				//of the term to i). The method substring() will subtract 1 for us.
 				this.coeInt = term.substring(0, i);
 				//remove the integer from the beginning of the string
 				term = term.substring(i, term.length());
@@ -77,16 +79,22 @@ public class Term {
 			}
 		}
 		
+		Solve4x.debug("Here term is: "+term);
+		
 		//now check for a fraction that could come after the integer
-		for(int i=0; i<term.length(); i++){
+		for(int i=1; i<term.length(); i++){
 			//if 0 to i+1 is a nice and neat fraction
 			if(Util.isFraction(term.substring(0, i))){
 				//if it's a fraction set coeFrac to it
 				this.coeFrac = term.substring(0, i);
-				//remove the fraction from the string and set the body of the term
-				this.expr = term.substring(i, term.length());
+				//remove the fraction from term
+				term = term.substring(i, term.length());
 			}
 		}
+		
+		//take all the rest and set the term's expression/body with it
+		this.expr = term;
+		Solve4x.debug("Here term is: "+term);
 		Solve4x.debug("Term created: " + this.toString());
 	}
 	
