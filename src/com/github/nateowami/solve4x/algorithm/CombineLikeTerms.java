@@ -82,7 +82,7 @@ public class CombineLikeTerms implements Algorithm{
 		//arraylist of terms for the output
 		ArrayList <Term>terms = new ArrayList<Term>();
 		//and the index for us to combine terms at
-		int index = 0;
+		int index = -1;
 		//ArrayList of terms we will combine
 		ArrayList <Term>combinedTerms = new ArrayList<Term>();
 		for(int i = 0; i<expr.numbOfTerms(); i++){
@@ -96,7 +96,7 @@ public class CombineLikeTerms implements Algorithm{
 				//add it to the list of the terms to combine
 				combinedTerms.add(expr.termAt(i));
 				//and if this is the first term we've added
-				if(index == 0){
+				if(index == -1){
 					//set the index of the first term that we're combining
 					//we do this so all of these terms combined into one will be at the index the first one was found at
 					index = i;
