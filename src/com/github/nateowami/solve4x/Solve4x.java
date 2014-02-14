@@ -28,6 +28,9 @@ public class Solve4x {
 	
 	private static final boolean DEBUG = true;
 	
+	//remove a class from this list if you want to be able to see console/debug output from it
+	private static final String blackList[] = {"Validator"};
+	
 	/**
 	 * Starts the program rolling by starting the GUI
 	 */
@@ -38,6 +41,8 @@ public class Solve4x {
 	
 	/**
 	 * Prints a debug message in the form of [Solve4x] MESSAGE - LINE: LINENUMBER
+	 * Won't print the message if it's from a class that is on a black list. Black lists
+	 * are to make the console output more readable.
 	 * @param msg The debug message to print
 	 */
 	public static void debug(Object msg) {
@@ -45,8 +50,28 @@ public class Solve4x {
 			String className = Thread.currentThread().getStackTrace()[2].getClassName();
 			//remove the package stuff at the beginning
 			className = className.substring(className.lastIndexOf('.') + 1, className.length());
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			System.out.println("["+ className + "." + methodName + "]" +msg+" - LINE: "+Thread.currentThread().getStackTrace()[2].getLineNumber());
+			//if the class is not on the blacklist
+			if(!isOnBlackList(className)){
+				//get the method name
+				String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+				//and print it out
+				System.out.println("["+ className + "." + methodName + "]" +msg+" - LINE: "+Thread.currentThread().getStackTrace()[2].getLineNumber());
+			}
 		}
+	}
+	
+	/**
+	 * Tells if a particular class is on the blacklist.
+	 * @param str The class to check (in string form)
+	 * @return If the class is on the blacklist
+	 */
+	private static boolean isOnBlackList(String str){
+		//loop through the blacklist
+		for(int i = 0; i<blackList.length; i++){
+			if(blackList[i].equals(str)){
+				return true;
+			}
+		}
+		return false;
 	}
 }
