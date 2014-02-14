@@ -129,6 +129,7 @@ public class CombineLikeTerms implements Algorithm{
 		//add the coefficient and the term type to create a term
 		Term finalTerm = new Term(numSoFar.getAsString()+type);
 		//now add that to the list of terms at index "index"
+		//FIXME index is wrong. Throws exception
 		terms.add(index, finalTerm);
 		
 		//convert that to an expression
@@ -219,7 +220,7 @@ public class CombineLikeTerms implements Algorithm{
 		//check all terms in the expression for being like term
 		for(int i =0;  i< expr.numbOfTerms(); i++){
 			if(expr.termAt(i).getBody().equals(term.getBody())){
-				i++;
+				num++;
 			}
 		}
 		Solve4x.debug("Returns " + num);
