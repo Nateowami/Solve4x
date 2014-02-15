@@ -127,22 +127,25 @@ public class CombineLikeTerms implements Algorithm{
 		}
 		//now the coefficient of the combined term will be numSoFar
 		//add the coefficient and the term type to create a term
+		Solve4x.debug("About to create the final term from the following: " + numSoFar.getAsString()+type);
 		Term finalTerm = new Term(numSoFar.getAsString()+type);
 		//now add that to the list of terms at index "index"
-		//FIXME index is wrong. Throws exception
-		terms.add(index, finalTerm);
+		Solve4x.debug("Adding the final term: " + finalTerm.getAsString());
+		terms.add(index, finalTerm);//XXX Here's where I forgot to change it to 
 		
 		//convert that to an expression
 		String finalExpression = "";
 		//put the expression together
 		for(int i = 0; i < terms.size(); i++){
 			//XXX probably doesn't take signs into account
-			finalExpression += terms.get(i);
+			Solve4x.debug("Adding a term to the final expression: " + terms.get(i));
+			finalExpression += terms.get(i).getAsString();//XXX here's where I forgot to append .getAsString() disaster :(
 		}
 		//the explanation for this algorithm
 		String lameExplanation = "We're combining the terms and the result is " + finalTerm + ".";
 		//an array containing only one expression
 		String steps[] = {finalExpression};
+		Solve4x.debug("Step created and ready to return. The final expression is: " + finalExpression);
 		//the final step
 		return new Step(steps, lameExplanation, 4);
 	}

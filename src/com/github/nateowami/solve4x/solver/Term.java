@@ -40,8 +40,8 @@ public class Term {
 	 * @param term The term to create
 	 */
 	public Term(String term){
-		//FIXME Fails to parse term correctly. expr remains empty
-		Solve4x.debug("Creating term: \"" + term + "\"");
+		Thread.currentThread().dumpStack();
+		Solve4x.debug("Creating term: " + term);
 
 		//parse the expression and set coe and term
 		
@@ -62,8 +62,6 @@ public class Term {
 			}
 		}
 		
-		Solve4x.debug("Here term is: " + term);
-		
 		//look for an integer an the beginning
 		for(int i=0; i< term.length(); i++){
 			
@@ -79,8 +77,6 @@ public class Term {
 			}
 		}
 		
-		Solve4x.debug("Here term is: "+term);
-		
 		//now check for a fraction that could come after the integer
 		for(int i=1; i<term.length(); i++){
 			//if 0 to i+1 is a nice and neat fraction
@@ -94,8 +90,6 @@ public class Term {
 		
 		//take all the rest and set the term's expression/body with it
 		this.expr = term;
-		Solve4x.debug("Here term is: "+term);
-		Solve4x.debug("Term created: " + this.toString());
 	}
 	
 	/* (non-Javadoc)

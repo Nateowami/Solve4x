@@ -19,6 +19,8 @@ package com.github.nateowami.solve4x.solver;
 
 import java.util.ArrayList;
 
+import com.github.nateowami.solve4x.Solve4x;
+
 /**
  * Represents a single step in solving or simplifying an equation or expression
  * @author Nateowami
@@ -39,6 +41,8 @@ public class Step {
 	 * syntax.
 	 */
 	public Step(String step[], String explanation, int difficulty){
+		Solve4x.debug("Creating a Step from the following stage: " + step[0]);
+		Thread.currentThread().dumpStack();
 		//init the stages ArrayList
 		this.stages = step;
 		//init the explanation for this step
@@ -91,7 +95,7 @@ public class Step {
 	}
 
 	/**
-	 * @return
+	 * @return Returns the last stage of this Step
 	 */
 	public String getLastStage() {
 		return getStageAt(this.stages.length - 1);
