@@ -17,6 +17,8 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import java.nio.charset.MalformedInputException;
+
 import com.github.nateowami.solve4x.Solve4x;
 
 /**
@@ -33,6 +35,7 @@ public class Equation {
 	 * Creates an equation by turning it into two expressions
 	 * @param eq The equation (or expression) to turn into an
 	 * equation, which can be just an expression if necessary
+	 * @throws MalformedInputException 
 	 */
 	public Equation(String eq){
 		Solve4x.debug("Creating Equation from String: " + eq);
@@ -59,6 +62,7 @@ public class Equation {
 		}
 		//no = sign found
 		else{
+			Thread.currentThread().dumpStack();
 			exprs = new Expression[1];
 			exprs[0] = new Expression(eq);
 		}
@@ -72,6 +76,7 @@ public class Equation {
 	 * @return The expression at index i
 	 */
 	public Expression getExpression(int i){
+		Solve4x.debug("about to return expressino from equation. index is: " + i);
 		return exprs[i];
 	}
 	
@@ -84,6 +89,16 @@ public class Equation {
 	 */
 	public int getSize(){
 		return exprs.length;
+	}
+
+	/**
+	 * Sets the specified expression in this equation to the specified expression
+	 * @param expr The expression you want to change it to 
+	 * @param index The index of the Expression you want to change
+	 */
+	public void setExpression(String expr, int index) {
+		this.exprs[index] = new Expression(expr);
+		
 	}
 	
 }

@@ -115,6 +115,7 @@ public class Solver {
 						//create a solution
 						Solution solution = copy.get(a);
 						//create a step to add to it
+						//FIXME for some reason this is returning without an equals sign I think
 						Step step = algor.get(b).getStep(copy.get(a).getLastEquation());
 						//add the step
 						solution.addStep(step);
@@ -217,16 +218,19 @@ public class Solver {
 	 * @return The index of a Solution that is fully solved
 	 */
 	private int whichIsFinished(ArrayList<Solution> solList){
-		
+		Solve4x.debug("checking if we're done");
+		solList.get(0).getLastStep().getStageAt(1);
 		//check all solutions
 		for(int i=0; i<solList.size(); i++){
 			
 			//check the first and second expressions
 			if(isSimplified(solList.get(i).getEquation().getExpression(0).getAsString())
 					&& isSimplified(solList.get(i).getEquation().getExpression(1).getAsString())){
+				Solve4x.debug("Returns " + 1);
 				return i;
 			}
 		}
+		Solve4x.debug("Returns -1");
 		return -1;
 	}
 	

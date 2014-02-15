@@ -40,9 +40,6 @@ public class Term {
 	 * @param term The term to create
 	 */
 	public Term(String term){
-		Thread.currentThread().dumpStack();
-		Solve4x.debug("Creating term: " + term);
-
 		//parse the expression and set coe and term
 		
 		//set the term's positive or negative value

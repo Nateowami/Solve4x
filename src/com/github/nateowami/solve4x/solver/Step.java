@@ -41,8 +41,7 @@ public class Step {
 	 * syntax.
 	 */
 	public Step(String step[], String explanation, int difficulty){
-		Solve4x.debug("Creating a Step from the following stage: " + step[0]);
-		Thread.currentThread().dumpStack();
+		Solve4x.debug("Creating step. Expr is: " + step[0]);
 		//init the stages ArrayList
 		this.stages = step;
 		//init the explanation for this step

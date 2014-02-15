@@ -141,11 +141,19 @@ public class CombineLikeTerms implements Algorithm{
 			Solve4x.debug("Adding a term to the final expression: " + terms.get(i));
 			finalExpression += terms.get(i).getAsString();//XXX here's where I forgot to append .getAsString() disaster :(
 		}
+		//now that we have the final expression we need to take a take the expressions we didn't simplify and mush them together into an equation
+		equation.setExpression(finalExpression, whichHasMost);
+		//now create a string from the equation XXX will not support systems of equations
+		String finalEquation = equation.getExpression(0).getAsString();
+		//if there's a second expression in that equation, add it to the finalEquation with '=' between
+		if(equation.getSize() > 1){
+			finalEquation += '=' + equation.getExpression(1).getAsString();
+		}
 		//the explanation for this algorithm
 		String lameExplanation = "We're combining the terms and the result is " + finalTerm + ".";
 		//an array containing only one expression
-		String steps[] = {finalExpression};
-		Solve4x.debug("Step created and ready to return. The final expression is: " + finalExpression);
+		String steps[] = {finalEquation};
+		Solve4x.debug("Step created and ready to return. The final expression is: " + finalEquation);
 		//the final step
 		return new Step(steps, lameExplanation, 4);
 	}
