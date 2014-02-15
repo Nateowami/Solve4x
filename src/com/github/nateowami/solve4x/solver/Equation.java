@@ -107,7 +107,9 @@ public class Equation {
 	public String getAsString(){
 		String eq= "";
 		for(int i = 0; i < exprs.length; i++){
-			eq += "=" + exprs[i].getAsString();
+			//if i is odd append '='
+			eq += i % 2 == 0 ? "" : "=";
+			eq += exprs[i].getAsString();
 		}
 		return eq;
 	}

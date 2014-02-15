@@ -111,7 +111,8 @@ public class CombineLikeTerms implements Algorithm{
 		String coefficients[] = new String[combinedTerms.size()];
 		//add the coefficients of each term to the coefficients array
 		for(int i = 0; i < coefficients.length; i++){
-			coefficients[i] = combinedTerms.get(i).getCoe();
+			//if it's negative, add a - in front of it
+			coefficients[i] = (combinedTerms.get(i).getIsPositive() ? "" : "-") + combinedTerms.get(i).getCoe();
 		}
 		//the value of all the coefficients we'll add
 		Number numSoFar = new Number("0");
@@ -129,9 +130,14 @@ public class CombineLikeTerms implements Algorithm{
 		//add the coefficient and the term type to create a term
 		Solve4x.debug("About to create the final term from the following: " + numSoFar.getAsString()+type);
 		Term finalTerm = new Term(numSoFar.getAsString()+type);
+		//if the coefficient is 1, remove it
+		if(finalTerm.getCoe().equals("1")){
+			//remove the first char from the term (the coe always goes first)
+			finalTerm = new Term(finalTerm.getAsString().substring(1, finalTerm.getAsString().length()));
+		}
 		//now add that to the list of terms at index "index"
 		Solve4x.debug("Adding the final term: " + finalTerm.getAsString());
-		terms.add(index, finalTerm);//XXX Here's where I forgot to change it to 
+		terms.add(index, finalTerm);
 		
 		//convert that to an expression
 		String finalExpression = "";
