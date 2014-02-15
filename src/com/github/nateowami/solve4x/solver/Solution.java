@@ -46,7 +46,12 @@ public class Solution {
 	 * @param equation The equation that is being solved
 	 */
 	public Solution(Equation equation){
+		//set the original equation
 		this.equation = equation;
+		//create an array of length one with the equation
+		String stages[] = {equation.getAsString()};
+		//now create a step and add it to the list of steps
+		this.steps.add(new Step(stages, "This is the original equation.", 0));
 		//the first and the last are the same
 		this.lastEquation = equation;
 	}

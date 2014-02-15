@@ -115,8 +115,8 @@ public class Solver {
 						//create a solution
 						Solution solution = copy.get(a);
 						//create a step to add to it
-						//FIXME for some reason this is returning without an equals sign I think
 						Step step = algor.get(b).getStep(copy.get(a).getLastEquation());
+						Solve4x.debug(step.toString());
 						//add the step
 						solution.addStep(step);
 						//add it to the solution list
@@ -219,7 +219,8 @@ public class Solver {
 	 */
 	private int whichIsFinished(ArrayList<Solution> solList){
 		Solve4x.debug("checking if we're done");
-		solList.get(0).getLastStep().getStageAt(1);
+		//FIXME Still throws IndexOutOfBoundsException
+		System.out.println(solList.get(0).getLastStep().getStageAt(0));
 		//check all solutions
 		for(int i=0; i<solList.size(); i++){
 			

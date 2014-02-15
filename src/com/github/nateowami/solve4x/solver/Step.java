@@ -18,6 +18,7 @@
 package com.github.nateowami.solve4x.solver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.github.nateowami.solve4x.Solve4x;
 
@@ -50,6 +51,15 @@ public class Step {
 		this.difficulty = difficulty;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Step [stages=" + Arrays.toString(stages) + ", explanation="
+				+ explanation + ", difficulty=" + difficulty + "]";
+	}
+
 	/**
 	 * Finds the length of the step. This will often be just one.
 	 * @return The length of the step

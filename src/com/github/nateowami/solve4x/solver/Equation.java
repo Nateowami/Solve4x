@@ -101,4 +101,15 @@ public class Equation {
 		
 	}
 	
+	/**
+	 * @return A String representation of this equation. Example: 2x+x=5
+	 */
+	public String getAsString(){
+		String eq= "";
+		for(int i = 0; i < exprs.length; i++){
+			eq += "=" + exprs[i].getAsString();
+		}
+		return eq;
+	}
+	
 }
