@@ -176,11 +176,13 @@ public class Util {
 	 * @return If it's a number and/or fraction combination
 	 */
 	public static boolean isNumber(String number) {
+		//FIXME this method is broken. If number is "5" it still returns false
+		Solve4x.debug("Checking if it's a number: " + number);
 		
 		//i is our marker for how far we've checked
 		int i = 0;
 		//check for the first char being -
-		if(number.charAt(i) == '-'){
+		if(number.charAt(0) == '-'){
 			//if it is, pass past it
 			i++;
 		}
@@ -190,6 +192,7 @@ public class Util {
 			//if we've reached the end
 			if(i==number.length()){
 				//we've reached the end without problems
+				Solve4x.debug("Returning true");
 				return true;
 			}
 		}
@@ -197,11 +200,15 @@ public class Util {
 		//if we've gotten this far at least part of the number must be a fraction, or
 		//it's not a number at all. Check the rest of it for being a fraction.
 		if(isFraction(number.substring(i, number.length()))){
+			Solve4x.debug("Returning true");
 			return true;
 		}
 		
 		//the end. if it didn't work, then, well, it wasn't a nice number
-		else return false;
+		else {
+			Solve4x.debug("Returning false");
+			return false;
+		}
 	}
 	
 	/**

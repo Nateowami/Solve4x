@@ -218,8 +218,7 @@ public class Solver {
 	 * @return The index of a Solution that is fully solved
 	 */
 	private int whichIsFinished(ArrayList<Solution> solList){
-		Solve4x.debug("checking if we're done");
-		//FIXME Still throws IndexOutOfBoundsException
+		Solve4x.debug("checking if we're done. the list of solutions has the following length: " + solList.size());
 		System.out.println(solList.get(0).getLastStep().getStageAt(0));
 		//check all solutions
 		for(int i=0; i<solList.size(); i++){
@@ -242,23 +241,31 @@ public class Solver {
 	 * @return
 	 */
 	private boolean isSimplified(String expr){
+		Solve4x.debug("Checking if it's simplified: " + expr);
 		//if it's a number
 		if(Util.isNumber(expr)){
+			Solve4x.debug("It's a number alright");
 			//AND it's fully simplified (TODO)
 			if(Util.isFullySimplified(expr)){
+				Solve4x.debug("Returning true");
 				return true;
 			}
 			//not fully simplified
 			else{
+				Solve4x.debug("Returning false");
 				return false;
 			}
 		}
 		//if it's a variable
-		else if(expr.length() == 0 && Util.isLetter(expr.charAt(0))){
+		else if(expr.length() == 1 && Util.isLetter(expr.charAt(0))){
+			Solve4x.debug("Returning true");
 			return true;
 		}
 		//I can't think of any other way for it to be fully simplified
-		else return false;
+		else {
+			Solve4x.debug("Returning false");
+			return false;
+		}
 	}
 	
 }
