@@ -126,9 +126,10 @@ public class Solver {
 						Solve4x.debug("Algorithm not used");
 					}
 				}
-
 			}
 		}
+		//set finalSolution
+		finalSolution = getBestSolution(solutions);
 	}
 	
 	/**
@@ -226,7 +227,7 @@ public class Solver {
 			//check the first and second expressions
 			if(isSimplified(solList.get(i).getEquation().getExpression(0).getAsString())
 					&& isSimplified(solList.get(i).getEquation().getExpression(1).getAsString())){
-				Solve4x.debug("Returns " + 1);
+				Solve4x.debug("Returns " + i);
 				return i;
 			}
 		}
@@ -266,6 +267,35 @@ public class Solver {
 			Solve4x.debug("Returning false");
 			return false;
 		}
+	}
+	
+	/**
+	 * Tells which Solution is the best
+	 * @param solutions An ArrayList of Solutions to search
+	 * @return The Solution that is solved the best
+	 */
+	private Solution getBestSolution(ArrayList<Solution> solutions) {
+		//the index of the best solution found so far
+		int index = -1;
+		//how "difficult" that solution is
+		int difficulty = -1;
+		//now iterate over the solutions and find the best one
+		for(int i = 0; i< solutions.size(); i++){
+			//if the difficulty of the current Solution is less than that of any Solution found so far
+			//or it's the first solution we've looked at 
+			if(solutions.get(i).difficulty() < difficulty || i == 0){
+				index = i;
+			}
+		}
+		//index is now the the index of the best Solution or is -1, if there is no solution
+		
+		//if index is 0 or positive
+		if(index >= 0){
+			//return the solution that was found
+			return solutions.get(index);
+		}
+		//there is no Solution; return null
+		else return null;
 	}
 	
 }

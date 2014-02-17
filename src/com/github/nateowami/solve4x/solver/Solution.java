@@ -111,4 +111,18 @@ public class Solution {
 	public Equation getLastEquation() {
 		return lastEquation;
 	}
+
+	/**
+	 * Tells the difficulty of this Solution
+	 * @return The sum of the difficulties of the individual steps.
+	 */
+	public int difficulty() {
+		int difficulty = 0;
+		//loop thorough the steps
+		for(int i = 0; i < this.steps.size(); i++){
+			//and add the current step to the difficulty
+			difficulty += this.steps.get(i).getDifficulty();
+		}
+		return difficulty;
+	}
 }

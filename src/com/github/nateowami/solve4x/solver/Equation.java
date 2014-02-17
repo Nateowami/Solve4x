@@ -76,7 +76,7 @@ public class Equation {
 	 * @return The expression at index i
 	 */
 	public Expression getExpression(int i){
-		Solve4x.debug("about to return expressino from equation. index is: " + i);
+		Solve4x.debug("about to return expression from equation. index is: " + i);
 		return exprs[i];
 	}
 	
