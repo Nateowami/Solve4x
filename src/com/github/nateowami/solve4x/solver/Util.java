@@ -180,7 +180,7 @@ public class Util {
 		//i is our marker for how far we've checked
 		int i = 0;
 		//check for the first char being -
-		if(number.charAt(i) == '-'){
+		if(number.charAt(0) == '-'){
 			//if it is, pass past it
 			i++;
 		}
@@ -188,7 +188,7 @@ public class Util {
 		//now iterate through the first part as long as all are 0-9
 		for(;i<number.length()&& isNumeral(number.charAt(i)); i++){
 			//if we've reached the end
-			if(i==number.length()){
+			if(i==number.length()-1){
 				//we've reached the end without problems
 				return true;
 			}
