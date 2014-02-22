@@ -152,7 +152,7 @@ public class CombineLikeTerms implements Algorithm{
 		//now create a string from the equation XXX will not support systems of equations
 		String finalEquation = equation.getAsString();
 		//the explanation for this algorithm
-		String lameExplanation = "We're combining the terms and the result is " + finalTerm + ".";
+		String lameExplanation = "We're combining the terms and the result is " + finalTerm.getAsString() + ".";
 		//an array containing only one expression
 		String steps[] = {finalEquation};
 		Solve4x.debug("Step created and ready to return. The final equation is: " + finalEquation);

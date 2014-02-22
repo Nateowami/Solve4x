@@ -29,7 +29,7 @@ public abstract interface Algorithm {
 	/**
 	 * Creates a Step object for performing this algorithm on
 	 * a given expression or equation
-	 * @param expr The expression or equation to do a bit of solving on
+	 * @param equation The expression or equation to do a bit of solving on
 	 * @return The Step for solving this little bit
 	 */
 	public abstract Step getStep(Equation equation);
@@ -37,7 +37,7 @@ public abstract interface Algorithm {
 	/**
 	 * To return the approximate smartness of performing the solving technique
 	 * on the given Step
-	 * @param currentEq The Step to evaluate
+	 * @param equation The Step to evaluate
 	 */
 	public abstract int getSmarts(Equation equation);
 	

@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 
 /**
  * Checks to see if an expression or equation is valid. 
- * @autor Nateowami, Tribex
+ * @author Nateowami, Tribex
  */
 public class Validator {
 	

@@ -133,9 +133,7 @@ public class Solver {
 	}
 	
 	/**
-	 * Solves the given equation or simplifies it if it is an expression
-	 * @param expr The expression or equation to solve or simplify
-	 * @return A Solution object that contains the steps for solving
+	 * @return A Solution object that contains all the steps for solving
 	 */
 	public Solution getSolution(){
 		
@@ -145,7 +143,7 @@ public class Solver {
 	/**
 	 * Makes a list of solving algorithms
 	 * @return An ArrayList of algorithms for solving
-	 * @see getSimplifyingList()
+	 * @see #getSimplifyingList()
 	 */
 	private static <Algorithm>ArrayList getSolvingList(){
 		
@@ -165,7 +163,7 @@ public class Solver {
 	/**
 	 * Makes a list of algorithms for simplifying
 	 * @return An ArrayList of algorithms for simplifying
-	 * @see getSolvingList()
+	 * @see #getSolvingList()
 	 */
 	private static <Algorithm>ArrayList getSimplifyingList(){
 		
@@ -238,8 +236,8 @@ public class Solver {
 	/**
 	 * Tells if an expression is fully simplified. Examples: 23&lt;2&gt;/&lt;3&gt;
 	 * Works best for fractions. If it's complicated it's unreliable and will return false
-	 * @param expr
-	 * @return
+	 * @param expr The expression to check
+	 * @return If the expr is fully simplified
 	 */
 	private boolean isSimplified(String expr){
 		Solve4x.debug("Checking if it's simplified: " + expr);

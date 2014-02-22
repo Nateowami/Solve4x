@@ -33,7 +33,7 @@ public class Util {
 	
 	/**
 	 * Evaluates a given string to determine if it has an = sign
-	 * @param The string to evaluate
+	 * @param str The string to evaluate
 	 * @return If the equation has an equals sign
 	 */
 	public static boolean isEq(String str){
@@ -172,7 +172,7 @@ public class Util {
 
 	/**
 	 * Tells if a string is a number. Examples: 1234, &lt;123&gt;/&lt;34&gt;, 34/34, 12&lt;23&gt;/&lt;67&gt;
-	 * @param The number to check
+	 * @param number The number to check
 	 * @return If it's a number and/or fraction combination
 	 */
 	public static boolean isNumber(String number) {
@@ -293,7 +293,7 @@ public class Util {
 	 * Tells if a number, fraction, or mixed number is fully simplified. 
 	 * If it's a complicated fraction and it's unsure it will return false
 	 * @param expr The number/fraction/mixed number to evaluate
-	 * @return
+	 * @return If expr is fully simplified
 	 */
 	public static boolean isFullySimplified(String expr) {
 		//first check that we're dealing with a number/mixed number/fraction
@@ -395,7 +395,7 @@ public class Util {
 	
 	/**
 	 * Returns the factors of a given number
-	 * @param num1 The number  for which you want the factors
+	 * @param num The number  for which you want the factors
 	 * @return An array of factors for the number
 	 */
 	public static int[] factors(int num){

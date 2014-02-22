@@ -38,7 +38,7 @@ public class Step {
 	 * Constructs a Step object
 	 * @param step an ArrayList <String> containing the different stages of this solving step. 
 	 * Usually the length will be one; it can be more if we are cancelling like terms.
-	 * @param explain The explanation for this step. It needs to be written in a particular 
+	 * @param explanation The explanation for this step. It needs to be written in a particular 
 	 * syntax.
 	 */
 	public Step(String step[], String explanation, int difficulty){
