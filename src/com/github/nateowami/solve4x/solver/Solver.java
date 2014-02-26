@@ -218,6 +218,8 @@ public class Solver {
 	 */
 	private int whichIsFinished(ArrayList<Solution> solList){
 		Solve4x.debug("checking if we're done. the list of solutions has the following length: " + solList.size());
+		//if there aren't any solutions return -1
+		if(solList.size() == 0) return -1;
 		System.out.println(solList.get(0).getLastStep().getStageAt(0));
 		//check all solutions
 		for(int i=0; i<solList.size(); i++){

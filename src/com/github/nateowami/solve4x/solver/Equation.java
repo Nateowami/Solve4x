@@ -62,11 +62,15 @@ public class Equation {
 		}
 		//no = sign found
 		else{
-			Thread.currentThread().dumpStack();
 			exprs = new Expression[1];
 			exprs[0] = new Expression(eq);
 		}
-		Solve4x.debug("Equation created. First expression: " + exprs[0].getAsString() + " second expression: " + exprs[1].getAsString());
+		//debug
+		String expressions = "";
+		for(int j = 0; j < exprs.length; j++){
+			expressions += "Expression " + (j+1) + ": " + exprs[j].getAsString() + " ";
+		}
+		Solve4x.debug("Equation created. " + expressions);
 		
 	}
 	

@@ -167,7 +167,7 @@ public class CombineLikeTerms implements Algorithm{
 	 */
 	@Override
 	public int getSmarts(Equation equation) {
-		Solve4x.debug("CombineLikeTerms.getSmarts("+equation.getExpression(0).getAsString()+"=" + equation.getExpression(1).getAsString()+")");
+		Solve4x.debug("CombineLikeTerms.getSmarts("+equation.getAsString());
 		//find which expression needs simplifying the most
 		int num = 0;
 		for(int i=0; i<equation.getSize(); i++){
