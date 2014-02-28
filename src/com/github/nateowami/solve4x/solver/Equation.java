@@ -66,11 +66,7 @@ public class Equation {
 			exprs[0] = new Expression(eq);
 		}
 		//debug
-		String expressions = "";
-		for(int j = 0; j < exprs.length; j++){
-			expressions += "Expression " + (j+1) + ": " + exprs[j].getAsString() + " ";
-		}
-		Solve4x.debug("Equation created. " + expressions);
+		Solve4x.debug("Equation created. " + this.getAsString());
 		
 	}
 	
