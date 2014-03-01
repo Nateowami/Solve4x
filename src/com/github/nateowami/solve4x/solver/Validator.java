@@ -205,140 +205,6 @@ public class Validator {
 	}
 
 	/**
-	 * Figures out if the next char (after index) is is (, [, {, or <
-	 * @param str The string to search through
-	 * @param index The index to start searching from
-	 * @return true the next char is (, [, {, or <, false if it isn't or if the string
-	 * has reached the end.
-	 */
-	private static boolean isNextCharOpenPar(String str, int index){
-		boolean isPar = false;
-		//if there is another char to check
-		if(str.length()-1>index){
-			//if the next char is a parentheses
-			if(str.charAt(index+1)=='(' || str.charAt(index+1)=='[' ||
-					str.charAt(index+1)=='{' || str.charAt(index+1)=='<'){
-				//the next char is a paretheses
-				isPar = true;
-			}
-		}
-		return isPar;
-	}
-
-	/**
-	 * Finds the index of the end of a power
-	 * @param str The string to search in
-	 * @param index The index to start the search at
-	 * @return The last char that is part of the power
-	 */
-	private static int getEndOfPower(String str, int index){
-		//debugging
-		Solve4x.debug("getNextNonNumeral str: "+str+" index: "+index);
-		int answer = str.length()-1;//if there is no answer, default is the last index
-		//loop through the chars starting at index
-		for(int i = index; i < str.length(); i++){
-			//if the char isn't a numeral
-			if(!Util.isNumeral(str.charAt(i))){
-				//then the one before must have been the last
-				answer = i-1;
-				//but the answer should never be less than the original index
-				if(answer < index){
-					answer = index;
-				}
-				break;
-			}
-		}
-		Solve4x.debug("getNextNonNumeral returns: " + answer);
-		return answer;
-	}
-
-	/**
-	 * Finds the index of where a given expression has a + or - sign that is not nested
-	 *@param expr The expression to evaluate
-	 *@return The index of non-nested addition or subtraction
-	 */
-	private static int findCutAtAdditionOrSubtraction(String expr){
-		int parDepth = 0;//count how nested in parentheses we get
-		//loop through chars, keeping track of how far into parentheses nesting we get
-		for (int i = 0; i < expr.length(); i++){
-			//if it's an opening par
-			if(Util.isOpenPar(expr.charAt(i))){
-				parDepth++;
-			}
-			//if it's a closing par
-			else if (Util.isClosePar(expr.charAt(i))){
-				parDepth--;
-			}
-			//if it's addition or subtraction AND parDepth (nesting) is 0
-			if((expr.charAt(i) == '+' || expr.charAt(i) == '-' || expr.charAt(i) == '±') && parDepth == 0)
-				return i;
-		}
-		return -1;//There is no non-nested addition or subtraction
-	}
-	
-	/**
-	 * Finds the index of the last char in an expression that is multiplied by another.
-	 * For example, if expr is (5)2(6) it will return 3.
-	 *@param expr The expression to evaluate
-	 *@return The index of non-nested multiplication
-	 */
-	private static int findCutAtMultiplication(String expr){
-		//debug
-		Solve4x.debug(" *  " + expr);
-		int parDepth = 0;//how deep into par nesting we get
-		for (int i = 0; i < expr.length(); i++){
-			
-			//watch the parDepth
-			if(Util.isOpenPar(expr.charAt(i))){
-				parDepth++;
-			}
-			//and watch the parDepth for going down
-			if(Util.isClosePar(expr.charAt(i))){
-				parDepth--;
-			}
-			
-			//if it's a closing parentheses
-			if(Util.isClosePar(expr.charAt(i)) && parDepth == 0){
-				//find the end of a power (if any)
-				return getEndOfPower(expr, i);//because there could be powers after it
-			}
-			else if(Util.isOpenPar(expr.charAt(i)) && parDepth == 1 /*because it's an opening par*/&& i != 0/*Don't cut if it's the first time*/){
-				//so it parDepth must be at least 1
-				Solve4x.debug("HERE");
-				Solve4x.debug(" * returns " + (i -1));
-				return i-1;
-			}
-		}
-		Solve4x.debug(" * returns " + -1);
-		return -1;
-	}
-	
-	/**
-	 * Finds the index of where a given expression has a division sign that is not nested
-	 *@param expr The expression to evaluate
-	 *@return The index of a non-nested division
-	 */
-	private static int findCutAtDivision(String expr){
-		int parDepth = 0;//count how nested in parentheses we get
-		//loop through chars, keeping track of how far into parentheses nesting we get
-		for (int i = 0; i < expr.length(); i++){
-			//if it's an opening par
-			if(Util.isOpenPar(expr.charAt(i))){
-				parDepth++;
-			}
-			//if it's a closing par
-			else if (Util.isClosePar(expr.charAt(i))){
-				parDepth--;
-			}
-			//if it's division AND parDepth (nesting) is 0
-			else if(expr.charAt(i) == '/' && parDepth == 0){
-				return i;
-			}
-		}
-		return -1;//There is no non-nested division
-	}
-	
-	/**
 	 * Tells if all chars in a String are numerals (0-9) and letters (a-z and A-Z)
 	 * @param s The String to check.
 	 * @return 
@@ -356,6 +222,7 @@ public class Validator {
 		Solve4x.debug("Returns true");
 		return true;
 	}
+	
 	/**
 	 * Tells if an expression has more than one term. This is to avoid calling exprIsValid() from 
 	 * termIsValid() which would cause a stack overflow.
