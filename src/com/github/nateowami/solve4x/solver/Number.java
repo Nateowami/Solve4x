@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 
 /**
  * Represents a number/fraction/mixed-number such as 35, 45/6, 56&lt;36&gt;&lt;32&gt;, and 
- * provides methods for adding, subtracting, multiplying, and dividing numbers.
+ * provides methods for adding, subtracting, multiplying, and dividing numbers. (TODO)
  * @author Nateowami
  */
 public class Number {
@@ -128,7 +128,6 @@ public class Number {
 	 * (if they have fractions, that is) are not equal
 	 */
 	public static Number add(Number n1, Number n2) throws IllegalArgumentException{
-		//FIXME This method is TOTALLY broken
 		//make sure the denominators (if any) are identical
 		//make sure that if they both have denominators they are equal
 		if(!n1.getBottom().equals(n2.getBottom()) 
