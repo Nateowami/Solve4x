@@ -58,18 +58,8 @@ public class Solver {
 		
 		//validate the equation
 		//if there is an equals sign (=)
-		if(equation.indexOf('=') != -1){
-			//if it isn't valid as an equation
-			if(!Validator.eqIsValid(equation)){
-					throw new MalformedInputException(0);
-			}
-		}
-		//it must be an expression
-		else{
-			//if it's not valid as an expression
-			if(!Validator.exprIsValid(equation)){
-				throw new MalformedInputException(0);
-			}
+		if(!Validator.eqIsValid(equation)){
+			throw new MalformedInputException(0);
 		}
 		
 		Solve4x.debug("Equation successfully validated");

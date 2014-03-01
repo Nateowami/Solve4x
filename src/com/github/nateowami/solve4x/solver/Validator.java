@@ -35,12 +35,32 @@ public class Validator {
 	 * @param equation The equation to check
 	 * @return true if the equation is valid, otherwise false
 	 */
-	public static boolean eqIsValid(String equation){
+	public static boolean eqIsValid(String e){
 				
 		//debugging
-		Solve4x.debug("eqIsValid()" + equation);
-		Solve4x.debug("Testing Equation Validity: "+equation);
-		//check for one and only one equals sign
+		Solve4x.debug("eqIsValid()" + e);
+		Solve4x.debug("Testing Equation Validity: "+e);
+		
+		//create a new Equation
+		Equation eq;
+		//try to parse it
+		try{
+			eq = new Equation(e);
+			//check all expressions
+			for(int i = 0; i < eq.getSize(); i++){
+				//if the expression is invalid
+				if(!exprIsValid(eq.getExpression(i))){
+					return false;
+				}
+			}
+			//they were all valid expressions
+			return true;
+		}
+		catch(ArrayIndexOutOfBoundsException err){
+			//if it couldn't be parsed it's not valid
+			return false;
+		}
+		/*//check for one and only one equals sign
 		int numbOfEquals = 0;
 		int indexOfEquals = 0;
 		for(int i = 0; i < equation.length(); i++){
@@ -56,7 +76,7 @@ public class Validator {
 		} 
 		else {
 			return false;
-		}
+		}*/
 	}
 	
 	/**
@@ -64,23 +84,7 @@ public class Validator {
 	 *@param expr The expression to check
 	 *@return if the expression is valid
 	 */
-	public static boolean exprIsValid(String s) {
-		Solve4x.debug("!!!!!!!!PARAM!!!!!!!!!: " + s);
-		//remove parentheses from both ends if they surround the entire expression
-		s = Util.removePar(s);
-		
-		//create an expression
-		Expression expr;
-		try{
-			//try to parse it as an expression
-			expr = new Expression(s);
-		}
-		//if it didn't work to parse it
-		catch(ArrayIndexOutOfBoundsException e){
-			Solve4x.debug("Returns false");
-			return false;
-		}
-		//it did work to parse it, but it could be inaccurate
+	private static boolean exprIsValid(Expression expr) {
 		//check the terms for being correct
 		for(int i = 0; i < expr.numbOfTerms(); i++){
 			//if the term is not correct return false
@@ -90,7 +94,7 @@ public class Validator {
 			}
 		}
 		//no problems were found
-		Solve4x.debug("Returns false");
+		Solve4x.debug("Returns true");
 		return true;
 		
 		//Before doing the regular recursive check, there are a few misc things
@@ -139,17 +143,6 @@ public class Validator {
 	}
 	
 	/**
-	 * Validates both sides of an expression. 
-	 * @param expr The expression to evaluate
-	 * @param cut The index to cut at. The char at this index IS included
-	 * in the first substring, unlike Validator.cut()
-	 * @return if both sides of the expression are valid
-	 */
-	private static boolean cutMultiplication(String expr, int cut) {
-		return exprIsValid(expr.substring(0, cut+1)) && exprIsValid(expr.substring(cut+1, expr.length())); 
-	}
-	
-	/**
 	 * Evaluates the algebraic validity of the given term. A term may have commas in its exponent.
 	 * @param term The term to be evaluated
 	 * @return If the term is valid
@@ -163,7 +156,7 @@ public class Validator {
 		}
 		//it's also possible it's an expression, but we should only check that if the number of terms
 		//is greater than 1, or it would cause a stack overflow 
-		if(hasMoreThanOneTerm(term.getBody()) && exprIsValid(term.getBody())){
+		if(hasMoreThanOneTerm(term.getBody()) && exprIsValid(new Expression(term.getBody()))){
 			Solve4x.debug("Returns true");
 			return true;
 		}
@@ -345,18 +338,6 @@ public class Validator {
 		return -1;//There is no non-nested division
 	}
 	
-	/**
-	 * Validates both sides of an expression. 
-	 * @param expr The expression to evaluate
-	 * @param cut The index to cut at. The char at this index
-	 * will not be in either of the sub strings
-	 * @return if both sides of the expression are valid
-	 */
-	private static boolean cut(String expr, int cut){
-		//check both sides of the expression dividing at cut
-		return exprIsValid(expr.substring(0, cut)) && exprIsValid(expr.substring(cut+1, expr.length()));
-	}
-
 	/**
 	 * Tells if all chars in a String are numerals (0-9) and letters (a-z and A-Z)
 	 * @param s The String to check.
