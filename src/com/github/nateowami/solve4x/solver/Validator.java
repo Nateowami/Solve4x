@@ -19,6 +19,7 @@
 package com.github.nateowami.solve4x.solver;
 
 import com.github.nateowami.solve4x.Solve4x;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,7 +40,6 @@ public class Validator {
 		//debugging
 		Solve4x.debug("eqIsValid()" + equation);
 		Solve4x.debug("Testing Equation Validity: "+equation);
-		
 		//check for one and only one equals sign
 		int numbOfEquals = 0;
 		int indexOfEquals = 0;
@@ -64,15 +64,39 @@ public class Validator {
 	 *@param expr The expression to check
 	 *@return if the expression is valid
 	 */
-	public static boolean exprIsValid(String expr) {
-		
+	public static boolean exprIsValid(String s) {
+		Solve4x.debug("!!!!!!!!PARAM!!!!!!!!!: " + s);
 		//remove parentheses from both ends if they surround the entire expression
-		expr = Util.removePar(expr);
+		s = Util.removePar(s);
+		
+		//create an expression
+		Expression expr;
+		try{
+			//try to parse it as an expression
+			expr = new Expression(s);
+		}
+		//if it didn't work to parse it
+		catch(ArrayIndexOutOfBoundsException e){
+			Solve4x.debug("Returns false");
+			return false;
+		}
+		//it did work to parse it, but it could be inaccurate
+		//check the terms for being correct
+		for(int i = 0; i < expr.numbOfTerms(); i++){
+			//if the term is not correct return false
+			if(!termIsValid(expr.termAt(i))){
+				Solve4x.debug("Returns false");
+				return false;
+			}
+		}
+		//no problems were found
+		Solve4x.debug("Returns false");
+		return true;
 		
 		//Before doing the regular recursive check, there are a few misc things
 		//to check first
 		
-		//make sure the length isn't 0
+		/*//make sure the length isn't 0
 		if(expr.length()==0){
 			//then it can't be valid
 			return false;
@@ -109,7 +133,7 @@ public class Validator {
 		}
 		
 		//if it still wasn't cut
-		return termIsValid(expr);
+		return termIsValid(expr);*/
 
 		
 	}
@@ -130,8 +154,24 @@ public class Validator {
 	 * @param term The term to be evaluated
 	 * @return If the term is valid
 	 */
-	private static boolean termIsValid(String term) {
-		//debugging
+	private static boolean termIsValid(Term term) {
+		Solve4x.debug("Param: " + term.getAsString());
+		//Check the term body for being formatted properly, being ""
+		if(areLettersAndNums(term.getBody()) || term.getBody().equals("")){
+			Solve4x.debug("Returns true");
+			return true;
+		}
+		//it's also possible it's an expression, but we should only check that if the number of terms
+		//is greater than 1, or it would cause a stack overflow 
+		if(hasMoreThanOneTerm(term.getBody()) && exprIsValid(term.getBody())){
+			Solve4x.debug("Returns true");
+			return true;
+		}
+		//we'd have returned false already if it wasn't valid
+		Solve4x.debug("Returns false");
+		return false;
+		
+		/*//debugging
 		Solve4x.debug("termIsValid()" + term);
 		
 		//keep track of the first letter in the term
@@ -168,7 +208,7 @@ public class Validator {
 		}
 		//if we din't hit any problems above, return true now
 		Solve4x.debug("termIsValid returns " + true);
-		return true;
+		return true;*/
 	}
 
 	/**
@@ -316,4 +356,45 @@ public class Validator {
 		//check both sides of the expression dividing at cut
 		return exprIsValid(expr.substring(0, cut)) && exprIsValid(expr.substring(cut+1, expr.length()));
 	}
+
+	/**
+	 * Tells if all chars in a String are numerals (0-9) and letters (a-z and A-Z)
+	 * @param s The String to check.
+	 * @return 
+	 */
+	private static boolean areLettersAndNums(String s){
+		Solve4x.debug("Param: " + s);
+		//loop through the chars
+		for(int i = 0; i < s.length(); i++){
+			//if it's not a numerals or letter
+			if(!Util.isLetter(s.charAt(i)) && !Util.isNumeral(s.charAt(i))){
+				Solve4x.debug("Returns false");
+				return false;
+			}
+		}
+		Solve4x.debug("Returns true");
+		return true;
+	}
+	/**
+	 * Tells if an expression has more than one term. This is to avoid calling exprIsValid() from 
+	 * termIsValid() which would cause a stack overflow.
+	 * @param s The expression to check
+	 * @return If there is more than one term
+	 */
+	private static boolean hasMoreThanOneTerm(String s){
+		try{
+			//make an expression
+			Expression expr = new Expression(s);
+			//if there are multiple terms return true, otherwise false
+			if(expr.numbOfTerms() > 1){
+				return true;
+			}
+			else return false;
+		}
+		//if the expression couldn't be parsed return false;
+		catch(ArrayIndexOutOfBoundsException e){
+			return false;
+		}
+	}
+	
 }
