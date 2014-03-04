@@ -31,13 +31,56 @@ public class Term {
 	//would not. It would use body instead (for the xy2 part).
 	private Expression expr;
 	private String body;
+	//the power the expression is raised to, if any
+	private int exprPower;
 	
 	/**
 	 * Creates a new term from a String
 	 * @param term The term to create
 	 */
 	public Term(String term){
+		//make the coefficient
+		//i needed outside loop
+		int i;
+		for(i = 0; i < term.length(); i++){
+			//if up to this point it's not a number
+			if(!Number.isNumber(term.substring(0, i+1))){
+				//subtract one to push i back into the "it's still a number" range
+				i--;
+				break;
+			}
+		}
+		//i is now index of the last char of the coefficient, or -1 if there is no coefficient
+		if(i > 0){
+			//set the coefficient
+			coe = new Number(term.substring(0, i+1));
+			//delete the coefficient from term for further parsing
+			term = term.substring(i+1, term.length());
+		}
 		
+		Solve4x.debug("Coefficent removed from term. The following is left: " + term);
+		
+		//now figure out if we need to have a body or an Expression
+		//if it's alpha-numeric it should use body instead of expr
+		boolean an = true;//alpha-numeric
+		for(int b = 0; b < term.length(); b++){
+			//if the current char isn't a numeral or a letter
+			if(!Util.isNumeral(term.charAt(b)) && !Util.isLetter(term.charAt(b))){
+				//it's not alpha-numeric
+				an = false;
+				break;
+			}
+		}
+		//if it's alpha-numeric, put term into body
+		if(an){
+			body = term;
+		}
+		//it's not alpha-numeric; it must be an Expression
+		else{
+			//TODO this wouldn't necessarily work. It could be something like 2(3x+4y)2
+			expr = new Expression(term);
+		}
+
 	}
 	
 	/**
