@@ -25,106 +25,107 @@ import com.github.nateowami.solve4x.Solve4x;
  */
 public class Term {
 	
-	//all properties are strings because there's no way to have an empty int
-	//but you can have an empty string. Example: 2x has no power. We can't 
-	//represent that if we use an int.
-	
-	//the coefficient of the term (it's a String because the coefficient could be a fraction)
-	//and the expression/body part of the term
-	private String coeInt = "", coeFrac = "", expr = "";
-	//the positive or negative value of the term
-	private boolean sign;
+	//the coefficient of the term
+	private Number coe;
+	//The expression part of the term (if applicable) for example, 2x(34+4y) would use expr, while 2xy2 
+	//would not. It would use body instead (for the xy2 part).
+	private Expression expr;
+	private String body;
 	
 	/**
 	 * Creates a new term from a String
 	 * @param term The term to create
 	 */
 	public Term(String term){
-		//parse the expression and set coe and term
 		
-		//set the term's positive or negative value
-		//if it's negative
-		if(term.charAt(0) == '-'){
-			sign = false;
-			//remove the - from term
-			term = term.substring(1, term.length());
-		}
-		else{
-			//positive is default
-			sign = true;
-			//the + may or may not exist, but it's positive if it doesn't
-			if(term.charAt(0) == '+'){
-				//remove the +
-				term = term.substring(1, term.length());
-			}
-		}
-		
-		//look for an integer an the beginning
-		for(int i=0; i< term.length(); i++){
-			
-			//if it's not a numeral
-			if(!Util.isNumeral(term.charAt(i))){
-				//set the coefficient to a substring (the beginning
-				//of the term to i). The method substring() will subtract 1 for us.
-				this.coeInt = term.substring(0, i);
-				//remove the integer from the beginning of the string
-				term = term.substring(i, term.length());
-				//set the integer part of the coefficient
-				break;
-			}
-		}
-		
-		//now check for a fraction that could come after the integer
-		for(int i=1; i<term.length(); i++){
-			//if 0 to i+1 is a nice and neat fraction
-			if(Util.isFraction(term.substring(0, i))){
-				//if it's a fraction set coeFrac to it
-				this.coeFrac = term.substring(0, i);
-				//remove the fraction from term
-				term = term.substring(i, term.length());
-			}
-		}
-		
-		//take all the rest and set the term's expression/body with it
-		this.expr = term;
 	}
 	
+	/**
+	 * Tells if the Term has a coefficient. Example:
+	 * xy2 would be false. There is no coefficient.
+	 * 2(xy2+9) would be true. 2 is the coefficient.
+	 * &lt;1&gt;/&lt;2&gt; would be true. It has a fraction for a coefficient.
+	 * @return If the Term has a coefficient
+	 */
+	public boolean hasCoe(){
+		return coe == null;
+	}
+	
+	/**
+	 * Gives the coefficient of the Term if it has one, otherwise null
+	 * @return the coefficient of the Term.
+	 * @see hascoe();
+	 */
+	public Number getCoe(){
+		return coe;
+	}
+	
+	/**
+	 * Tells if the Term has a body part. Example:
+	 * 2xy2 would be true. xy2 is the body.
+	 * 2(xy2+9) would be false. It uses an expression for the (xy2+9) part.
+	 * 2&lt;1&gt;/&lt;2&gt; would be false. It has no body part, or expression.
+	 * @return If the term has a body.
+	 */
+	public boolean hasBody(){
+		return expr == null;
+	}
+	
+	/**
+	 * Gives the body of the term only if the body is not an expression, in which case it returns null.
+	 * @return The body of the term. For example, if the term is "4x" this would return "x".
+	 * @see hasBody()
+	 */
+	public String getBody() {
+		return body;
+	}
+
+	/**
+	 * Tells if the Term has an expression. Example:
+	 * 2xy2 would be false. xy2 is held in the term's body.
+	 * 2(xy2+9) would be true. The Expression is (xy2+9).
+	 * 2&lt;1&gt;/&lt;2&gt; would be false. The fraction is in the coefficient.
+	 * @return
+	 */
+	public boolean hasExpr(){
+		return expr == null;
+	}
+
+	/**
+	 * Gives the Expression part of the term if it exists, otherwise null.
+	 * @return The Expression part of the term.
+	 * @see hasExpr();
+	 */
+	public Expression getExpr(){
+		return expr;
+	}
+	
+	/**
+	 * @return The Term as a String.
+	 */
+	public String getAsString() {
+		return 
+				//the coefficient
+				coe.getAsString()
+				//the expression if it exists
+				+expr != null ? expr.getAsString() : ""
+				//the body if it exists
+				+body != null ? body : "";
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Term [coeInt=" + coeInt + ", coeFrac=" + coeFrac + ", expr="
-				+ expr + ", sign=" + sign + "]";
-	}
-
-	/**
-	 * @return The coefficient of the term (may include a fraction)
-	 */
-	public String getCoe(){
-		return coeInt+coeFrac;
-	}
-
-	/**
-	 * @return The body of the term. For example, in "4x" this would return "x".
-	 */
-	public String getBody() {
-		return expr;
+		//any of the three could be null
+		return 
+				//the coefficient if it exists
+				"Term [coe=" + (coe != null? coe.getAsString() : "null" ) + 
+				//the expression part if it exists
+				", expr=" + (expr != null? expr.getAsString() : "null") + 
+				//the body of the term if it exists
+				", body=" + (body != null? body : "null") + "]";
 	}
 	
-	/**
-	 * @return The positive or negative value of this term
-	 * true is positive, false is negative.
-	 */
-	public boolean getIsPositive(){
-		return sign;
-	}
-
-	/**
-	 * @return The Term as a String.
-	 */
-	public String getAsString() {
-		return (sign? "" : "-") + coeInt + coeFrac + expr;
-	}
-
 }

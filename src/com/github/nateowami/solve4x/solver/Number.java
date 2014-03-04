@@ -19,6 +19,8 @@ package com.github.nateowami.solve4x.solver;
 
 import java.math.BigDecimal;
 
+import com.github.nateowami.solve4x.Solve4x;
+
 /**
  * Represents a number/fraction/mixed-number such as 35, 45/6, 56&lt;36&gt;&lt;32&gt;, and 
  * provides methods for adding, subtracting, multiplying, and dividing numbers. (TODO)
@@ -204,5 +206,47 @@ public class Number {
 		//combine all the major fields into a string
 		return (sign ? "" : "-") + this.wholeNumber+ this.top + this.bottom;
 	}
+
+	/**
+	 * Tells if a string is a number. Examples: 1234, &lt;123&gt;/&lt;34&gt;, 34/34, 12&lt;23&gt;/&lt;67&gt;
+	 * @param number The number to check
+	 * @return If it's a number and/or fraction combination
+	 */
+	public static boolean isNumber(String number) {
+		//TODO support decimals and roots
+		Solve4x.debug("Checking if it's a number: " + number);
+		
+		//i is our marker for how far we've checked
+		int i = 0;
+		//check for the first char being -
+		if(number.charAt(0) == '-'){
+			//if it is, pass by it
+			i++;
+		}
+		
+		//now iterate through the first part as long as all are 0-9
+		for(;i<number.length()&& Util.isNumeral(number.charAt(i)); i++){
+			//if we've reached the end
+			if(i==number.length()-1){
+				//we've reached the end without problems
+				Solve4x.debug("Returning true");
+				return true;
+			}
+		}
+		
+		//if we've gotten this far at least part of the number must be a fraction, or
+		//it's not a number at all. Check the rest of it for being a fraction.
+		if(Util.isFraction(number.substring(i, number.length()))){
+			Solve4x.debug("Returning true");
+			return true;
+		}
+		
+		//the end. if it didn't work, then, well, it wasn't a nice number
+		else {
+			Solve4x.debug("Returning false");
+			return false;
+		}
+	}
+	
 	
 }

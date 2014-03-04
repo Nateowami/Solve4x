@@ -17,7 +17,6 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -172,47 +171,6 @@ public class Util {
 	}
 
 	/**
-	 * Tells if a string is a number. Examples: 1234, &lt;123&gt;/&lt;34&gt;, 34/34, 12&lt;23&gt;/&lt;67&gt;
-	 * @param number The number to check
-	 * @return If it's a number and/or fraction combination
-	 */
-	public static boolean isNumber(String number) {
-		//FIXME this method is broken. If number is "5" it still returns false
-		Solve4x.debug("Checking if it's a number: " + number);
-		
-		//i is our marker for how far we've checked
-		int i = 0;
-		//check for the first char being -
-		if(number.charAt(0) == '-'){
-			//if it is, pass past it
-			i++;
-		}
-		
-		//now iterate through the first part as long as all are 0-9
-		for(;i<number.length()&& isNumeral(number.charAt(i)); i++){
-			//if we've reached the end
-			if(i==number.length()-1){
-				//we've reached the end without problems
-				Solve4x.debug("Returning true");
-				return true;
-			}
-		}
-		
-		//if we've gotten this far at least part of the number must be a fraction, or
-		//it's not a number at all. Check the rest of it for being a fraction.
-		if(isFraction(number.substring(i, number.length()))){
-			Solve4x.debug("Returning true");
-			return true;
-		}
-		
-		//the end. if it didn't work, then, well, it wasn't a nice number
-		else {
-			Solve4x.debug("Returning false");
-			return false;
-		}
-	}
-	
-	/**
 	 * Evaluates a char to see if it is between a-z or A-Z
 	 * @param c The char to evaluate
 	 * @return If the char is a a-z or A-Z
@@ -298,7 +256,7 @@ public class Util {
 	 */
 	public static boolean isFullySimplified(String expr) {
 		//first check that we're dealing with a number/mixed number/fraction
-		if(isNumber(expr)){
+		if(Number.isNumber(expr)){
 			//it's a number; make sure it's simplified
 			
 			//the index of the first non-numeral
@@ -338,7 +296,7 @@ public class Util {
 	 * @return If it's fully simplified (may be hard to tell; see above)
 	 */
 	private static boolean isFracSimplified(String frac) {
-		//TODO
+		//TODO debug
 		//first find the /
 		int i = 0;
 		for(; i < frac.length(); i++){
