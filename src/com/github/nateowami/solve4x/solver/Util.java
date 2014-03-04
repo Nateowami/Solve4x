@@ -109,6 +109,7 @@ public class Util {
 		String arg = expr;
 		//debugging
 		Solve4x.debug("removePar()" + expr);
+		System.out.println(Thread.currentThread().getStackTrace()[2]);
 		
 		//check to see if it starts and ends with parentheses
 		if((expr.length() >= 1) && isOpenPar(expr.charAt(0)) && isClosePar(expr.charAt(expr.length()-1))){
