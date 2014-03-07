@@ -17,70 +17,113 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import java.nio.charset.MalformedInputException;
+
 import com.github.nateowami.solve4x.Solve4x;
 
 /**
  * Provides a way to work with terms in equations.
+ * Terms are represented as follows: A Term (optionally) contains a coefficient (instance of class Number),
+ * and two list: one of variables, the other of Expressions. For example, the term 2&lt;3&gt;/&lt;4&gt;xy2(2x+4y)(x+y)2
+ * would be represented as follows:
+ * 2&lt;3&gt;/&lt;4&gt; (Number)
+ * variable list:
+ * 		x
+ * 		y (variable with power of 2) 
+ * Expression list:
+ * 		(2x+4y)
+ * 		(x+y)2 (Expression with power of two)
+ * You can access these values with methods such as hasCoe(), getCoe(), numOfVars(), varAt(int), numOfExprs(), and exprAt(int).
+ * Variables and Expressions are held in two separate arrays.
  * @author Nateowami
  */
 public class Term {
 	
 	//the coefficient of the term
 	private Number coe;
-	//The expression part of the term (if applicable) for example, 2x(34+4y) would use expr, while 2xy2 
-	//would not. It would use body instead (for the xy2 part).
-	private Expression expr;
-	private String body;
-	//the power the expression is raised to, if any
-	private int exprPower;
+	//the list of variables in this term
+	private char vars[];
+	//and their respective powers
+	private int varPowers[];//TODO fill with 1s
+	//the list of expressions in this term
+	private Expression exprs[];
+	//and their respective powers
+	private int exprPowers[];//TODO fill with 1s
 	
 	/**
 	 * Creates a new term from a String
 	 * @param term The term to create
+	 * @throws MalformedInputException If the term is not properly formatted (and not always even then)
 	 */
-	public Term(String term){
-		//make the coefficient
-		//i needed outside loop
-		int i;
-		for(i = 0; i < term.length(); i++){
-			//if up to this point it's not a number
-			if(!Number.isNumber(term.substring(0, i+1))){
-				//subtract one to push i back into the "it's still a number" range
-				i--;
-				break;
-			}
-		}
-		//i is now index of the last char of the coefficient, or -1 if there is no coefficient
-		if(i > 0){
-			//set the coefficient
+	public Term(String term) throws MalformedInputException{
+		//create the coefficient
+		//loop backwards until we find it's a number.
+		//numbers will descend
+		for(int i = term.length()-1; i >= 0; i++){
+			if(!Number.isNumber(term.substring(0, i+1)));
+			//we found the largest section that could be called the coefficient
+			//take it and initialize the coefficient
 			coe = new Number(term.substring(0, i+1));
-			//delete the coefficient from term for further parsing
-			term = term.substring(i+1, term.length());
+			break;
 		}
+		//Now term has no coefficient. 
+		//for every variable, add it to vars[] and it's power to varPowers[]
+		//add every expression to esprs[] and their powers to exprPowers[]
 		
-		Solve4x.debug("Coefficent removed from term. The following is left: " + term);
+		//variable for keeping track of what we've put into vars[] and exprs[]
+		int varsSoFar = 0, exprsSoFar = 0;
 		
-		//now figure out if we need to have a body or an Expression
-		//if it's alpha-numeric it should use body instead of expr
-		boolean an = true;//alpha-numeric
-		for(int b = 0; b < term.length(); b++){
-			//if the current char isn't a numeral or a letter
-			if(!Util.isNumeral(term.charAt(b)) && !Util.isLetter(term.charAt(b))){
-				//it's not alpha-numeric
-				an = false;
-				break;
+		//while there's something to parse
+		while(term.length() > 0){
+			//it the first char is a variable
+			if(Util.isLetter(term.charAt(0))){
+				//add it to the list of vars at the index varsSoFar
+				vars[varsSoFar] = term.charAt(0);
+				//as long as numerals are found, add them to the this string
+				String power = "";
+				for(int i = 1; i < term.length() && Util.isNumeral(term.charAt(i)); i++){
+					//there is another char, and it's a numeral
+					//append it to power
+					power+=term.charAt(i);
+				}
+				//now set the power for the var we found
+				//and increment varsSoFar
+				varPowers[varsSoFar++] = Integer.parseInt(power);
+				//Now cut out the part we've parsed. The length is 1 (var's size) + power.length()
+				term = term.substring(1+power.length(), term.length());
+			}
+			//otherwise it's an expression
+			else{
+				//figure out how long this expression lasts
+				//the depth into parentheses nesting that we've gone
+				int parDepth = 0;
+				//loop through the expression, waiting for the parentheses depth to reach 0
+				for(int i = 0; i < term.length(); i++){
+					if(Util.isOpenPar(term.charAt(i))){
+						parDepth++;
+					}
+					//if it's the first char and it wasn't an open par, throw and exception
+					else if(i == 0 && !Util.isOpenPar(term.charAt(i))){
+						throw new MalformedInputException(0);
+					}
+					else if(Util.isClosePar(term.charAt(i))){
+						parDepth--;
+					}
+					//if we've reached the end of the expression
+					//TODO parse the expression's power.
+					if(parDepth == 0){
+						//create a new Expression and then break
+						
+						exprs[exprsSoFar] = new Expression(term.substring(0, i+1));
+						//cut the expression from the term
+						term = term.substring(i+1, term.length());
+						//increment exprsSoFar
+						exprsSoFar++;
+						break;
+					}
+				}
 			}
 		}
-		//if it's alpha-numeric, put term into body
-		if(an){
-			body = term;
-		}
-		//it's not alpha-numeric; it must be an Expression
-		else{
-			//TODO this wouldn't necessarily work. It could be something like 2(3x+4y)2
-			expr = new Expression(term);
-		}
-
 	}
 	
 	/**
@@ -104,71 +147,91 @@ public class Term {
 	}
 	
 	/**
-	 * Tells if the Term has a body part. Example:
-	 * 2xy2 would be true. xy2 is the body.
-	 * 2(xy2+9) would be false. It uses an expression for the (xy2+9) part.
-	 * 2&lt;1&gt;/&lt;2&gt; would be false. It has no body part, or expression.
-	 * @return If the term has a body.
+	 * Tells the number of variables in this term. For example,
+	 * 2xy(2x+6) would return 2. (2x+6) is an Expression, not a variable.
+	 * @return The number of variables in this term
+	 * @see getVarAt(int i)
 	 */
-	public boolean hasBody(){
-		return expr == null;
+	public int numOfVars(){
+		return vars.length;
 	}
 	
 	/**
-	 * Gives the body of the term only if the body is not an expression, in which case it returns null.
-	 * @return The body of the term. For example, if the term is "4x" this would return "x".
-	 * @see hasBody()
+	 * @param i The index of the variable you want.
+	 * @return The variable at index i.
+	 * @see numOfVars()
 	 */
-	public String getBody() {
-		return body;
+	public char getVarAt(int i){
+		return vars[i];
 	}
-
+	
 	/**
-	 * Tells if the Term has an expression. Example:
-	 * 2xy2 would be false. xy2 is held in the term's body.
-	 * 2(xy2+9) would be true. The Expression is (xy2+9).
-	 * 2&lt;1&gt;/&lt;2&gt; would be false. The fraction is in the coefficient.
+	 * Tells the power of the specified variable.
+	 * @param i The index of the variable for which you want its power.
+	 * @return The power of the variable at index i.
+	 */
+	public int getVarPower(int i){
+		return varPowers[i];
+	}
+	
+	/**
+	 * Tells the number of Expressions in this term. For example,
+	 * 2xy(2x+6) would return 1. x and y are variables, not Expressions.
+	 * @return The number of Expressions in this term.
+	 * @see getExprAt(int i)
+	 */
+	public int numOfExprs(){
+		return exprs.length;
+	}
+	
+	/**
+	 * @param i The index of the Expression you want.
+	 * @return The Expression at index i.
+	 * @see numOfExprs()
+	 */
+	public Expression getExprAt(int i){
+		return exprs[i];
+	}
+	
+	/**
+	 * Tells the power of the expression at index i.
+	 * @param i The index of the Expression for which you want the power
+	 * @return The power of the expression at index i.
+	 */
+	public int getExprPower(int i){
+		return exprPowers[i];
+	}
+	
+	/**
+	 * @return The variables and Expressions of this term as a String. 
+	 */
+	public String getBody(){
+		String vars = "";
+		for(int i = 0; i < this.vars.length; i++){
+			vars+=	this.vars[i];
+			//add the power if it's there
+			if(this.varPowers[i]!=1){
+				vars+=this.varPowers[i];
+			}
+		}
+		//now add the expressions
+		String exprs = "";
+		for(int i = 0; i < this.exprs.length; i++){
+			exprs+=this.exprs[i];
+			//add the power if it's there
+			if(this.exprPowers[i]!=1){
+				vars+=this.exprPowers[i];
+			}
+		}
+		return vars+exprs;
+	}
+	
+	/**
+	 * Returns a String representation of this Term in the form of an algebraic term, not the 
+	 * traditional toString().
 	 * @return
 	 */
-	public boolean hasExpr(){
-		return expr == null;
+	public String getAsString(){
+		return (coe==null?"":coe.getAsString()) + getBody();
 	}
-
-	/**
-	 * Gives the Expression part of the term if it exists, otherwise null.
-	 * @return The Expression part of the term.
-	 * @see hasExpr();
-	 */
-	public Expression getExpr(){
-		return expr;
-	}
-	
-	/**
-	 * @return The Term as a String.
-	 */
-	public String getAsString() {
-		return 
-				//the coefficient
-				coe.getAsString()
-				//the expression if it exists
-				+expr != null ? expr.getAsString() : ""
-				//the body if it exists
-				+body != null ? body : "";
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		//any of the three could be null
-		return 
-				//the coefficient if it exists
-				"Term [coe=" + (coe != null? coe.getAsString() : "null" ) + 
-				//the expression part if it exists
-				", expr=" + (expr != null? expr.getAsString() : "null") + 
-				//the body of the term if it exists
-				", body=" + (body != null? body : "null") + "]";
-	}
-	
 }
