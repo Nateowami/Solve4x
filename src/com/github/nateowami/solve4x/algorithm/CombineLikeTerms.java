@@ -28,6 +28,7 @@ import com.github.nateowami.solve4x.solver.Term;
 import com.github.nateowami.solve4x.solver.Number;
 
 /**
+ * TODO Update to reflect changes in Term
  * @author Nateowami
  */
 public class CombineLikeTerms implements Algorithm{

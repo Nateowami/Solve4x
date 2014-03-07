@@ -17,6 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 
 /**
@@ -76,7 +77,7 @@ public class Solution {
 	 * Adds a Step to the current Solution
 	 * @param step
 	 */
-	public void addStep(Step step){
+	public void addStep(Step step) throws MalformedInputException{
 		this.steps.add(step);
 		this.lastEquation = new Equation(step.getLastStage());
 	}

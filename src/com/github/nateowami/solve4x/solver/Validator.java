@@ -20,6 +20,7 @@ package com.github.nateowami.solve4x.solver;
 
 import com.github.nateowami.solve4x.Solve4x;
 
+import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,7 +36,7 @@ public class Validator {
 	 * @param equation The equation to check
 	 * @return true if the equation is valid, otherwise false
 	 */
-	public static boolean eqIsValid(String e){
+	public static boolean eqIsValid(String e) throws MalformedInputException{
 				
 		//debugging
 		Solve4x.debug("eqIsValid()" + e);
@@ -84,7 +85,7 @@ public class Validator {
 	 *@param expr The expression to check
 	 *@return if the expression is valid
 	 */
-	private static boolean exprIsValid(Expression expr) {
+	private static boolean exprIsValid(Expression expr) throws MalformedInputException{
 		//check the terms for being correct
 		for(int i = 0; i < expr.numbOfTerms(); i++){
 			//if the term is not correct return false
@@ -147,7 +148,7 @@ public class Validator {
 	 * @param term The term to be evaluated
 	 * @return If the term is valid
 	 */
-	private static boolean termIsValid(Term term) {
+	private static boolean termIsValid(Term term) throws MalformedInputException{
 		Solve4x.debug("Param: " + term.getAsString());
 		//Check the term body for being formatted properly, being ""
 		if(areLettersAndNums(term.getBody()) || term.getBody().equals("")){
@@ -229,7 +230,7 @@ public class Validator {
 	 * @param s The expression to check
 	 * @return If there is more than one term
 	 */
-	private static boolean hasMoreThanOneTerm(String s){
+	private static boolean hasMoreThanOneTerm(String s) throws MalformedInputException{
 		try{
 			//make an expression
 			Expression expr = new Expression(s);

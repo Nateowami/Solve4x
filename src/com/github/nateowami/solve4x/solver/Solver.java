@@ -170,7 +170,7 @@ public class Solver {
 	 * TODO tell is an expression is fully simplified
 	 * @return If the equation is solved
 	 */
-	private boolean isSolved(String equation){
+	private boolean isSolved(String equation) throws MalformedInputException{
 		//XXX We're assuming this is an equation, which currently is
 		//true, but we need to support more late. Possibly in another method
 		

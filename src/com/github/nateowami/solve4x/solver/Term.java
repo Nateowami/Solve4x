@@ -18,6 +18,7 @@
 package com.github.nateowami.solve4x.solver;
 
 import java.nio.charset.MalformedInputException;
+import java.util.Arrays;
 
 import com.github.nateowami.solve4x.Solve4x;
 
@@ -44,11 +45,11 @@ public class Term {
 	//the list of variables in this term
 	private char vars[];
 	//and their respective powers
-	private int varPowers[];//TODO fill with 1s
+	private int varPowers[];
 	//the list of expressions in this term
 	private Expression exprs[];
 	//and their respective powers
-	private int exprPowers[];//TODO fill with 1s
+	private int exprPowers[];
 	
 	/**
 	 * Creates a new term from a String
@@ -56,6 +57,10 @@ public class Term {
 	 * @throws MalformedInputException If the term is not properly formatted (and not always even then)
 	 */
 	public Term(String term) throws MalformedInputException{
+		//fill varPowers[] and exprPowers[] with 1s
+		Arrays.fill(varPowers, 1);
+		Arrays.fill(exprPowers, 1);
+		
 		//create the coefficient
 		//loop backwards until we find it's a number.
 		//numbers will descend
@@ -243,4 +248,16 @@ public class Term {
 	public String getAsString(){
 		return (coe==null?"":coe.getAsString()) + getBody();
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Term [coe=" + coe + ", vars=" + Arrays.toString(vars)
+				+ ", varPowers=" + Arrays.toString(varPowers) + ", exprs="
+				+ Arrays.toString(exprs) + ", exprPowers="
+				+ Arrays.toString(exprPowers) + "]";
+	}
+	
 }
