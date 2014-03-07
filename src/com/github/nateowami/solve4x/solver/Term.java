@@ -59,12 +59,13 @@ public class Term {
 		//create the coefficient
 		//loop backwards until we find it's a number.
 		//numbers will descend
-		for(int i = term.length()-1; i >= 0; i++){
-			if(!Number.isNumber(term.substring(0, i+1)));
-			//we found the largest section that could be called the coefficient
-			//take it and initialize the coefficient
-			coe = new Number(term.substring(0, i+1));
-			break;
+		for(int i = term.length()-1; i >= 0; i--){
+			if(!Number.isNumber(term.substring(0, i+1))){
+				//we found the largest section that could be called the coefficient
+				//take it and initialize the coefficient
+				coe = new Number(term.substring(0, i+1));
+				break;
+			}
 		}
 		//Now term has no coefficient. 
 		//for every variable, add it to vars[] and it's power to varPowers[]
@@ -110,15 +111,23 @@ public class Term {
 						parDepth--;
 					}
 					//if we've reached the end of the expression
-					//TODO parse the expression's power.
 					if(parDepth == 0){
 						//create a new Expression and then break
 						
 						exprs[exprsSoFar] = new Expression(term.substring(0, i+1));
 						//cut the expression from the term
 						term = term.substring(i+1, term.length());
-						//increment exprsSoFar
-						exprsSoFar++;
+						
+						//as long as numerals are found, add them to the this string
+						String power = "";
+						for(int b = 1; b < term.length() && Util.isNumeral(term.charAt(b)); b++){
+							//there is another char, and it's a numeral
+							//append it to power
+							power+=term.charAt(i);
+						}
+						//now set the power for the expression we found
+						//and increment exprsSoFar
+						exprPowers[exprsSoFar++] = Integer.parseInt(power);
 						break;
 					}
 				}
