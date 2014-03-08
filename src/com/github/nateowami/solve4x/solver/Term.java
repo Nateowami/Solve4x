@@ -18,6 +18,7 @@
 package com.github.nateowami.solve4x.solver;
 
 import java.nio.charset.MalformedInputException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.github.nateowami.solve4x.Solve4x;
@@ -43,13 +44,13 @@ public class Term {
 	//the coefficient of the term
 	private Number coe;
 	//the list of variables in this term
-	private char vars[];
+	private ArrayList<Character> vars = new ArrayList<Character>();
 	//and their respective powers
-	private int varPowers[];
+	private ArrayList<Integer> varPowers = new ArrayList<Integer>();
 	//the list of expressions in this term
-	private Expression exprs[];
+	private ArrayList<Expression> exprs = new ArrayList<Expression>();
 	//and their respective powers
-	private int exprPowers[];
+	private ArrayList<Integer> exprPowers = new ArrayList<Integer>();
 	
 	/**
 	 * Creates a new term from a String
@@ -57,10 +58,6 @@ public class Term {
 	 * @throws MalformedInputException If the term is not properly formatted (and not always even then)
 	 */
 	public Term(String term) throws MalformedInputException{
-		//fill varPowers[] and exprPowers[] with 1s
-		Arrays.fill(varPowers, 1);
-		Arrays.fill(exprPowers, 1);
-		
 		//create the coefficient
 		//loop backwards until we find it's a number.
 		//numbers will descend
@@ -84,7 +81,7 @@ public class Term {
 			//it the first char is a variable
 			if(Util.isLetter(term.charAt(0))){
 				//add it to the list of vars at the index varsSoFar
-				vars[varsSoFar] = term.charAt(0);
+				vars.add(new Character(term.charAt(0)));
 				//as long as numerals are found, add them to the this string
 				String power = "";
 				for(int i = 1; i < term.length() && Util.isNumeral(term.charAt(i)); i++){
@@ -94,7 +91,7 @@ public class Term {
 				}
 				//now set the power for the var we found
 				//and increment varsSoFar
-				varPowers[varsSoFar++] = Integer.parseInt(power);
+				varPowers.add(new Integer(Integer.parseInt(power)));
 				//Now cut out the part we've parsed. The length is 1 (var's size) + power.length()
 				term = term.substring(1+power.length(), term.length());
 			}
@@ -119,7 +116,7 @@ public class Term {
 					if(parDepth == 0){
 						//create a new Expression and then break
 						
-						exprs[exprsSoFar] = new Expression(term.substring(0, i+1));
+						exprs.add(new Expression(term.substring(0, i+1)));
 						//cut the expression from the term
 						term = term.substring(i+1, term.length());
 						
@@ -132,7 +129,7 @@ public class Term {
 						}
 						//now set the power for the expression we found
 						//and increment exprsSoFar
-						exprPowers[exprsSoFar++] = Integer.parseInt(power);
+						exprPowers.add(new Integer(Integer.parseInt(power)));
 						break;
 					}
 				}
@@ -167,7 +164,7 @@ public class Term {
 	 * @see getVarAt(int i)
 	 */
 	public int numOfVars(){
-		return vars.length;
+		return vars.size();
 	}
 	
 	/**
@@ -176,7 +173,7 @@ public class Term {
 	 * @see numOfVars()
 	 */
 	public char getVarAt(int i){
-		return vars[i];
+		return vars.get(i);
 	}
 	
 	/**
@@ -185,7 +182,7 @@ public class Term {
 	 * @return The power of the variable at index i.
 	 */
 	public int getVarPower(int i){
-		return varPowers[i];
+		return varPowers.get(i);
 	}
 	
 	/**
@@ -195,7 +192,7 @@ public class Term {
 	 * @see getExprAt(int i)
 	 */
 	public int numOfExprs(){
-		return exprs.length;
+		return exprs.size();
 	}
 	
 	/**
@@ -204,7 +201,7 @@ public class Term {
 	 * @see numOfExprs()
 	 */
 	public Expression getExprAt(int i){
-		return exprs[i];
+		return exprs.get(i);
 	}
 	
 	/**
@@ -213,7 +210,7 @@ public class Term {
 	 * @return The power of the expression at index i.
 	 */
 	public int getExprPower(int i){
-		return exprPowers[i];
+		return exprPowers.get(i);
 	}
 	
 	/**
@@ -221,20 +218,20 @@ public class Term {
 	 */
 	public String getBody(){
 		String vars = "";
-		for(int i = 0; i < this.vars.length; i++){
-			vars+=	this.vars[i];
+		for(int i = 0; i < this.vars.size(); i++){
+			vars+=	this.vars.get(i);
 			//add the power if it's there
-			if(this.varPowers[i]!=1){
-				vars+=this.varPowers[i];
+			if(this.varPowers.get(i)!=1){
+				vars+=this.varPowers.get(i);
 			}
 		}
 		//now add the expressions
 		String exprs = "";
-		for(int i = 0; i < this.exprs.length; i++){
-			exprs+=this.exprs[i];
+		for(int i = 0; i < this.exprs.size(); i++){
+			exprs+=this.exprs.get(i);
 			//add the power if it's there
-			if(this.exprPowers[i]!=1){
-				vars+=this.exprPowers[i];
+			if(this.exprPowers.get(i)!=1){
+				vars+=this.exprPowers.get(i);
 			}
 		}
 		return vars+exprs;
@@ -254,10 +251,10 @@ public class Term {
 	 */
 	@Override
 	public String toString() {
-		return "Term [coe=" + coe + ", vars=" + Arrays.toString(vars)
-				+ ", varPowers=" + Arrays.toString(varPowers) + ", exprs="
-				+ Arrays.toString(exprs) + ", exprPowers="
-				+ Arrays.toString(exprPowers) + "]";
+		return "Term [coe=" + coe + ", vars=" + vars.toString()
+				+ ", varPowers=" + varPowers.toString() + ", exprs="
+				+ exprs.toString() + ", exprPowers="
+				+ exprPowers.toString() + "]";
 	}
 	
 }
