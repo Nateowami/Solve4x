@@ -37,7 +37,7 @@ public class Equation {
 	 * equation, which can be just an expression if necessary
 	 * @throws MalformedInputException 
 	 */
-	public Equation(String eq){
+	public Equation(String eq) throws MalformedInputException{
 		Solve4x.debug("Creating Equation from String: " + eq);
 		//find the = sign
 		int i; //needs to be used outside loop
@@ -96,7 +96,7 @@ public class Equation {
 	 * @param expr The expression you want to change it to 
 	 * @param index The index of the Expression you want to change
 	 */
-	public void setExpression(String expr, int index) {
+	public void setExpression(String expr, int index) throws MalformedInputException{
 		this.exprs[index] = new Expression(expr);
 		
 	}

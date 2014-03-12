@@ -17,6 +17,7 @@
  */
 package com.github.nateowami.solve4x.algorithm;
 
+import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 
 import com.github.nateowami.solve4x.Solve4x;
@@ -28,6 +29,7 @@ import com.github.nateowami.solve4x.solver.Term;
 import com.github.nateowami.solve4x.solver.Number;
 
 /**
+ * TODO Update to reflect changes in Term
  * @author Nateowami
  */
 public class CombineLikeTerms implements Algorithm{
@@ -36,9 +38,10 @@ public class CombineLikeTerms implements Algorithm{
 	 * Combines like terms in a given equation
 	 * @param equation The equation to combine terms in
 	 * @return A Step with this algorithm applied
+	 * @throws MalformedInputException 
 	 */
 	@Override
-	public Step getStep(Equation equation) {
+	public Step getStep(Equation equation) throws MalformedInputException {
 		//figure out how many like terms there are in each expression
 		
 		//which expression has the most like terms
@@ -111,8 +114,11 @@ public class CombineLikeTerms implements Algorithm{
 		String coefficients[] = new String[combinedTerms.size()];
 		//add the coefficients of each term to the coefficients array
 		for(int i = 0; i < coefficients.length; i++){
-			//if it's negative, add a - in front of it
-			coefficients[i] = (combinedTerms.get(i).getIsPositive() ? "" : "-") + combinedTerms.get(i).getCoe();
+			//if it has a coefficient
+			if(combinedTerms.get(i).hasCoe()){
+				//and if the coefficient is negative, add a - in front of it
+				coefficients[i] = (combinedTerms.get(i).getCoe().sign() == '+' ? "" : "-") + combinedTerms.get(i).getCoe();
+			}
 		}
 		//the value of all the coefficients we'll add
 		Number numSoFar = new Number("0");

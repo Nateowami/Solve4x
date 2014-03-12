@@ -17,6 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 
 import com.github.nateowami.solve4x.Solve4x;
@@ -36,7 +37,7 @@ public class Expression {
 	 * Creates a list of terms our of the expression
 	 * @param expr The expression to store as terms
 	 */
-	public Expression(String expr){
+	public Expression(String expr) throws MalformedInputException{
 		
 		//set this.expression
 		this.expression = expr;
