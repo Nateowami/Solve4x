@@ -76,6 +76,7 @@ public class Number {
 	 * @param frac The fraction to parse
 	 */
 	private void parseFraction(String frac){
+		Solve4x.debug("Frac is: "+frac);
 		//the index of the /
 		int indexOfDiv = 0;
 		for(int i = 0; i< frac.length(); i++){
@@ -205,6 +206,13 @@ public class Number {
 	public String getAsString(){
 		//combine all the major fields into a string
 		return (sign ? "" : "-") + this.wholeNumber+ this.top + this.bottom;
+	}
+	
+	/**
+	 * @return The sign of the number. Either '+' or '-'.
+	 */
+	public char sign(){
+		return this.sign ? '+' : '-';
 	}
 
 	/**

@@ -19,7 +19,6 @@ package com.github.nateowami.solve4x.solver;
 
 import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import com.github.nateowami.solve4x.Solve4x;
 
@@ -58,29 +57,30 @@ public class Term {
 	 * @throws MalformedInputException If the term is not properly formatted (and not always even then)
 	 */
 	public Term(String term) throws MalformedInputException{
+		Solve4x.debug("Term is: "+term);
 		//create the coefficient
 		//loop backwards until we find it's a number.
 		//numbers will descend
 		for(int i = term.length()-1; i >= 0; i--){
-			if(!Number.isNumber(term.substring(0, i+1))){
+			//if it's a number
+			if(Number.isNumber(term.substring(0, i+1))){
 				//we found the largest section that could be called the coefficient
-				//take it and initialize the coefficient
+				//initialize the coefficient
 				coe = new Number(term.substring(0, i+1));
+				//leave only the rest (without the coefficient)
+				term = term.substring(i+1, term.length());
 				break;
 			}
 		}
 		//Now term has no coefficient. 
 		//for every variable, add it to vars[] and it's power to varPowers[]
 		//add every expression to esprs[] and their powers to exprPowers[]
-		
-		//variable for keeping track of what we've put into vars[] and exprs[]
-		int varsSoFar = 0, exprsSoFar = 0;
-		
+				
 		//while there's something to parse
 		while(term.length() > 0){
 			//it the first char is a variable
 			if(Util.isLetter(term.charAt(0))){
-				//add it to the list of vars at the index varsSoFar
+				//add it to the list of vars
 				vars.add(new Character(term.charAt(0)));
 				//as long as numerals are found, add them to the this string
 				String power = "";
@@ -89,9 +89,11 @@ public class Term {
 					//append it to power
 					power+=term.charAt(i);
 				}
-				//now set the power for the var we found
-				//and increment varsSoFar
-				varPowers.add(new Integer(Integer.parseInt(power)));
+				//now set the power for the var we found (make it 1 if there is no power)
+				varPowers.add(new Integer(Integer.parseInt(
+						//if the power is "", "1", otherwise the power itself
+						power.equals("") ? "1" : power
+								)));
 				//Now cut out the part we've parsed. The length is 1 (var's size) + power.length()
 				term = term.substring(1+power.length(), term.length());
 			}
@@ -128,8 +130,10 @@ public class Term {
 							power+=term.charAt(i);
 						}
 						//now set the power for the expression we found
-						//and increment exprsSoFar
-						exprPowers.add(new Integer(Integer.parseInt(power)));
+						exprPowers.add(new Integer(Integer.parseInt(
+								//f the power is "", "1", otherwise the power itself
+								power.equals("") ? "1" : power
+								)));
 						break;
 					}
 				}
