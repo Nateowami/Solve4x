@@ -111,26 +111,22 @@ public class CombineLikeTerms implements Algorithm{
 		//terms at the index specified by index
 		
 		//first make a list of the numbers/coefficients of the terms to combine
-		String coefficients[] = new String[combinedTerms.size()];
+		Number coefficients[] = new Number[combinedTerms.size()];
 		//add the coefficients of each term to the coefficients array
 		for(int i = 0; i < coefficients.length; i++){
 			//if it has a coefficient
 			if(combinedTerms.get(i).hasCoe()){
 				//and if the coefficient is negative, add a - in front of it
-				coefficients[i] = (combinedTerms.get(i).getCoe().sign() == '+' ? "" : "-") + combinedTerms.get(i).getCoe();
+				coefficients[i] = combinedTerms.get(i).getCoe();
+				Solve4x.debug("Just set coefficients["+i+"] to " + coefficients[i]);
 			}
 		}
 		//the value of all the coefficients we'll add
 		Number numSoFar = new Number("0");
 		//add all the coefficients
 		for(int i = 0; i < coefficients.length; i++){
-			//if coefficients[i] is "", then it should be 1, because no coefficient is the same as a coefficient of 1
-			if(coefficients[i].equals("")){
-				//set it to 1
-				coefficients[i] = "1";
-			}
 			//add numSoFar and the current number
-			numSoFar = Number.add(numSoFar, new Number(coefficients[i]));
+			numSoFar = Number.add(numSoFar, coefficients[i]);
 		}
 		//now the coefficient of the combined term will be numSoFar
 		//add the coefficient and the term type to create a term
@@ -150,7 +146,7 @@ public class CombineLikeTerms implements Algorithm{
 		//put the expression together
 		for(int i = 0; i < terms.size(); i++){
 			//XXX probably doesn't take signs into account
-			Solve4x.debug("Adding a term to the final expression: " + terms.get(i));
+			Solve4x.debug("Adding a term to the final expression: " + terms.get(i).getAsString());
 			finalExpression += terms.get(i).getAsString();//XXX here's where I forgot to append .getAsString() disaster :(
 		}
 		//now that we have the final expression we need to take a take the expressions we didn't simplify and mush them together into an equation

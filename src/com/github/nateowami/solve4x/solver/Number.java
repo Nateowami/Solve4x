@@ -47,6 +47,7 @@ public class Number {
 	 * @param num The number to parse into a Number. Example: 45&lt;67&gt;/&lt;98&gt;
 	 */
 	public Number(String num){
+		Solve4x.debug("Parsing number: " + num);
 		//parse the number
 		int i = 0;
 		//check for a negative sign
@@ -77,6 +78,7 @@ public class Number {
 	 */
 	private void parseFraction(String frac){
 		Solve4x.debug("Frac is: "+frac);
+		Solve4x.debug(frac);
 		//the index of the /
 		int indexOfDiv = 0;
 		for(int i = 0; i< frac.length(); i++){
@@ -208,6 +210,15 @@ public class Number {
 		return (sign ? "" : "-") + this.wholeNumber+ this.top + this.bottom;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Number [wholeNumber=" + wholeNumber + ", sign=" + sign
+				+ ", top=" + top + ", bottom=" + bottom + "]";
+	}
+
 	/**
 	 * @return The sign of the number. Either '+' or '-'.
 	 */
