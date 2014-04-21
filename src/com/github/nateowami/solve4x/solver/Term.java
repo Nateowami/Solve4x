@@ -247,8 +247,10 @@ public class Term {
 	 * @return
 	 */
 	public String getAsString(){
+		Solve4x.debug("Making coefficient getAsString: " + ((coe.getAsString() == "1" ? "" : coe.getAsString() )) + getBody());
+		Solve4x.debug("Here's the parts: coefficient: \""+(coe.getAsString() == "1" ? "" : coe.getAsString() )+"\" body: " + getBody());
 		//coe is "" if it's "1"
-		return ((coe.toString() == "1" ? "" : coe.toString() )) + getBody();
+		return ((coe.getAsString() == "1" ? "" : coe.getAsString() )) + getBody();
 	}
 
 	/* (non-Javadoc)

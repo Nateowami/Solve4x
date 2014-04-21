@@ -49,26 +49,33 @@ public class Number {
 	public Number(String num){
 		Solve4x.debug("Parsing number: " + num);
 		//parse the number
-		int i = 0;
+		
 		//check for a negative sign
 		if(num.length() > 0 && num.charAt(0) == '-'){
-			//make i move past the - sign
-			i++;
+			//delete the sign from num
+			num = num.substring(1, num.length());
 			//and set the sign negative
 			this.sign = false;
 		}
-		for(; i<num.length(); i++){
+		//parse the numeral
+		for(int i = 0; i<num.length(); i++){
 			//if the current char is not a numeral
 			if(!Util.isNumeral(num.charAt(i))){
+				//set the wholeNumber
+				this.wholeNumber = num.substring(0, i);
+				//and remove it from num
+				num = num.substring(i, num.length());
 				break;
 			}
+			//else if it's the last char
+			else if(i == num.length()-1){
+				this.wholeNumber = num;
+				num = "";
+			}
 		}
-		//now we have the index of the first non-numeral, or else just the end of the string
-		//(if they're all numerals)
-		wholeNumber = num.substring(0, i);
 		//parse the fraction part if it exists
-		if(num.substring(i, num.length()).length() != 0){
-			parseFraction(num.substring(i, num.length()));
+		if(num.length() != 0){
+			parseFraction(num);
 		}
 	}
 	
@@ -266,6 +273,5 @@ public class Number {
 			return false;
 		}
 	}
-	
 	
 }

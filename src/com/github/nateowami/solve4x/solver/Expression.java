@@ -38,7 +38,7 @@ public class Expression {
 	 * @param expr The expression to store as terms
 	 */
 	public Expression(String expr) throws MalformedInputException{
-		
+		Solve4x.debug("Expression: " + expr);
 		//set this.expression
 		this.expression = expr;
 		
