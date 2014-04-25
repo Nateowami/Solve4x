@@ -130,13 +130,12 @@ public class CombineLikeTerms implements Algorithm{
 		}
 		//now the coefficient of the combined term will be numSoFar
 		//add the coefficient and the term type to create a term
-		Solve4x.debug("About to create the final term from the following: " + numSoFar.getAsString()+type);
 		Term finalTerm = new Term(numSoFar.getAsString()+type);
 		//if the coefficient is 1, remove it
-		if(finalTerm.getCoe().equals("1")){
+		/*if(finalTerm.getCoe().getWholeNumber().equals("1")){
 			//remove the first char from the term (the coe always goes first)
-			finalTerm = new Term(finalTerm.getAsString().substring(1, finalTerm.getAsString().length()));
-		}
+			finalTerm.setCoe(new Number("1"));
+		}*/
 		//now add that to the list of terms at index "index"
 		Solve4x.debug("Adding the final term: " + finalTerm.getAsString());
 		terms.add(index, finalTerm);
@@ -147,7 +146,7 @@ public class CombineLikeTerms implements Algorithm{
 		for(int i = 0; i < terms.size(); i++){
 			//XXX probably doesn't take signs into account
 			Solve4x.debug("Adding a term to the final expression: " + terms.get(i).getAsString());
-			finalExpression += terms.get(i).getAsString();//XXX here's where I forgot to append .getAsString() disaster :(
+			finalExpression += terms.get(i).getAsString();//here's where I forgot to append .getAsString() disaster :(
 		}
 		//now that we have the final expression we need to take a take the expressions we didn't simplify and mush them together into an equation
 		equation.setExpression(finalExpression, whichHasMost);

@@ -154,11 +154,7 @@ public class Number {
 		//ADD THE WHOLE NUMBERS
 		//it's not guaranteed that they both have a whole number/decimal part, so add carefully
 		//if it's found that the whole number part doesn't exist, just count it as 0
-		number.wholeNumber = add(
-				//the first value, and if it's "", just 0
-				n1.wholeNumber.length() == 0 ? "0" : n1.wholeNumber,
-				//and the second number, with the same requirements
-				n2.wholeNumber.length() == 0 ? "0" : n2.wholeNumber);
+		number.wholeNumber = add(n1.coefficient(), n2.coefficient());
 		//IF THERE ARE FRACTIONS
 		if(n1.top.length() != 0 || n2.top.length() != 0){
 			//if they both have fractions
@@ -214,7 +210,7 @@ public class Number {
 	 */
 	public String getAsString(){
 		//combine all the major fields into a string
-		return (sign ? "" : "-") + this.wholeNumber+ this.top + this.bottom;
+		return (sign ? "" : "-") + this.wholeNumber + this.top + this.bottom;
 	}
 	
 	/* (non-Javadoc)
@@ -272,6 +268,15 @@ public class Number {
 			Solve4x.debug("Returning false");
 			return false;
 		}
+	}
+	
+	/**
+	 * The coefficient and sign of the Number combined. If it is Negative it will be a '-' sign,
+	 * even if there is no whole number part of the term. The fraction will not be included.
+	 * @return A representation of the coefficient (but not the fraction part) of the term.
+	 */
+	private String coefficient(){
+		return (sign ? "" : "-") + (wholeNumber.length() == 0? "0" : wholeNumber);
 	}
 	
 }
