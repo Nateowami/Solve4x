@@ -248,7 +248,7 @@ public class Term {
 	 */
 	public String getAsString(){
 		//coe is "" if it's "1" or doesn't exist
-		return (coe==null ? "" : (coe.getWholeNumber() == "1" ? "" : coe.getAsString())) + getBody();
+		return (coe==null ? "" : (coe.getWholeNumber().equals("1") ? "" : coe.getAsString())) + getBody();
 	}
 
 	/* (non-Javadoc)

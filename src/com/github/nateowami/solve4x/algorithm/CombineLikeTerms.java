@@ -131,11 +131,6 @@ public class CombineLikeTerms implements Algorithm{
 		//now the coefficient of the combined term will be numSoFar
 		//add the coefficient and the term type to create a term
 		Term finalTerm = new Term(numSoFar.getAsString()+type);
-		//if the coefficient is 1, remove it
-		/*if(finalTerm.getCoe().getWholeNumber().equals("1")){
-			//remove the first char from the term (the coe always goes first)
-			finalTerm.setCoe(new Number("1"));
-		}*/
 		//now add that to the list of terms at index "index"
 		Solve4x.debug("Adding the final term: " + finalTerm.getAsString());
 		terms.add(index, finalTerm);
