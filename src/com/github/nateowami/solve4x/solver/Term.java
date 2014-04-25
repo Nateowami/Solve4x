@@ -149,7 +149,7 @@ public class Term {
 	 * @return If the Term has a coefficient
 	 */
 	public boolean hasCoe(){
-		return coe == null;
+		return coe != null;
 	}
 	
 	/**
@@ -247,7 +247,8 @@ public class Term {
 	 * @return
 	 */
 	public String getAsString(){
-		return (coe==null?"":coe.getAsString()) + getBody();
+		//coe is "" if it's "1" or doesn't exist
+		return (coe==null ? "" : (coe.getWholeNumber().equals("1") ? "" : coe.getAsString())) + getBody();
 	}
 
 	/* (non-Javadoc)
@@ -255,10 +256,18 @@ public class Term {
 	 */
 	@Override
 	public String toString() {
-		return "Term [coe=" + coe + ", vars=" + vars.toString()
+		return "Term [coe=" + coe.toString() + ", vars=" + vars.toString()
 				+ ", varPowers=" + varPowers.toString() + ", exprs="
 				+ exprs.toString() + ", exprPowers="
 				+ exprPowers.toString() + "]";
+	}
+	
+	/**
+	 * Sets the coefficient of the term
+	 * @param number The coefficient to change it to.
+	 */
+	public void setCoe(Number number) {
+		coe = number;
 	}
 	
 }

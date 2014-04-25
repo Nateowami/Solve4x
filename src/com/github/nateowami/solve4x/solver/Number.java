@@ -47,27 +47,35 @@ public class Number {
 	 * @param num The number to parse into a Number. Example: 45&lt;67&gt;/&lt;98&gt;
 	 */
 	public Number(String num){
+		Solve4x.debug("Parsing number: " + num);
 		//parse the number
-		int i = 0;
+		
 		//check for a negative sign
 		if(num.length() > 0 && num.charAt(0) == '-'){
-			//make i move past the - sign
-			i++;
+			//delete the sign from num
+			num = num.substring(1, num.length());
 			//and set the sign negative
 			this.sign = false;
 		}
-		for(; i<num.length(); i++){
+		//parse the numeral
+		for(int i = 0; i<num.length(); i++){
 			//if the current char is not a numeral
 			if(!Util.isNumeral(num.charAt(i))){
+				//set the wholeNumber
+				this.wholeNumber = num.substring(0, i);
+				//and remove it from num
+				num = num.substring(i, num.length());
 				break;
 			}
+			//else if it's the last char
+			else if(i == num.length()-1){
+				this.wholeNumber = num;
+				num = "";
+			}
 		}
-		//now we have the index of the first non-numeral, or else just the end of the string
-		//(if they're all numerals)
-		wholeNumber = num.substring(0, i);
 		//parse the fraction part if it exists
-		if(num.substring(i, num.length()).length() != 0){
-			parseFraction(num.substring(i, num.length()));
+		if(num.length() != 0){
+			parseFraction(num);
 		}
 	}
 	
@@ -77,6 +85,7 @@ public class Number {
 	 */
 	private void parseFraction(String frac){
 		Solve4x.debug("Frac is: "+frac);
+		Solve4x.debug(frac);
 		//the index of the /
 		int indexOfDiv = 0;
 		for(int i = 0; i< frac.length(); i++){
@@ -145,11 +154,7 @@ public class Number {
 		//ADD THE WHOLE NUMBERS
 		//it's not guaranteed that they both have a whole number/decimal part, so add carefully
 		//if it's found that the whole number part doesn't exist, just count it as 0
-		number.wholeNumber = add(
-				//the first value, and if it's "", just 0
-				n1.wholeNumber.length() == 0 ? "0" : n1.wholeNumber,
-				//and the second number, with the same requirements
-				n2.wholeNumber.length() == 0 ? "0" : n2.wholeNumber);
+		number.wholeNumber = add(n1.coefficient(), n2.coefficient());
 		//IF THERE ARE FRACTIONS
 		if(n1.top.length() != 0 || n2.top.length() != 0){
 			//if they both have fractions
@@ -205,9 +210,18 @@ public class Number {
 	 */
 	public String getAsString(){
 		//combine all the major fields into a string
-		return (sign ? "" : "-") + this.wholeNumber+ this.top + this.bottom;
+		return (sign ? "" : "-") + this.wholeNumber + this.top + this.bottom;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Number [wholeNumber=" + wholeNumber + ", sign=" + sign
+				+ ", top=" + top + ", bottom=" + bottom + "]";
+	}
+
 	/**
 	 * @return The sign of the number. Either '+' or '-'.
 	 */
@@ -256,5 +270,13 @@ public class Number {
 		}
 	}
 	
+	/**
+	 * The coefficient and sign of the Number combined. If it is Negative it will be a '-' sign,
+	 * even if there is no whole number part of the term. The fraction will not be included.
+	 * @return A representation of the coefficient (but not the fraction part) of the term.
+	 */
+	private String coefficient(){
+		return (sign ? "" : "-") + (wholeNumber.length() == 0? "0" : wholeNumber);
+	}
 	
 }

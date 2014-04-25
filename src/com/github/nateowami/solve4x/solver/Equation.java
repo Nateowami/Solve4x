@@ -97,6 +97,7 @@ public class Equation {
 	 * @param index The index of the Expression you want to change
 	 */
 	public void setExpression(String expr, int index) throws MalformedInputException{
+		Solve4x.debug("Expression being set: " + expr);
 		this.exprs[index] = new Expression(expr);
 		
 	}
