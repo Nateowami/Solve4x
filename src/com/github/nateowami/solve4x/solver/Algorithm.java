@@ -1,6 +1,6 @@
 /*
     Solve4x - An audio-visual algebra solver
-    Copyright (C) 2014 Nathaniel Paulus
+    Copyright (C) 2014 Solve4x project
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
