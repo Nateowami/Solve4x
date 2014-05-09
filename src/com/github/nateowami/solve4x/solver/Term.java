@@ -118,23 +118,24 @@ public class Term {
 					if(parDepth == 0){
 						//create a new Expression and then break
 						
-						exprs.add(new Expression(term.substring(0, i+1)));
+						exprs.add(new Expression(Util.removePar(term.substring(0, i+1))));
 						//cut the expression from the term
 						term = term.substring(i+1, term.length());
 						
 						//as long as numerals are found, add them to the this string
 						String power = "";
-						for(int b = 1; b < term.length() && Util.isNumeral(term.charAt(b)); b++){
+						for(int b = 0; b < term.length() && Util.isNumeral(term.charAt(0)); b++){
 							//there is another char, and it's a numeral
 							//append it to power
-							power+=term.charAt(i);
+							power+=term.charAt(b);
+							//and remove it from term
+							term = term.substring(1, term.length());
 						}
 						//now set the power for the expression we found
 						exprPowers.add(new Integer(Integer.parseInt(
-								//f the power is "", "1", otherwise the power itself
+								//if the power is "", "1", otherwise the power itself
 								power.equals("") ? "1" : power
 								)));
-						break;
 					}
 				}
 			}
@@ -251,23 +252,25 @@ public class Term {
 		return (coe==null ? "" : (coe.getWholeNumber().equals("1") ? "" : coe.getAsString())) + getBody();
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Term [coe=" + coe.toString() + ", vars=" + vars.toString()
-				+ ", varPowers=" + varPowers.toString() + ", exprs="
-				+ exprs.toString() + ", exprPowers="
-				+ exprPowers.toString() + "]";
-	}
-	
 	/**
 	 * Sets the coefficient of the term
 	 * @param number The coefficient to change it to.
 	 */
 	public void setCoe(Number number) {
 		coe = number;
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Term [" + (coe != null ? "coe=" + coe + ", " : "")
+				+ (vars != null ? "vars=" + vars + ", " : "")
+				+ (varPowers != null ? "varPowers=" + varPowers + ", " : "")
+				+ (exprs != null ? "exprs=" + exprs + ", " : "")
+				+ (exprPowers != null ? "exprPowers=" + exprPowers : "") + "]";
 	}
 	
 }

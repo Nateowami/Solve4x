@@ -240,8 +240,8 @@ public class Number {
 		
 		//i is our marker for how far we've checked
 		int i = 0;
-		//check for the first char being -
-		if(number.charAt(0) == '-'){
+		//check for the first char being - or +
+		if(number.charAt(0) == '-' || number.charAt(0) == '+'){
 			//if it is, pass by it
 			i++;
 		}

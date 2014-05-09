@@ -34,7 +34,7 @@ public class Expression {
 	private String expression;
 	
 	/**
-	 * Creates a list of terms our of the expression
+	 * Creates a list of terms from the expression
 	 * @param expr The expression to store as terms
 	 */
 	public Expression(String expr) throws MalformedInputException{
@@ -60,8 +60,8 @@ public class Expression {
 				//and make a new Term. Add it to the term list
 				this.termList.add(new Term(expr.substring(0, i)));
 				Solve4x.debug("Created new Term: " + expr.substring(0, i));
-				//delete that term from expr
-				expr = expr.substring(i, expr.length());
+				//delete that term from expr; delete the first char too if it's a + symbol
+				expr = expr.charAt(i) == '+' ? expr.substring(i+1, expr.length()) : expr.substring(i, expr.length());
 				//now reset i to 0 (it will get incremented to 1 when the loop continues)
 				//this is necessary because the expr.length() just changed, and the char it's
 				//about to check is a + or - (we just checked it but it gets passed over the next 
@@ -80,6 +80,15 @@ public class Expression {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Expression [termList=" + termList.toString() + ", expression="
+				+ expression.toString() + "]";
+	}
+
 	/**
 	 * @return The number of terms in this expression
 	 */
