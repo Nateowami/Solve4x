@@ -127,7 +127,7 @@ public class Term {
 						for(int b = 0; b < term.length() && Util.isNumeral(term.charAt(0)); b++){
 							//there is another char, and it's a numeral
 							//append it to power
-							power+=term.charAt(b);
+							power+=term.charAt(0);
 							//and remove it from term
 							term = term.substring(1, term.length());
 						}
@@ -236,10 +236,10 @@ public class Term {
 		//now add the expressions
 		String exprs = "";
 		for(int i = 0; i < this.exprs.size(); i++){
-			exprs+=this.exprs.get(i);
+			exprs+= '(' + this.exprs.get(i).getAsString() + ')';
 			//add the power if it's there
 			if(this.exprPowers.get(i)!=1){
-				vars+=this.exprPowers.get(i);
+				exprs+=this.exprPowers.get(i);
 			}
 		}
 		return vars+exprs;
