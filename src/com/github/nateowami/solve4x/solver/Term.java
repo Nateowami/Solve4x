@@ -136,6 +136,9 @@ public class Term {
 								//if the power is "", "1", otherwise the power itself
 								power.equals("") ? "1" : power
 								)));
+						//reset stuff
+						parDepth = 0;
+						i = -1; //-1 because i will be incremented if the loop runs again
 					}
 				}
 			}
