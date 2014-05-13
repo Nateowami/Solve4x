@@ -30,8 +30,6 @@ public class Expression {
 	
 	//create an ArrayList for storing a list of terms
 	private ArrayList <Term>termList = new ArrayList<Term>();
-	//the original term
-	private String expression;
 	
 	/**
 	 * Creates a list of terms from the expression
@@ -39,9 +37,6 @@ public class Expression {
 	 */
 	public Expression(String expr) throws MalformedInputException{
 		Solve4x.debug("Expression: " + expr);
-		//set this.expression
-		this.expression = expr;
-		
 		//Iterate through the expression keeping track of how deep into par nesting we get
 		int parDepth = 0;
 		for(int i = 0; i< expr.length(); i++){
@@ -74,7 +69,7 @@ public class Expression {
 			//create the term and add it
 			this.termList.add(new Term(expr));
 		}
-		Solve4x.debug("Expression created: " + expression + " Terms are as follows:");
+		Solve4x.debug("Expression created. " + " Terms are as follows:");
 		for(int i = 0; i < termList.size(); i++){
 			System.out.println(termList.get(i).getAsString());
 		}
@@ -85,9 +80,11 @@ public class Expression {
 	 */
 	@Override
 	public String toString() {
-		return "Expression [termList=" + termList.toString() + ", expression="
-				+ expression.toString() + "]";
+		return "Expression ["
+				+ (termList != null ? "termList=" + termList : "") + "]";
 	}
+	
+
 
 	/**
 	 * @return The number of terms in this expression
@@ -110,6 +107,15 @@ public class Expression {
 	 * Don't use this for most situations
 	 */
 	public String getAsString(){
-		return this.expression;
+		String expr = "";
+		for(int i = 0; i < termList.size(); i++){
+			expr+=
+					//the sign if it's positive and this isn't the first term ( sign 
+					//will be supplied by getAsString() if it's negative)
+					(i == 0 ? "" : (termList.get(i).getCoe().sign() == '+' ? '+' : ""))
+					//the rest of it
+					+ termList.get(i).getAsString();
+		}
+		return expr;
 	}
 }
