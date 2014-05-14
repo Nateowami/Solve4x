@@ -109,12 +109,21 @@ public class Expression {
 	public String getAsString(){
 		String expr = "";
 		for(int i = 0; i < termList.size(); i++){
-			expr+=
-					//the sign if it's positive and this isn't the first term ( sign 
-					//will be supplied by getAsString() if it's negative)
-					(i == 0 ? "" : (termList.get(i).getCoe().sign() == '+' ? '+' : ""))
-					//the rest of it
-					+ termList.get(i).getAsString();
+			//figure out the sign. it will be supplied by getAsString() if it's negative
+			//if i is 0 a + sign isn't needed
+			if(i!=0){
+				//if there is a coefficient, and its sign isn't -
+				if((termList.get(i).getCoe()!=null)){
+					if(termList.get(i).getCoe().sign()!='-'){
+						expr+='+';
+					}
+				}
+				else{//it's null, so the sign must be positive
+					expr += '+';
+				}
+			}
+			//add the rest of the term
+			expr += termList.get(i).getAsString();
 		}
 		return expr;
 	}
