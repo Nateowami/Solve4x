@@ -36,14 +36,15 @@ public class TermTest {
 	@Test
 	public void testTerm() {
 		try {
-			System.out.println("Starting check...");
-			Term term = new Term("23x2y32(x+6)5(2x+6)3");
+			Term term1 = new Term("23x2y32(x+6)5(2x+6)3");
 			System.out.println("Term created.");
-			assertTrue(term.getCoe().getAsString().equals("23"));
-			assertTrue(term.getVarAt(0) == 'x' && term.getVarPower(0) == 2);
-			assertTrue(term.getVarAt(1) == 'y' && term.getVarPower(1) == 32);
-			assertTrue(term.getExprAt(0).getAsString().equals("x+6") && term.getExprPower(0) == 5);
-			assertTrue(term.getExprAt(1).getAsString().equals("2x+6") && term.getExprPower(1) == 3);
+			assertTrue(term1.getCoe().getAsString().equals("23"));
+			assertTrue(term1.getVarAt(0) == 'x' && term1.getVarPower(0) == 2);
+			assertTrue(term1.getVarAt(1) == 'y' && term1.getVarPower(1) == 32);
+			assertTrue(term1.getExprAt(0).getAsString().equals("x+6") && term1.getExprPower(0) == 5);
+			assertTrue(term1.getExprAt(1).getAsString().equals("2x+6") && term1.getExprPower(1) == 3);
+			Term term2 = new Term("6((34)/(6x))");
+			assertTrue(term2.getExprAt(0).getAsString().equals("((34)/(6x))"));
 		} catch (MalformedInputException e) {
 			e.printStackTrace();
 			fail("MalformedInputException");

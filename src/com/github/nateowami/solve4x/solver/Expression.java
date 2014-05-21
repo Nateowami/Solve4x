@@ -84,8 +84,6 @@ public class Expression {
 				+ (termList != null ? "termList=" + termList : "") + "]";
 	}
 	
-
-
 	/**
 	 * @return The number of terms in this expression
 	 */
