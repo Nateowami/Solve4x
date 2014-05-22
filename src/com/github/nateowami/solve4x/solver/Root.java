@@ -17,33 +17,45 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import java.nio.charset.MalformedInputException;
+
 /**
  * Holds a root for any expression, e.g √(4x+6)
  * @author Nateowami
  */
 public class Root {
 	
-	//the root (e.g. 4th root, 2nd root (square root))
-	private int root;
+	//the root (e.g. 4th root, 2nd root (square root), nth root)
+	private int nthRoot;
 	private Expression expr;
 	
-	public Root(String root){
-		for(int i = 0; i < root.length() && isSubscript(root.charAt(i)); i++){
-			
+	/**
+	 * Constructs a new Root
+	 * @param root The root to parse
+	 * @throws MalformedInputException If the root in the wrong syntax.
+	 */
+	public Root(String root) throws MalformedInputException{
+		//figure out how many subscript chars there are
+		int i = 0;
+		for(; i < root.length(); i++){
+			if(root.charAt(i) >= '\u2080' && root.charAt(i) <= '\u2089') break;
 		}
+		//now cut that part out of root
+		String subscript = root.substring(0,i);
+		//subscript after conversion
+		String subscriptNormalized = "";
+		root = root.substring(i,root.length());
+		//turn the subscript to regular numeral chars
+		for(int j = 0; j < subscript.length(); j++){
+			//convert from subscript to regular
+			subscriptNormalized+=(char)(subscript.charAt(j)-8272);
+		}
+		//parse subscriptNormalized to int. If it's "", use 2 as the default (square root)
+		if("".equals(subscriptNormalized)) nthRoot = 2;
+		else nthRoot = Integer.parseInt(subscriptNormalized);
 		//TODO
 	}
 	
-	/**
-	 * Tells if sub is a subscript from 0 to 9.
-	 * @param sub The char to check.
-	 * @return If sub is a valid subscript.
-	 */
-	//TODO make non-public. currently public for unit tests.
-	public boolean isSubscript(char sub) {
-		return sub >= '\u2080' && sub <= '\u2089';
-	}
-
 	/**
 	 * Tells if root is a valid root, e.g. ₄√(4x+6). Parentheses are only necessary for more than one term.
 	 * @param root The root to check.
@@ -54,10 +66,10 @@ public class Root {
 	}
 
 	/**
-	 * @return The root (e.g. 2 for a square root, 4 for a fourth root).
+	 * @return The nth root (e.g. 2 for a square root, 4 for a fourth root).
 	 */
-	public int getRoot() {
-		return root;
+	public int getNthRoot() {
+		return nthRoot;
 	}
 
 	/**

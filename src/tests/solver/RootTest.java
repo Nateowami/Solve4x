@@ -37,15 +37,6 @@ public class RootTest {
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Root#isSubscript(char)}.
-	 */
-	@Test
-	public void testIsSubscript() {
-		Root root = new Root("");
-		assertTrue(root.isSubscript('₀'));
-	}
-
-	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Root#isRoot(java.lang.String)}.
 	 */
 	@Test
