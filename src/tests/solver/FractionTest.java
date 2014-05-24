@@ -50,10 +50,14 @@ public class FractionTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Fraction#isFraction(java.lang.String)}.
+	 * @throws MalformedInputException 
 	 */
 	@Test
-	public void testIsFraction() {
-		fail("Not yet implemented"); // TODO
+	public void testIsFraction() throws MalformedInputException {
+		assertTrue(Fraction.isFraction("2/3"));
+		assertTrue(Fraction.isFraction("(23+xy6)/(43xy+6)"));
+		//FIXME this has a problem:
+		assertTrue(Fraction.isFraction("23xy2/(x+6-3xy"));
 	}
 
 	/**

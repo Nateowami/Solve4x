@@ -68,19 +68,62 @@ public class Fraction {
 		}
 	}
 	
-	public static boolean isFraction(String frac){
-		//TODO
-		return false;
+	/**
+	 * Tells if a String is in the form of <i>expression</i>/<i>expression</i>.
+	 * @param frac The String in question.
+	 * @return If frac is a valid fraction
+	 * @throws MalformedInputException 
+	 */
+	public static boolean isFraction(String frac) throws MalformedInputException{
+		//find the '/'
+		int parDepth = 0, divisionIndex = 0;
+		for(int i = 0; i < frac.length(); i++){
+			//if it's a parentheses
+			if(Util.isOpenPar(frac.charAt(i))) parDepth++;
+			else if (Util.isClosePar(frac.charAt(i))) parDepth--;
+			//find the / if parDepth is 0
+			else if (parDepth == 0 && frac.charAt(i) == '/'){
+				divisionIndex = i;
+				break;
+			}
+		}
+		//if divisionIndex is 0 it can't be a fraction
+		if (divisionIndex == 0) return false;
+		String frac1 = frac.substring(0, divisionIndex), frac2 = frac.substring(divisionIndex+1, frac.length());
+		//make expressions, but don't throw exceptions if something is wrong
+		try{
+			Expression expr1 = new Expression(frac1), expr2 = new Expression(frac2);
+			//if the expressions have more than one term and frac1 and frac2 don't
+			//have parentheses around them, return false
+			if(expr1.numbOfTerms() > 1 && Util.removePar(frac1).equals(frac1) || 
+					expr2.numbOfTerms() > 1 && Util.removePar(frac2).equals(frac2)){
+				return false;
+			}
+		}
+		catch (Exception e){
+			return false;
+		}
+		return true;
 	}
 	
+	/**
+	 * Tells if the fraction is a constant, such as 3/4.
+	 * @return If the fraction is constant.
+	 */
 	public boolean isConstant(){
 		return isConstant;
 	}
 	
+	/**
+	 * @return The top expression of the fraction.
+	 */
 	public Expression getTop(){
 		return this.top;	
 	}
 	
+	/**
+	 * @return The bottom expression of the fraction.
+	 */
 	public Expression getBottom(){
 		return this.bottom;
 	}
