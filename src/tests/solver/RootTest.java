@@ -84,4 +84,16 @@ public class RootTest {
 		assertTrue(root2.getNthRoot()==92);
 	}
 
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Root#isConstant()}.
+	 * @throws MalformedInputException 
+	 */
+	@Test
+	public void testIsConstant() throws MalformedInputException {
+		assertFalse(new Root("₄√(4x+6)").isConstant());
+		assertFalse(new Root("₂₀₉√(74xy2)").isConstant());
+		assertTrue(new Root("₀₉₂√(45)").isConstant());
+		assertTrue(new Root("√2").isConstant());
+	}
+	
 }

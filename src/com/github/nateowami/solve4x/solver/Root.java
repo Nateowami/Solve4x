@@ -28,6 +28,7 @@ public class Root {
 	//the root (e.g. 4th root, 2nd root (square root), nth root)
 	private int nthRoot;
 	private Expression expr;
+	private boolean isConstant;
 	
 	/**
 	 * Constructs a new Root
@@ -64,6 +65,8 @@ public class Root {
 		}
 		//we're now safe to parse the expression
 		this.expr = new Expression(Util.removePar(root));
+		//if expr is a number
+		isConstant = Number.isNumber(Util.removePar(root));
 	}
 	
 	/**
@@ -113,6 +116,16 @@ public class Root {
 	 */
 	public Expression getExpr() {
 		return this.expr;
+	}
+	
+	/**
+	 * Tells whether the Root is a constant value (without variables). If the 
+	 * expression under the radical is a number (as defined by 
+	 * Number.isNumber(String)) the Root is constant.
+	 * @return If the Root is constant.
+	 */
+	public boolean isConstant(){
+		return isConstant;
 	}
 	
 }
