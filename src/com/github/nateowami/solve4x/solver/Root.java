@@ -31,14 +31,15 @@ public class Root {
 	
 	/**
 	 * Constructs a new Root
-	 * @param root The root to parse
+	 * @param root The root to parse. Should be in the form of <i>subscript</i>√<i>expression</i>
 	 * @throws MalformedInputException If the root in the wrong syntax.
 	 */
 	public Root(String root) throws MalformedInputException{
 		//figure out how many subscript chars there are
 		int i = 0;
 		for(; i < root.length(); i++){
-			if(root.charAt(i) >= '\u2080' && root.charAt(i) <= '\u2089') break;
+			//if it's not a subscript
+			if(root.charAt(i) < '\u2080' || root.charAt(i) > '\u2089') break;
 		}
 		//now cut that part out of root
 		String subscript = root.substring(0,i);
@@ -51,13 +52,23 @@ public class Root {
 			subscriptNormalized+=(char)(subscript.charAt(j)-8272);
 		}
 		//parse subscriptNormalized to int. If it's "", use 2 as the default (square root)
-		if("".equals(subscriptNormalized)) nthRoot = 2;
-		else nthRoot = Integer.parseInt(subscriptNormalized);
-		//TODO
+		if("".equals(subscriptNormalized)) this.nthRoot = 2;
+		else this.nthRoot = Integer.parseInt(subscriptNormalized);
+		//parse the √ symbol
+		if(root.length() < 1 || root.charAt(0) != '√'){
+			throw new MalformedInputException(0);
+		}
+		else{
+			//remove the √ sign
+			root = root.substring(1, root.length());
+		}
+		//we're now safe to parse the expression
+		this.expr = new Expression(Util.removePar(root));
 	}
 	
 	/**
-	 * Tells if root is a valid root, e.g. ₄√(4x+6). Parentheses are only necessary for more than one term.
+	 * Tells if root is a valid root, in the form of <i>subscript</i>√<i>expression</i>. 
+	 * e.g. ₄√(4x+6). Parentheses are only necessary for more than one term.
 	 * @param root The root to check.
 	 * @return If root is a valid root.
 	 */
@@ -69,14 +80,14 @@ public class Root {
 	 * @return The nth root (e.g. 2 for a square root, 4 for a fourth root).
 	 */
 	public int getNthRoot() {
-		return nthRoot;
+		return this.nthRoot;
 	}
 
 	/**
 	 * @return The expression under the radical sign.
 	 */
 	public Expression getExpr() {
-		return expr;
+		return this.expr;
 	}
 	
 }

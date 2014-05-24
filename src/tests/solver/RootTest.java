@@ -19,6 +19,8 @@ package tests.solver;
 
 import static org.junit.Assert.*;
 
+import java.nio.charset.MalformedInputException;
+
 import org.junit.Test;
 
 import com.github.nateowami.solve4x.solver.Root;
@@ -30,10 +32,16 @@ public class RootTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Root#Root(java.lang.String)}.
+	 * @throws MalformedInputException 
 	 */
 	@Test
-	public void testRoot() {
-		fail("Not yet implemented"); // TODO
+	public void testRoot() throws MalformedInputException {
+		Root root1 = new Root("₄√(4x+6)");
+		assertTrue(root1.getNthRoot()==4);
+		assertTrue(root1.getExpr().getAsString().equals("4x+6"));
+		Root root2 = new Root("₂₀₉√(74xy2)");
+		assertTrue(root2.getNthRoot()==209);
+		assertTrue(root2.getExpr().getAsString().equals("74xy2"));
 	}
 
 	/**
@@ -46,18 +54,26 @@ public class RootTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Root#getRoot()}.
+	 * @throws MalformedInputException 
 	 */
 	@Test
-	public void testGetRoot() {
-		fail("Not yet implemented"); // TODO
+	public void testGetNthRoot() throws MalformedInputException {
+		Root root1 = new Root("₉√(45+76(4))");
+		assertTrue(root1.getNthRoot()==9);
+		Root root2 = new Root("₀₉₂√(45)");
+		assertTrue(root2.getNthRoot()==92);
 	}
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Root#getExpr()}.
+	 * @throws MalformedInputException 
 	 */
 	@Test
-	public void testGetExpr() {
-		fail("Not yet implemented"); // TODO
+	public void testGetExpr() throws MalformedInputException {
+		Root root1 = new Root("₉√(45+x)");
+		assertTrue(root1.getNthRoot()==9);
+		Root root2 = new Root("₀₉₂√(x+73)");
+		assertTrue(root2.getNthRoot()==92);
 	}
 
 }
