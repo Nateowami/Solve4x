@@ -46,10 +46,18 @@ public class RootTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Root#isRoot(java.lang.String)}.
+	 * @throws MalformedInputException 
 	 */
 	@Test
-	public void testIsRoot() {
-		fail("Not yet implemented"); // TODO
+	public void testIsRoot() throws MalformedInputException {
+		assertTrue(Root.isRoot("₄√(4x+6)"));
+		assertTrue(Root.isRoot("₂₀₉√(74xy2)"));
+		assertTrue(Root.isRoot("√4xy2"));
+		assertTrue(Root.isRoot("√(xyz+6x4)"));
+		
+		assertFalse(Root.isRoot("√xyz+6x4"));
+		assertFalse(Root.isRoot("2√15"));
+		assertFalse(Root.isRoot(""));
 	}
 
 	/**
