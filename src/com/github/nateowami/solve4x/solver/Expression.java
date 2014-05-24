@@ -100,9 +100,9 @@ public class Expression {
 	}
 	
 	/**
-	 * Fetches the expression in the form of a String
+	 * Fetches the expression in the form of a String.
+	 * This should not be used in most situations.
 	 * @return The expression in String form
-	 * Don't use this for most situations
 	 */
 	public String getAsString(){
 		String expr = "";
