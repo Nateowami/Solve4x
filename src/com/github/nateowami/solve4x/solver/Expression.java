@@ -63,6 +63,11 @@ public class Expression {
 				//time because i will be 1)
 				i = 0;
 			}
+			//if the number of parentheses isn't coming out right (pardepth 0 isn't reached at the end)
+			else if(parDepth != 0 && i == expr.length() - 1){
+				//error
+				throw new MalformedInputException(expr.length());
+			}
 		}
 		//take the rest of the expression that may be left and create a term with it
 		if(expr.length()>0){

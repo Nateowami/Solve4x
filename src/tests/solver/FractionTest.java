@@ -56,8 +56,11 @@ public class FractionTest {
 	public void testIsFraction() throws MalformedInputException {
 		assertTrue(Fraction.isFraction("2/3"));
 		assertTrue(Fraction.isFraction("(23+xy6)/(43xy+6)"));
-		//FIXME this has a problem:
-		assertTrue(Fraction.isFraction("23xy2/(x+6-3xy"));
+		assertTrue(Fraction.isFraction("23xy2/(x+6-3xy)"));
+		
+		assertFalse(Fraction.isFraction("23xy2/(x+6-3xy"));
+		assertFalse(Fraction.isFraction("4/15+6"));
+		assertFalse(Fraction.isFraction("x+6"));
 	}
 
 	/**
