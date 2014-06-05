@@ -25,8 +25,8 @@ import java.nio.charset.MalformedInputException;
  */
 public class Fraction {
 	
-	private Expression top, bottom;
-	boolean isConstant;
+	protected Expression top, bottom;
+	protected boolean isConstant;
 	
 	/**
 	 * Constructs a new Fraction.

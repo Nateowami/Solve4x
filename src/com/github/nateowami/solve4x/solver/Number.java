@@ -45,6 +45,7 @@ public class Number {
 	/**
 	 * Constructs a new number. Calling it with an empty string will throw errors (index out of bounds)
 	 * @param num The number to parse into a Number. Example: 45&lt;67&gt;/&lt;98&gt;
+	 * TODO make sure passing "" throws a MalformedInputException
 	 */
 	public Number(String num){
 		Solve4x.debug("Parsing number: " + num);
@@ -154,7 +155,7 @@ public class Number {
 		//ADD THE WHOLE NUMBERS
 		//it's not guaranteed that they both have a whole number/decimal part, so add carefully
 		//if it's found that the whole number part doesn't exist, just count it as 0
-		number.wholeNumber = add(n1.coefficient(), n2.coefficient());
+		number.wholeNumber = add(n1.getCoefficient(), n2.getCoefficient());
 		//IF THERE ARE FRACTIONS
 		if(n1.top.length() != 0 || n2.top.length() != 0){
 			//if they both have fractions
@@ -275,7 +276,7 @@ public class Number {
 	 * even if there is no whole number part of the term. The fraction will not be included.
 	 * @return A representation of the coefficient (but not the fraction part) of the term.
 	 */
-	private String coefficient(){
+	private String getCoefficient(){
 		return (sign ? "" : "-") + (wholeNumber.length() == 0? "0" : wholeNumber);
 	}
 	
