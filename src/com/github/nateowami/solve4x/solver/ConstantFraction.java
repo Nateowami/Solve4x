@@ -43,6 +43,7 @@ public class ConstantFraction {
 		}
 		//error; bar wasn't found (or was at index 0)
 		if(i == 0){
+			
 			throw new MalformedInputException(frac.length());
 		}
 		//parse the two numbers
@@ -56,11 +57,13 @@ public class ConstantFraction {
 	 * @return If frac is a. a fraction and b. constant.
 	 * @throws MalformedInputException 
 	 */
-	public static boolean isConstantFraction(String frac) throws MalformedInputException{
+	public static boolean isConstantFraction(String frac){
 		int i = frac.indexOf('/');
 		//make sure there's at least one char on each side of i in the fraction
-		if(i < 1 || i >= frac.length());
-		return Number.isNumber(frac.substring(0,i)) && Number.isNumber(frac.substring(i+1,frac.length()));
+		if(i > 0 && i < frac.length()-1){
+			return Number.isNumber(frac.substring(0,i)) && Number.isNumber(frac.substring(i+1,frac.length()));
+		}
+		else return false;
 	}
 	
 	/**
