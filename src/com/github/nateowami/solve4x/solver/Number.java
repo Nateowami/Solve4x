@@ -39,6 +39,7 @@ public class Number {
 	
 	/**
 	 * Constructs a new empty Number
+	 * TODO Stop supporting fractions. This should be the job of ConstantFraction
 	 */
 	public Number(){}
 	
@@ -236,13 +237,13 @@ public class Number {
 	 * @return If it's a number and/or fraction combination
 	 */
 	public static boolean isNumber(String number) {
-		//TODO support decimals and roots
+		//TODO support decimals
 		Solve4x.debug("Checking if it's a number: " + number);
 		
 		//i is our marker for how far we've checked
 		int i = 0;
-		//check for the first char being - or +
-		if(number.charAt(0) == '-' || number.charAt(0) == '+'){
+		//check for the first char being -
+		if(number.charAt(0) == '-'){
 			//if it is, pass by it
 			i++;
 		}
