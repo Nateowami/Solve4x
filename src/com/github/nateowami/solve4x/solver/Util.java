@@ -79,6 +79,11 @@ public class Util {
 		Solve4x.debug("isInteger(" + integer + ")");
 		//iterate through chars
 		
+		//check for an empty string
+		if(integer.length()==0){
+			return false;
+		}
+		
 		//this let's us control where the loop starts
 		int i = 0;
 		//if the first char is -

@@ -22,7 +22,10 @@ import java.nio.charset.MalformedInputException;
 
 /**
  * A fraction containing constant numbers on top and bottom. Not to be confused with Fraction.
+ * TODO add support for decimals, subtraction, and multiplication (division not necessary as it is 
+ * multiplication by the reciprical). 
  * @author Nateowami
+ * @see {@link com.github.nateowami.solve4x.solver.Fraction}
  */
 public class ConstantFraction {
 
@@ -98,6 +101,15 @@ public class ConstantFraction {
 			addedTop = dec1.add(dec2).toString();
 		}
 		return new ConstantFraction(addedTop + '/' + frac1.bottom.getAsString());
+	}
+
+	
+	/**
+	 * @return A string representation of the fraction, not the data (e.g. "2/3" rather than 
+	 * "ConstantFraction [top="somevalue" bottom="somevalue"]".
+	 */
+	public Object getAsString() {
+		return this.top.getAsString() + "/" + this.bottom.getAsString();
 	}
 	
 }
