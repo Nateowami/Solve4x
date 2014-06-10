@@ -14,5 +14,5 @@ TODO
 
 Documentation
 =============
-You can generic documentation (as in "how it all works") on [the wiki](https://github.com/Nateowami/Solve4x/wiki). For a basic understanding of how the program should work, check out [an article about program flow](https://github.com/Nateowami/Solve4x/wiki/Program-Flow) (also on the wiki).  
-The generated JavaDocs can be found at <http://nateowami.github.io/Solve4x/doc/>.
+You can read generic documentation (as in "how it all works") on [the wiki](https://github.com/Nateowami/Solve4x/wiki). For a basic understanding of how the program should work, check out [an article about program flow](https://github.com/Nateowami/Solve4x/wiki/Program-Flow) (also on the wiki).  
+The generated JavaDocs can be found at <http://nateowami.github.io/Solve4x/doc/>. Note: current documentation is outdated and is in the process of being replaced. While it could be updated now, core parts of the system are undergoing major changes. Documentation will be updated when this is complete.
