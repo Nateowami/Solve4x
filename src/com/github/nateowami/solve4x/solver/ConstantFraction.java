@@ -83,6 +83,13 @@ public class ConstantFraction {
 		return this.bottom;
 	}
 	
+	/**
+	 * Adds two ConstantFractions and returns the result.
+	 * @param frac1 The first fraction.
+	 * @param frac2 The second fraction.
+	 * @return The addition of frac1 and frac2.
+	 * @throws MalformedInputException If the fractions' denominators are not identical.
+	 */
 	public static ConstantFraction add(ConstantFraction frac1, ConstantFraction frac2) throws MalformedInputException{
 		//if the denominators aren't the same
 		if(frac1.bottom.equals(frac2.bottom)){
@@ -102,8 +109,34 @@ public class ConstantFraction {
 		}
 		return new ConstantFraction(addedTop + '/' + frac1.bottom.getAsString());
 	}
-
 	
+	/**
+	 * Subtractions the second ConstantFraction from the first and returns the result.
+	 * @param frac1 The first fraction.
+	 * @param frac2 The second fraction.
+	 * @return The difference of frac1 - frac2.
+	 * @throws MalformedInputException If the fractions' denominators are not identical.
+	 */
+	public static ConstantFraction subtract(ConstantFraction frac1, ConstantFraction frac2) throws MalformedInputException{
+		//if the denominators aren't the same
+		if(frac1.bottom.equals(frac2.bottom)){
+			throw new MalformedInputException(0);
+		}
+		//subtract frac2.top from frac1.top
+		String subtractedTop = "";
+		//if they're ints
+		if(Util.isInteger(frac1.top.getAsString()) && Util.isInteger(frac2.top.getAsString())){
+			subtractedTop = "" + (Integer.parseInt(frac1.top.getAsString()) - Integer.parseInt(frac2.top.getAsString()));
+		}
+		else{
+			//subtract them with BigDecimal
+			BigDecimal dec1 = new BigDecimal(frac1.top.getAsString());
+			BigDecimal dec2 = new BigDecimal(frac2.top.getAsString());
+			subtractedTop = dec1.subtract(dec2).toString();
+		}
+		return new ConstantFraction(subtractedTop + '/' + frac1.bottom.getAsString());
+	}
+
 	/**
 	 * @return A string representation of the fraction, not the data (e.g. "2/3" rather than 
 	 * "ConstantFraction [top="somevalue" bottom="somevalue"]".
