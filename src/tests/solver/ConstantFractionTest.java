@@ -109,4 +109,19 @@ public class ConstantFractionTest {
 		assertTrue(ConstantFraction.subtract(c3,c4).getAsString().equals("18/-5"));
 	}
 
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.ConstantFraction#multiply(com.github.nateowami.solve4x.solver.ConstantFraction, com.github.nateowami.solve4x.solver.ConstantFraction)}.
+	 * @throws MalformedInputException 
+	 */
+	@Test
+	public void testMultiply() throws MalformedInputException {
+		ConstantFraction c1 = new ConstantFraction("1/5");
+		ConstantFraction c2 = new ConstantFraction("3/5");
+		ConstantFraction c3 = new ConstantFraction("2/5");
+		ConstantFraction c4 = new ConstantFraction("-16/-5");
+		System.out.println("+++++++++++++++++++++"+ConstantFraction.multiply(c1, c2).getAsString());
+		assertTrue(ConstantFraction.multiply(c1, c2).getAsString().equals("3/25"));
+		assertTrue(ConstantFraction.multiply(c3,c4).getAsString().equals("32/25"));
+	}
+	
 }

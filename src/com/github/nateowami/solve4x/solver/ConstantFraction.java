@@ -136,6 +136,49 @@ public class ConstantFraction {
 		}
 		return new ConstantFraction(subtractedTop + '/' + frac1.bottom.getAsString());
 	}
+	
+	/**
+	 * Multiplies both ConstantFractions and returns the result.
+	 * @param frac1 The first fraction.
+	 * @param frac2 The second fraction.
+	 * @return frac1 multiplied by frac2.
+	 * @throws MalformedInputException If something undefined goes wrong. 
+	 */
+	public static ConstantFraction multiply(ConstantFraction frac1, ConstantFraction frac2) throws MalformedInputException{
+		//multiply frac2.top and frac1.top
+		String multipliedTop = "";
+		//if they're ints
+		if(Util.isInteger(frac1.top.getAsString()) && Util.isInteger(frac2.top.getAsString())){
+			multipliedTop = "" + (Integer.parseInt(frac1.top.getAsString()) * Integer.parseInt(frac2.top.getAsString()));
+		}
+		else{
+			//multiply them with BigDecimal
+			BigDecimal dec1 = new BigDecimal(frac1.top.getAsString());
+			BigDecimal dec2 = new BigDecimal(frac2.top.getAsString());
+			multipliedTop = dec1.multiply(dec2).toString();
+		}
+		
+		//multiply frac2.bottom and frac1.bottom
+		String multipliedBottom = "";
+		//if they're ints
+		if(Util.isInteger(frac1.bottom.getAsString()) && Util.isInteger(frac2.bottom.getAsString())){
+			multipliedBottom = "" + (Integer.parseInt(frac1.bottom.getAsString()) * Integer.parseInt(frac2.bottom.getAsString()));
+		}
+		else{
+			//multiply them with BigDecimal
+			BigDecimal dec1 = new BigDecimal(frac1.bottom.getAsString());
+			BigDecimal dec2 = new BigDecimal(frac2.bottom.getAsString());
+			multipliedBottom = dec1.multiply(dec2).toString();
+		}
+		
+		//if top and bottom are both negative make them both positive
+		if(multipliedTop.charAt(0) == '-' && multipliedBottom.charAt(0) == '-'){
+			multipliedTop = multipliedTop.substring(1, multipliedTop.length());
+			multipliedBottom = multipliedBottom.substring(1, multipliedBottom.length());
+		}
+
+		return new ConstantFraction(multipliedTop + '/' + multipliedBottom);
+	}
 
 	/**
 	 * @return A string representation of the fraction, not the data (e.g. "2/3" rather than 
