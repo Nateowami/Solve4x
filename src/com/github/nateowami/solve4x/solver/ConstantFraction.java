@@ -49,9 +49,9 @@ public class ConstantFraction {
 			
 			throw new MalformedInputException(frac.length());
 		}
-		//parse the two numbers
-		this.top = new Number(frac.substring(0,i));
-		this.bottom = new Number(frac.substring(i+1,frac.length()));
+		//parse the two numbers (which could have parentheses)
+		this.top = new Number(Util.removePar(frac.substring(0,i)));
+		this.bottom = new Number(Util.removePar(frac.substring(i+1,frac.length())));
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class ConstantFraction {
 		int i = frac.indexOf('/');
 		//make sure there's at least one char on each side of i in the fraction
 		if(i > 0 && i < frac.length()-1){
-			return Number.isNumber(frac.substring(0,i)) && Number.isNumber(frac.substring(i+1,frac.length()));
+			return Number.isNumber(Util.removePar(frac.substring(0,i))) && Number.isNumber(Util.removePar(frac.substring(i+1,frac.length())));
 		}
 		else return false;
 	}

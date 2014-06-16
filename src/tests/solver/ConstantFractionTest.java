@@ -38,6 +38,8 @@ public class ConstantFractionTest {
 	public void testConstantFraction() throws MalformedInputException {
 		ConstantFraction c1 = new ConstantFraction("2/3");
 		assertTrue(c1.getTop().getAsString().equals("2") && c1.getBottom().getAsString().equals("3"));
+		ConstantFraction c2 = new ConstantFraction("(2)/(3)");
+		assertTrue(c2.getTop().getAsString().equals("2") && c2.getBottom().getAsString().equals("3"));
 	}
 
 	/**
@@ -45,9 +47,9 @@ public class ConstantFractionTest {
 	 */
 	@Test
 	public void testIsConstantFraction() {
-		assertTrue(ConstantFraction.isConstantFraction("2/3"));
+		assertTrue(ConstantFraction.isConstantFraction("(2)/(3)"));
 		assertTrue(ConstantFraction.isConstantFraction("45/-6"));
-		assertTrue(ConstantFraction.isConstantFraction("-5/23"));
+		assertTrue(ConstantFraction.isConstantFraction("(-5)/(23)"));
 		assertFalse(ConstantFraction.isConstantFraction("2/+56"));
 		assertFalse(ConstantFraction.isConstantFraction("2/5+6"));
 		assertFalse(ConstantFraction.isConstantFraction("25*6"));
@@ -88,7 +90,7 @@ public class ConstantFractionTest {
 	@Test
 	public void testAdd() throws MalformedInputException {
 		ConstantFraction c1 = new ConstantFraction("1/5");
-		ConstantFraction c2 = new ConstantFraction("3/5");
+		ConstantFraction c2 = new ConstantFraction("(3)/5");
 		ConstantFraction c3 = new ConstantFraction("2/-5");
 		ConstantFraction c4 = new ConstantFraction("-16/-5");
 		assertTrue(ConstantFraction.add(c1, c2).getAsString().equals("4/5"));
@@ -117,7 +119,7 @@ public class ConstantFractionTest {
 	public void testMultiply() throws MalformedInputException {
 		ConstantFraction c1 = new ConstantFraction("1/5");
 		ConstantFraction c2 = new ConstantFraction("3/5");
-		ConstantFraction c3 = new ConstantFraction("2/5");
+		ConstantFraction c3 = new ConstantFraction("2/(5)");
 		ConstantFraction c4 = new ConstantFraction("-16/-5");
 		System.out.println("+++++++++++++++++++++"+ConstantFraction.multiply(c1, c2).getAsString());
 		assertTrue(ConstantFraction.multiply(c1, c2).getAsString().equals("3/25"));
