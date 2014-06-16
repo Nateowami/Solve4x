@@ -184,7 +184,7 @@ public class ConstantFraction {
 	 * @return A string representation of the fraction, not the data (e.g. "2/3" rather than 
 	 * "ConstantFraction [top="somevalue" bottom="somevalue"]".
 	 */
-	public Object getAsString() {
+	public String getAsString() {
 		return this.top.getAsString() + "/" + this.bottom.getAsString();
 	}
 
