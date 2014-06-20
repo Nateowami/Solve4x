@@ -25,7 +25,7 @@ import java.nio.charset.MalformedInputException;
  */
 public class MixedNumber {
 	
-	int numeral;
+	Integer numeral;
 	ConstantFraction fraction;
 	
 	/**
@@ -34,6 +34,18 @@ public class MixedNumber {
 	 * @throws MalformedInputException If s is improperly formatted.
 	 */
 	public MixedNumber(String s) throws MalformedInputException{
+		//if it's just a plain fraction
+		if(ConstantFraction.isConstantFraction(s)){
+			this.fraction = new ConstantFraction(s);
+			return;
+		}
+		
+		//if it's just an int
+		if(Util.isInteger(s)){
+			this.numeral = Integer.parseInt(s);
+			return;
+		}
+		
 		//figure out how much is the numeral
 		int i = s.length();
 		for(; i > 0 && !Util.isInteger(s.substring(0, i)); i--);
@@ -52,16 +64,51 @@ public class MixedNumber {
 	 * @return If s can be parsed as a MixedNumber.
 	 */
 	public static boolean isMixedNumber(String s){
+		//if it's just a fraction
+		if(ConstantFraction.isConstantFraction(s)){
+			return true;
+		}
+		
+		//if it's just an int
+		if(Util.isInteger(s)){
+			return true;
+		}
+		
 		//figure out how much is the numeral
 		int i = 0;
-		for(; i < s.length() && Util.isInteger(s.substring(0, i+1)););
+		for(; i < s.length() && Util.isInteger(s.substring(0, i+1)); i++);
 		//i is now index of last integer char
 		if(i == 0) return false; //number is required
 		//parse the fraction
-		if(ConstantFraction.isConstantFraction(s.substring(i+1))){
+		System.out.println(s.substring(i+1));
+		if(ConstantFraction.isConstantFraction(s.substring(i))){
 			return true;
 		}
 		else return false;
+	}
+	
+	/**
+	 * Tells if the the MixedNumber contains a numeral. 
+	 * Example:
+	 * 2 - true
+	 * 1/3 -false, fraction only
+	 * 1(2)/(-3) -true, 1 is the numeral
+	 * @return True if the MixedNumber contains a numeral, otherwise false.
+	 */
+	public boolean hasNumeral(){
+		return this.numeral != null;
+	}
+	
+	/**
+	 * Tells if the MixedNumber contains a fraction.
+	 * Example:
+	 * 2 - false, no fraction
+	 * 1/3 -true
+	 * 1(2)/(-3) -true, (2)/(-3) is the fraction
+	 * @return True if the MixedNumer contains a fraction, otherwise false.
+	 */
+	public boolean hasFraction(){
+		return this.fraction != null;
 	}
 	
 	/**
@@ -82,7 +129,8 @@ public class MixedNumber {
 	 * @return A string representation of the MixedNumber
 	 */
 	public String getAsString(){
-		return fraction.getAsString() + numeral;
+		return (numeral == null ? "" : numeral) 
+				+ (fraction == null ? "" : ( "(" + fraction.getTop().getAsString() + ")/(" + fraction.getBottom().getAsString()) + ")");
 	}
 	
 	/* (non-Javadoc)
