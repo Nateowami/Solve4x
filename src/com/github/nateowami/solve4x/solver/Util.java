@@ -70,8 +70,10 @@ public class Util {
 	}
 
 	/**
-	 * Tells if a string can be parsed as an integer. No longer supports commas as a 
-	 * separator in numbers. Example: "2,345" will return false
+	 * Tells if a string can be parsed as an integer. Examples:
+	 * 123
+	 * -234
+	 * Returns false if integer is an empty string
 	 * @param integer The string to check 
 	 * @return If the string can be parsed as an integer
 	 */
