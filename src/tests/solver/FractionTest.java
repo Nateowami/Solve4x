@@ -1,5 +1,5 @@
 /*
-    Solve4x - An audio-visual algebra solver
+    Solve4x - An algebra solver that shows its work
     Copyright (C) 2014 Solve4x project
 
     This program is free software: you can redistribute it and/or modify

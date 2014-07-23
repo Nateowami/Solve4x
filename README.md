@@ -1,8 +1,8 @@
 Solve4x
 =======
-An audio-visual algebra solver
+An algebra solver that shows its work
 
-The goal of this program is to generate an audio-visual lesson explaining how to solve a given problem. It aims to be simple to use, but very intuitive. It should solve the way a person would, and should _not_ include unnecessary steps. Equations should be displayed as a person would write them, rather than as single line of text. It is not intended as a cheat-sheet, but rather as a helpful explainer for a problem the user doesn't understand.
+The goal of this program is to generate a lesson explaining how to solve a given problem. It aims to be simple to use, and very intuitive. It should solve the way a person would, and should _not_ include unnecessary steps. Equations should be displayed as a person would write them, rather than as single line of text. It is not intended as a cheat-sheet, but rather as a helpful explainer for a problem the user doesn't understand.
 
 TODO
 ====
@@ -10,9 +10,9 @@ TODO
 * Solver - Started (about 60%); relies on classes that contain solving algorithms  
 * Equation validator - (95%) appears to be working; will likely need a few changes and updates  
 * Solving algorithms - Barely started; they all need to implement Algorithm. We can start them as soon as the solver is done/debugged.
-* A/V Generator - Not started, except for a command line version intended for debugging. The graphical one is a long way down the road.
+* Equation displayer - Not started, except for a command line version intended for debugging. The graphical one is a long way down the road.
 
 Documentation
 =============
-You can read generic documentation (as in "how it all works") on [the wiki](https://github.com/Nateowami/Solve4x/wiki). For a basic understanding of how the program should work, check out [an article about program flow](https://github.com/Nateowami/Solve4x/wiki/Program-Flow) (also on the wiki).  
+You can read generic documentation (as in "how it all works") on [the wiki](https://github.com/Nateowami/Solve4x/wiki). For a basic understanding of how the program should work, check out [an article about program flow](https://github.com/Nateowami/Solve4x/wiki/Program-Flow). Another goot resource is the [algebra syntax definition](https://github.com/Nateowami/Solve4x/wiki/Algebra-Syntax-Definition).  
 The generated JavaDocs can be found at <http://nateowami.github.io/Solve4x/doc/>. Note: current documentation is outdated and is in the process of being replaced. While it could be updated now, core parts of the system are undergoing major changes. Documentation will be updated when this is complete.
