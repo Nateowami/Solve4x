@@ -53,11 +53,11 @@ public class Term extends AlgebraicParticle{
 		//loop backwards to find a match
 		int i;
 		for(i = s.length()-1; i >=0; i--){
-			if(AlgebraicParticle.isAlgebraicParticle(s)){
-				parts.add(AlgebraicParticle.getInstance(s));
+			if(AlgebraicParticle.isAlgebraicParticle(s.substring(0, i))){
+				parts.add(AlgebraicParticle.getInstance(s.substring(0, i)));
 				//reset the loop
 				s = s.substring(i);
-				i = s.length();
+				i = s.length()-1;
 			}
 		}
 		//if the whole thing wasn't parsed
@@ -111,13 +111,45 @@ public class Term extends AlgebraicParticle{
 	/** TODO write doc
 	 * @param s
 	 * @return
+	 * @throws MalformedInputException 
 	 */
-	public static boolean isTerm(String s) {
+	public static boolean isTerm(String s) throws MalformedInputException {
 		//make sure it's a list of algebraic particles
 		for(int i = s.length()-1; i >= 0; i--){
-			if()
+			if(isParticle(s.substring(0, i))){
+				//reset the loop
+				s = s.substring(i);
+				i = s.length()-1;
+			}
 		}
-		
+		//if the whole thing was parseable
+		if(s.length() == 0){
+			return true;
+		}
+		else return false;		
+	}
+	
+	/**
+	 * Helper method for isTerm(String s). Tells if a string is valid as an algebraic particle,
+	 * including an expression, but only if its length is > 1 and is surrounded by parentheses.
+	 * @param s The string to check.
+	 * @return If it's an algebraic particle.
+	 * @throws MalformedInputException 
+	 */
+	private static boolean isParticle(String s) throws MalformedInputException{
+		if(Number.isNumber(s) || Root.isRoot(s) || Fraction.isFraction(s) || ConstantFraction.isConstantFraction(s) 
+				|| MixedNumber.isMixedNumber(s)){
+			return true;
+		}
+		//check it as an expression
+		try{
+			Expression expr = new Expression(s);
+			if (expr.numbOfTerms() < 2)return false; 
+			else return true;
+		}
+		catch (Exception e){
+			return false;
+		}
 	}
 	
 }

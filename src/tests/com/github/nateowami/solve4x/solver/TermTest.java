@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package tests.solver;
+package com.github.nateowami.solve4x.solver;
 
 import static org.junit.Assert.*;
 
