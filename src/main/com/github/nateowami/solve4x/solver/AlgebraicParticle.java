@@ -25,7 +25,7 @@ import java.nio.charset.MalformedInputException;
 public abstract class AlgebraicParticle {
 	
 	private int exponent;
-	private boolean sign;
+	private boolean sign = true;
 	
 	public boolean sign(){
 		return sign;

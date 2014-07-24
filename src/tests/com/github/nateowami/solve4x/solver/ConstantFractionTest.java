@@ -93,6 +93,7 @@ public class ConstantFractionTest {
 		ConstantFraction c2 = new ConstantFraction("(3)/5");
 		ConstantFraction c3 = new ConstantFraction("2/-5");
 		ConstantFraction c4 = new ConstantFraction("-16/-5");
+		System.out.println("here tis: " + ConstantFraction.add(c1, c2).getAsString());
 		assertTrue(ConstantFraction.add(c1, c2).getAsString().equals("4/5"));
 		assertTrue(ConstantFraction.add(c3,c4).getAsString().equals("-14/-5"));
 	}
