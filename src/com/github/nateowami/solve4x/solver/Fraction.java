@@ -23,9 +23,9 @@ import java.nio.charset.MalformedInputException;
  * Contains a fraction with expressions on top and bottom.
  * @author Nateowami
  */
-public class Fraction {
+public class Fraction extends AlgebraicParticle{
 	
-	protected Expression top, bottom;
+	protected AlgebraicParticle top, bottom;
 	protected boolean isConstant;
 	
 	/**
@@ -35,8 +35,8 @@ public class Fraction {
 	 * it must be surrounded by parentheses.
 	 * @throws MalformedInputException 
 	 */
-	public Fraction(String frac) throws MalformedInputException{
-		//find the '/'
+	protected Fraction(String frac) throws MalformedInputException{
+		//find the '/' not nested in parentheses	
 		int parDepth = 0, divisionIndex = 0;
 		for(int i = 0; i < frac.length(); i++){
 			//if it's a parentheses
@@ -51,14 +51,8 @@ public class Fraction {
 		//if divisionIndex is 0 there's a problem
 		if(divisionIndex == 0) throw new MalformedInputException(0);
 		//split the fraction at divisionIndex
-		String frac1 = frac.substring(0, divisionIndex), frac2 = frac.substring(divisionIndex+1, frac.length());
-		Expression expr1 = new Expression(Util.removePar(frac1)), expr2 = new Expression(Util.removePar(frac2));
-		//Make a fuss if the expressions weren't surrounded by parentheses by had more than
-		//one expression (i.e. are the same with and without parentheses removed)
-		if(expr1.numbOfTerms() > 1 && Util.removePar(frac1).equals(frac1) || 
-				expr2.numbOfTerms() > 1 && Util.removePar(frac2).equals(frac1)){
-			throw new MalformedInputException(0);
-		}
+		String frac1 = frac.substring(0, divisionIndex), frac2 = frac.substring(divisionIndex+1);
+		AlgebraicParticle expr1 = new Expression(Util.removePar(frac1)), expr2 = new Expression(Util.removePar(frac2));
 		//everything's good to go; init top and bottom
 		this.top = expr1;
 		this.bottom = expr2;
@@ -111,21 +105,29 @@ public class Fraction {
 	 * @return If the fraction is constant.
 	 */
 	public boolean isConstant(){
-		return isConstant;
+		return this.isConstant;
 	}
 	
 	/**
 	 * @return The top expression of the fraction.
 	 */
-	public Expression getTop(){
+	public AlgebraicParticle getTop(){
 		return this.top;	
 	}
 	
 	/**
 	 * @return The bottom expression of the fraction.
 	 */
-	public Expression getBottom(){
+	public AlgebraicParticle getBottom(){
 		return this.bottom;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#getAsString()
+	 */
+	@Override
+	public String getAsString() {
+		return this.top.getAsString() + '/' + this.bottom.getAsString();
 	}
 	
 }

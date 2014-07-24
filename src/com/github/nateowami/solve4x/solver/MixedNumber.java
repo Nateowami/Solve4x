@@ -23,7 +23,7 @@ import java.nio.charset.MalformedInputException;
  * Holds a fraction and integer value, which can be used as an exponent.
  * @author Nateowami
  */
-public class MixedNumber {
+public class MixedNumber extends AlgebraicParticle{
 	
 	Integer numeral;
 	ConstantFraction fraction;
@@ -33,7 +33,7 @@ public class MixedNumber {
 	 * @param s The string from which to construct it.
 	 * @throws MalformedInputException If s is improperly formatted.
 	 */
-	public MixedNumber(String s) throws MalformedInputException{
+	protected MixedNumber(String s) throws MalformedInputException{
 		//if it's just a plain fraction
 		if(ConstantFraction.isConstantFraction(s)){
 			this.fraction = new ConstantFraction(s);

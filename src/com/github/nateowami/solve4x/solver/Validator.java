@@ -61,23 +61,6 @@ public class Validator {
 			//if it couldn't be parsed it's not valid
 			return false;
 		}
-		/*//check for one and only one equals sign
-		int numbOfEquals = 0;
-		int indexOfEquals = 0;
-		for(int i = 0; i < equation.length(); i++){
-			if (equation.charAt(i) == '='){
-				numbOfEquals++;
-				indexOfEquals = i;
-			}
-		}
-		if(numbOfEquals == 1){
-			//check the validity of the
-			return (exprIsValid(equation.substring(0, indexOfEquals)) 
-					&& exprIsValid(equation.substring(indexOfEquals + 1, equation.length())));
-		} 
-		else {
-			return false;
-		}*/
 	}
 	
 	/**
@@ -96,51 +79,7 @@ public class Validator {
 		}
 		//no problems were found
 		Solve4x.debug("Returns true");
-		return true;
-		
-		//Before doing the regular recursive check, there are a few misc things
-		//to check first
-		
-		/*//make sure the length isn't 0
-		if(expr.length()==0){
-			//then it can't be valid
-			return false;
-		}
-		//the expression also shouldn't start with a + sing (- is OK because it means negative)
-		//we already know the length isn't 0, so this is safe
-		if(expr.charAt(0)== '+'){
-			//then it can't be valid
-			return false;
-		}
-		
-		int cutAt = -1;
-		
-		//if we can cut based on addition or subtraction
-		cutAt = findCutAtAdditionOrSubtraction(expr);
-		//if the cut was successful
-		if(cutAt != -1){
-			//return true if both expressions are found valid
-			return cut(expr, cutAt);
-		}
-		
-		//cut at division
-		cutAt = findCutAtDivision(expr);
-		//if the cut was successful
-		if(cutAt != -1){
-			return cut(expr, cutAt);
-		}
-		
-		//cut at multiplication
-		cutAt = findCutAtMultiplication(expr);
-		//if the cut was successful
-		if(cutAt != -1){
-			return cutMultiplication(expr, cutAt);
-		}
-		
-		//if it still wasn't cut
-		return termIsValid(expr);*/
-
-		
+		return true;		
 	}
 	
 	/**
@@ -148,61 +87,21 @@ public class Validator {
 	 * @param term The term to be evaluated
 	 * @return If the term is valid
 	 */
-	private static boolean termIsValid(Term term) throws MalformedInputException{
+	private static boolean termIsValid(AlgebraicParticle term) throws MalformedInputException{
 		Solve4x.debug("Param: " + term.getAsString());
 		//Check the term body for being formatted properly, being ""
-		if(areLettersAndNums(term.getBody()) || term.getBody().equals("")){
+		if(areLettersAndNums(term.getAsString()) || term.getAsString().equals("")){
 			Solve4x.debug("Returns true");
 			return true;
 		}
 		//it's also possible it's an expression, but we should only check that if the number of terms
 		//is greater than 1, or it would cause a stack overflow 
-		if(hasMoreThanOneTerm(term.getBody()) && exprIsValid(new Expression(term.getBody()))){
+		if(hasMoreThanOneTerm(term.getAsString()) && exprIsValid(new Expression(term.getAsString()))){
 			Solve4x.debug("Returns true");
 			return true;
 		}
-		//we'd have returned false already if it wasn't valid
 		Solve4x.debug("Returns false");
 		return false;
-		
-		/*//debugging
-		Solve4x.debug("termIsValid()" + term);
-		
-		//keep track of the first letter in the term
-		int checkFrom = 0;
-		
-		//check the exponent
-		for(int i=0; i<term.length(); i++){
-			//if it's a letter
-			if (Util.isLetter(term.charAt(i))){
-				//check the first part of the term (everything before i) ONLY IF IT EXISTS
-				//and make sure it's an integer (in the form of 34,546)
-				if(term.substring(0, i).length() != 0 && !Util.isInteger(term.substring(0, i))){
-					//if it's not an integer, return false
-					Solve4x.debug("termIsValid returns " + false);
-					return false;
-				}
-				//set the location to check (from here on still needs to be checked by another loop)
-				checkFrom=i;
-				break;
-			}
-			//else if it's the last char in the string
-			else if(i==term.length()-1){
-				Solve4x.debug("termIsValid returns " + Util.isInteger(term.substring(0, i+1)));
-				return Util.isInteger(term.substring(0, i+1));
-			}
-		}
-		//check the rest of the term (everything following the exponent)
-		for (int i=checkFrom; i<term.length(); i++){
-			Solve4x.debug("isTerm is checking the rest of the term from " + checkFrom);
-			if (!Util.isNumeral(term.charAt(i)) && !Util.isLetter(term.charAt(i))){
-				Solve4x.debug("termIsValid returns " + false);
-				return false;
-			}
-		}
-		//if we din't hit any problems above, return true now
-		Solve4x.debug("termIsValid returns " + true);
-		return true;*/
 	}
 
 	/**
@@ -213,9 +112,9 @@ public class Validator {
 	private static boolean areLettersAndNums(String s){
 		Solve4x.debug("Param: " + s);
 		//loop through the chars
-		for(int i = 0; i < s.length(); i++){
+		for(char i : s.toCharArray()){
 			//if it's not a numerals or letter
-			if(!Util.isLetter(s.charAt(i)) && !Util.isNumeral(s.charAt(i))){
+			if(!Util.isLetter(i) && !Util.isNumeral(i)){
 				Solve4x.debug("Returns false");
 				return false;
 			}

@@ -21,6 +21,7 @@ import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 
 import com.github.nateowami.solve4x.Solve4x;
+import com.github.nateowami.solve4x.solver.AlgebraicParticle;
 import com.github.nateowami.solve4x.solver.Algorithm;
 import com.github.nateowami.solve4x.solver.Equation;
 import com.github.nateowami.solve4x.solver.Expression;
@@ -223,7 +224,7 @@ public class CombineLikeTerms implements Algorithm{
 	 * @param term The term
 	 * @return The number of terms in expr that are the same type as term
 	 */
-	private int numLikeThis(Expression expr, Term term){
+	private int numLikeThis(Expression expr, AlgebraicParticle term){
 		Solve4x.debug("Arg1: " + expr.getAsString() + " Arg2: " + term.getBody());
 		int num = 0;
 		//check all terms in the expression for being like term

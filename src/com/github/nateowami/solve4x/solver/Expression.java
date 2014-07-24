@@ -26,16 +26,16 @@ import com.github.nateowami.solve4x.Solve4x;
  * Represents an algebraic expression with positive and negative terms
  * @author Nateowami
  */
-public class Expression {
+public class Expression extends AlgebraicParticle{
 	
 	//create an ArrayList for storing a list of terms
-	private ArrayList <Term>termList = new ArrayList<Term>();
+	protected ArrayList <AlgebraicParticle>termList = new ArrayList<AlgebraicParticle>();
 	
 	/**
 	 * Creates a list of terms from the expression
 	 * @param expr The expression to store as terms
 	 */
-	public Expression(String expr) throws MalformedInputException{
+	Expression(String expr) throws MalformedInputException{
 		Solve4x.debug("Expression: " + expr);
 		//Iterate through the expression keeping track of how deep into par nesting we get
 		int parDepth = 0;
@@ -53,7 +53,7 @@ public class Expression {
 			else if(parDepth == 0 && (expr.charAt(i) == '+' || expr.charAt(i) == '-')){
 				//take everything from the beginning of the expression until i
 				//and make a new Term. Add it to the term list
-				this.termList.add(new Term(expr.substring(0, i)));
+				this.termList.add(AlgebraicParticle.getInstance(expr.substring(0, i)));
 				Solve4x.debug("Created new Term: " + expr.substring(0, i));
 				//delete that term from expr; delete the first char too if it's a + symbol
 				expr = expr.charAt(i) == '+' ? expr.substring(i+1, expr.length()) : expr.substring(i, expr.length());
@@ -72,7 +72,7 @@ public class Expression {
 		//take the rest of the expression that may be left and create a term with it
 		if(expr.length()>0){
 			//create the term and add it
-			this.termList.add(new Term(expr));
+			this.termList.add(AlgebraicParticle.getInstance(expr));
 		}
 		Solve4x.debug("Expression created. " + " Terms are as follows:");
 		for(int i = 0; i < termList.size(); i++){
@@ -100,7 +100,7 @@ public class Expression {
 	 * @param i The index of the term you want
 	 * @return The term at index i
 	 */
-	public Term termAt(int i){
+	public AlgebraicParticle termAt(int i){
 		return termList.get(i);
 	}
 	
@@ -111,23 +111,20 @@ public class Expression {
 	 */
 	public String getAsString(){
 		String expr = "";
-		for(int i = 0; i < termList.size(); i++){
-			//figure out the sign. it will be supplied by getAsString() if it's negative
-			//if i is 0 a + sign isn't needed
-			if(i!=0){
-				//if there is a coefficient, and its sign isn't -
-				if((termList.get(i).getCoe()!=null)){
-					if(termList.get(i).getCoe().sign()!='-'){
-						expr+='+';
-					}
-				}
-				else{//it's null, so the sign must be positive
-					expr += '+';
-				}
-			}
-			//add the rest of the term
-			expr += termList.get(i).getAsString();
+		for(AlgebraicParticle i : this.termList){
+			expr += i.getAsString();
 		}
 		return expr;
 	}
+
+	/**
+	 * TODO write doc
+	 * @param s
+	 * @return
+	 */
+	public static boolean isExpression(String s) {
+		// make sure there is more than one algebraic particle concatenated with + or -
+		return false;
+	}
+
 }

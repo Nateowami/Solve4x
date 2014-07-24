@@ -27,31 +27,23 @@ import com.github.nateowami.solve4x.Solve4x;
  * provides methods for adding, subtracting, multiplying, and dividing numbers. (TODO)
  * @author Nateowami
  */
-public class Number {
+public class Number extends AlgebraicParticle{
 	
 	//The numerical part of a mixed number (could be a decimal)
 	private String integerPart, decimalPart;
-	//the positive/negative value on the number
-	private boolean sign = true;
 	
 	/**
 	 * Constructs a new number.
 	 * @param num The number to parse into a Number. Examples: 2.67, 15, 0.34, 3.1415
 	 * @throws MalformedInputException if num is not parsable as a decimal.
 	 */
-	public Number(String num) throws MalformedInputException{
+	protected Number(String num) throws MalformedInputException{
 		Solve4x.debug("Parsing number: " + num);
 		
 		//check for empty string
 		if(num.length() == 0){
 			throw new MalformedInputException(0);
 		}
-		//check for - sign. (+ is default)
-		else if(num.charAt(0) == '-'){
-			num = num.substring(1);
-			sign = false;
-		}
-		
 		//if it's just a numeral
 		if(Util.isInteger(num)){
 			integerPart = num;
@@ -111,14 +103,7 @@ public class Number {
 	 * @return This Number in a string format. 
 	 */
 	public String getAsString(){
-		return (this.sign ? "" : "-") + integerPart + (decimalPart == null ? "" : "." + decimalPart);
-	}
-	
-	/**
-	 * @return The sign of the number. Either '+' or '-'. 
-	 */
-	public char sign(){
-		return this.sign ? '+' : '-';
+		return (this.sign() ? "" : "-") + integerPart + (decimalPart == null ? "" : "." + decimalPart);
 	}
 
 	/**
@@ -141,8 +126,8 @@ public class Number {
 		return "Number ["
 				+ (integerPart != null ? "integerPart=" + integerPart + ", "
 						: "")
-				+ (decimalPart != null ? "decimalPart=" + decimalPart + ", "
-						: "") + "sign=" + sign + "]";
+				+ (decimalPart != null ? "decimalPart=" + decimalPart : "")
+				+ "]";
 	}
 	
 	/**

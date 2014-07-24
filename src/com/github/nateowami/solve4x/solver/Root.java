@@ -23,11 +23,11 @@ import java.nio.charset.MalformedInputException;
  * Holds a root for any expression, e.g √(4x+6)
  * @author Nateowami
  */
-public class Root {
+public class Root extends AlgebraicParticle{
 	
 	//the root (e.g. 4th root, 2nd root (square root), nth root)
 	private int nthRoot;
-	private Expression expr;
+	private AlgebraicParticle expr;
 	private boolean isConstant;
 	
 	/**
@@ -35,7 +35,7 @@ public class Root {
 	 * @param root The root to parse. Should be in the form of <i>subscript</i>√<i>expression</i>
 	 * @throws MalformedInputException If the root in the wrong syntax.
 	 */
-	public Root(String root) throws MalformedInputException{
+	protected Root(String root) throws MalformedInputException{
 		//figure out how many subscript chars there are
 		int i = 0;
 		for(; i < root.length(); i++){
@@ -114,7 +114,7 @@ public class Root {
 	/**
 	 * @return The expression under the radical sign.
 	 */
-	public Expression getExpr() {
+	public AlgebraicParticle getExpr() {
 		return this.expr;
 	}
 	
@@ -126,6 +126,17 @@ public class Root {
 	 */
 	public boolean isConstant(){
 		return isConstant;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#getAsString()
+	 */
+	@Override
+	public String getAsString() {
+		return 
+				//watch out for square root; don't render it if it exists
+				(this.nthRoot == 2 ? "" : this.nthRoot)
+				+ expr.getAsString();
 	}
 	
 }

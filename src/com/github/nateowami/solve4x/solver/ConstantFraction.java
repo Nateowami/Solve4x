@@ -27,7 +27,7 @@ import java.nio.charset.MalformedInputException;
  * @author Nateowami
  * @see {@link com.github.nateowami.solve4x.solver.Fraction}
  */
-public class ConstantFraction {
+public class ConstantFraction extends AlgebraicParticle{
 
 	Number top, bottom;
 	
@@ -36,7 +36,7 @@ public class ConstantFraction {
 	 * @param frac The fraction to parse.
 	 * @throws MalformedInputException If frac is not in the form of <i>Number</i>/<i>Number</i>.
 	 */
-	public ConstantFraction(String frac) throws MalformedInputException {
+	protected ConstantFraction(String frac) throws MalformedInputException {
 		//find the fraction bar
 		int i = 0;
 		for(; i < frac.length(); i++){
@@ -46,7 +46,6 @@ public class ConstantFraction {
 		}
 		//error; bar wasn't found (or was at index 0)
 		if(i == 0){
-			
 			throw new MalformedInputException(frac.length());
 		}
 		//parse the two numbers (which could have parentheses)
