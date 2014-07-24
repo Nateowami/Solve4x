@@ -37,11 +37,9 @@ public class NumberTest {
 	@Test
 	public void testNumber() throws MalformedInputException {
 		Number n1 = new Number("123.65");
-		assertTrue(n1.sign() == '+');
 		assertTrue(n1.getIntegerPart().equals("123"));
 		assertTrue(n1.getDecimalPart().equals("65"));
 		Number n2 = new Number("-7.28");
-		assertTrue(n2.sign() == '-');
 		assertTrue(n2.getIntegerPart().equals("7"));
 		assertTrue(n2.getDecimalPart().equals("28"));
 	}
@@ -77,28 +75,14 @@ public class NumberTest {
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#sign()}.
-	 * @throws MalformedInputException
-	 */
-	@Test
-	public void testSign() throws MalformedInputException {
-		Number n1 = new Number("10.34");
-		assertTrue(n1.sign() == '+');
-		Number n2 = new Number("-16.56");
-		assertTrue(n2.sign() == '-');
-		Number n3 = new Number("16");
-		assertTrue(n3.sign() == '+');
-	}
-
-	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#isNumber(java.lang.String)}.
 	 */
 	@Test
 	public void testIsNumber() {
 		assertTrue(Number.isNumber("1"));
 		assertTrue(Number.isNumber("0"));
-		assertTrue(Number.isNumber("-0.1"));
-		assertTrue(Number.isNumber("-1.63"));
+		assertTrue(Number.isNumber("0.1"));
+		assertTrue(Number.isNumber("1.63"));
 		assertTrue(Number.isNumber("3.141592"));
 		assertFalse(Number.isNumber(""));
 		assertFalse(Number.isNumber("1.9.639"));
