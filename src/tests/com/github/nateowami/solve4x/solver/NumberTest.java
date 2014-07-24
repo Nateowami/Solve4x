@@ -39,7 +39,7 @@ public class NumberTest {
 		Number n1 = new Number("123.65");
 		assertTrue(n1.getIntegerPart().equals("123"));
 		assertTrue(n1.getDecimalPart().equals("65"));
-		Number n2 = new Number("-7.28");
+		Number n2 = new Number("7.28");
 		assertTrue(n2.getIntegerPart().equals("7"));
 		assertTrue(n2.getDecimalPart().equals("28"));
 	}
