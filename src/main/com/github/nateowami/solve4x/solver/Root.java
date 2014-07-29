@@ -74,9 +74,8 @@ public class Root extends AlgebraicParticle{
 	 * e.g. ₄√(4x+6). Parentheses are only necessary for more than one term.
 	 * @param root The root to check.
 	 * @return If root is a valid root.
-	 * @throws MalformedInputException 
 	 */
-	static public boolean isRoot(String root) throws MalformedInputException{
+	static public boolean isRoot(String root){
 		//first check for the subscript and radical sign
 		int i = 0;
 		for(; i < root.length() && root.charAt(i) >= '\u2080' && root.charAt(i) <= '\u2089'; i++);
@@ -89,19 +88,15 @@ public class Root extends AlgebraicParticle{
 		//now make sure the rest is an expression that either has only one term
 		//or has parentheses around it
 		//if it's not the same after removing parentheses
-		boolean hasPar = !Util.removePar(root).equals(root);
-		Expression expr;
-		//if it can't be parsed as and expression return false
-		try{
-			expr = new Expression(root);
-		}
-		catch(ArrayIndexOutOfBoundsException e){
+		if (!Util.removePar(root).equals(root)){
 			return false;
 		}
-		//if the expression has more than one term and it doesn't have parentheses
-		if(expr.numbOfTerms() != 1 && !hasPar) return false;
-		//well then it must be valid
-		return true; 
+		//it has parentheses
+		else {
+			//if it's an algebraic particle
+			return AlgebraicParticle.isAlgebraicParticle(root);
+		}
+		
 	}
 
 	/**
