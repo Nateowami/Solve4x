@@ -23,7 +23,6 @@ import java.nio.charset.MalformedInputException;
 
 import org.junit.Test;
 
-import com.github.nateowami.solve4x.solver.AlgebraicParticle;
 import com.github.nateowami.solve4x.solver.Term;
 
 /**
@@ -74,6 +73,14 @@ public class TermTest {
 	@Test
 	public void testToString() {
 		fail("Not yet implemented"); // TODO
+	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#isTerm()}.
+	 */
+	@Test
+	public void testIsTerm() {
+		assertTrue(Term.isTerm("2x"));
 	}
 
 }

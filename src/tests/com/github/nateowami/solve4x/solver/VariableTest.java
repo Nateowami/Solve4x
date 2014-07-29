@@ -68,5 +68,18 @@ public class VariableTest {
 		assertEquals('S', new Variable("S").getVar());
 		assertEquals('r', new Variable("r").getVar());
 	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Variable#isVariable()}.
+	 */
+	@Test
+	public void testIsVariable() throws MalformedInputException {
+		assertTrue(Variable.isVariable("n"));
+		assertTrue(Variable.isVariable("y"));
+		assertTrue(Variable.isVariable("X"));
+		assertFalse(Variable.isVariable("2"));
+		assertFalse(Variable.isVariable("Ü"));
+		assertFalse(Variable.isVariable("ó"));
+	}
 
 }

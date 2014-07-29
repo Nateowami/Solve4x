@@ -59,5 +59,18 @@ public class Variable extends AlgebraicParticle{
 		return "Variable [var=" + var + ", sign()=" + sign() + ", exponent()="
 				+ exponent() + "]";
 	}
+
+	
+	/**
+	 * Tells if 
+	 * @param s
+	 * @return
+	 */
+	public static boolean isVariable(String s) {
+		if(s == null || s.length() != 1 || !Util.isLetter(s.charAt(0))){
+			return false;
+		}
+		else return true;
+	}
 	
 }

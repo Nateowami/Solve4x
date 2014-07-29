@@ -128,5 +128,16 @@ public class Fraction extends AlgebraicParticle{
 	public String getAsString() {
 		return this.top.getAsString() + '/' + this.bottom.getAsString();
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Fraction [" + (top != null ? "top=" + top + ", " : "")
+				+ (bottom != null ? "bottom=" + bottom + ", " : "")
+				+ "isConstant=" + isConstant + ", sign()=" + sign()
+				+ ", exponent()=" + exponent() + "]";
+	}
 	
 }

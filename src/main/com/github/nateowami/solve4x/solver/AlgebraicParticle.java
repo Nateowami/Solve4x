@@ -20,7 +20,7 @@ package com.github.nateowami.solve4x.solver;
 import java.nio.charset.MalformedInputException;
 
 /**
- * Represents an AlgebraicParticle. Subclasses include Number, Root, Fraction, ConstantFraction, MixedNumber, Term, and Expression.
+ * Represents an AlgebraicParticle. Subclasses include Variable, Number, Root, Fraction, ConstantFraction, MixedNumber, Term, and Expression.
  * @author Nateowami
  */
 public abstract class AlgebraicParticle {
@@ -43,12 +43,11 @@ public abstract class AlgebraicParticle {
 	}
 	
 	/**
-	 * Constructs a new AlgebraicParticle and returns it. May be a Number, Root, Fraction, ConstantFraction, MixedNumber, Term, or Expression.
+	 * Constructs a new AlgebraicParticle and returns it. May be a Variable Number, Root, Fraction, ConstantFraction, MixedNumber, Term, or Expression.
 	 * @param s The string to parse as an AlgebraicParticle.
 	 * @return An AlgebraicParticle representing s.
 	 * @throws MalformedInputException If s cannot be parsed as an AlgebraicParticle.
 	 */
-	
 	public static AlgebraicParticle getInstance(String s) throws MalformedInputException{
 		System.out.println("ALGEBRAICPARTICLE GETINSTANCE: " + s);
 		if(s.length() < 1){
@@ -57,7 +56,9 @@ public abstract class AlgebraicParticle {
 		//TODO check for sign
 		//TODO check for exponent
 		//TODO remove sign and exponent checking from other classes
-		if(Number.isNumber(s))
+		if(Variable.isVariable(s))
+			return new Variable(s);
+		else if(Number.isNumber(s))
 			return new Number(s);
 		else if (Root.isRoot(s))
 			return new Root(s);
@@ -94,4 +95,5 @@ public abstract class AlgebraicParticle {
 	 */
 	public abstract String getAsString();
 	
+	public abstract String toString();
 }

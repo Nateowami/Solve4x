@@ -133,5 +133,16 @@ public class Root extends AlgebraicParticle{
 				(this.nthRoot == 2 ? "" : this.nthRoot)
 				+ expr.getAsString();
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Root [nthRoot=" + nthRoot + ", "
+				+ (expr != null ? "expr=" + expr + ", " : "") + "isConstant="
+				+ isConstant + ", sign()=" + sign() + ", exponent()="
+				+ exponent() + "]";
+	}
 	
 }

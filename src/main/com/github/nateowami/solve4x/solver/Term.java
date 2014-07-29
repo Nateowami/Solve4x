@@ -98,7 +98,6 @@ public class Term extends AlgebraicParticle{
 		return s;
 	}
 
-	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -107,7 +106,6 @@ public class Term extends AlgebraicParticle{
 		return "Term [" + (parts != null ? "parts=" + parts : "") + "]";
 	}
 
-	
 	/** 
 	 * Tells if a specified string s may be parsed as a terrm
 	 * @param s The string to check.
