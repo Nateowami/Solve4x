@@ -20,6 +20,7 @@ package com.github.nateowami.solve4x.solver;
 import java.nio.charset.MalformedInputException;
 
 /**
+ * Represents an AlgebraicParticle. Subclasses include Number, Root, Fraction, ConstantFraction, MixedNumber, Term, and Expression.
  * @author Nateowami
  */
 public abstract class AlgebraicParticle {
@@ -27,13 +28,27 @@ public abstract class AlgebraicParticle {
 	private int exponent;
 	private boolean sign = true;
 	
+	/**
+	 * @return The sign of the AlgebraicParticle (true for +, false for -).
+	 */
 	public boolean sign(){
 		return sign;
 	}
 	
+	
+	/**
+	 * @return The exponent of the AlgebraicParticle.
+	 */
 	public int exponent(){
 		return exponent;
 	}
+	
+	/**
+	 * Constructs a new AlgebraicParticle and returns it. May be a Number, Root, Fraction, ConstantFraction, MixedNumber, Term, or Expression.
+	 * @param s The string to parse as an AlgebraicParticle.
+	 * @return An AlgebraicParticle representing s.
+	 * @throws MalformedInputException If s cannot be parsed as an AlgebraicParticle.
+	 */
 	
 	public static AlgebraicParticle getInstance(String s) throws MalformedInputException{
 		if(s.length() < 1){
@@ -60,6 +75,12 @@ public abstract class AlgebraicParticle {
 		
 	}
 	
+	
+	/**
+	 * Tells if s can be parsed as an AlgebraicParticle.
+	 * @param s The string to check.
+	 * @return If s can be parsed as an AlgebraicParticle.
+	 */
 	public static boolean isAlgebraicParticle(String s){
 		//TODO remove exponent and sign
 		if(Number.isNumber(s) || Root.isRoot(s) || Fraction.isFraction(s) || ConstantFraction.isConstantFraction(s) 
@@ -68,7 +89,11 @@ public abstract class AlgebraicParticle {
 		}
 		else return false;
 	}
-			
+	
+	
+	/**
+	 * @return The string form of the algebraic particle.
+	 */
 	public abstract String getAsString();
 	
 }
