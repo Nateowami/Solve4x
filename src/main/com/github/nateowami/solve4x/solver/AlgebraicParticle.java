@@ -34,8 +34,7 @@ public abstract class AlgebraicParticle {
 	public boolean sign(){
 		return sign;
 	}
-	
-	
+		
 	/**
 	 * @return The exponent of the AlgebraicParticle.
 	 */
@@ -51,6 +50,7 @@ public abstract class AlgebraicParticle {
 	 */
 	
 	public static AlgebraicParticle getInstance(String s) throws MalformedInputException{
+		System.out.println("ALGEBRAICPARTICLE GETINSTANCE: " + s);
 		if(s.length() < 1){
 			throw new MalformedInputException(0);
 		}
@@ -71,11 +71,10 @@ public abstract class AlgebraicParticle {
 			return new Term(s);
 		else if (Expression.isExpression(s))
 			return new Expression(s);
-		else throw new MalformedInputException(s.length());
+		else {System.out.println("ERROR!!!"); throw new MalformedInputException(s.length());}
 		
 	}
-	
-	
+		
 	/**
 	 * Tells if s can be parsed as an AlgebraicParticle.
 	 * @param s The string to check.
@@ -89,8 +88,7 @@ public abstract class AlgebraicParticle {
 		}
 		else return false;
 	}
-	
-	
+		
 	/**
 	 * @return The string form of the algebraic particle.
 	 */
