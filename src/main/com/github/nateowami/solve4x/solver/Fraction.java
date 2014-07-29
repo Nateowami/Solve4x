@@ -66,9 +66,8 @@ public class Fraction extends AlgebraicParticle{
 	 * Tells if a String is in the form of <i>expression</i>/<i>expression</i>.
 	 * @param frac The String in question.
 	 * @return If frac is a valid fraction
-	 * @throws MalformedInputException 
 	 */
-	public static boolean isFraction(String frac) throws MalformedInputException{
+	public static boolean isFraction(String frac){
 		//find the '/'
 		int parDepth = 0, divisionIndex = 0;
 		for(int i = 0; i < frac.length(); i++){

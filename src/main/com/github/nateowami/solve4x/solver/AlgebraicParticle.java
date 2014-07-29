@@ -60,7 +60,7 @@ public abstract class AlgebraicParticle {
 		
 	}
 	
-	public static boolean isAlgebraicParticle(String s) throws MalformedInputException{
+	public static boolean isAlgebraicParticle(String s){
 		//TODO remove exponent and sign
 		if(Number.isNumber(s) || Root.isRoot(s) || Fraction.isFraction(s) || ConstantFraction.isConstantFraction(s) 
 				|| MixedNumber.isMixedNumber(s) || Term.isTerm(s) || Expression.isExpression(s)){
