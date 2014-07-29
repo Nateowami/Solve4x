@@ -108,12 +108,12 @@ public class Term extends AlgebraicParticle{
 	}
 
 	
-	/** TODO write doc
-	 * @param s
-	 * @return
-	 * @throws MalformedInputException 
+	/** 
+	 * Tells if a specified string s may be parsed as a terrm
+	 * @param s The string to check.
+	 * @return If s is parseable as a term.
 	 */
-	public static boolean isTerm(String s) throws MalformedInputException {
+	public static boolean isTerm(String s){
 		//make sure it's a list of algebraic particles
 		for(int i = s.length()-1; i >= 0; i--){
 			if(isParticle(s.substring(0, i))){
@@ -134,22 +134,35 @@ public class Term extends AlgebraicParticle{
 	 * including an expression, but only if its length is > 1 and is surrounded by parentheses.
 	 * @param s The string to check.
 	 * @return If it's an algebraic particle.
-	 * @throws MalformedInputException 
 	 */
-	private static boolean isParticle(String s) throws MalformedInputException{
+	private static boolean isParticle(String s){
 		if(Number.isNumber(s) || Root.isRoot(s) || Fraction.isFraction(s) || ConstantFraction.isConstantFraction(s) 
 				|| MixedNumber.isMixedNumber(s)){
 			return true;
 		}
-		//check it as an expression
-		try{
-			Expression expr = new Expression(s);
-			if (expr.numbOfTerms() < 2)return false; 
-			else return true;
+		//loop through it and find if it is two algebraic particles separated by + or - signs
+		int parDepth = 0;
+		for(int i = 0; i < s.length(); i++){
+			//keep track of par depth
+			if(Util.isOpenPar(s.charAt(i))){
+				parDepth++;
+			}
+			else if(Util.isClosePar(s.charAt(i))){
+				parDepth--;
+			}
+			//if parDepth is 0 and it's a + or - sign
+			else if(parDepth == 0 && (s.charAt(i) == '+' || s.charAt(i) == '-')){
+				//split s at i and and check both for being a algebraic particles
+				String a = s.substring(0, i), b = s.substring(i);
+				//if both are some sort of algebraic particle
+				if((Number.isNumber(a) || Root.isRoot(a) || Fraction.isFraction(a) || ConstantFraction.isConstantFraction(a) || MixedNumber.isMixedNumber(a)) 
+				&& (Number.isNumber(b) || Root.isRoot(b) || Fraction.isFraction(b) || ConstantFraction.isConstantFraction(b) || MixedNumber.isMixedNumber(b))){
+					return true;
+				}
+				else return false;
+			}
 		}
-		catch (Exception e){
-			return false;
-		}
+		return false;
 	}
 	
 }
