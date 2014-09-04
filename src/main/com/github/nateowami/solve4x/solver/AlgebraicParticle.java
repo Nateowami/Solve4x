@@ -97,7 +97,7 @@ public abstract class AlgebraicParticle {
 			partical = new Term(s);
 		else if (Expression.isExpression(s))
 			partical = new Expression(s);
-		else {System.out.println("ERROR!!!"); throw new MalformedInputException(s.length());}
+		else {System.out.println("ERROR!!! CANNOT CONSTRUCT ALGEBRAIC PARTICLE"); throw new MalformedInputException(s.length());}
 		
 		partical.exponent = exponent;
 		partical.sign = sign;
@@ -115,9 +115,21 @@ public abstract class AlgebraicParticle {
 			System.out.println("IS ALGEBRAIC PARTICLE RETURNS FALSE");
 			return false;
 		}
+		
 		//necessary because expressions like "(4x)" need the parentheses stripped off
 		s = Util.removePar(s);
-		//TODO remove exponent and sign
+		
+		//remove the sign
+		if(s.charAt(0) == '-' || s.charAt(0) == '+') s = s.substring(1);
+
+		//remove the exponent
+		Matcher m = Pattern.compile(".([⁰-⁹]+)").matcher(s);
+		//if there was an exponent
+		if(m.find()){
+			//remove the superscript from s
+			s = s.substring(0, s.length() - m.group(1).length());
+		}
+
 		if(Variable.isVariable(s) || Number.isNumber(s) || Root.isRoot(s) || Fraction.isFraction(s) || ConstantFraction.isConstantFraction(s) 
 				|| MixedNumber.isMixedNumber(s) || Term.isTerm(s) || Expression.isExpression(s)){
 			System.out.println("IS ALGEBRAIC PARTICLE RETURNS TRUE");
