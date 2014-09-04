@@ -320,6 +320,7 @@ public class Util {
 	}	
 	
 	/**
+	 * TODO completely broken if I remember
 	 * @param a The first number
 	 * @param b The second number
 	 * @return The GCF (greatest common factor) of the two numbers
@@ -399,4 +400,73 @@ public class Util {
 		}
 		return out;
 	}
+
+	/**
+	 * Tells if a specified char c is a superscript. 
+	 * @param c The char to check.
+	 * @return If c is a superscript.
+	 */
+	public static boolean isSuperscript(char c){
+		return c > '\u2070' && c < '\u2079';
+	}
+	
+	/**
+	 * Tells if every char in s is a superscript.
+	 * @param s The string to check.
+	 * @return If every char in s is a valid superscript char.
+	 */
+	public static boolean isSuperscript(String s){
+		for(char c : s.toCharArray()){
+			if(!isSuperscript(c)) return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Converts a string of superscript chars to an int.
+	 * @param s The string to parse.
+	 * @return The int value of the superscript chars.
+	 */
+	public static int superscriptToInt(String s){
+		String answer = "";
+		for (char c : s.toCharArray()){
+			answer += (char)(c - 8256);
+		}
+		return Integer.parseInt(answer);
+	}
+	
+	/**
+	 * Tells if a specified char c is a subscript. 
+	 * @param c The char to check.
+	 * @return If c is a subscript.
+	 */
+	public static boolean isSubscript(char c){
+		return c > '\u2080' && c < '\u2089';
+	}
+	
+	/**
+	 * Tells if every char in s is a subscript.
+	 * @param s The string to check.
+	 * @return If every char in s is a valid subscript char.
+	 */
+	public static boolean isSubcript(String s){
+		for(char c : s.toCharArray()){
+			if(!isSubscript(c)) return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Converts a string of subscript chars to an int.
+	 * @param s The string to parse.
+	 * @return The int value of the subscript chars.
+	 */
+	public static int subscriptToInt(String s){
+		String answer = "";
+		for (char c : s.toCharArray()){
+			answer += (char)(c - 8272);
+		}
+		return Integer.parseInt(answer);
+	}
+	
 }

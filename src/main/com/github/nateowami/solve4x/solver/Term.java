@@ -52,16 +52,17 @@ public class Term extends AlgebraicParticle{
 		Solve4x.debug("Term is: "+s);
 		//loop backwards to find a match
 		int i;
-		for(i = s.length()-1; i >=0; i--){
+		for(i = s.length(); i >=0; i--){
 			if(AlgebraicParticle.isAlgebraicParticle(s.substring(0, i))){
+				Solve4x.debug("Creating algebraic particle: " + s.substring(0, i));
 				parts.add(AlgebraicParticle.getInstance(s.substring(0, i)));
 				//reset the loop
 				s = s.substring(i);
-				i = s.length()-1;
+				i = s.length()+1;//+1 because it is about to be subtracted when the loop continues
 			}
 		}
 		//if the whole thing wasn't parsed
-		if(i > 0){
+		if(s.length() > 0){
 			throw new MalformedInputException(i);
 		}
 	}
@@ -113,11 +114,11 @@ public class Term extends AlgebraicParticle{
 	 */
 	public static boolean isTerm(String s){
 		//make sure it's a list of algebraic particles
-		for(int i = s.length()-1; i >= 0; i--){
+		for(int i = s.length(); i >= 0; i--){
 			if(isParticle(s.substring(0, i))){
 				//reset the loop
 				s = s.substring(i);
-				i = s.length()-1;
+				i = s.length()+1;//+1 because it's about to be subtracted 1
 			}
 		}
 		//if the whole thing was parseable
@@ -130,12 +131,14 @@ public class Term extends AlgebraicParticle{
 	/**
 	 * Helper method for isTerm(String s). Tells if a string is valid as an algebraic particle,
 	 * including an expression, but only if its length is > 1 and is surrounded by parentheses.
+	 * Basically: anything can be an expression (anything that can go on one side of an equals sign)
+	 * Therefore, we need a way to check that it HAS to be an expression
 	 * @param s The string to check.
 	 * @return If it's an algebraic particle.
 	 */
 	private static boolean isParticle(String s){
-		if(Number.isNumber(s) || Root.isRoot(s) || Fraction.isFraction(s) || ConstantFraction.isConstantFraction(s) 
-				|| MixedNumber.isMixedNumber(s)){
+		if(Variable.isVariable(s) || Number.isNumber(s) || Root.isRoot(s) || Fraction.isFraction(s) 
+				|| ConstantFraction.isConstantFraction(s) || MixedNumber.isMixedNumber(s)){
 			return true;
 		}
 		//loop through it and find if it is two algebraic particles separated by + or - signs

@@ -18,6 +18,8 @@
 package com.github.nateowami.solve4x.solver;
 
 import java.nio.charset.MalformedInputException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Represents an AlgebraicParticle. Subclasses include Variable, Number, Root, Fraction, ConstantFraction, MixedNumber, Term, and Expression.
@@ -50,30 +52,56 @@ public abstract class AlgebraicParticle {
 	 */
 	public static AlgebraicParticle getInstance(String s) throws MalformedInputException{
 		System.out.println("ALGEBRAICPARTICLE GETINSTANCE: " + s);
+		
+		//necessary because expressions like "(4x)" need the parentheses stripped off
+		s = Util.removePar(s);
+		
 		if(s.length() < 1){
 			throw new MalformedInputException(0);
 		}
-		//TODO check for sign
-		//TODO check for exponent
+		
+		//temps
+		boolean sign = true;
+		int exponent = 1;//anything to the first power is itself, so 1 is default
+		
+		//take care of sign
+		sign = !(s.charAt(0) == '-');
+		if(s.charAt(0) == '-' || s.charAt(0) == '+') s = s.substring(1);
+		
+		//deal with exponent
+		Matcher m = Pattern.compile(".([⁰-⁹]+)").matcher(s);
+		//if there was an exponent
+		if(m.find()){
+			exponent = Util.superscriptToInt(m.group(1));
+			//remove the superscript from s
+			s = s.substring(0, s.length() - m.group(1).length());
+		}
+		
 		//TODO remove sign and exponent checking from other classes
+		
+		//the particle we'll eventually return
+		AlgebraicParticle partical;
 		if(Variable.isVariable(s))
-			return new Variable(s);
+			partical = new Variable(s);
 		else if(Number.isNumber(s))
-			return new Number(s);
+			partical = new Number(s);
 		else if (Root.isRoot(s))
-			return new Root(s);
+			partical = new Root(s);
 		else if (Fraction.isFraction(s))
-			return new Fraction(s);
+			partical = new Fraction(s);
 		else if (ConstantFraction.isConstantFraction(s))
-			return new ConstantFraction(s);
+			partical = new ConstantFraction(s);
 		else if (MixedNumber.isMixedNumber(s))
-			return new MixedNumber(s);
+			partical = new MixedNumber(s);
 		else if (Term.isTerm(s))
-			return new Term(s);
+			partical = new Term(s);
 		else if (Expression.isExpression(s))
-			return new Expression(s);
+			partical = new Expression(s);
 		else {System.out.println("ERROR!!!"); throw new MalformedInputException(s.length());}
 		
+		partical.exponent = exponent;
+		partical.sign = sign;
+		return partical;		
 	}
 		
 	/**
@@ -82,12 +110,21 @@ public abstract class AlgebraicParticle {
 	 * @return If s can be parsed as an AlgebraicParticle.
 	 */
 	public static boolean isAlgebraicParticle(String s){
+		System.out.println("ALGEBRAICPARTICLE ISALGEBRAIC PARTICLE: " + s);
+		if(s.length() < 1){
+			System.out.println("IS ALGEBRAIC PARTICLE RETURNS FALSE");
+			return false;
+		}
+		//necessary because expressions like "(4x)" need the parentheses stripped off
+		s = Util.removePar(s);
 		//TODO remove exponent and sign
-		if(Number.isNumber(s) || Root.isRoot(s) || Fraction.isFraction(s) || ConstantFraction.isConstantFraction(s) 
+		if(Variable.isVariable(s) || Number.isNumber(s) || Root.isRoot(s) || Fraction.isFraction(s) || ConstantFraction.isConstantFraction(s) 
 				|| MixedNumber.isMixedNumber(s) || Term.isTerm(s) || Expression.isExpression(s)){
+			System.out.println("IS ALGEBRAIC PARTICLE RETURNS TRUE");
 			return true;
 		}
-		else return false;
+		System.out.println("IS ALGEBRAIC PARTICLE RETURNS FALSE");
+		return false;
 	}
 		
 	/**
