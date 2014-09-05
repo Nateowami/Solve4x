@@ -28,6 +28,8 @@ public class Fraction extends AlgebraicParticle{
 	protected AlgebraicParticle top, bottom;
 	protected boolean isConstant;
 	
+	private static final Class[] subParts = {Variable.class, Root.class, MixedNumber.class, Number.class, Term.class, Expression.class};
+	
 	/**
 	 * Constructs a new Fraction.
 	 * @param frac The String from which to construct the fraction, in the form of
@@ -52,7 +54,7 @@ public class Fraction extends AlgebraicParticle{
 		if(divisionIndex == 0) throw new MalformedInputException(0);
 		//split the fraction at divisionIndex
 		String frac1 = frac.substring(0, divisionIndex), frac2 = frac.substring(divisionIndex+1);
-		AlgebraicParticle expr1 = new Expression(Util.removePar(frac1)), expr2 = new Expression(Util.removePar(frac2));
+		AlgebraicParticle expr1 = AlgebraicParticle.getInstance(Util.removePar(frac1), subParts), expr2 = AlgebraicParticle.getInstance(Util.removePar(frac2), subParts);
 		//everything's good to go; init top and bottom
 		this.top = expr1;
 		this.bottom = expr2;

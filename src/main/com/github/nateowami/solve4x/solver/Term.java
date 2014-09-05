@@ -43,19 +43,21 @@ public class Term extends AlgebraicParticle{
 	//the list of variables in this term
 	private ArrayList<AlgebraicParticle> parts = new ArrayList<AlgebraicParticle>();
 	
+	private static final Class[] subParts = {Expression.class, Fraction.class, MixedNumber.class, Number.class, Root.class, Variable.class};
+	
 	/**
 	 * Creates a new term from a String
 	 * @param term The term to create
 	 * @throws MalformedInputException If the term is not properly formatted (and not always even then)
 	 */
 	protected Term(String s) throws MalformedInputException{
-		Solve4x.debug("Term is: "+s);
+		Solve4x.debug("Creating term: "+s);
 		//loop backwards to find a match
 		int i;
 		for(i = s.length(); i >=0; i--){
-			if(AlgebraicParticle.isAlgebraicParticle(s.substring(0, i))){
+			if(AlgebraicParticle.isAlgebraicParticle(s.substring(0, i), subParts)){
 				Solve4x.debug("Creating algebraic particle: " + s.substring(0, i));
-				parts.add(AlgebraicParticle.getInstance(s.substring(0, i)));
+				parts.add(AlgebraicParticle.getInstance(s.substring(0, i), subParts));
 				//reset the loop
 				s = s.substring(i);
 				i = s.length()+1;//+1 because it is about to be subtracted when the loop continues

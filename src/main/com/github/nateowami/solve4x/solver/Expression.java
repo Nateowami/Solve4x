@@ -31,6 +31,8 @@ public class Expression extends AlgebraicParticle{
 	//create an ArrayList for storing a list of terms
 	protected ArrayList <AlgebraicParticle>termList = new ArrayList<AlgebraicParticle>();
 	
+	private static final Class[] subParts = {Variable.class, Number.class, Fraction.class, MixedNumber.class, Root.class, Term.class};
+	
 	/**
 	 * Creates a list of terms from the expression
 	 * @param expr The expression to store as terms
@@ -53,7 +55,7 @@ public class Expression extends AlgebraicParticle{
 			else if(parDepth == 0 && (expr.charAt(i) == '+' || expr.charAt(i) == '-')){
 				//take everything from the beginning of the expression until i
 				//and make a new Term. Add it to the term list
-				this.termList.add(AlgebraicParticle.getInstance(expr.substring(0, i)));
+				this.termList.add(AlgebraicParticle.getInstance(expr.substring(0, i), subParts));
 				Solve4x.debug("Created new Term: " + expr.substring(0, i));
 				//delete that term from expr; delete the first char too if it's a + symbol
 				expr = expr.charAt(i) == '+' ? expr.substring(i+1, expr.length()) : expr.substring(i, expr.length());
@@ -72,7 +74,7 @@ public class Expression extends AlgebraicParticle{
 		//take the rest of the expression that may be left and create a term with it
 		if(expr.length()>0){
 			//create the term and add it
-			this.termList.add(AlgebraicParticle.getInstance(expr));
+			this.termList.add(AlgebraicParticle.getInstance(expr, subParts));
 		}
 		Solve4x.debug("Expression created. " + " Terms are as follows:");
 		for(int i = 0; i < termList.size(); i++){
@@ -123,7 +125,7 @@ public class Expression extends AlgebraicParticle{
 	 * @return
 	 */
 	public static boolean isExpression(String s) {
-		// make sure there is more than one algebraic particle concatenated with + or -
+		// make sure there is more than one algebraic particle concatenated with + or -TODO will have to let Equation hold AlgebraicParticles
 		return false;
 	}
 

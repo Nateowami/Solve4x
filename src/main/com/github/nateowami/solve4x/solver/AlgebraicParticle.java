@@ -50,7 +50,7 @@ public abstract class AlgebraicParticle {
 	 * @return An AlgebraicParticle representing s.
 	 * @throws MalformedInputException If s cannot be parsed as an AlgebraicParticle.
 	 */
-	public static AlgebraicParticle getInstance(String s) throws MalformedInputException{
+	public static AlgebraicParticle getInstance(String s, Class[] c) throws MalformedInputException{
 		System.out.println("ALGEBRAICPARTICLE GETINSTANCE: " + s);
 		
 		//necessary because expressions like "(4x)" need the parentheses stripped off
@@ -109,7 +109,7 @@ public abstract class AlgebraicParticle {
 	 * @param s The string to check.
 	 * @return If s can be parsed as an AlgebraicParticle.
 	 */
-	public static boolean isAlgebraicParticle(String s){
+	public static boolean isAlgebraicParticle(String s, Class<AlgebraicParticle>[] c){
 		System.out.println("ALGEBRAICPARTICLE ISALGEBRAIC PARTICLE: " + s);
 		if(s.length() < 1){
 			System.out.println("IS ALGEBRAIC PARTICLE RETURNS FALSE");
@@ -145,4 +145,5 @@ public abstract class AlgebraicParticle {
 	public abstract String getAsString();
 	
 	public abstract String toString();
+	
 }

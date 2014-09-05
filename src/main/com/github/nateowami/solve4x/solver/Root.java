@@ -30,6 +30,8 @@ public class Root extends AlgebraicParticle{
 	private AlgebraicParticle expr;
 	private boolean isConstant;
 	
+	private static final Class[] subParts = {Variable.class, Number.class, Fraction.class, MixedNumber.class, Term.class, Expression.class};
+	
 	/**
 	 * Constructs a new Root
 	 * @param root The root to parse. Should be in the form of <i>subscript</i>√<i>expression</i>
@@ -64,7 +66,7 @@ public class Root extends AlgebraicParticle{
 			root = root.substring(1, root.length());
 		}
 		//we're now safe to parse the expression
-		this.expr = new Expression(Util.removePar(root));
+		this.expr = AlgebraicParticle.getInstance(Util.removePar(root), subParts);
 		//if expr is a number
 		isConstant = Number.isNumber(Util.removePar(root));
 	}
@@ -94,7 +96,7 @@ public class Root extends AlgebraicParticle{
 		//it has parentheses
 		else {
 			//if it's an algebraic particle
-			return AlgebraicParticle.isAlgebraicParticle(root);
+			return AlgebraicParticle.isAlgebraicParticle(root, subParts);
 		}
 		
 	}
