@@ -49,15 +49,15 @@ public class RootTest {
 	 * @throws MalformedInputException 
 	 */
 	@Test
-	public void testIsRoot() throws MalformedInputException {
-		assertTrue(Root.isRoot("₄√(4x+6)"));
-		assertTrue(Root.isRoot("₂₀₉√(74xy2)"));
-		assertTrue(Root.isRoot("√4xy2"));
-		assertTrue(Root.isRoot("√(xyz+6x4)"));
+	public void testparseable() throws MalformedInputException {
+		assertTrue(Root.parseable("₄√(4x+6)"));
+		assertTrue(Root.parseable("₂₀₉√(74xy2)"));
+		assertTrue(Root.parseable("√4xy2"));
+		assertTrue(Root.parseable("√(xyz+6x4)"));
 		
-		assertFalse(Root.isRoot("√xyz+6x4"));
-		assertFalse(Root.isRoot("2√15"));
-		assertFalse(Root.isRoot(""));
+		assertFalse(Root.parseable("√xyz+6x4"));
+		assertFalse(Root.parseable("2√15"));
+		assertFalse(Root.parseable(""));
 	}
 
 	/**

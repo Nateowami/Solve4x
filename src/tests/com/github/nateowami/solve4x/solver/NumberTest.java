@@ -79,17 +79,17 @@ public class NumberTest {
 	 */
 	@Test
 	public void testIsNumber() {
-		assertTrue(Number.isNumber("1"));
-		assertTrue(Number.isNumber("0"));
-		assertTrue(Number.isNumber("0.1"));
-		assertTrue(Number.isNumber("1.63"));
-		assertTrue(Number.isNumber("3.141592"));
-		assertFalse(Number.isNumber(""));
-		assertFalse(Number.isNumber("1.9.639"));
-		assertFalse(Number.isNumber(".1111"));
-		assertFalse(Number.isNumber("12."));
-		assertFalse(Number.isNumber("j8.7"));
-		assertFalse(Number.isNumber("8.8s"));
+		assertTrue(Number.parseable("1"));
+		assertTrue(Number.parseable("0"));
+		assertTrue(Number.parseable("0.1"));
+		assertTrue(Number.parseable("1.63"));
+		assertTrue(Number.parseable("3.141592"));
+		assertFalse(Number.parseable(""));
+		assertFalse(Number.parseable("1.9.639"));
+		assertFalse(Number.parseable(".1111"));
+		assertFalse(Number.parseable("12."));
+		assertFalse(Number.parseable("j8.7"));
+		assertFalse(Number.parseable("8.8s"));
 	}
 	
 }

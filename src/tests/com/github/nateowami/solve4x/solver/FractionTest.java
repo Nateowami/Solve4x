@@ -54,13 +54,13 @@ public class FractionTest {
 	 */
 	@Test
 	public void testIsFraction() throws MalformedInputException {
-		assertTrue(Fraction.isFraction("2/3"));
-		assertTrue(Fraction.isFraction("(23+xy6)/(43xy+6)"));
-		assertTrue(Fraction.isFraction("23xy2/(x+6-3xy)"));
+		assertTrue(Fraction.parseable("2/3"));
+		assertTrue(Fraction.parseable("(23+xy6)/(43xy+6)"));
+		assertTrue(Fraction.parseable("23xy2/(x+6-3xy)"));
 		
-		assertFalse(Fraction.isFraction("23xy2/(x+6-3xy"));
-		assertFalse(Fraction.isFraction("4/15+6"));
-		assertFalse(Fraction.isFraction("x+6"));
+		assertFalse(Fraction.parseable("23xy2/(x+6-3xy"));
+		assertFalse(Fraction.parseable("4/15+6"));
+		assertFalse(Fraction.parseable("x+6"));
 	}
 
 	/**

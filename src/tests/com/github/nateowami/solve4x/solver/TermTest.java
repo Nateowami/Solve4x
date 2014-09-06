@@ -80,7 +80,7 @@ public class TermTest {
 	 */
 	@Test
 	public void testIsTerm() {
-		assertTrue(Term.isTerm("2x"));
+		assertTrue(Term.parseable("2x"));
 	}
 
 }

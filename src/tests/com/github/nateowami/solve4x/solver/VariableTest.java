@@ -74,12 +74,12 @@ public class VariableTest {
 	 */
 	@Test
 	public void testIsVariable() throws MalformedInputException {
-		assertTrue(Variable.isVariable("n"));
-		assertTrue(Variable.isVariable("y"));
-		assertTrue(Variable.isVariable("X"));
-		assertFalse(Variable.isVariable("2"));
-		assertFalse(Variable.isVariable("Ü"));
-		assertFalse(Variable.isVariable("ó"));
+		assertTrue(Variable.parseable("n"));
+		assertTrue(Variable.parseable("y"));
+		assertTrue(Variable.parseable("X"));
+		assertFalse(Variable.parseable("2"));
+		assertFalse(Variable.parseable("Ü"));
+		assertFalse(Variable.parseable("ó"));
 	}
 
 }

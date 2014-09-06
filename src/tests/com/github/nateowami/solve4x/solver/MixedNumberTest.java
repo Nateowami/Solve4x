@@ -48,12 +48,12 @@ public class MixedNumberTest {
 	 */
 	@Test
 	public void testIsMixedNumber() {
-		assertTrue(MixedNumber.isMixedNumber("1/4"));
-		assertTrue(MixedNumber.isMixedNumber("5/-6"));
-		assertTrue(MixedNumber.isMixedNumber("5(19)/(-6)"));
-		assertFalse(MixedNumber.isMixedNumber("(5)(19)/(1)"));
-		assertFalse(MixedNumber.isMixedNumber("6 56/8"));
-		assertFalse(MixedNumber.isMixedNumber("6 (56)/(8)"));
+		assertTrue(MixedNumber.parseable("1/4"));
+		assertTrue(MixedNumber.parseable("5/-6"));
+		assertTrue(MixedNumber.parseable("5(19)/(-6)"));
+		assertFalse(MixedNumber.parseable("(5)(19)/(1)"));
+		assertFalse(MixedNumber.parseable("6 56/8"));
+		assertFalse(MixedNumber.parseable("6 (56)/(8)"));
 	}
 
 	/**
