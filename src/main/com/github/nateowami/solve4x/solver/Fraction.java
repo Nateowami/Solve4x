@@ -59,7 +59,8 @@ public class Fraction extends AlgebraicParticle{
 		this.top = expr1;
 		this.bottom = expr2;
 		//figure out if the fraction is a constant
-		if(Number.isNumber(Util.removePar(frac1)) && Number.isNumber(Util.removePar(frac2))){
+		//XXX Number.parseable will take decimals, which may or may not be what we want
+		if(Number.parseable(Util.removePar(frac1)) && Number.parseable(Util.removePar(frac2))){
 			isConstant = true;
 		}
 	}
@@ -69,7 +70,7 @@ public class Fraction extends AlgebraicParticle{
 	 * @param frac The String in question.
 	 * @return If frac is a valid fraction
 	 */
-	public static boolean isFraction(String frac){
+	public static boolean parseable(String frac){
 		//find the '/'
 		int parDepth = 0, divisionIndex = 0;
 		for(int i = 0; i < frac.length(); i++){

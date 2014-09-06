@@ -68,7 +68,7 @@ public class Root extends AlgebraicParticle{
 		//we're now safe to parse the expression
 		this.expr = AlgebraicParticle.getInstance(Util.removePar(root), subParts);
 		//if expr is a number
-		isConstant = Number.isNumber(Util.removePar(root));
+		isConstant = Number.parseable(Util.removePar(root));//XXX number.parseable() should include decimals, which may or may not be what we want
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class Root extends AlgebraicParticle{
 	 * @param root The root to check.
 	 * @return If root is a valid root.
 	 */
-	static public boolean isRoot(String root){
+	static public boolean parseable(String root){
 		//first check for the subscript and radical sign
 		int i = 0;
 		for(; i < root.length() && root.charAt(i) >= '\u2080' && root.charAt(i) <= '\u2089'; i++);
@@ -96,7 +96,7 @@ public class Root extends AlgebraicParticle{
 		//it has parentheses
 		else {
 			//if it's an algebraic particle
-			return AlgebraicParticle.isAlgebraicParticle(root, subParts);
+			return AlgebraicParticle.parseable(root, subParts);
 		}
 		
 	}

@@ -263,7 +263,7 @@ public class Util {
 	 */
 	public static boolean isFullySimplified(String expr) {
 		//first check that we're dealing with a number/mixed number/fraction
-		if(Number.isNumber(expr)){
+		if(Number.parseable(expr)){
 			//it's a number; make sure it's simplified
 			
 			//the index of the first non-numeral

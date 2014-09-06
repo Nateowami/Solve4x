@@ -81,21 +81,19 @@ public abstract class AlgebraicParticle {
 		
 		//the particle we'll eventually return
 		AlgebraicParticle partical;
-		if(Variable.isVariable(s))
+		if(Variable.parseable(s))
 			partical = new Variable(s);
-		else if(Number.isNumber(s))
+		else if(Number.parseable(s))
 			partical = new Number(s);
-		else if (Root.isRoot(s))
+		else if (Root.parseable(s))
 			partical = new Root(s);
-		else if (Fraction.isFraction(s))
+		else if (Fraction.parseable(s))
 			partical = new Fraction(s);
-		else if (ConstantFraction.isConstantFraction(s))
-			partical = new ConstantFraction(s);
-		else if (MixedNumber.isMixedNumber(s))
+		else if (MixedNumber.parseable(s))
 			partical = new MixedNumber(s);
-		else if (Term.isTerm(s))
+		else if (Term.parseable(s))
 			partical = new Term(s);
-		else if (Expression.isExpression(s))
+		else if (Expression.parseable(s))
 			partical = new Expression(s);
 		else {System.out.println("ERROR!!! CANNOT CONSTRUCT ALGEBRAIC PARTICLE"); throw new MalformedInputException(s.length());}
 		
@@ -109,7 +107,7 @@ public abstract class AlgebraicParticle {
 	 * @param s The string to check.
 	 * @return If s can be parsed as an AlgebraicParticle.
 	 */
-	public static boolean isAlgebraicParticle(String s, Class<AlgebraicParticle>[] c){
+	public static boolean parseable(String s, Class<AlgebraicParticle>[] c){
 		System.out.println("ALGEBRAICPARTICLE ISALGEBRAIC PARTICLE: " + s);
 		if(s.length() < 1){
 			System.out.println("IS ALGEBRAIC PARTICLE RETURNS FALSE");
@@ -130,8 +128,8 @@ public abstract class AlgebraicParticle {
 			s = s.substring(0, s.length() - m.group(1).length());
 		}
 
-		if(Variable.isVariable(s) || Number.isNumber(s) || Root.isRoot(s) || Fraction.isFraction(s) || ConstantFraction.isConstantFraction(s) 
-				|| MixedNumber.isMixedNumber(s) || Term.isTerm(s) || Expression.isExpression(s)){
+		if(Variable.parseable(s) || Number.parseable(s) || Root.parseable(s) || Fraction.parseable(s) || 
+				MixedNumber.parseable(s) || Term.parseable(s) || Expression.parseable(s)){
 			System.out.println("IS ALGEBRAIC PARTICLE RETURNS TRUE");
 			return true;
 		}
@@ -144,6 +142,9 @@ public abstract class AlgebraicParticle {
 	 */
 	public abstract String getAsString();
 	
+	/**
+	 * Every AlgebraicParticle needs to define its own toString() for debuging purposes.
+	 */
 	public abstract String toString();
 	
 }

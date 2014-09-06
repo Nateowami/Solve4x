@@ -112,7 +112,7 @@ public class Number extends AlgebraicParticle{
 	 * @param number The number to check
 	 * @return If it's a number and/or fraction combination
 	 */
-	public static boolean isNumber(String number) {
+	public static boolean parseable(String number) {
 		//make sure it's an int with at least one char followed (optionally) by 
 		//a decimal and any number of numerals
 		return number.matches("^-?[0-9]+(\\.[0-9]+)?$");

@@ -63,7 +63,7 @@ public class MixedNumber extends AlgebraicParticle{
 	 * @param s The string to check.
 	 * @return If s can be parsed as a MixedNumber.
 	 */
-	public static boolean isMixedNumber(String s){
+	public static boolean parseable(String s){
 		//if it's just a fraction
 		if(ConstantFraction.isConstantFraction(s)){
 			return true;

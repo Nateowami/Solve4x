@@ -124,7 +124,7 @@ public class Expression extends AlgebraicParticle{
 	 * @param s
 	 * @return
 	 */
-	public static boolean isExpression(String s) {
+	public static boolean parseable(String s) {
 		// make sure there is more than one algebraic particle concatenated with + or -TODO will have to let Equation hold AlgebraicParticles
 		return false;
 	}

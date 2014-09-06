@@ -55,7 +55,7 @@ public class Term extends AlgebraicParticle{
 		//loop backwards to find a match
 		int i;
 		for(i = s.length(); i >=0; i--){
-			if(AlgebraicParticle.isAlgebraicParticle(s.substring(0, i), subParts)){
+			if(AlgebraicParticle.parseable(s.substring(0, i), subParts)){
 				Solve4x.debug("Creating algebraic particle: " + s.substring(0, i));
 				parts.add(AlgebraicParticle.getInstance(s.substring(0, i), subParts));
 				//reset the loop
@@ -114,10 +114,10 @@ public class Term extends AlgebraicParticle{
 	 * @param s The string to check.
 	 * @return If s is parseable as a term.
 	 */
-	public static boolean isTerm(String s){
+	public static boolean parseable(String s){
 		//make sure it's a list of algebraic particles
 		for(int i = s.length(); i >= 0; i--){
-			if(isParticle(s.substring(0, i))){
+			if(AlgebraicParticle.parseable(s.substring(0, i), subParts)){
 				//reset the loop
 				s = s.substring(i);
 				i = s.length()+1;//+1 because it's about to be subtracted 1
@@ -128,44 +128,6 @@ public class Term extends AlgebraicParticle{
 			return true;
 		}
 		else return false;		
-	}
-	
-	/**
-	 * Helper method for isTerm(String s). Tells if a string is valid as an algebraic particle,
-	 * including an expression, but only if its length is > 1 and is surrounded by parentheses.
-	 * Basically: anything can be an expression (anything that can go on one side of an equals sign)
-	 * Therefore, we need a way to check that it HAS to be an expression
-	 * @param s The string to check.
-	 * @return If it's an algebraic particle.
-	 */
-	private static boolean isParticle(String s){
-		if(Variable.isVariable(s) || Number.isNumber(s) || Root.isRoot(s) || Fraction.isFraction(s) 
-				|| ConstantFraction.isConstantFraction(s) || MixedNumber.isMixedNumber(s)){
-			return true;
-		}
-		//loop through it and find if it is two algebraic particles separated by + or - signs
-		int parDepth = 0;
-		for(int i = 0; i < s.length(); i++){
-			//keep track of par depth
-			if(Util.isOpenPar(s.charAt(i))){
-				parDepth++;
-			}
-			else if(Util.isClosePar(s.charAt(i))){
-				parDepth--;
-			}
-			//if parDepth is 0 and it's a + or - sign
-			else if(parDepth == 0 && (s.charAt(i) == '+' || s.charAt(i) == '-')){
-				//split s at i and and check both for being a algebraic particles
-				String a = s.substring(0, i), b = s.substring(i);
-				//if both are some sort of algebraic particle
-				if((Number.isNumber(a) || Root.isRoot(a) || Fraction.isFraction(a) || ConstantFraction.isConstantFraction(a) || MixedNumber.isMixedNumber(a)) 
-				&& (Number.isNumber(b) || Root.isRoot(b) || Fraction.isFraction(b) || ConstantFraction.isConstantFraction(b) || MixedNumber.isMixedNumber(b))){
-					return true;
-				}
-				else return false;
-			}
-		}
-		return false;
 	}
 	
 }

@@ -184,12 +184,12 @@ public class Solver {
 		}
 		
 		//if the first is a variable and the second is a number
-		else if(Util.isLetter(eq.getExpression(0).getAsString()) && Number.isNumber(eq.getExpression(1).getAsString())){
+		else if(Util.isLetter(eq.getExpression(0).getAsString()) && Number.parseable(eq.getExpression(1).getAsString())){
 			return true;
 		}
 		
 		//if the second is a variable and the first is a number
-		else if(Util.isLetter(eq.getExpression(1).getAsString()) && Number.isNumber(eq.getExpression(0).getAsString())){
+		else if(Util.isLetter(eq.getExpression(1).getAsString()) && Number.parseable(eq.getExpression(0).getAsString())){
 			return true;
 		}
 		
@@ -234,7 +234,7 @@ public class Solver {
 	private boolean isSimplified(String expr){
 		Solve4x.debug("Checking if it's simplified: " + expr);
 		//if it's a number
-		if(Number.isNumber(expr)){
+		if(Number.parseable(expr)){
 			Solve4x.debug("It's a number alright");
 			//AND it's fully simplified (TODO)
 			if(Util.isFullySimplified(expr)){

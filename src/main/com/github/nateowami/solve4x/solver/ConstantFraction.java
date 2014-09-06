@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.nio.charset.MalformedInputException;
 
 /**
+ * TODO remove this class and any dependencies. It's not used or really needed.
  * A fraction containing constant numbers on top and bottom. Not to be confused with Fraction.
  * TODO add support for decimals, subtraction, and multiplication (division not necessary as it is 
  * multiplication by the reciprical). 
@@ -63,7 +64,7 @@ public class ConstantFraction extends AlgebraicParticle{
 		int i = frac.indexOf('/');
 		//make sure there's at least one char on each side of i in the fraction
 		if(i > 0 && i < frac.length()-1){
-			return Number.isNumber(Util.removePar(frac.substring(0,i))) && Number.isNumber(Util.removePar(frac.substring(i+1,frac.length())));
+			return Number.parseable(Util.removePar(frac.substring(0,i))) && Number.parseable(Util.removePar(frac.substring(i+1,frac.length())));
 		}
 		else return false;
 	}

@@ -66,7 +66,7 @@ public class Variable extends AlgebraicParticle{
 	 * @param s
 	 * @return
 	 */
-	public static boolean isVariable(String s) {
+	public static boolean parseable(String s) {
 		if(s == null || s.length() != 1 || !Util.isLetter(s.charAt(0))){
 			return false;
 		}
