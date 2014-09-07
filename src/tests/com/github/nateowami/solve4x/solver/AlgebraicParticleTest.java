@@ -19,6 +19,8 @@ package com.github.nateowami.solve4x.solver;
 
 import static org.junit.Assert.*;
 
+import java.nio.charset.MalformedInputException;
+
 import org.junit.Test;
 
 /**
@@ -44,10 +46,11 @@ public class AlgebraicParticleTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.AlgebraicParticle#getInstance(java.lang.String, java.lang.Class[])}.
+	 * @throws MalformedInputException 
 	 */
 	@Test
-	public void testGetInstance() {
-		fail("Not yet implemented"); // TODO
+	public void testGetInstance() throws MalformedInputException {
+		System.out.println("HERE IT IS!!!!!!" + AlgebraicParticle.getInstance("2x6y", new Class[]{Term.class}).toString());
 	}
 
 	/**
@@ -55,7 +58,10 @@ public class AlgebraicParticleTest {
 	 */
 	@Test
 	public void testParseable() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(AlgebraicParticle.parseable("2x", new Class[]{Term.class}));
+		assertTrue(AlgebraicParticle.parseable("2x6y", new Class[]{Term.class}));
+		assertTrue(AlgebraicParticle.parseable("2x⁹", new Class[]{Term.class}));
+		assertTrue(AlgebraicParticle.parseable("-2x", new Class[]{Term.class}));
 	}
 
 }

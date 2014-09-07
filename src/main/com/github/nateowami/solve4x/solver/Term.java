@@ -43,7 +43,7 @@ public class Term extends AlgebraicParticle{
 	//the list of variables in this term
 	private ArrayList<AlgebraicParticle> parts = new ArrayList<AlgebraicParticle>();
 	
-	private static final Class[] subParts = {Expression.class, Fraction.class, MixedNumber.class, Number.class, Root.class, Variable.class};
+	private static final Class[] subParts = {Variable.class, Number.class, Fraction.class, MixedNumber.class, Root.class, Expression.class};
 	
 	/**
 	 * Creates a new term from a String

@@ -17,6 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.MalformedInputException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -80,22 +81,20 @@ public abstract class AlgebraicParticle {
 		//TODO remove sign and exponent checking from other classes
 		
 		//the particle we'll eventually return
-		AlgebraicParticle partical;
-		if(Variable.parseable(s))
-			partical = new Variable(s);
-		else if(Number.parseable(s))
-			partical = new Number(s);
-		else if (Root.parseable(s))
-			partical = new Root(s);
-		else if (Fraction.parseable(s))
-			partical = new Fraction(s);
-		else if (MixedNumber.parseable(s))
-			partical = new MixedNumber(s);
-		else if (Term.parseable(s))
-			partical = new Term(s);
-		else if (Expression.parseable(s))
-			partical = new Expression(s);
-		else {System.out.println("ERROR!!! CANNOT CONSTRUCT ALGEBRAIC PARTICLE"); throw new MalformedInputException(s.length());}
+		AlgebraicParticle partical = null;
+
+		for(Class i : c){
+			String n = i.getSimpleName();
+			     if(n.equals("Variable")    && Variable.parseable(s))    partical = new Variable(s);
+			else if(n.equals("Number")      && Number.parseable(s))      partical = new Number(s);
+			else if(n.equals("Root")        && Root.parseable(s))        partical = new Root(s);
+			else if(n.equals("Fraction")    && Fraction.parseable(s))    partical = new Fraction(s);
+			else if(n.equals("MixedNumber") && MixedNumber.parseable(s)) partical = new MixedNumber(s);
+			else if(n.equals("Term")        && Term.parseable(s))        partical = new Term(s);
+			else if(n.equals("Expression")  && Expression.parseable(s))  partical = new Expression(s);
+		}
+		//check if creating it was successful
+		if(partical == null)throw new MalformedInputException(s.length());
 		
 		partical.exponent = exponent;
 		partical.sign = sign;
@@ -107,7 +106,7 @@ public abstract class AlgebraicParticle {
 	 * @param s The string to check.
 	 * @return If s can be parsed as an AlgebraicParticle.
 	 */
-	public static boolean parseable(String s, Class<AlgebraicParticle>[] c){
+	public static boolean parseable(String s, Class[] c){
 		System.out.println("ALGEBRAICPARTICLE ISALGEBRAIC PARTICLE: " + s);
 		if(s.length() < 1){
 			System.out.println("IS ALGEBRAIC PARTICLE RETURNS FALSE");
@@ -127,12 +126,26 @@ public abstract class AlgebraicParticle {
 			//remove the superscript from s
 			s = s.substring(0, s.length() - m.group(1).length());
 		}
-
+		
+		for(Class i : c){
+			String n = i.getSimpleName();
+			if(n.equals("Variable")    && Variable.parseable(s)) return true;
+			if(n.equals("Number")      && Number  .parseable(s)) return true;
+			if(n.equals("Root")        && Root.parseable(s)) return true;
+			if(n.equals("Fraction")    && Fraction.parseable(s)) return true;
+			if(n.equals("MixedNumber") && MixedNumber.parseable(s)) return true;
+			if(n.equals("Term")        && Term.parseable(s)) return true;
+			if(n.equals("Expression")  && Expression.parseable(s)) return true;
+		}
+		
+		/*
+		 * There is a small chance we'll use this code again in a modified way
 		if(Variable.parseable(s) || Number.parseable(s) || Root.parseable(s) || Fraction.parseable(s) || 
 				MixedNumber.parseable(s) || Term.parseable(s) || Expression.parseable(s)){
 			System.out.println("IS ALGEBRAIC PARTICLE RETURNS TRUE");
 			return true;
-		}
+		}*/
+		
 		System.out.println("IS ALGEBRAIC PARTICLE RETURNS FALSE");
 		return false;
 	}
