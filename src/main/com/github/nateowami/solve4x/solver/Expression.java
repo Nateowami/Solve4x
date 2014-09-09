@@ -39,47 +39,16 @@ public class Expression extends AlgebraicParticle{
 	 */
 	Expression(String expr) throws MalformedInputException{
 		Solve4x.debug("Expression: " + expr);
-		//Iterate through the expression keeping track of how deep into par nesting we get
-		int parDepth = 0;
-		for(int i = 0; i< expr.length(); i++){
-			//check to see if parDepth needs to change
-			if(Util.isOpenPar(expr.charAt(i))){
-				parDepth++;
-			}
-			else if(Util.isClosePar(expr.charAt(i))){
-				parDepth--;
-			}
-			//if it's a + or - AND parDepth is 0
-			//and it's OK to use else if because if it's + or - then the 
-			//above if statements would have failed
-			else if(parDepth == 0 && (expr.charAt(i) == '+' || expr.charAt(i) == '-')){
-				//take everything from the beginning of the expression until i
-				//and make a new Term. Add it to the term list
-				this.termList.add(AlgebraicParticle.getInstance(expr.substring(0, i), subParts));
-				Solve4x.debug("Created new Term: " + expr.substring(0, i));
-				//delete that term from expr; delete the first char too if it's a + symbol
-				expr = expr.charAt(i) == '+' ? expr.substring(i+1, expr.length()) : expr.substring(i, expr.length());
-				//now reset i to 0 (it will get incremented to 1 when the loop continues)
-				//this is necessary because the expr.length() just changed, and the char it's
-				//about to check is a + or - (we just checked it but it gets passed over the next 
-				//time because i will be 1)
-				i = 0;
-			}
-			//if the number of parentheses isn't coming out right (pardepth 0 isn't reached at the end)
-			else if(parDepth != 0 && i == expr.length() - 1){
-				//error
-				throw new MalformedInputException(expr.length());
+		//loop backwards to find something that can be parsed
+		for(int i = expr.length(); i > 0; i--){
+			if(AlgebraicParticle.parseable(expr.substring(0, i), subParts));{
+				termList.add(AlgebraicParticle.getInstance(expr.substring(0, i), subParts));
+				//remove what's been parsed from expr and reset i
+				expr = expr.substring(i, expr.length());
+				i = expr.length()+1;//because the loop is about to do i--
 			}
 		}
-		//take the rest of the expression that may be left and create a term with it
-		if(expr.length()>0){
-			//create the term and add it
-			this.termList.add(AlgebraicParticle.getInstance(expr, subParts));
-		}
-		Solve4x.debug("Expression created. " + " Terms are as follows:");
-		for(int i = 0; i < termList.size(); i++){
-			System.out.println(termList.get(i).getAsString());
-		}
+		if(expr.length() > 0) throw new MalformedInputException(expr.length());
 	}
 	
 	/* (non-Javadoc)
