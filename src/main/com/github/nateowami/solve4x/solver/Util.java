@@ -436,6 +436,19 @@ public class Util {
 	}
 	
 	/**
+	 * Converts a given integer n to Unicode superscript.
+	 * @param n The integer to convert.
+	 * @return The superscript form of integer n.
+	 */
+	public static String intToSuperscript(int n){
+		String answer = "";
+		for(char c : (n + "").toCharArray()){
+			answer += (char)(c + 8256);
+		}
+		return answer;
+	}
+	
+	/**
 	 * Tells if a specified char c is a subscript. 
 	 * @param c The char to check.
 	 * @return If c is a subscript.
