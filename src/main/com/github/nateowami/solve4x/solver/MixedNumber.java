@@ -129,8 +129,9 @@ public class MixedNumber extends AlgebraicParticle{
 	 * @return A string representation of the MixedNumber
 	 */
 	public String getAsString(){
-		return (numeral == null ? "" : numeral) 
-				+ (fraction == null ? "" : ( "(" + fraction.getTop().getAsString() + ")/(" + fraction.getBottom().getAsString()) + ")");
+		return wrapWithSignAndExponent(
+				(numeral == null ? "" : numeral) 
+				+ (fraction == null ? "" : ( "(" + fraction.getTop().getAsString() + ")/(" + fraction.getBottom().getAsString()) + ")"));
 	}
 	
 	/* (non-Javadoc)

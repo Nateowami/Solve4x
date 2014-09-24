@@ -44,6 +44,7 @@ public class TermTest {
 	 */
 	@Test
 	public void testTerm() throws MalformedInputException {
+		assertEquals(new Term("2x").getAsString(), "2x");
 		assertTrue(new Term("2x(4xy)").getAsString().equals("2x(4xy)"));
 		assertTrue(new Term("21").getAsString().equals("21"));
 		assertTrue(new Term("xy(6)").getAsString().equals("xy(6)"));

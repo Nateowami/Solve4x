@@ -482,4 +482,13 @@ public class Util {
 		return Integer.parseInt(answer);
 	}
 	
+	public static String intToSubscript(int n){
+		String answer = "";
+		for(char c : (n + "").toCharArray()){
+			answer += (char)(c + 8272);//FIXME this doesn't work -may need to run a test to get the real conversion
+			//FIXED? changed it; it should work
+		}
+		return answer;
+	}
+	
 }

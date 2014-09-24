@@ -98,7 +98,7 @@ public class Term extends AlgebraicParticle{
 		for(int i = 0; i < this.parts.size(); i++){
 			s += this.parts.get(i).getAsString();
 		}
-		return s;
+		return wrapWithSignAndExponent(s);
 	}
 
 	/* (non-Javadoc)

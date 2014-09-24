@@ -130,10 +130,10 @@ public class Root extends AlgebraicParticle{
 	 */
 	@Override
 	public String getAsString() {
-		return 
-				//watch out for square root; don't render it if it exists
-				(this.nthRoot == 2 ? "" : this.nthRoot)
-				+ expr.getAsString();
+		return wrapWithSignAndExponent(
+				//don't show nth root if it's 2 (default)
+				this.nthRoot == 2 ? "" : Util.intToSubscript(this.nthRoot)
+				+ "√(" + expr.getAsString() + ")");
 	}
 
 	/* (non-Javadoc)

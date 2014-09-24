@@ -194,4 +194,12 @@ public class UtilTest {
 		fail("Not yet implemented"); // TODO
 	}
 
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#intToSubscript(int)}.
+	 */
+	@Test
+	public void testIntToSubscript() {
+		assertEquals("₄₄", Util.intToSubscript(44));//TODO change "something"
+	}
+	
 }

@@ -42,7 +42,7 @@ public abstract class AlgebraicParticle {
 	 * @return The exponent of the AlgebraicParticle.
 	 */
 	public int exponent(){
-		return exponent;
+		return this.exponent;
 	}
 	
 	/**
@@ -154,6 +154,24 @@ public abstract class AlgebraicParticle {
 	 * @return The string form of the algebraic particle.
 	 */
 	public abstract String getAsString();
+	
+	/**
+	 * Wraps string s with the sign and exponent. The use case for this
+	 * is in a subclass of AlgebraicParticle in its getAsString() method.
+	 * The subclass should call this method to wrap a string with the sign
+	 * and exponent. For example, the Number class could call 
+	 * wrapWithSignAndExponent("3.14") which, depending on the values in 
+	 * the fields sign and exponent, may return something along the lines 
+	 * of "+3.14⁶". The sign will always be present, whether positive or 
+	 * negative, but the superscript will only be present if it is not 1.
+	 * While this functionality could be implemented directly in the 
+	 * subclass, this will keep the code DRYer and be easier to modify.
+	 * @param s The string to be wrapped with the sign and exponent.
+	 * @return The wrapped version of s.
+	 */
+	protected String wrapWithSignAndExponent(String s){
+		return (sign ? '+' : '-') + s + (exponent == 1 ? "" : Util.intToSuperscript(exponent));
+	}
 	
 	/**
 	 * Every AlgebraicParticle needs to define its own toString() for debuging purposes.

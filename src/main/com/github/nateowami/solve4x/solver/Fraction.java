@@ -129,7 +129,7 @@ public class Fraction extends AlgebraicParticle{
 	 */
 	@Override
 	public String getAsString() {
-		return this.top.getAsString() + '/' + this.bottom.getAsString();
+		return wrapWithSignAndExponent(this.top.getAsString() + '/' + this.bottom.getAsString());
 	}
 
 	/* (non-Javadoc)
