@@ -407,7 +407,7 @@ public class Util {
 	 * @return If c is a superscript.
 	 */
 	public static boolean isSuperscript(char c){
-		return c > '\u2070' && c < '\u2079';
+		return c >= '\u2070' && c <= '\u2079';
 	}
 	
 	/**
@@ -454,7 +454,7 @@ public class Util {
 	 * @return If c is a subscript.
 	 */
 	public static boolean isSubscript(char c){
-		return c > '\u2080' && c < '\u2089';
+		return c >= '\u2080' && c <= '\u2089';
 	}
 	
 	/**
@@ -462,7 +462,7 @@ public class Util {
 	 * @param s The string to check.
 	 * @return If every char in s is a valid subscript char.
 	 */
-	public static boolean isSubcript(String s){
+	public static boolean isSubscript(String s){
 		for(char c : s.toCharArray()){
 			if(!isSubscript(c)) return false;
 		}
@@ -485,8 +485,7 @@ public class Util {
 	public static String intToSubscript(int n){
 		String answer = "";
 		for(char c : (n + "").toCharArray()){
-			answer += (char)(c + 8272);//FIXME this doesn't work -may need to run a test to get the real conversion
-			//FIXED? changed it; it should work
+			answer += (char)(c + 8272);
 		}
 		return answer;
 	}

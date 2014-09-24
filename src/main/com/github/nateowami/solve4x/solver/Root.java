@@ -80,7 +80,7 @@ public class Root extends AlgebraicParticle{
 	static public boolean parseable(String root){
 		//first check for the subscript and radical sign
 		int i = 0;
-		for(; i < root.length() && root.charAt(i) >= '\u2080' && root.charAt(i) <= '\u2089'; i++);
+		while(i < root.length() && Util.isSubscript(root.charAt(i))) i++;
 		//remove the subscript
 		root = root.substring(i,root.length());
 		//remove the radical sign, making sure not to throw and exception
@@ -90,7 +90,7 @@ public class Root extends AlgebraicParticle{
 		//now make sure the rest is an expression that either has only one term
 		//or has parentheses around it
 		//if it's not the same after removing parentheses
-		if (!Util.removePar(root).equals(root)){
+		if (Util.removePar(root).equals(root)){
 			return false;
 		}
 		//it has parentheses

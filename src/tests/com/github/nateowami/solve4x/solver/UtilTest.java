@@ -55,7 +55,13 @@ public class UtilTest {
 	 */
 	@Test
 	public void testRemovePar() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(Util.removePar("4"), "4");
+		assertEquals(Util.removePar("xy+6z)"), "xy+6z)");
+		assertEquals(Util.removePar("(asdfa + z 4"), "(asdfa + z 4");
+		assertEquals(Util.removePar("(4)"), "4");
+		assertEquals(Util.removePar("(xy+6/3)"), "xy+6/3");
+		assertEquals(Util.removePar("((asdfa)asdkjflaskdfj)"), "(asdfa)asdkjflaskdfj");
+		assertEquals(Util.removePar("(z6+4)"), "z6+4");
 	}
 
 	/**
@@ -175,15 +181,9 @@ public class UtilTest {
 	 */
 	@Test
 	public void testIsSubscript() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isSubcript(java.lang.String)}.
-	 */
-	@Test
-	public void testIsSubcript() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(Util.isSubscript('₀'));
+		assertTrue(Util.isSubscript('₄'));
+		assertTrue(Util.isSubscript('₉'));
 	}
 
 	/**

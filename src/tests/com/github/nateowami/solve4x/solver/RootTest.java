@@ -38,10 +38,10 @@ public class RootTest {
 	public void testRoot() throws MalformedInputException {
 		Root root1 = new Root("₄√(4x+6)");
 		assertTrue(root1.getNthRoot()==4);
-		assertTrue(root1.getExpr().getAsString().equals("4x+6"));
+		assertEquals("4x+6", root1.getExpr().getAsString());
 		Root root2 = new Root("₂₀₉√(74xy2)");
 		assertTrue(root2.getNthRoot()==209);
-		assertTrue(root2.getExpr().getAsString().equals("74xy2"));
+		assertEquals("74xy2", root2.getExpr().getAsString());
 	}
 
 	/**
@@ -50,11 +50,13 @@ public class RootTest {
 	 */
 	@Test
 	public void testparseable() throws MalformedInputException {
-		assertTrue(Root.parseable("₄√(4x+6)"));
-		assertTrue(Root.parseable("₂₀₉√(74xy2)"));
-		assertTrue(Root.parseable("√4xy2"));
+		assertTrue(Root.parseable("√(4)"));
 		assertTrue(Root.parseable("√(xyz+6x4)"));
+		assertTrue(Root.parseable("₄√(4x+6)"));
+		assertTrue(Root.parseable("₄√(4y+x⁶)"));
+		assertTrue(Root.parseable("₂₀₉√(74xy2)"));
 		
+		assertFalse(Root.parseable("√4xy2"));
 		assertFalse(Root.parseable("√xyz+6x4"));
 		assertFalse(Root.parseable("2√15"));
 		assertFalse(Root.parseable(""));
