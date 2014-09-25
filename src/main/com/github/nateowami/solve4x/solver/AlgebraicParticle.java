@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  */
 public abstract class AlgebraicParticle {
 	
-	private int exponent;
+	private int exponent = 1;
 	private boolean sign = true;
 	
 	/**
@@ -70,7 +70,7 @@ public abstract class AlgebraicParticle {
 		if(s.charAt(0) == '-' || s.charAt(0) == '+') s = s.substring(1);
 		
 		//deal with exponent
-		Matcher m = Pattern.compile(".([⁰-⁹]+)").matcher(s);
+		Matcher m = Pattern.compile(".([¹-⁹][⁰-⁹]*)\\z").matcher(s);
 		//if there was an exponent
 		if(m.find()){
 			exponent = Util.superscriptToInt(m.group(1));
@@ -120,7 +120,7 @@ public abstract class AlgebraicParticle {
 		if(s.charAt(0) == '-' || s.charAt(0) == '+') s = s.substring(1);
 
 		//remove the exponent
-		Matcher m = Pattern.compile(".([⁰-⁹]+)").matcher(s);
+		Matcher m = Pattern.compile(".([¹-⁹][⁰-⁹]*)\\z").matcher(s);
 		//if there was an exponent
 		if(m.find()){
 			//remove the superscript from s
@@ -129,13 +129,13 @@ public abstract class AlgebraicParticle {
 		
 		for(Class i : c){
 			String n = i.getSimpleName();
-			if(n.equals("Variable")    && Variable.parseable(s)) return true;
-			if(n.equals("Number")      && Number  .parseable(s)) return true;
-			if(n.equals("Root")        && Root.parseable(s)) return true;
-			if(n.equals("Fraction")    && Fraction.parseable(s)) return true;
+			if(n.equals("Variable")    && Variable   .parseable(s)) return true;
+			if(n.equals("Number")      && Number     .parseable(s)) return true;
+			if(n.equals("Root")        && Root       .parseable(s)) return true;
+			if(n.equals("Fraction")    && Fraction   .parseable(s)) return true;
 			if(n.equals("MixedNumber") && MixedNumber.parseable(s)) return true;
-			if(n.equals("Term")        && Term.parseable(s)) return true;
-			if(n.equals("Expression")  && Expression.parseable(s)) return true;
+			if(n.equals("Term")        && Term       .parseable(s)) return true;
+			if(n.equals("Expression")  && Expression .parseable(s)) return true;
 		}
 		
 		/*
@@ -170,7 +170,7 @@ public abstract class AlgebraicParticle {
 	 * @return The wrapped version of s.
 	 */
 	protected String wrapWithSignAndExponent(String s){
-		return (sign ? '+' : '-') + s + (exponent == 1 ? "" : Util.intToSuperscript(exponent));
+		return (sign ? "" : '-') + s + (exponent == 1 ? "" : Util.intToSuperscript(exponent));
 	}
 	
 	/**

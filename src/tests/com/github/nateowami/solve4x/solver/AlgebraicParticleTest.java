@@ -28,12 +28,19 @@ import org.junit.Test;
  */
 public class AlgebraicParticleTest {
 
+	//a list of all subclasses of AlgebraicParticle, which can be passed to
+	//AlgebraicParticle.parseable() and AlgebraicParticle.getInstance()
+	private static final Class[] all = new Class[]{Variable.class, Number.class, Root.class, Fraction.class, MixedNumber.class, Term.class, Expression.class};
+	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.AlgebraicParticle#sign()}.
+	 * @throws MalformedInputException 
 	 */
 	@Test
-	public void testSign() {
-		fail("Not yet implemented"); // TODO
+	public void testSign() throws MalformedInputException {
+		assertFalse(AlgebraicParticle.getInstance("-2x", new Class[]{Term.class}).sign());
+		assertFalse(AlgebraicParticle.getInstance("-v", all).sign());
+		assertTrue(AlgebraicParticle.getInstance("₄√(4y+x⁶)", all).sign());
 	}
 
 	/**
@@ -58,10 +65,16 @@ public class AlgebraicParticleTest {
 	 */
 	@Test
 	public void testParseable() {
+		//Term
 		assertTrue(AlgebraicParticle.parseable("2x", new Class[]{Term.class}));
 		assertTrue(AlgebraicParticle.parseable("2x6y", new Class[]{Term.class}));
 		assertTrue(AlgebraicParticle.parseable("2x⁹", new Class[]{Term.class}));
 		assertTrue(AlgebraicParticle.parseable("-2x", new Class[]{Term.class}));
+		//Number
+		assertTrue(AlgebraicParticle.parseable("2", new Class[]{Number.class}));
+		assertTrue(AlgebraicParticle.parseable("-4⁹", new Class[]{Term.class}));
+		//That no class can parse an empty string
+		assertFalse(AlgebraicParticle.parseable("", all));
 	}
 
 }

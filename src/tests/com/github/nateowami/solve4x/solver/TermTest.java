@@ -44,12 +44,12 @@ public class TermTest {
 	 */
 	@Test
 	public void testTerm() throws MalformedInputException {
-		assertEquals(new Term("2x").getAsString(), "2x");
-		assertTrue(new Term("2x(4xy)").getAsString().equals("2x(4xy)"));
-		assertTrue(new Term("21").getAsString().equals("21"));
-		assertTrue(new Term("xy(6)").getAsString().equals("xy(6)"));
-		assertTrue(new Term("4y(-y+6)").getAsString().equals("4y(-y+6)"));
-		assertTrue(new Term("(4)32").getAsString().equals("(4)32"));
+		assertEquals("2x", new Term("2x").getAsString());
+		assertEquals("2x(4xy)", new Term("2x(4xy)").getAsString());
+		assertEquals("21", new Term("21").getAsString());
+		assertEquals("xy(6)", new Term("xy(6)"));
+		assertEquals("4y(-y+6)", new Term("4y(-y+6)").getAsString());
+		assertEquals("(4)32", new Term("(4)32").getAsString());
 	}
 
 	/**
