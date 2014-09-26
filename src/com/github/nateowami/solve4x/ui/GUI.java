@@ -479,10 +479,10 @@ public class GUI {
         // SynthLookAndFeel load() method throws a checked exception
         // (java.text.ParseException) so it must be handled
         try {
-            lookAndFeel.load(Main.class.getResourceAsStream("/rsc/xml/defaults.xml"), Main.class);
-            lookAndFeel.load(Main.class.getResourceAsStream("/rsc/xml/slider.xml"), Main.class);
-            lookAndFeel.load(Main.class.getResourceAsStream("/rsc/xml/custom-panels.xml"), Main.class);
-            lookAndFeel.load(Main.class.getResourceAsStream("/rsc/xml/custom-buttons.xml"), Main.class);
+            lookAndFeel.load(Main.class.getResourceAsStream("/xml/defaults.xml"), Main.class);
+            lookAndFeel.load(Main.class.getResourceAsStream("/xml/slider.xml"), Main.class);
+            lookAndFeel.load(Main.class.getResourceAsStream("/xml/custom-panels.xml"), Main.class);
+            lookAndFeel.load(Main.class.getResourceAsStream("/xml/custom-buttons.xml"), Main.class);
 
             UIManager.setLookAndFeel(lookAndFeel);
         }
