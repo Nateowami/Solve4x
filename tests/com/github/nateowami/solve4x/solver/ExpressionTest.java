@@ -36,9 +36,13 @@ public class ExpressionTest {
 	 */
 	@Test
 	public void testExpression() throws MalformedInputException {
+		Expression expr0 = new Expression("6+2");
+		assertEquals("6", expr0.termAt(0).getAsString());
+		assertEquals("2", expr0.termAt(1).getAsString());
+		
 		Expression expr1 = new Expression("2x+6(34+9xy2(45x+6))");
-		assertTrue(expr1.termAt(0).getAsString().equals("2x"));
-		assertTrue(expr1.termAt(1).getAsString().equals("6(34+9xy2(45x+6))"));
+		assertEquals("2x", expr1.termAt(0).getAsString());
+		assertEquals("6(34+9xy2(45x+6))", expr1.termAt(1).getAsString());
 		
 		Expression expr2 = new Expression("x+6((34)/(6x))+67");
 		assertTrue(expr2.termAt(0).getAsString().equals("x"));

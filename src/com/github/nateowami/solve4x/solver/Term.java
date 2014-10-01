@@ -96,7 +96,10 @@ public class Term extends AlgebraicParticle{
 	public String getAsString(){
 		String s = "";
 		for(int i = 0; i < this.parts.size(); i++){
-			s += this.parts.get(i).getAsString();
+			s += 	//wrap with parentheses only if it's an expression
+					this.parts.get(i) instanceof Expression ? 
+							"(" + this.parts.get(i).getAsString() + ")" : 
+							this.parts.get(i).getAsString();
 		}
 		return wrapWithSignAndExponent(s);
 	}
@@ -115,16 +118,21 @@ public class Term extends AlgebraicParticle{
 	 * @return If s is parseable as a term.
 	 */
 	public static boolean parseable(String s){
+		int numParsed = 0; //make sure we're not doing someone else's job 
+		//for example, we shouldn't say "1" is a term, because it should be considered a number
+		
 		//make sure it's a list of algebraic particles
 		for(int i = s.length(); i >= 0; i--){
-			if(AlgebraicParticle.parseable(s.substring(0, i), subParts)){
+			//make sure it doesn't have a sign
+			if(s.length() > 0 && s.charAt(0) != '+' && s.charAt(0) != '-' && AlgebraicParticle.parseable(s.substring(0, i), subParts)){
+				numParsed++;
 				//reset the loop
 				s = s.substring(i);
 				i = s.length()+1;//+1 because it's about to be subtracted 1
 			}
 		}
 		//if the whole thing was parseable
-		if(s.length() == 0){
+		if(s.length() == 0 && numParsed > 1){
 			return true;
 		}
 		else return false;		

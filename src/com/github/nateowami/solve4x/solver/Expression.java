@@ -39,9 +39,12 @@ public class Expression extends AlgebraicParticle{
 	 */
 	Expression(String expr) throws MalformedInputException{
 		Solve4x.debug("Expression: " + expr);
+		int origLen = expr.length();
 		//loop backwards to find something that can be parsed
 		for(int i = expr.length(); i > 0; i--){
-			if(AlgebraicParticle.parseable(expr.substring(0, i), subParts));{
+			//make sure there's a sign, or else it's the beginning of the original string
+			if(expr.length() > 0 && (expr.length() == origLen || expr.charAt(0) == '+' || expr.charAt(0) == '-') 
+					&& AlgebraicParticle.parseable(expr.substring(0, i), subParts)){
 				termList.add(AlgebraicParticle.getInstance(expr.substring(0, i), subParts));
 				//remove what's been parsed from expr and reset i
 				expr = expr.substring(i, expr.length());
