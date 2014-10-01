@@ -85,6 +85,7 @@ public class ExpressionTest {
 	 */
 	@Test
 	public void testGetAsString() throws MalformedInputException {
+		Expression expr0 = new Expression("1x+45");
 		Expression expr1 = new Expression("1x+45+6xy45+12(23+6xy4)");
 		assertTrue(expr1.getAsString().equals("x+45+6xy45+12(23+6xy4)"));
 		Expression expr2 = new Expression("-c+(y)/(16+34)-xy2");

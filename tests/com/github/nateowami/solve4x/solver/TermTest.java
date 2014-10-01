@@ -47,9 +47,18 @@ public class TermTest {
 		assertEquals("2x", new Term("2x").getAsString());
 		assertEquals("2x4xy", new Term("2x4xy").getAsString());
 		assertEquals("21", new Term("21").getAsString());
-		assertEquals("xy(6+2)", new Term("xy(6+2)").getAsString());
+		assertEquals("xy(6+2)", new Term("xy(6+2)").getAsString());//FIXME
 		assertEquals("4y(-y+6)", new Term("4y(-y+6)").getAsString());
 		assertEquals("(4)32", new Term("(4)32").getAsString());
+	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#parseable(java.lang.String)}.
+	 * @throws MalformedInputException 
+	 */
+	@Test
+	public void testParseable() throws MalformedInputException {
+		assertTrue(Term.parseable("1x"));
 	}
 
 	/**

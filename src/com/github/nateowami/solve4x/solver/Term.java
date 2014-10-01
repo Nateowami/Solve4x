@@ -54,7 +54,7 @@ public class Term extends AlgebraicParticle{
 		Solve4x.debug("Creating term: "+s);
 		//loop backwards to find a match
 		int i;
-		for(i = s.length(); i >=0; i--){
+		for(i = s.length()-1; i >=0; i--){
 			if(AlgebraicParticle.parseable(s.substring(0, i), subParts)){
 				Solve4x.debug("Creating algebraic particle: " + s.substring(0, i));
 				parts.add(AlgebraicParticle.getInstance(s.substring(0, i), subParts));
@@ -122,7 +122,7 @@ public class Term extends AlgebraicParticle{
 		//for example, we shouldn't say "1" is a term, because it should be considered a number
 		
 		//make sure it's a list of algebraic particles
-		for(int i = s.length(); i >= 0; i--){
+		for(int i = s.length()-1; i >= 0; i--){
 			//make sure it doesn't have a sign
 			if(s.length() > 0 && s.charAt(0) != '+' && s.charAt(0) != '-' && AlgebraicParticle.parseable(s.substring(0, i), subParts)){
 				numParsed++;

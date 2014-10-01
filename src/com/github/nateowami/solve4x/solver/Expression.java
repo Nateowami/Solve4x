@@ -39,19 +39,16 @@ public class Expression extends AlgebraicParticle{
 	 */
 	Expression(String expr) throws MalformedInputException{
 		Solve4x.debug("Expression: " + expr);
-		int origLen = expr.length();
-		//loop backwards to find something that can be parsed
-		for(int i = expr.length(); i > 0; i--){
-			//make sure there's a sign, or else it's the beginning of the original string
-			if(expr.length() > 0 && (expr.length() == origLen || expr.charAt(0) == '+' || expr.charAt(0) == '-') 
-					&& AlgebraicParticle.parseable(expr.substring(0, i), subParts)){
+		int parDepth = 0;
+		for(int i = 0; i < expr.length(); i++){
+			if(expr.charAt(i) == '(') parDepth++;
+			else if(expr.charAt(i) == ')') parDepth--;
+			else if(parDepth == 0 && (expr.charAt(i) == '+' || expr.charAt(i) == '-' || i == expr.length()-1) && AlgebraicParticle.parseable(expr.substring(0, i), subParts)){
 				termList.add(AlgebraicParticle.getInstance(expr.substring(0, i), subParts));
-				//remove what's been parsed from expr and reset i
-				expr = expr.substring(i, expr.length());
-				i = expr.length()+1;//because the loop is about to do i--
+				expr = expr.substring(i);
+				i = 0;
 			}
 		}
-		if(expr.length() > 0) throw new MalformedInputException(expr.length());
 	}
 	
 	/* (non-Javadoc)
@@ -92,13 +89,26 @@ public class Expression extends AlgebraicParticle{
 	}
 
 	/**
-	 * TODO write doc
-	 * @param s
-	 * @return
+	 * Tells if string s can be parsed as an expression.
+	 * @param s The string to check.
+	 * @return If s can be parsed as an expression.
 	 */
-	public static boolean parseable(String s) {
-		// make sure there is more than one algebraic particle concatenated with + or -TODO will have to let Equation hold AlgebraicParticles
-		return false;
+	public static boolean parseable(String expr) {
+		int origLen = expr.length();
+		int numParsed = 0;
+		//loop backwards to find something that can be parsed
+		for(int i = expr.length(); i > 0; i--){
+			//make sure there's a sign, or else it's the beginning of the original string
+			if(expr.length() > 0 && (expr.length() == origLen || expr.charAt(0) == '+' || expr.charAt(0) == '-') 
+					&& AlgebraicParticle.parseable(expr.substring(0, i), subParts)){
+				numParsed++;
+				//remove what's been parseable from expr and reset i
+				expr = expr.substring(i, expr.length());
+				i = expr.length()+1;//because the loop is about to do i--
+			}
+		}
+		//make sure everything was parseable and that we parsed more than one particle
+		return expr.length() == 0 && numParsed > 1;
 	}
 
 }
