@@ -91,5 +91,14 @@ public class ExpressionTest {
 		Expression expr2 = new Expression("-c+(y)/(16+34)-xy2");
 		assertTrue(expr2.getAsString().equals("-c+(y)/(16+34)-xy2"));
 	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Expression#parseable()}.
+	 * @throws MalformedInputException 
+	 */
+	@Test
+	public void testParseable() throws MalformedInputException {
+		assertFalse(Expression.parseable("6(34+9xy2(45x+6)"));
+	}
 
 }

@@ -59,6 +59,8 @@ public class TermTest {
 	@Test
 	public void testParseable() throws MalformedInputException {
 		assertTrue(Term.parseable("1x"));
+		assertFalse(Term.parseable("6(34+9xy2(45x+6)"));
+		assertTrue(Term.parseable("6(34+9xy2(45x+6))"));
 	}
 
 	/**

@@ -43,10 +43,17 @@ public class Expression extends AlgebraicParticle{
 		for(int i = 0; i < expr.length(); i++){
 			if(expr.charAt(i) == '(') parDepth++;
 			else if(expr.charAt(i) == ')') parDepth--;
-			else if(parDepth == 0 && (expr.charAt(i) == '+' || expr.charAt(i) == '-' || i == expr.length()-1) && AlgebraicParticle.parseable(expr.substring(0, i), subParts)){
-				termList.add(AlgebraicParticle.getInstance(expr.substring(0, i), subParts));
+			/*
+			 * We could be at the end of the string or there could be a sign at i.
+			 * That's what all the i == expr.length()-1 ? i+1 : i stuff is about.
+			 * If we're at the end, we want to parse up to and including i. Otherwise
+			 * we just parse up to and excluding i.
+			 */
+			if(parDepth == 0 && (expr.charAt(i) == '+' || expr.charAt(i) == '-' || i == expr.length()-1) 
+					&& AlgebraicParticle.parseable(expr.substring(0, i == expr.length()-1 ? i+1 : i), subParts)){
+				termList.add(AlgebraicParticle.getInstance(expr.substring(0, i == expr.length()-1 ? i+1 : i), subParts));
 				expr = expr.substring(i);
-				i = 0;
+				i = 0; 
 			}
 		}
 	}
@@ -94,21 +101,18 @@ public class Expression extends AlgebraicParticle{
 	 * @return If s can be parsed as an expression.
 	 */
 	public static boolean parseable(String expr) {
-		int origLen = expr.length();
-		int numParsed = 0;
-		//loop backwards to find something that can be parsed
-		for(int i = expr.length(); i > 0; i--){
-			//make sure there's a sign, or else it's the beginning of the original string
-			if(expr.length() > 0 && (expr.length() == origLen || expr.charAt(0) == '+' || expr.charAt(0) == '-') 
-					&& AlgebraicParticle.parseable(expr.substring(0, i), subParts)){
+		int parDepth = 0, numParsed = 0;
+		for(int i = 0; i < expr.length(); i++){
+			if(expr.charAt(i) == '(') parDepth++;
+			else if(expr.charAt(i) == ')') parDepth--;
+			if(parDepth == 0 && (expr.charAt(i) == '+' || expr.charAt(i) == '-' || i == expr.length()-1) 
+					&& AlgebraicParticle.parseable(expr.substring(0, i == expr.length()-1 ? i+1 : i), subParts)){
+				expr = expr.substring(i);
 				numParsed++;
-				//remove what's been parseable from expr and reset i
-				expr = expr.substring(i, expr.length());
-				i = expr.length()+1;//because the loop is about to do i--
+				i = 0;
 			}
 		}
-		//make sure everything was parseable and that we parsed more than one particle
-		return expr.length() == 0 && numParsed > 1;
+		return numParsed > 1 && expr.length() == 0;
 	}
 
 }
