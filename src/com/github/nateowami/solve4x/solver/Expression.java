@@ -17,7 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import java.nio.charset.MalformedInputException;
+
 import java.util.ArrayList;
 
 import com.github.nateowami.solve4x.Solve4x;
@@ -37,7 +37,7 @@ public class Expression extends AlgebraicParticle{
 	 * Creates a list of terms from the expression
 	 * @param expr The expression to store as terms
 	 */
-	Expression(String expr) throws MalformedInputException{
+	Expression(String expr) {
 		Solve4x.debug("Expression: " + expr);
 		int parDepth = 0;
 		for(int i = 0; i < expr.length(); i++){

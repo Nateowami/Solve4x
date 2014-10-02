@@ -19,7 +19,7 @@ package com.github.nateowami.solve4x.solver;
 
 import static org.junit.Assert.*;
 
-import java.nio.charset.MalformedInputException;
+
 
 import org.junit.Test;
 
@@ -34,10 +34,10 @@ public class AlgebraicParticleTest {
 	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.AlgebraicParticle#sign()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testSign() throws MalformedInputException {
+	public void testSign()  {
 		assertFalse(AlgebraicParticle.getInstance("-2x", new Class[]{Term.class}).sign());
 		assertFalse(AlgebraicParticle.getInstance("-v", all).sign());
 		assertTrue(AlgebraicParticle.getInstance("₄√(4y+x⁶)", all).sign());
@@ -53,10 +53,10 @@ public class AlgebraicParticleTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.AlgebraicParticle#getInstance(java.lang.String, java.lang.Class[])}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testGetInstance() throws MalformedInputException {
+	public void testGetInstance()  {
 		System.out.println("HERE IT IS!!!!!!" + AlgebraicParticle.getInstance("2x6y", new Class[]{Term.class}).toString());
 	}
 

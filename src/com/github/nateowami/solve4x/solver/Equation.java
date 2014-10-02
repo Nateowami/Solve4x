@@ -17,7 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import java.nio.charset.MalformedInputException;
+
 
 import com.github.nateowami.solve4x.Solve4x;
 
@@ -35,9 +35,9 @@ public class Equation {
 	 * Creates an equation by turning it into two expressions
 	 * @param eq The equation (or expression) to turn into an
 	 * equation, which can be just an expression if necessary
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
-	public Equation(String eq) throws MalformedInputException{
+	public Equation(String eq) {
 		Solve4x.debug("Creating Equation from String: " + eq);
 		//find the = sign
 		int i; //needs to be used outside loop
@@ -96,7 +96,7 @@ public class Equation {
 	 * @param expr The expression you want to change it to 
 	 * @param index The index of the Expression you want to change
 	 */
-	public void setExpression(String expr, int index) throws MalformedInputException{
+	public void setExpression(String expr, int index) {
 		Solve4x.debug("Expression being set: " + expr);
 		this.exprs[index] = new Expression(expr);
 		

@@ -17,7 +17,7 @@
  */
 package com.github.nateowami.solve4x.algorithm;
 
-import java.nio.charset.MalformedInputException;
+
 import java.util.ArrayList;
 
 import com.github.nateowami.solve4x.Solve4x;
@@ -39,10 +39,10 @@ public class CombineLikeTerms implements Algorithm{
 	 * Combines like terms in a given equation
 	 * @param equation The equation to combine terms in
 	 * @return A Step with this algorithm applied
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Override
-	public Step getStep(Equation equation) throws MalformedInputException {
+	public Step getStep(Equation equation)  {
 		//figure out how many like terms there are in each expression
 		
 		//which expression has the most like terms

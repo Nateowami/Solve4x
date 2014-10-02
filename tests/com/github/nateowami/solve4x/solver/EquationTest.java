@@ -19,7 +19,7 @@ package com.github.nateowami.solve4x.solver;
 
 import static org.junit.Assert.*;
 
-import java.nio.charset.MalformedInputException;
+
 
 import org.junit.Test;
 
@@ -33,10 +33,10 @@ public class EquationTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#Equation(java.lang.String)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testEquation() throws MalformedInputException {
+	public void testEquation()  {
 		Equation eq = new Equation("23x2y+14x=6(34xy2+7)");
 		assertTrue(eq.getExpression(0).getAsString().equals("23x2y+14x"));
 		assertTrue(eq.getExpression(1).getAsString().equals("6(34xy2+7)"));
@@ -44,10 +44,10 @@ public class EquationTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#getExpression(int)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testGetExpression() throws MalformedInputException {
+	public void testGetExpression()  {
 		Equation eq = new Equation("12x2y(34+6xa)=45+6x(4+85xy5)");
 		assertTrue(eq.getExpression(0).getAsString().equals("12x2y(34+6xa)"));
 		assertTrue(eq.getExpression(1).getAsString().equals("45+6x(4+85xy5)"));
@@ -55,10 +55,10 @@ public class EquationTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#getSize()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testGetSize() throws MalformedInputException {
+	public void testGetSize()  {
 		Equation eq = new Equation("12x2y(34+6xa)=45+6x(4+85xy5)");
 		assertTrue(eq.getSize() == 2);
 		Equation eq2 = new Equation("2x+45(45+16x2y)");
@@ -67,10 +67,10 @@ public class EquationTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#setExpression(java.lang.String, int)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testSetExpression() throws MalformedInputException {
+	public void testSetExpression()  {
 		Equation eq = new Equation("12x2y(34+6xa)=45+6x(4+85xy5)");
 		eq.setExpression("23x+6", 0);
 		eq.setExpression("s+yz", 1);
@@ -80,10 +80,10 @@ public class EquationTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#getAsString()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testGetAsString() throws MalformedInputException {
+	public void testGetAsString()  {
 		Equation eq = new Equation("12x2y4(34+6xa(43x2+6+1(43)))=45+6x(4+85xy5)");
 		assertTrue(eq.getAsString().equals("12x2y4(34+6xa(43x2+6+(43)))=45+6x(4+85xy5)"));
 	}

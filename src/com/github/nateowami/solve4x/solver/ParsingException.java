@@ -17,18 +17,13 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-
 /**
  * @author Nateowami
  */
-@RunWith(Suite.class)
-@SuiteClasses({ AlgebraicParticleTest.class, AllTests.class,
-		EquationTest.class, ExpressionTest.class, FractionTest.class,
-		MixedNumberTest.class, NumberTest.class, RootTest.class,
-		TermTest.class, UtilTest.class, VariableTest.class })
-public class AllTests {
-
+public class ParsingException extends RuntimeException {
+	
+	public ParsingException(String message){
+		super(message);
+	}
+	
 }

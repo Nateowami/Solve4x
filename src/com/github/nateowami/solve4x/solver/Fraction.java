@@ -17,8 +17,6 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import java.nio.charset.MalformedInputException;
-
 /**
  * Contains a fraction with expressions on top and bottom.
  * @author Nateowami
@@ -34,13 +32,13 @@ public class Fraction extends AlgebraicParticle{
 	 * @param frac The String from which to construct the fraction, in the form of
 	 * <i>expression</i>/<i>expression</i>. If an expression has more than one term
 	 * it must be surrounded by parentheses.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
-	protected Fraction(String frac) throws MalformedInputException{
+	protected Fraction(String frac){
 		//find the '/' not nested in parentheses	
 		int divisionIndex = indexOfSlash(frac);
 		//if divisionIndex is 0 there's a problem
-		if(divisionIndex < 1) throw new MalformedInputException(frac.length());
+		if(divisionIndex < 1) throw new ParsingException("Non-parentheses-nested '/' not found in proper range (char 1 to end of string)");
 		//split the fraction at divisionIndex, but don't include the slashes or parentheses
 		//it should be in the form of (expr1)/(expr2)
 		this.top = AlgebraicParticle.getInstance(frac.substring(1, divisionIndex-1), subParts);

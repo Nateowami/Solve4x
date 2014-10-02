@@ -17,7 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import java.nio.charset.MalformedInputException;
+
 import java.util.ArrayList;
 
 import com.github.nateowami.solve4x.Solve4x;
@@ -48,9 +48,10 @@ public class Term extends AlgebraicParticle{
 	/**
 	 * Creates a new term from a String
 	 * @param term The term to create
-	 * @throws MalformedInputException If the term is not properly formatted (and not always even then)
+	 * @ If the term is not properly formatted (and not always even then)
 	 */
-	protected Term(String s) throws MalformedInputException{
+	protected Term(String s) {
+		String original = s; //for debugging purposes
 		Solve4x.debug("Creating term: "+s);
 		//loop backwards to find a match
 		int i;
@@ -65,7 +66,7 @@ public class Term extends AlgebraicParticle{
 		}
 		//if the whole thing wasn't parsed
 		if(s.length() > 0){
-			throw new MalformedInputException(i);
+			throw new ParsingException("Unable to parse \"" + original + "\" as a term. The following failed to be parsed: \" " + s + "\".");
 		}
 	}
 	

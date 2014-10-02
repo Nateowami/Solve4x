@@ -19,7 +19,7 @@ package com.github.nateowami.solve4x.solver;
 
 import static org.junit.Assert.*;
 
-import java.nio.charset.MalformedInputException;
+
 
 import org.junit.Test;
 
@@ -40,10 +40,10 @@ public class TermTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#Term(java.lang.String)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testTerm() throws MalformedInputException {
+	public void testTerm()  {
 		assertEquals("2x", new Term("2x").getAsString());
 		assertEquals("2x4xy", new Term("2x4xy").getAsString());
 		assertEquals("21", new Term("21").getAsString());
@@ -54,10 +54,10 @@ public class TermTest {
 	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#parseable(java.lang.String)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testParseable() throws MalformedInputException {
+	public void testParseable()  {
 		assertTrue(Term.parseable("1x"));
 		assertFalse(Term.parseable("6(34+9xy2(45x+6)"));
 		assertTrue(Term.parseable("6(34+9xy2(45x+6))"));

@@ -17,7 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import java.nio.charset.MalformedInputException;
+
 
 /**
  * Holds a root for any expression, e.g √(4x+6)
@@ -35,31 +35,23 @@ public class Root extends AlgebraicParticle{
 	/**
 	 * Constructs a new Root
 	 * @param root The root to parse. Should be in the form of <i>subscript</i>√<i>expression</i>
-	 * @throws MalformedInputException If the root in the wrong syntax.
+	 * @ If the root in the wrong syntax.
 	 */
-	protected Root(String root) throws MalformedInputException{
+	protected Root(String root) {
+		String original = root; //for debugging purposes
 		//figure out how many subscript chars there are
 		int i = 0;
 		for(; i < root.length(); i++){
 			//if it's not a subscript
-			if(root.charAt(i) < '\u2080' || root.charAt(i) > '\u2089') break;
+			if(!Util.isSubscript(root.charAt(i))) break;
 		}
-		//now cut that part out of root
-		String subscript = root.substring(0,i);
-		//subscript after conversion
-		String subscriptNormalized = "";
+		this.nthRoot = root.substring(0,i).equals("") ? 2 : Util.superscriptToInt(root.substring(0,i));
 		root = root.substring(i,root.length());
-		//turn the subscript to regular numeral chars
-		for(int j = 0; j < subscript.length(); j++){
-			//convert from subscript to regular
-			subscriptNormalized+=(char)(subscript.charAt(j)-8272);
-		}
-		//parse subscriptNormalized to int. If it's "", use 2 as the default (square root)
-		if("".equals(subscriptNormalized)) this.nthRoot = 2;
-		else this.nthRoot = Integer.parseInt(subscriptNormalized);
+		
 		//parse the √ symbol
 		if(root.length() < 1 || root.charAt(0) != '√'){
-			throw new MalformedInputException(0);
+			throw new ParsingException("Invalid root \"" + original + "\". Subscript is " + this.nthRoot 
+					+ " and the remaining part is \"" + root + "\".");
 		}
 		else{
 			//remove the √ sign

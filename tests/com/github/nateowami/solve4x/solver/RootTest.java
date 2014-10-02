@@ -19,7 +19,7 @@ package com.github.nateowami.solve4x.solver;
 
 import static org.junit.Assert.*;
 
-import java.nio.charset.MalformedInputException;
+
 
 import org.junit.Test;
 
@@ -32,10 +32,10 @@ public class RootTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Root#Root(java.lang.String)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testRoot() throws MalformedInputException {
+	public void testRoot()  {
 		Root root1 = new Root("₄√(4x+6)");
 		assertTrue(root1.getNthRoot()==4);
 		assertEquals("4x+6", root1.getExpr().getAsString());
@@ -46,10 +46,10 @@ public class RootTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Root#isRoot(java.lang.String)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testparseable() throws MalformedInputException {
+	public void testparseable()  {
 		assertTrue(Root.parseable("√(4)"));
 		assertTrue(Root.parseable("√(xyz+6x4)"));
 		assertTrue(Root.parseable("₄√(4x+6)"));
@@ -64,10 +64,10 @@ public class RootTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Root#getRoot()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testGetNthRoot() throws MalformedInputException {
+	public void testGetNthRoot()  {
 		Root root1 = new Root("₉√(45+76(4))");
 		assertTrue(root1.getNthRoot()==9);
 		Root root2 = new Root("₀₉₂√(45)");
@@ -76,10 +76,10 @@ public class RootTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Root#getExpr()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testGetExpr() throws MalformedInputException {
+	public void testGetExpr()  {
 		Root root1 = new Root("₉√(45+x)");
 		assertTrue(root1.getNthRoot()==9);
 		Root root2 = new Root("₀₉₂√(x+73)");
@@ -88,10 +88,10 @@ public class RootTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Root#isConstant()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testIsConstant() throws MalformedInputException {
+	public void testIsConstant()  {
 		assertFalse(new Root("₄√(4x+6)").isConstant());
 		assertFalse(new Root("₂₀₉√(74xy2)").isConstant());
 		assertTrue(new Root("₀₉₂√(45)").isConstant());

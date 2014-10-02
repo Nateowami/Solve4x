@@ -17,7 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import java.nio.charset.MalformedInputException;
+
 
 /**
  * An abstract type for all solving strategies to extend. Basically it's a template
@@ -33,9 +33,9 @@ public abstract interface Algorithm {
 	 * a given expression or equation
 	 * @param equation The expression or equation to do a bit of solving on
 	 * @return The Step for solving this little bit
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
-	public abstract Step getStep(Equation equation) throws MalformedInputException;
+	public abstract Step getStep(Equation equation) ;
 	
 	/**
 	 * To return the approximate smartness of performing the solving technique

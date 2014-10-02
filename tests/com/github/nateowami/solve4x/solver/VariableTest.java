@@ -18,7 +18,7 @@
 package com.github.nateowami.solve4x.solver;
 
 import static org.junit.Assert.*;
-import java.nio.charset.MalformedInputException;
+
 
 import org.junit.Test;
 
@@ -29,10 +29,10 @@ public class VariableTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Variable#getAsString()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testGetAsString() throws MalformedInputException {
+	public void testGetAsString()  {
 		assertEquals("z", new Variable("z").getAsString());
 		assertEquals("Q", new Variable("Q").getAsString());
 		assertEquals("t", new Variable("t").getAsString());
@@ -41,10 +41,10 @@ public class VariableTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Variable#Variable(java.lang.String)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testVariable() throws MalformedInputException {
+	public void testVariable()  {
 		try{
 			new Variable(null);
 			fail("No exception thrown when null passed to constructor");
@@ -55,15 +55,15 @@ public class VariableTest {
 			new Variable("2");
 			fail("No exception thrown when non-alphabetic char passed to constructor");
 		}
-		catch(MalformedInputException e){};
+		catch(ParsingException e){};
 	}
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Variable#getVar()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testGetVar() throws MalformedInputException {
+	public void testGetVar()  {
 		assertEquals('y', new Variable("y").getVar());
 		assertEquals('S', new Variable("S").getVar());
 		assertEquals('r', new Variable("r").getVar());
@@ -73,7 +73,7 @@ public class VariableTest {
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Variable#isVariable()}.
 	 */
 	@Test
-	public void testIsVariable() throws MalformedInputException {
+	public void testIsVariable()  {
 		assertTrue(Variable.parseable("n"));
 		assertTrue(Variable.parseable("y"));
 		assertTrue(Variable.parseable("X"));

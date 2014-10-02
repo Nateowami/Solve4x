@@ -19,7 +19,7 @@ package com.github.nateowami.solve4x.solver;
 
 import static org.junit.Assert.*;
 
-import java.nio.charset.MalformedInputException;
+
 
 import org.junit.Test;
 
@@ -32,10 +32,10 @@ public class ExpressionTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Expression#Expression(java.lang.String)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testExpression() throws MalformedInputException {
+	public void testExpression()  {
 		Expression expr0 = new Expression("6+2");
 		assertEquals("6", expr0.termAt(0).getAsString());
 		assertEquals("2", expr0.termAt(1).getAsString());
@@ -52,10 +52,10 @@ public class ExpressionTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Expression#numbOfTerms()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testNumbOfTerms() throws MalformedInputException {
+	public void testNumbOfTerms()  {
 		Expression expr1 = new Expression("2x+45+6xy45+12(23+6xy4)");
 		assertTrue(expr1.numbOfTerms()==4);
 		Expression expr2 = new Expression("-c+(y)/(16+34)-xy2");
@@ -64,10 +64,10 @@ public class ExpressionTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Expression#termAt(int)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testTermAt() throws MalformedInputException {
+	public void testTermAt()  {
 		Expression expr1 = new Expression("2x+45+6xy45+12(23+6xy4)");
 		assertTrue(expr1.termAt(0).getAsString().equals("2x"));
 		assertTrue(expr1.termAt(1).getAsString().equals("45"));
@@ -81,10 +81,10 @@ public class ExpressionTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Expression#getAsString()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testGetAsString() throws MalformedInputException {
+	public void testGetAsString()  {
 		Expression expr0 = new Expression("1x+45");
 		Expression expr1 = new Expression("1x+45+6xy45+12(23+6xy4)");
 		assertTrue(expr1.getAsString().equals("x+45+6xy45+12(23+6xy4)"));
@@ -94,10 +94,10 @@ public class ExpressionTest {
 	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Expression#parseable()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testParseable() throws MalformedInputException {
+	public void testParseable()  {
 		assertFalse(Expression.parseable("6(34+9xy2(45x+6)"));
 	}
 

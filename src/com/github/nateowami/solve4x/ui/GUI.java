@@ -27,7 +27,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
-import java.nio.charset.MalformedInputException;
 import java.text.ParseException;
 
 import javax.swing.ImageIcon;
@@ -41,6 +40,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 
 import com.github.nateowami.solve4x.Main;
+import com.github.nateowami.solve4x.solver.ParsingException;
 import com.github.nateowami.solve4x.solver.SolveFor;
 import com.github.nateowami.solve4x.solver.Solver;
 import com.github.nateowami.solve4x.visual.Visual;
@@ -173,9 +173,8 @@ public class GUI {
                     //notify the user of the equation evaluation status
                     txtfEquationEntry.setText("Equation Evaluation Status: "+ true);
 
-                } catch (MalformedInputException err) {
+                } catch (ParsingException err) {
                     //there must have been a problem with the equation the user entered
-                    // TODO After GUI is done, make this do something useful
                     err.printStackTrace();
                     txtfEquationEntry.setText("ERROR: Malformed Entry.");
                 }

@@ -18,7 +18,7 @@
 package com.github.nateowami.solve4x.solver;
 
 import java.math.BigDecimal;
-import java.nio.charset.MalformedInputException;
+
 
 import com.github.nateowami.solve4x.Solve4x;
 
@@ -35,14 +35,14 @@ public class Number extends AlgebraicParticle{
 	/**
 	 * Constructs a new number.
 	 * @param num The number to parse into a Number. Examples: 2.67, 15, 0.34, 3.1415
-	 * @throws MalformedInputException if num is not parsable as a decimal.
+	 * @ if num is not parsable as a decimal.
 	 */
-	protected Number(String num) throws MalformedInputException{
+	protected Number(String num) {
 		Solve4x.debug("Parsing number: " + num);
 		
 		//check for empty string
 		if(num.length() == 0){
-			throw new MalformedInputException(0);
+			throw new ParsingException("Cannot parse an empty string as a Number.");
 		}
 		//if it's just a numeral
 		if(Util.isInteger(num)){
@@ -59,7 +59,7 @@ public class Number extends AlgebraicParticle{
 		}
 		//not a valid number
 		else{
-			throw new MalformedInputException(num.length());
+			throw new ParsingException("Cannot parse \"" + num + "\" as a number.");
 		}
 	}
 
@@ -68,9 +68,9 @@ public class Number extends AlgebraicParticle{
 	 * @param n1 The first Number
 	 * @param n2 The second Number
 	 * @return A Number equal to the value of the two numbers added
-	 * @throws MalformedInputException If the 
+	 * @ If the 
 	 */
-	public static Number add(Number n1, Number n2) throws MalformedInputException{
+	public static Number add(Number n1, Number n2) {
 		//convert to strings, add, and convert back to a Number
 		return new Number(add(n1.getAsString(), n2.getAsString()));
 	}

@@ -19,7 +19,7 @@ package com.github.nateowami.solve4x.solver;
 
 import static org.junit.Assert.*;
 
-import java.nio.charset.MalformedInputException;
+
 
 import org.junit.Test;
 
@@ -32,10 +32,10 @@ public class FractionTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Fraction#Fraction(java.lang.String)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testFraction() throws MalformedInputException {
+	public void testFraction()  {
 		Fraction frac1 = new Fraction("(2)/(3)");
 		assertTrue(frac1.getTop().getAsString().equals("2"));
 		assertTrue(frac1.getBottom().getAsString().equals("3"));
@@ -48,10 +48,10 @@ public class FractionTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Fraction#parseable(java.lang.String)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testParseable() throws MalformedInputException {
+	public void testParseable()  {
 		assertTrue(Fraction.parseable("(2)/(3)"));
 		assertTrue(Fraction.parseable("(23+xy6)/(43xy+6)"));
 		assertTrue(Fraction.parseable("(23xy2)/(x+6-3xy)"));
@@ -64,10 +64,10 @@ public class FractionTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Fraction#getTop()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testGetTop() throws MalformedInputException {
+	public void testGetTop()  {
 		Fraction frac1 = new Fraction("(2x+6y)/(3)");
 		assertTrue(frac1.getTop().getAsString().equals("2x+6y"));
 		Fraction frac2 = new Fraction("(42y-16)/(87-6)");
@@ -76,10 +76,10 @@ public class FractionTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Fraction#getBottom()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testGetBottom() throws MalformedInputException {
+	public void testGetBottom()  {
 		Fraction frac1 = new Fraction("(2x+6y)/(3)");
 		assertTrue(frac1.getBottom().getAsString().equals("3"));
 		Fraction frac2 = new Fraction("(42y-16)/(87-6yz4)");

@@ -17,7 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import java.nio.charset.MalformedInputException;
+
 
 /**
  * Represents a variable, A-Z or a-z
@@ -31,9 +31,9 @@ public class Variable extends AlgebraicParticle{
 	 * @param s The string to parse.
 	 * @throws If s is null, doesn't contain exactly one char, or the one char is not A-Z or a-z.
 	 */
-	protected Variable(String s) throws MalformedInputException{
+	protected Variable(String s) {
 		if(s == null || s.length() != 1 || !Util.isLetter(s.charAt(0))){
-			throw new MalformedInputException(0);
+			throw new ParsingException("Cannot parse \"" + s + "\" as a variable. Expected one alphabetic character (a-z or A-Z).");
 		}
 		else var = s.charAt(0);
 	}

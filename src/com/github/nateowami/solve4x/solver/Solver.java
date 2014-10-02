@@ -17,7 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import java.nio.charset.MalformedInputException;
+
 import java.util.ArrayList;
 
 import com.github.nateowami.solve4x.Solve4x;
@@ -46,7 +46,7 @@ public class Solver {
 	 * factored, solved, simplified, or what?
 	 * @see com.github.nateowami.solve4x.solver.SolveFor
 	 */
-	public Solver(String equation, SolveFor selection) throws MalformedInputException{
+	public Solver(String equation, SolveFor selection) {
 		
 		//reset the solution from any previous solving
 		finalSolution = null;
@@ -59,7 +59,7 @@ public class Solver {
 		//validate the equation
 		//if there is an equals sign (=)
 		if(!Validator.eqIsValid(equation)){
-			throw new MalformedInputException(0);
+			throw new ParsingException("Validator says equation \"" + equation + "\" is invalid.");
 		}
 		
 		Solve4x.debug("Equation successfully validated");
@@ -170,7 +170,7 @@ public class Solver {
 	 * TODO tell is an expression is fully simplified
 	 * @return If the equation is solved
 	 */
-	private boolean isSolved(String equation) throws MalformedInputException{
+	private boolean isSolved(String equation) {
 		//XXX We're assuming this is an equation, which currently is
 		//true, but we need to support more late. Possibly in another method
 		

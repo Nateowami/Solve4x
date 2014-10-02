@@ -17,7 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import java.nio.charset.MalformedInputException;
+
 
 /**
  * Holds a fraction and integer value, which can be used as an exponent.
@@ -26,17 +26,17 @@ import java.nio.charset.MalformedInputException;
 public class MixedNumber extends AlgebraicParticle{
 	
 	Integer numeral;
-	ConstantFraction fraction;
+	Fraction fraction;
 	
 	/**
 	 * Constructs a new Mixed Number
 	 * @param s The string from which to construct it.
-	 * @throws MalformedInputException If s is improperly formatted.
+	 * @ If s is improperly formatted.
 	 */
-	protected MixedNumber(String s) throws MalformedInputException{
+	protected MixedNumber(String s) {
 		//if it's just a plain fraction
-		if(ConstantFraction.isConstantFraction(s)){
-			this.fraction = new ConstantFraction(s);
+		if(Fraction.parseable(s)){
+			this.fraction = new Fraction(s);
 			return;
 		}
 		
@@ -52,10 +52,10 @@ public class MixedNumber extends AlgebraicParticle{
 		//i is now index of last integer char
 		this.numeral = Integer.parseInt(s.substring(0, i));
 		//parse the fraction
-		if(ConstantFraction.isConstantFraction(s.substring(i))){
-			this.fraction = new ConstantFraction(s.substring(i));
+		if(Fraction.parseable(s.substring(i))){
+			this.fraction = new Fraction(s.substring(i));
 		}
-		else throw new MalformedInputException(0);
+		else throw new ParsingException("Could not parse mixed number \"" + s + "\".");
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class MixedNumber extends AlgebraicParticle{
 	 */
 	public static boolean parseable(String s){
 		//if it's just a fraction
-		if(ConstantFraction.isConstantFraction(s)){
+		if(Fraction.parseable(s)){
 			return true;
 		}
 		
@@ -81,7 +81,7 @@ public class MixedNumber extends AlgebraicParticle{
 		if(i == 0) return false; //number is required
 		//parse the fraction
 		System.out.println(s.substring(i+1));
-		if(ConstantFraction.isConstantFraction(s.substring(i))){
+		if(Fraction.parseable(s.substring(i))){
 			return true;
 		}
 		else return false;
@@ -114,7 +114,7 @@ public class MixedNumber extends AlgebraicParticle{
 	/**
 	 * @return The fraction part of the MixedNumber.
 	 */
-	public ConstantFraction getFraction() {
+	public Fraction getFraction() {
 		return fraction;
 	}
 

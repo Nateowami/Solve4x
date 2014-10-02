@@ -18,12 +18,12 @@
 package com.github.nateowami.solve4x.solver;
 
 import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.MalformedInputException;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Represents an AlgebraicParticle. Subclasses include Variable, Number, Root, Fraction, ConstantFraction, MixedNumber, Term, and Expression.
+ * Represents an AlgebraicParticle. Subclasses include Variable, Number, Root, Fraction, Fraction, MixedNumber, Term, and Expression.
  * @author Nateowami
  */
 public abstract class AlgebraicParticle {
@@ -46,19 +46,20 @@ public abstract class AlgebraicParticle {
 	}
 	
 	/**
-	 * Constructs a new AlgebraicParticle and returns it. May be a Variable Number, Root, Fraction, ConstantFraction, MixedNumber, Term, or Expression.
+	 * Constructs a new AlgebraicParticle and returns it. May be a Variable Number, Root, Fraction, Fraction, MixedNumber, Term, or Expression.
 	 * @param s The string to parse as an AlgebraicParticle.
 	 * @return An AlgebraicParticle representing s.
-	 * @throws MalformedInputException If s cannot be parsed as an AlgebraicParticle.
+	 * @ If s cannot be parsed as an AlgebraicParticle.
 	 */
-	public static AlgebraicParticle getInstance(String s, Class[] c) throws MalformedInputException{
+	public static AlgebraicParticle getInstance(String s, Class[] c) {
 		System.out.println("ALGEBRAICPARTICLE GETINSTANCE: " + s);
+		String original = s; //for debugging purposes
 		
 		//necessary because expressions like "(4x)" need the parentheses stripped off
 		s = Util.removePar(s);
 		
 		if(s.length() < 1){
-			throw new MalformedInputException(0);
+			throw new ParsingException("Cannot construct AlgebraicParticle with length < 1 (length < 1 is after removing any corresponding parentheses, which may affect length)");
 		}
 		
 		//temps
@@ -78,8 +79,6 @@ public abstract class AlgebraicParticle {
 			s = s.substring(0, s.length() - m.group(1).length());
 		}
 		
-		//TODO remove sign and exponent checking from other classes
-		
 		//the particle we'll eventually return
 		AlgebraicParticle partical = null;
 
@@ -94,7 +93,8 @@ public abstract class AlgebraicParticle {
 			else if(n.equals("Expression")  && Expression.parseable(s))  partical = new Expression(s);
 		}
 		//check if creating it was successful
-		if(partical == null)throw new MalformedInputException(s.length());
+		if(partical == null)throw new ParsingException("Failed to construct AlgebraicParticle \"" + original + "\"" 
+				+ ". With sign, exponent, and parentheses removed, it's \"" + s + "\".");
 		
 		partical.exponent = exponent;
 		partical.sign = sign;
@@ -174,7 +174,7 @@ public abstract class AlgebraicParticle {
 	}
 	
 	/**
-	 * Every AlgebraicParticle needs to define its own toString() for debuging purposes.
+	 * Every AlgebraicParticle needs to define its own toString() for debugging purposes.
 	 */
 	public abstract String toString();
 	

@@ -17,7 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import java.nio.charset.MalformedInputException;
+
 
 import com.github.nateowami.solve4x.solver.Number;
 
@@ -32,10 +32,10 @@ public class NumberTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#Number(java.lang.String)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testNumber() throws MalformedInputException {
+	public void testNumber()  {
 		Number n1 = new Number("123.65");
 		assertTrue(n1.getIntegerPart().equals("123"));
 		assertTrue(n1.getDecimalPart().equals("65"));
@@ -46,10 +46,10 @@ public class NumberTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#add(com.github.nateowami.solve4x.solver.Number, com.github.nateowami.solve4x.solver.Number)}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testAdd() throws MalformedInputException {
+	public void testAdd()  {
 		assertTrue(Number.add(new Number("1"), new Number("2")).getAsString().equals("3"));
 		assertTrue(Number.add(new Number("1.637"), new Number("2.1")).getAsString().equals("3.737"));
 		assertTrue(Number.add(new Number("-16"), new Number("13")).getAsString().equals("-3"));
@@ -62,10 +62,10 @@ public class NumberTest {
 
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#getAsString()}.
-	 * @throws MalformedInputException 
+	 * @ 
 	 */
 	@Test
-	public void testGetAsString() throws MalformedInputException {
+	public void testGetAsString()  {
 		assertTrue(new Number("-234.026").getAsString().equals("-234.026"));
 		assertTrue(new Number("234.6").getAsString().equals("234.6"));
 		assertTrue(new Number("-8.87").getAsString().equals("-8.87"));
