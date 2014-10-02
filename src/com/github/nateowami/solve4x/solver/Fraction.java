@@ -26,7 +26,6 @@ import java.nio.charset.MalformedInputException;
 public class Fraction extends AlgebraicParticle{
 	
 	protected AlgebraicParticle top, bottom;
-	protected boolean isConstant;
 	
 	private static final Class[] subParts = {Variable.class, Root.class, MixedNumber.class, Number.class, Term.class, Expression.class};
 	
@@ -39,75 +38,25 @@ public class Fraction extends AlgebraicParticle{
 	 */
 	protected Fraction(String frac) throws MalformedInputException{
 		//find the '/' not nested in parentheses	
-		int parDepth = 0, divisionIndex = 0;
-		for(int i = 0; i < frac.length(); i++){
-			//if it's a parentheses
-			if(Util.isOpenPar(frac.charAt(i))) parDepth++;
-			else if (Util.isClosePar(frac.charAt(i))) parDepth--;
-			//find the / if parDepth is 0
-			else if (parDepth == 0 && frac.charAt(i) == '/'){
-				divisionIndex = i;
-				break;
-			}
-		}
+		int divisionIndex = indexOfSlash(frac);
 		//if divisionIndex is 0 there's a problem
-		if(divisionIndex == 0) throw new MalformedInputException(0);
-		//split the fraction at divisionIndex
-		String frac1 = frac.substring(0, divisionIndex), frac2 = frac.substring(divisionIndex+1);
-		AlgebraicParticle expr1 = AlgebraicParticle.getInstance(Util.removePar(frac1), subParts), expr2 = AlgebraicParticle.getInstance(Util.removePar(frac2), subParts);
-		//everything's good to go; init top and bottom
-		this.top = expr1;
-		this.bottom = expr2;
-		//figure out if the fraction is a constant
-		//XXX Number.parseable will take decimals, which may or may not be what we want
-		if(Number.parseable(Util.removePar(frac1)) && Number.parseable(Util.removePar(frac2))){
-			isConstant = true;
-		}
+		if(divisionIndex < 1) throw new MalformedInputException(frac.length());
+		//split the fraction at divisionIndex, but don't include the slashes or parentheses
+		//it should be in the form of (expr1)/(expr2)
+		this.top = AlgebraicParticle.getInstance(frac.substring(1, divisionIndex-1), subParts);
+		this.bottom = AlgebraicParticle.getInstance(frac.substring(divisionIndex+2, frac.length()-1), subParts);
 	}
 	
 	/**
-	 * Tells if a String is in the form of <i>expression</i>/<i>expression</i>.
+	 * Tells if a String is in the form of <i>(expression)</i>/<i>(expression)</i>.
 	 * @param frac The String in question.
-	 * @return If frac is a valid fraction
+	 * @return If frac is a valid fraction.
 	 */
 	public static boolean parseable(String frac){
-		//find the '/'
-		int parDepth = 0, divisionIndex = 0;
-		for(int i = 0; i < frac.length(); i++){
-			//if it's a parentheses
-			if(Util.isOpenPar(frac.charAt(i))) parDepth++;
-			else if (Util.isClosePar(frac.charAt(i))) parDepth--;
-			//find the / if parDepth is 0
-			else if (parDepth == 0 && frac.charAt(i) == '/'){
-				divisionIndex = i;
-				break;
-			}
-		}
-		//if divisionIndex is 0 it can't be a fraction
-		if (divisionIndex == 0) return false;
-		String frac1 = frac.substring(0, divisionIndex), frac2 = frac.substring(divisionIndex+1, frac.length());
-		//make expressions, but don't throw exceptions if something is wrong
-		try{
-			Expression expr1 = new Expression(frac1), expr2 = new Expression(frac2);
-			//if the expressions have more than one term and frac1 and frac2 don't
-			//have parentheses around them, return false
-			if(expr1.numbOfTerms() > 1 && Util.removePar(frac1).equals(frac1) || 
-					expr2.numbOfTerms() > 1 && Util.removePar(frac2).equals(frac2)){
-				return false;
-			}
-		}
-		catch (Exception e){
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * Tells if the fraction is a constant, such as 3/4.
-	 * @return If the fraction is constant.
-	 */
-	public boolean isConstant(){
-		return this.isConstant;
+		int divisionIndex = indexOfSlash(frac);
+		if (divisionIndex < 1) return false;
+		return AlgebraicParticle.parseable(frac.substring(0, divisionIndex), subParts) 
+				&& AlgebraicParticle.parseable(frac.substring(divisionIndex+1, frac.length()), subParts);
 	}
 	
 	/**
@@ -129,7 +78,7 @@ public class Fraction extends AlgebraicParticle{
 	 */
 	@Override
 	public String getAsString() {
-		return wrapWithSignAndExponent(this.top.getAsString() + '/' + this.bottom.getAsString());
+		return wrapWithSignAndExponent("(" + this.top.getAsString() + ")/(" + this.bottom.getAsString() + ")");
 	}
 
 	/* (non-Javadoc)
@@ -137,10 +86,32 @@ public class Fraction extends AlgebraicParticle{
 	 */
 	@Override
 	public String toString() {
-		return "Fraction [" + (top != null ? "top=" + top + ", " : "")
-				+ (bottom != null ? "bottom=" + bottom + ", " : "")
-				+ "isConstant=" + isConstant + ", sign()=" + sign()
-				+ ", exponent()=" + exponent() + "]";
+		return "Fraction [top=" + top + ", bottom=" + bottom + ", sign()="
+				+ sign() + ", exponent()=" + exponent() + "]";
+	}
+	
+	/**
+	 * Tells the index of the first non-nested slash (/).
+	 * If there is no slash not nested in parentheses, it returns -1
+	 * Example:
+	 * indexOfSlash("2/3") returns 1
+	 * indexOfSlash("(4/5)") returns -1
+	 * indexOfSlash("(4+6)/(8)") returns 5
+	 * @param frac The fraction from which to search for the slash.
+	 * @return The index of the first non-nested forward slash.
+	 */
+	private static int indexOfSlash(String frac){
+		int parDepth = 0;
+		for(int i = 0; i < frac.length(); i++){
+			//if it's a parentheses
+			if(frac.charAt(i) == '(') parDepth++;
+			else if (frac.charAt(i) == ')') parDepth--;
+			//find the / if parDepth is 0
+			else if (parDepth == 0 && frac.charAt(i) == '/'){
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 }
