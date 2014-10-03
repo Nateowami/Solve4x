@@ -20,11 +20,6 @@ package com.github.nateowami.solve4x.solver;
 
 import com.github.nateowami.solve4x.Solve4x;
 
-
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Checks to see if an expression or equation is valid. 
  * @author Nateowami, Tribex

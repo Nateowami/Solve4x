@@ -19,7 +19,6 @@ package com.github.nateowami.solve4x.solver;
 
 import java.math.BigDecimal;
 
-
 import com.github.nateowami.solve4x.Solve4x;
 
 /**

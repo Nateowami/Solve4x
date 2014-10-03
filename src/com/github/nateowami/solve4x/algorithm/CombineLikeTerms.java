@@ -17,7 +17,6 @@
  */
 package com.github.nateowami.solve4x.algorithm;
 
-
 import java.util.ArrayList;
 
 import com.github.nateowami.solve4x.Solve4x;
@@ -25,211 +24,235 @@ import com.github.nateowami.solve4x.solver.AlgebraicParticle;
 import com.github.nateowami.solve4x.solver.Algorithm;
 import com.github.nateowami.solve4x.solver.Equation;
 import com.github.nateowami.solve4x.solver.Expression;
+import com.github.nateowami.solve4x.solver.Number;
 import com.github.nateowami.solve4x.solver.Step;
 import com.github.nateowami.solve4x.solver.Term;
-import com.github.nateowami.solve4x.solver.Number;
 
 /**
  * TODO Update to reflect changes in Term
+ * 
  * @author Nateowami
  */
-public class CombineLikeTerms implements Algorithm{
+public class CombineLikeTerms implements Algorithm {
 
 	/**
 	 * Combines like terms in a given equation
-	 * @param equation The equation to combine terms in
-	 * @return A Step with this algorithm applied
-	 * @ 
+	 * 
+	 * @param equation
+	 *            The equation to combine terms in
+	 * @return A Step with this algorithm applied @
 	 */
 	@Override
-	public Step getStep(Equation equation)  {
-		//figure out how many like terms there are in each expression
-		
-		//which expression has the most like terms
+	public Step getStep(Equation equation) {
+		// figure out how many like terms there are in each expression
+
+		// which expression has the most like terms
 		int whichHasMost = 0;
-		//and how many like terms it has
+		// and how many like terms it has
 		int numOfLikeTerms = 0;
-		//now loop through to figure out which expression needs to be simplified the most
-		for(int i = 0; i< equation.getSize(); i++){
-			//temp variable
+		// now loop through to figure out which expression needs to be
+		// simplified the most
+		for (int i = 0; i < equation.getSize(); i++) {
+			// temp variable
 			int temp;
-			//if the current expression needs simplifying more than any up to this point
-			if((temp = howManyLike(equation.getExpression(i))) > numOfLikeTerms){
-				//set the vars most and numbOfLikeTerms
+			// if the current expression needs simplifying more than any up to
+			// this point
+			if ((temp = howManyLike(equation.getExpression(i))) > numOfLikeTerms) {
+				// set the vars most and numbOfLikeTerms
 				whichHasMost = i;
 				numOfLikeTerms = temp;
 			}
 		}
-		
-		//now that we've done that we know that we need to simplify the expression at index whichHasMost
+
+		// now that we've done that we know that we need to simplify the
+		// expression at index whichHasMost
 		Expression expr = equation.getExpression(whichHasMost);
-		
-		//now figure out which type of term needs to be combined most
-		
-		//how many there are of a particular type
+
+		// now figure out which type of term needs to be combined most
+
+		// how many there are of a particular type
 		int numOfType = 0;
-		//and what that type is
+		// and what that type is
 		String type = "";
-		//loop through the terms
-		for(int i = 0; i< expr.numbOfTerms(); i++){
-			//temp variable
+		// loop through the terms
+		for (int i = 0; i < expr.numbOfTerms(); i++) {
+			// temp variable
 			int temp;
-			//if the number of of the current type is greater than any found earlier
-			if((temp = numLikeThis(expr, expr.termAt(i))) > numOfType){
-				//update vars numOfType and type
+			// if the number of of the current type is greater than any found
+			// earlier
+			if ((temp = numLikeThis(expr, expr.termAt(i))) > numOfType) {
+				// update vars numOfType and type
 				numOfType = temp;
 				type = expr.termAt(i).getBody();
 			}
 		}
-		
-		//now we know that we need to combine all terms of type body
-		//arraylist of terms for the output
-		ArrayList <Term>terms = new ArrayList<Term>();
-		//and the index for us to combine terms at
+
+		// now we know that we need to combine all terms of type body
+		// arraylist of terms for the output
+		ArrayList<Term> terms = new ArrayList<Term>();
+		// and the index for us to combine terms at
 		int index = -1;
-		//ArrayList of terms we will combine
-		ArrayList <Term>combinedTerms = new ArrayList<Term>();
-		for(int i = 0; i<expr.numbOfTerms(); i++){
-			//if the current term is not the type that we're combining
-			if(!expr.termAt(i).getBody().equals(type)){
-				//add it to the list of terms that we don't modify
+		// ArrayList of terms we will combine
+		ArrayList<Term> combinedTerms = new ArrayList<Term>();
+		for (int i = 0; i < expr.numbOfTerms(); i++) {
+			// if the current term is not the type that we're combining
+			if (!expr.termAt(i).getBody().equals(type)) {
+				// add it to the list of terms that we don't modify
 				terms.add(expr.termAt(i));
 			}
-			//this is one of the terms we need to combine
-			else{
-				//add it to the list of the terms to combine
+			// this is one of the terms we need to combine
+			else {
+				// add it to the list of the terms to combine
 				combinedTerms.add(expr.termAt(i));
-				//and if this is the first term we've added
-				if(index == -1){
-					//set the index of the first term that we're combining
-					//we do this so all of these terms combined into one will be at the index the first one was found at
+				// and if this is the first term we've added
+				if (index == -1) {
+					// set the index of the first term that we're combining
+					// we do this so all of these terms combined into one will
+					// be at the index the first one was found at
 					index = i;
 				}
 			}
 		}
-		
-		//now we need to combine the all the terms in combinedTerms and add the result to 
-		//terms at the index specified by index
-		
-		//first make a list of the numbers/coefficients of the terms to combine
+
+		// now we need to combine the all the terms in combinedTerms and add the
+		// result to
+		// terms at the index specified by index
+
+		// first make a list of the numbers/coefficients of the terms to combine
 		Number coefficients[] = new Number[combinedTerms.size()];
-		//add the coefficients of each term to the coefficients array
-		for(int i = 0; i < coefficients.length; i++){
-			//if it has a coefficient
-			if(combinedTerms.get(i).hasCoe()){
-				//and if the coefficient is negative, add a - in front of it
+		// add the coefficients of each term to the coefficients array
+		for (int i = 0; i < coefficients.length; i++) {
+			// if it has a coefficient
+			if (combinedTerms.get(i).hasCoe()) {
+				// and if the coefficient is negative, add a - in front of it
 				coefficients[i] = combinedTerms.get(i).getCoe();
-				Solve4x.debug("Just set coefficients["+i+"] to " + coefficients[i]);
+				Solve4x.debug("Just set coefficients[" + i + "] to "
+						+ coefficients[i]);
 			}
 		}
-		//the value of all the coefficients we'll add
+		// the value of all the coefficients we'll add
 		Number numSoFar = new Number("0");
-		//add all the coefficients
-		for(int i = 0; i < coefficients.length; i++){
-			//add numSoFar and the current number
+		// add all the coefficients
+		for (int i = 0; i < coefficients.length; i++) {
+			// add numSoFar and the current number
 			numSoFar = Number.add(numSoFar, coefficients[i]);
 		}
-		//now the coefficient of the combined term will be numSoFar
-		//add the coefficient and the term type to create a term
-		Term finalTerm = new Term(numSoFar.getAsString()+type);
-		//now add that to the list of terms at index "index"
+		// now the coefficient of the combined term will be numSoFar
+		// add the coefficient and the term type to create a term
+		Term finalTerm = new Term(numSoFar.getAsString() + type);
+		// now add that to the list of terms at index "index"
 		Solve4x.debug("Adding the final term: " + finalTerm.getAsString());
 		terms.add(index, finalTerm);
-		
-		//convert that to an expression
+
+		// convert that to an expression
 		String finalExpression = "";
-		//put the expression together
-		for(int i = 0; i < terms.size(); i++){
-			//XXX probably doesn't take signs into account
-			Solve4x.debug("Adding a term to the final expression: " + terms.get(i).getAsString());
-			finalExpression += terms.get(i).getAsString();//here's where I forgot to append .getAsString() disaster :(
+		// put the expression together
+		for (int i = 0; i < terms.size(); i++) {
+			// XXX probably doesn't take signs into account
+			Solve4x.debug("Adding a term to the final expression: "
+					+ terms.get(i).getAsString());
+			finalExpression += terms.get(i).getAsString();// here's where I
+															// forgot to append
+															// .getAsString()
+															// disaster :(
 		}
-		//now that we have the final expression we need to take a take the expressions we didn't simplify and mush them together into an equation
+		// now that we have the final expression we need to take a take the
+		// expressions we didn't simplify and mush them together into an
+		// equation
 		equation.setExpression(finalExpression, whichHasMost);
-		//now create a string from the equation XXX will not support systems of equations
+		// now create a string from the equation XXX will not support systems of
+		// equations
 		String finalEquation = equation.getAsString();
-		//the explanation for this algorithm
-		String lameExplanation = "We're combining the terms and the result is " + finalTerm.getAsString() + ".";
-		//an array containing only one expression
-		String steps[] = {finalEquation};
-		Solve4x.debug("Step created and ready to return. The final equation is: " + finalEquation);
-		//the final step
+		// the explanation for this algorithm
+		String lameExplanation = "We're combining the terms and the result is "
+				+ finalTerm.getAsString() + ".";
+		// an array containing only one expression
+		String steps[] = { finalEquation };
+		Solve4x.debug("Step created and ready to return. The final equation is: "
+				+ finalEquation);
+		// the final step
 		return new Step(steps, lameExplanation, 4);
 	}
 
 	/**
 	 * Tells how smart it is to use this algorithm to the specified equation
-	 * @param equation The equation to check
-	 * @return On a scale 0-9 how smart it is to use this algorithm on this equation
+	 * 
+	 * @param equation
+	 *            The equation to check
+	 * @return On a scale 0-9 how smart it is to use this algorithm on this
+	 *         equation
 	 */
 	@Override
 	public int getSmarts(Equation equation) {
-		Solve4x.debug("CombineLikeTerms.getSmarts("+equation.getAsString());
-		//find which expression needs simplifying the most
+		Solve4x.debug("CombineLikeTerms.getSmarts(" + equation.getAsString());
+		// find which expression needs simplifying the most
 		int num = 0;
-		for(int i=0; i<equation.getSize(); i++){
-			//temp variable
+		for (int i = 0; i < equation.getSize(); i++) {
+			// temp variable
 			int temp;
-			if((temp = howManyLike(equation.getExpression(i))) > num){
+			if ((temp = howManyLike(equation.getExpression(i))) > num) {
 				num = temp;
 			}
 		}
-		//figure out the smartness based on number of like terms
-		if(num == 2){
+		// figure out the smartness based on number of like terms
+		if (num == 2) {
 			Solve4x.debug("Returns 4");
 			return 4;
-		}
-		else if(num == 3){
+		} else if (num == 3) {
 			Solve4x.debug("Returns 6");
 			return 6;
-		}
-		else if(num == 4){
+		} else if (num == 4) {
 			Solve4x.debug("Returns 8");
 			return 8;
-		}
-		else if(num > 4){
+		} else if (num > 4) {
 			Solve4x.debug("Returns 9");
 			return 9;
-		}
-		else{
+		} else {
 			Solve4x.debug("Returns 0");
 			return 0;
 		}
 	}
-	
+
 	/**
-	 * Tells how many terms in a given expression are alike
-	 * For example 3x+4x+5x+5x4+2x4 will return 3
-	 * @param expr The expression to check
+	 * Tells how many terms in a given expression are alike For example
+	 * 3x+4x+5x+5x4+2x4 will return 3
+	 * 
+	 * @param expr
+	 *            The expression to check
 	 * @return The number of like terms
 	 */
-	private int howManyLike(Expression expr){
+	private int howManyLike(Expression expr) {
 		Solve4x.debug(expr.getAsString());
 		int num = 0;
-		for(int i = 0; i< expr.numbOfTerms(); i++){
-			//update num
-			//temp variable
+		for (int i = 0; i < expr.numbOfTerms(); i++) {
+			// update num
+			// temp variable
 			int temp;
-			if(num < (temp = numLikeThis(expr, expr.termAt(i)))){
+			if (num < (temp = numLikeThis(expr, expr.termAt(i)))) {
 				num = temp;
 			}
 		}
 		Solve4x.debug("Returns " + num);
 		return num;
 	}
-	
+
 	/**
-	 * Tells how many terms in a given expression are the same type as the specified term
-	 * @param expr The expression
-	 * @param term The term
+	 * Tells how many terms in a given expression are the same type as the
+	 * specified term
+	 * 
+	 * @param expr
+	 *            The expression
+	 * @param term
+	 *            The term
 	 * @return The number of terms in expr that are the same type as term
 	 */
-	private int numLikeThis(Expression expr, AlgebraicParticle term){
-		Solve4x.debug("Arg1: " + expr.getAsString() + " Arg2: " + term.getBody());
+	private int numLikeThis(Expression expr, AlgebraicParticle term) {
+		Solve4x.debug("Arg1: " + expr.getAsString() + " Arg2: "
+				+ term.getBody());
 		int num = 0;
-		//check all terms in the expression for being like term
-		for(int i =0;  i< expr.numbOfTerms(); i++){
-			if(expr.termAt(i).getBody().equals(term.getBody())){
+		// check all terms in the expression for being like term
+		for (int i = 0; i < expr.numbOfTerms(); i++) {
+			if (expr.termAt(i).getBody().equals(term.getBody())) {
 				num++;
 			}
 		}

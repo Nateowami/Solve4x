@@ -19,9 +19,9 @@ package com.github.nateowami.solve4x.solver;
 
 
 
-import com.github.nateowami.solve4x.solver.Number;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -37,11 +37,11 @@ public class NumberTest {
 	@Test
 	public void testNumber()  {
 		Number n1 = new Number("123.65");
-		assertTrue(n1.getIntegerPart().equals("123"));
-		assertTrue(n1.getDecimalPart().equals("65"));
+		assertEquals("123", n1.getIntegerPart());
+		assertEquals("65", n1.getDecimalPart());
 		Number n2 = new Number("7.28");
-		assertTrue(n2.getIntegerPart().equals("7"));
-		assertTrue(n2.getDecimalPart().equals("28"));
+		assertEquals("7", n2.getIntegerPart());
+		assertEquals("28", n2.getDecimalPart());
 	}
 
 	/**
@@ -50,14 +50,14 @@ public class NumberTest {
 	 */
 	@Test
 	public void testAdd()  {
-		assertTrue(Number.add(new Number("1"), new Number("2")).getAsString().equals("3"));
-		assertTrue(Number.add(new Number("1.637"), new Number("2.1")).getAsString().equals("3.737"));
-		assertTrue(Number.add(new Number("-16"), new Number("13")).getAsString().equals("-3"));
-		assertTrue(Number.add(new Number("3.1415926535"), new Number("-16.001")).getAsString().equals("-12.8594073465"));
-		assertTrue(Number.add(new Number("0.024"), new Number("23.06")).getAsString().equals("23.084"));
-		assertTrue(Number.add(new Number("23"), new Number("2")).getAsString().equals("25"));
-		assertTrue(Number.add(new Number("-1.01"), new Number("2")).getAsString().equals("0.99"));
-		assertTrue(Number.add(new Number("6.6"), new Number("13.02")).getAsString().equals("19.62"));
+		assertEquals("3", Number.add(new Number("1"), new Number("2")).getAsString());
+		assertEquals("3.737", Number.add(new Number("1.637"), new Number("2.1")).getAsString());
+		assertEquals("-3", Number.add(new Number("-16"), new Number("13")).getAsString());
+		assertEquals("-12.8594073465", Number.add(new Number("3.1415926535"), new Number("-16.001")).getAsString());
+		assertEquals("23.084", Number.add(new Number("0.024"), new Number("23.06")).getAsString());
+		assertEquals("25", Number.add(new Number("23"), new Number("2")).getAsString());
+		assertEquals("0.99", Number.add(new Number("-1.01"), new Number("2")).getAsString());
+		assertEquals("19.62", Number.add(new Number("6.6"), new Number("13.02")).getAsString());
 	}
 
 	/**
@@ -66,12 +66,12 @@ public class NumberTest {
 	 */
 	@Test
 	public void testGetAsString()  {
-		assertTrue(new Number("-234.026").getAsString().equals("-234.026"));
-		assertTrue(new Number("234.6").getAsString().equals("234.6"));
-		assertTrue(new Number("-8.87").getAsString().equals("-8.87"));
-		assertTrue(new Number("1.0").getAsString().equals("1.0"));
-		assertTrue(new Number("1").getAsString().equals("1"));
-		assertTrue(new Number("6.03").getAsString().equals("6.03"));
+		assertEquals("-234.026", new Number("-234.026").getAsString());
+		assertEquals("234.6", new Number("234.6").getAsString());
+		assertEquals("-8.87", new Number("-8.87").getAsString());
+		assertEquals("1.0", new Number("1.0").getAsString());
+		assertEquals("1", new Number("1").getAsString());
+		assertEquals("6.03", new Number("6.03").getAsString());
 	}
 
 	/**

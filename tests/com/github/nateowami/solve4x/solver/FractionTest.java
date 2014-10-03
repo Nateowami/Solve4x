@@ -17,13 +17,11 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import static org.junit.Assert.*;
-
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import com.github.nateowami.solve4x.solver.Fraction;
 
 /**
  * @author Nateowami
@@ -37,13 +35,13 @@ public class FractionTest {
 	@Test
 	public void testFraction()  {
 		Fraction frac1 = new Fraction("(2)/(3)");
-		assertTrue(frac1.getTop().getAsString().equals("2"));
-		assertTrue(frac1.getBottom().getAsString().equals("3"));
+		assertEquals("2", frac1.getTop().getAsString());
+		assertEquals("3", frac1.getBottom().getAsString());
 		
 		Fraction frac2 = new Fraction("(x3+2)/(17)");
 		System.out.println(frac2.getTop().getAsString());
-		assertTrue(frac2.getTop().getAsString().equals("x3+2"));
-		assertTrue(frac2.getBottom().getAsString().equals("17"));
+		assertEquals("x3+2", frac2.getTop().getAsString());
+		assertEquals("17", frac2.getBottom().getAsString());
 	}
 
 	/**
@@ -69,9 +67,9 @@ public class FractionTest {
 	@Test
 	public void testGetTop()  {
 		Fraction frac1 = new Fraction("(2x+6y)/(3)");
-		assertTrue(frac1.getTop().getAsString().equals("2x+6y"));
+		assertEquals("2x+6y", frac1.getTop().getAsString());
 		Fraction frac2 = new Fraction("(42y-16)/(87-6)");
-		assertTrue(frac2.getTop().getAsString().equals("42y-16"));
+		assertEquals("42y-16", frac2.getTop().getAsString());
 	}
 
 	/**
@@ -81,9 +79,9 @@ public class FractionTest {
 	@Test
 	public void testGetBottom()  {
 		Fraction frac1 = new Fraction("(2x+6y)/(3)");
-		assertTrue(frac1.getBottom().getAsString().equals("3"));
+		assertEquals("3", frac1.getBottom().getAsString());
 		Fraction frac2 = new Fraction("(42y-16)/(87-6yz4)");
-		assertTrue(frac2.getBottom().getAsString().equals("87-6yz4"));
+		assertEquals("87-6yz4", frac2.getBottom().getAsString());
 	}
 
 }

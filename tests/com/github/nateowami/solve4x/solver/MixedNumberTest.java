@@ -17,13 +17,11 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import static org.junit.Assert.*;
-
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import com.github.nateowami.solve4x.solver.MixedNumber;
 
 /**
  * @author Nateowami
@@ -38,9 +36,9 @@ public class MixedNumberTest {
 	public void testMixedNumber()  {
 		MixedNumber n1 = new MixedNumber("1(3)/(4)");
 		System.out.println("well here it tis:" + n1.getAsString());
-		assertTrue(n1.getAsString().equals("1(3)/(4)"));
+		assertEquals("1(3)/(4)", n1.getAsString());
 		MixedNumber n2 = new MixedNumber("45(67)/(-18)");
-		assertTrue(n2.getAsString().equals("45(67)/(-18)"));
+		assertEquals("45(67)/(-18)", n2.getAsString());
 	}
 
 	/**
@@ -62,9 +60,9 @@ public class MixedNumberTest {
 	 */
 	@Test
 	public void testGetFraction()  {
-		assertTrue(new MixedNumber("2/3").getFraction().getAsString().equals("2/3"));
-		assertTrue(new MixedNumber("1(2)/(3)").getFraction().getAsString().equals("2/3"));
-		assertTrue(new MixedNumber("-2/(3)").getFraction().getAsString().equals("-2/3"));
+		assertEquals("2/3", new MixedNumber("2/3").getFraction().getAsString());
+		assertEquals("2/3", new MixedNumber("1(2)/(3)").getFraction().getAsString());
+		assertEquals("-2/3", new MixedNumber("-2/(3)").getFraction().getAsString());
 		assertTrue(new MixedNumber("35").getFraction() == null);
 	}
 
@@ -74,8 +72,8 @@ public class MixedNumberTest {
 	 */
 	@Test
 	public void testGetNumeral()  {
-		assertTrue(new MixedNumber("4(2)/3").getNumeral() == 4);
-		assertTrue(new MixedNumber("1(2)/(3)").getNumeral() == 1);
+		assertEquals(4, new MixedNumber("4(2)/3").getNumeral());
+		assertEquals(1, new MixedNumber("1(2)/(3)").getNumeral());
 		assertTrue(new MixedNumber("-85(-2)/(-73)").getNumeral() == -85);
 		assertTrue(new MixedNumber("35").getNumeral() ==  35);
 	}
@@ -86,8 +84,8 @@ public class MixedNumberTest {
 	 */
 	@Test
 	public void testGetAsString()  {
-		assertTrue(new MixedNumber("-256(7)/-56").getAsString().equals("-256(7)/(-56)"));
-		assertTrue(new MixedNumber("-87/-16").getAsString().equals("(-87)/(-16)"));
+		assertEquals("-256(7)/(-56)", new MixedNumber("-256(7)/-56").getAsString());
+		assertEquals("(-87)/(-16)", new MixedNumber("-87/-16").getAsString());
 	}
 	
 	/**

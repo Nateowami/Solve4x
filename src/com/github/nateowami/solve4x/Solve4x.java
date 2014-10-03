@@ -19,7 +19,6 @@
 package com.github.nateowami.solve4x;
 
 import com.github.nateowami.solve4x.ui.GUI;
-import com.github.nateowami.solve4x.Solve4x;
 
 /**
  * Created as soon as Solve4x runs. Starts the GUI and holds a static debug method.

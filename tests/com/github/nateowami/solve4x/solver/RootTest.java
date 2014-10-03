@@ -17,13 +17,11 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import static org.junit.Assert.*;
-
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import com.github.nateowami.solve4x.solver.Root;
 
 /**
  * @author Nateowami
@@ -37,10 +35,10 @@ public class RootTest {
 	@Test
 	public void testRoot()  {
 		Root root1 = new Root("₄√(4x+6)");
-		assertTrue(root1.getNthRoot()==4);
+		assertEquals(4, root1.getNthRoot());
 		assertEquals("4x+6", root1.getExpr().getAsString());
 		Root root2 = new Root("₂₀₉√(74xy2)");
-		assertTrue(root2.getNthRoot()==209);
+		assertEquals(209, root2.getNthRoot());
 		assertEquals("74xy2", root2.getExpr().getAsString());
 	}
 
@@ -69,9 +67,9 @@ public class RootTest {
 	@Test
 	public void testGetNthRoot()  {
 		Root root1 = new Root("₉√(45+76(4))");
-		assertTrue(root1.getNthRoot()==9);
+		assertEquals(9, root1.getNthRoot());
 		Root root2 = new Root("₀₉₂√(45)");
-		assertTrue(root2.getNthRoot()==92);
+		assertEquals(92, root2.getNthRoot());
 	}
 
 	/**
@@ -81,9 +79,9 @@ public class RootTest {
 	@Test
 	public void testGetExpr()  {
 		Root root1 = new Root("₉√(45+x)");
-		assertTrue(root1.getNthRoot()==9);
+		assertEquals(9, root1.getNthRoot());
 		Root root2 = new Root("₀₉₂√(x+73)");
-		assertTrue(root2.getNthRoot()==92);
+		assertEquals(92, root2.getNthRoot());
 	}
 
 	/**

@@ -17,14 +17,9 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import static org.junit.Assert.*;
-
-
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import com.github.nateowami.solve4x.solver.Equation;
-import com.github.nateowami.solve4x.solver.Expression;
 
 /**
  * @author Nateowami
@@ -38,8 +33,8 @@ public class EquationTest {
 	@Test
 	public void testEquation()  {
 		Equation eq = new Equation("23x2y+14x=6(34xy2+7)");
-		assertTrue(eq.getExpression(0).getAsString().equals("23x2y+14x"));
-		assertTrue(eq.getExpression(1).getAsString().equals("6(34xy2+7)"));
+		assertEquals("23x2y+14x", eq.getExpression(0).getAsString());
+		assertEquals("6(34xy2+7)", eq.getExpression(1).getAsString());
 	}
 
 	/**
@@ -49,8 +44,8 @@ public class EquationTest {
 	@Test
 	public void testGetExpression()  {
 		Equation eq = new Equation("12x2y(34+6xa)=45+6x(4+85xy5)");
-		assertTrue(eq.getExpression(0).getAsString().equals("12x2y(34+6xa)"));
-		assertTrue(eq.getExpression(1).getAsString().equals("45+6x(4+85xy5)"));
+		assertEquals("12x2y(34+6xa)", eq.getExpression(0).getAsString());
+		assertEquals("45+6x(4+85xy5)", eq.getExpression(1).getAsString());
 	}
 
 	/**
@@ -60,9 +55,9 @@ public class EquationTest {
 	@Test
 	public void testGetSize()  {
 		Equation eq = new Equation("12x2y(34+6xa)=45+6x(4+85xy5)");
-		assertTrue(eq.getSize() == 2);
+		assertEquals(2, eq.getSize());
 		Equation eq2 = new Equation("2x+45(45+16x2y)");
-		assertTrue(eq2.getSize() == 1);
+		assertEquals(1, eq2.getSize());
 	}
 
 	/**
@@ -74,8 +69,8 @@ public class EquationTest {
 		Equation eq = new Equation("12x2y(34+6xa)=45+6x(4+85xy5)");
 		eq.setExpression("23x+6", 0);
 		eq.setExpression("s+yz", 1);
-		assertTrue(eq.getExpression(0).getAsString().equals("23x+6"));
-		assertTrue(eq.getExpression(1).getAsString().equals("s+yz"));
+		assertEquals("23x+6", eq.getExpression(0).getAsString());
+		assertEquals("s+yz", eq.getExpression(1).getAsString());
 	}
 
 	/**
@@ -85,7 +80,7 @@ public class EquationTest {
 	@Test
 	public void testGetAsString()  {
 		Equation eq = new Equation("12x2y4(34+6xa(43x2+6+1(43)))=45+6x(4+85xy5)");
-		assertTrue(eq.getAsString().equals("12x2y4(34+6xa(43x2+6+(43)))=45+6x(4+85xy5)"));
+		assertEquals("12x2y4(34+6xa(43x2+6+(43)))=45+6x(4+85xy5)", eq.getAsString());
 	}
 
 }

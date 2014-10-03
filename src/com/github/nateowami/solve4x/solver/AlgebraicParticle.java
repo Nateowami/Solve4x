@@ -17,8 +17,6 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import java.lang.reflect.InvocationTargetException;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
