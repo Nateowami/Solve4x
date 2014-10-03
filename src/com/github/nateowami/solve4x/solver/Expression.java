@@ -53,7 +53,7 @@ public class Expression extends AlgebraicParticle{
 			if(parDepth == 0 && (expr.charAt(i) == '+' || expr.charAt(i) == '-' || i == expr.length()-1) 
 					&& AlgebraicParticle.parseable(expr.substring(0, breakAt), subParts)){
 				termList.add(AlgebraicParticle.getInstance(expr.substring(0, breakAt), subParts));
-				expr = expr.substring(i);
+				expr = expr.substring(breakAt);
 				i = 0; 
 			}
 		}
@@ -90,8 +90,10 @@ public class Expression extends AlgebraicParticle{
 	 */
 	public String getAsString(){
 		String expr = "";
-		for(AlgebraicParticle i : this.termList){
-			expr += i.getAsString();
+		for(int i = 0; i < termList.size(); i++){
+			String term = termList.get(i).getAsString();
+			//if it's not the first term, and the term isn't negative, prepend a + sign
+			expr += i != 0 && term.charAt(0) != '-' ? "+" + term : term;
 		}
 		return expr;
 	}
