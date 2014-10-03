@@ -102,6 +102,7 @@ public class ExpressionTest {
 	 */
 	@Test
 	public void testParseable()  {
+		assertTrue(Expression.parseable("6+2"));
 		assertFalse(Expression.parseable("6(34+9xy2(45x+6)"));
 	}
 

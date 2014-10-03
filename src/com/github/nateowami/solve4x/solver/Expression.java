@@ -106,9 +106,11 @@ public class Expression extends AlgebraicParticle{
 		for(int i = 0; i < expr.length(); i++){
 			if(expr.charAt(i) == '(') parDepth++;
 			else if(expr.charAt(i) == ')') parDepth--;
+			int breakAt = i == expr.length()-1 ? i+1 : i;//the char at which we break the string, which 
+			//depends on whether we're at the end of the string, or just at a + or - sign
 			if(parDepth == 0 && (expr.charAt(i) == '+' || expr.charAt(i) == '-' || i == expr.length()-1) 
-					&& AlgebraicParticle.parseable(expr.substring(0, i == expr.length()-1 ? i+1 : i), subParts)){
-				expr = expr.substring(i);
+					&& AlgebraicParticle.parseable(expr.substring(0, breakAt), subParts)){
+				expr = expr.substring(breakAt);
 				numParsed++;
 				i = 0;
 			}
