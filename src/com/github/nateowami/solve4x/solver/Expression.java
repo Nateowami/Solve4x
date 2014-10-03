@@ -44,14 +44,15 @@ public class Expression extends AlgebraicParticle{
 			if(expr.charAt(i) == '(') parDepth++;
 			else if(expr.charAt(i) == ')') parDepth--;
 			/*
-			 * We could be at the end of the string or there could be a sign at i.
-			 * That's what all the i == expr.length()-1 ? i+1 : i stuff is about.
+			 * We could be at the end of the string OR there could be a sign at i.
+			 * That's what the i == expr.length()-1 ? i+1 : i is about.
 			 * If we're at the end, we want to parse up to and including i. Otherwise
 			 * we just parse up to and excluding i.
 			 */
+			int breakAt = i == expr.length()-1 ? i+1 : i;
 			if(parDepth == 0 && (expr.charAt(i) == '+' || expr.charAt(i) == '-' || i == expr.length()-1) 
-					&& AlgebraicParticle.parseable(expr.substring(0, i == expr.length()-1 ? i+1 : i), subParts)){
-				termList.add(AlgebraicParticle.getInstance(expr.substring(0, i == expr.length()-1 ? i+1 : i), subParts));
+					&& AlgebraicParticle.parseable(expr.substring(0, breakAt), subParts)){
+				termList.add(AlgebraicParticle.getInstance(expr.substring(0, breakAt), subParts));
 				expr = expr.substring(i);
 				i = 0; 
 			}

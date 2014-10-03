@@ -40,6 +40,10 @@ public class ExpressionTest {
 		assertEquals("6", expr0.termAt(0).getAsString());
 		assertEquals("2", expr0.termAt(1).getAsString());
 		
+		Expression exprx = new Expression("2x+6(34)");
+		assertEquals("2x", exprx.termAt(0).getAsString());
+		assertEquals("6(34)", exprx.termAt(1).getAsString());
+		
 		Expression expr1 = new Expression("2x+6(34+9xy2(45x+6))");
 		assertEquals("2x", expr1.termAt(0).getAsString());
 		assertEquals("6(34+9xy2(45x+6))", expr1.termAt(1).getAsString());
