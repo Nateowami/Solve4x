@@ -39,7 +39,6 @@ public class FractionTest {
 		assertEquals("3", frac1.getBottom().getAsString());
 		
 		Fraction frac2 = new Fraction("(x3+2)/(17)");
-		System.out.println(frac2.getTop().getAsString());
 		assertEquals("x3+2", frac2.getTop().getAsString());
 		assertEquals("17", frac2.getBottom().getAsString());
 	}
@@ -54,6 +53,7 @@ public class FractionTest {
 		assertTrue(Fraction.parseable("(23+xy6)/(43xy+6)"));
 		assertTrue(Fraction.parseable("(23xy2)/(x+6-3xy)"));
 		
+		assertFalse(Fraction.parseable("xy6(4)/(5)"));
 		assertFalse(Fraction.parseable("2/3"));
 		assertFalse(Fraction.parseable("23xy2/(x+6-3xy"));
 		assertFalse(Fraction.parseable("4/15+6"));
@@ -66,10 +66,8 @@ public class FractionTest {
 	 */
 	@Test
 	public void testGetTop()  {
-		Fraction frac1 = new Fraction("(2x+6y)/(3)");
-		assertEquals("2x+6y", frac1.getTop().getAsString());
-		Fraction frac2 = new Fraction("(42y-16)/(87-6)");
-		assertEquals("42y-16", frac2.getTop().getAsString());
+		assertEquals("2x+6y", new Fraction("(2x+6y)/(3)").getTop().getAsString());
+		assertEquals("42y-16", new Fraction("(42y-16)/(87-6)").getTop().getAsString());
 	}
 
 	/**
@@ -78,10 +76,8 @@ public class FractionTest {
 	 */
 	@Test
 	public void testGetBottom()  {
-		Fraction frac1 = new Fraction("(2x+6y)/(3)");
-		assertEquals("3", frac1.getBottom().getAsString());
-		Fraction frac2 = new Fraction("(42y-16)/(87-6yz4)");
-		assertEquals("87-6yz4", frac2.getBottom().getAsString());
+		assertEquals("3", new Fraction("(2x+6y)/(3)").getBottom().getAsString());
+		assertEquals("87-6yz4", new Fraction("(42y-16)/(87-6yz4)").getBottom().getAsString());
 	}
 
 }

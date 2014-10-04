@@ -67,7 +67,11 @@ public class TermTest {
 	 */
 	@Test
 	public void testNumOfParts() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(2, new Term("x6").numOfParts());
+		assertEquals(4, new Term("4xy6(4)/(5)").numOfParts());
+		assertEquals(3, new Term("2y(3+6)").numOfParts());
+		assertEquals(1, new Term("((x+6)/(-4y))").numOfParts());
+		assertEquals(3, new Term("js(4y+3)").numOfParts());
 	}
 
 	/**

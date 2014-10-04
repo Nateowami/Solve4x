@@ -51,10 +51,17 @@ public class Fraction extends AlgebraicParticle{
 	 * @return If frac is a valid fraction.
 	 */
 	public static boolean parseable(String frac){
-		int divisionIndex = indexOfSlash(frac);
-		if (divisionIndex < 1) return false;
-		return AlgebraicParticle.parseable(frac.substring(0, divisionIndex), subParts) 
-				&& AlgebraicParticle.parseable(frac.substring(divisionIndex+1, frac.length()), subParts);
+		if(frac.length() < 7) return false;//can't possibly be right if it's shorter than 7 chars
+		//make sure it's surrounded by parentheses and remove them if so
+		int divisionIndex = indexOfSlash(frac) - 1;//-1 because we're about to remove the first char
+		if(frac.charAt(0) == '(' && frac.charAt(frac.length()-1) == ')') frac = frac.substring(1, frac.length()-1);
+		else return false;
+		//make sure there's ) before and ( after the slash
+		if(divisionIndex >= 2 && divisionIndex <= frac.length() - 3 && frac.charAt(divisionIndex-1) == ')' && frac.charAt(divisionIndex+1) == '('){
+			return AlgebraicParticle.parseable(frac.substring(0, divisionIndex-1), subParts) 
+					&& AlgebraicParticle.parseable(frac.substring(divisionIndex+2, frac.length()), subParts);
+		}
+		else return false;
 	}
 	
 	/**
