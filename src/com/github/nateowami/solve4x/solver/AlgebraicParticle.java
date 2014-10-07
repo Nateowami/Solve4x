@@ -62,20 +62,18 @@ public abstract class AlgebraicParticle {
 		
 		//temps
 		boolean sign = true;
-		int exponent = 1;//anything to the first power is itself, so 1 is default
 		
 		//take care of sign
 		sign = !(s.charAt(0) == '-');
 		if(s.charAt(0) == '-' || s.charAt(0) == '+') s = s.substring(1);
 		
 		//deal with exponent
-		Matcher m = Pattern.compile(".([¹-⁹][⁰-⁹]*)\\z").matcher(s);
-		//if there was an exponent
-		if(m.find()){
-			exponent = Util.superscriptToInt(m.group(1));
-			//remove the superscript from s
-			s = s.substring(0, s.length() - m.group(1).length());
-		}
+		//one would think Unicode would have superscript integers all together, so we could just use ranges
+		int e = s.length()-1;
+		while(e > 0 && Util.isSuperscript(s.charAt(e)))e--;
+		e++;//because we decrement it before checking if it's a superscript
+		int exponent = "".equals(s.substring(e)) ? 1 : Util.superscriptToInt(s.substring(e));//default to 1
+		s = s.substring(0, e);
 		
 		//the particle we'll eventually return
 		AlgebraicParticle partical = null;
@@ -117,13 +115,11 @@ public abstract class AlgebraicParticle {
 		//remove the sign
 		if(s.charAt(0) == '-' || s.charAt(0) == '+') s = s.substring(1);
 
-		//remove the exponent
-		Matcher m = Pattern.compile(".([¹-⁹][⁰-⁹]*)\\z").matcher(s);
-		//if there was an exponent
-		if(m.find()){
-			//remove the superscript from s
-			s = s.substring(0, s.length() - m.group(1).length());
-		}
+		//deal with exponent
+		int e = s.length()-1;
+		while(e > 0 && Util.isSuperscript(s.charAt(e)))e--;
+		e++;//because we decrement it before checking if it's a superscript
+		s = s.substring(0, e);
 		
 		for(Class i : c){
 			String n = i.getSimpleName();
@@ -135,14 +131,6 @@ public abstract class AlgebraicParticle {
 			if(n.equals("Term")        && Term       .parseable(s)) return true;
 			if(n.equals("Expression")  && Expression .parseable(s)) return true;
 		}
-		
-		/*
-		 * There is a small chance we'll use this code again in a modified way
-		if(Variable.parseable(s) || Number.parseable(s) || Root.parseable(s) || Fraction.parseable(s) || 
-				MixedNumber.parseable(s) || Term.parseable(s) || Expression.parseable(s)){
-			System.out.println("IS ALGEBRAIC PARTICLE RETURNS TRUE");
-			return true;
-		}*/
 		
 		System.out.println("IS ALGEBRAIC PARTICLE RETURNS FALSE");
 		return false;

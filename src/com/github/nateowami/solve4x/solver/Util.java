@@ -30,11 +30,18 @@ import com.github.nateowami.solve4x.Solve4x;
  */
 public class Util {
 	
+	//Unicode superscripts aren't all contiguous, so it's best to just list them
+	//we'll do regular ints and subscripts too for the sake of completeness
+	public static char[] superscriptInts = "⁰¹²³⁴⁵⁶⁷⁸⁹".toCharArray();
+	public static char[] charInts = "0123456789".toCharArray();
+	public static char[] subscriptInts = "₀₁₂₃₄₅₆₇₈₉".toCharArray();
+	
 	/**
 	 * Evaluates a given string to determine if it has an = sign
 	 * @param str The string to evaluate
 	 * @return If the equation has an equals sign
 	 */
+
 	public static boolean isEq(String str){
 		//debugging
 		Solve4x.debug("isEq()");
@@ -407,7 +414,7 @@ public class Util {
 	 * @return If c is a superscript.
 	 */
 	public static boolean isSuperscript(char c){
-		return c >= '\u2070' && c <= '\u2079';
+		return new String(superscriptInts).indexOf(c) != -1;
 	}
 	
 	/**
@@ -430,7 +437,7 @@ public class Util {
 	public static int superscriptToInt(String s){
 		String answer = "";
 		for (char c : s.toCharArray()){
-			answer += (char)(c - 8256);
+			answer += Character.getNumericValue(c);
 		}
 		return Integer.parseInt(answer);
 	}
@@ -441,13 +448,15 @@ public class Util {
 	 * @return The superscript form of integer n.
 	 */
 	public static String intToSuperscript(int n){
-		String answer = "";
-		for(char c : (n + "").toCharArray()){
-			answer += (char)(c + 8256);
+		char[] s = Integer.toString(n).toCharArray();
+		for(int i = 0; i < s.length; i++){
+			s[i] = superscriptInts[
+			                       Integer.parseInt(Character.toString(s[i]))
+			                       ];//FIXME it's now working right
 		}
-		return answer;
+		return new String(s);
 	}
-	
+
 	/**
 	 * Tells if a specified char c is a subscript. 
 	 * @param c The char to check.

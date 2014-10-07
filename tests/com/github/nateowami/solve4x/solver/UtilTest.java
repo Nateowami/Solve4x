@@ -151,7 +151,9 @@ public class UtilTest {
 	 */
 	@Test
 	public void testIsSuperscriptChar() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(Util.isSuperscript('⁹'));
+		assertTrue(Util.isSuperscript('⁰'));
+		assertTrue(Util.isSuperscript('⁴'));
 	}
 
 	/**
@@ -159,7 +161,7 @@ public class UtilTest {
 	 */
 	@Test
 	public void testIsSuperscriptString() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(Util.isSuperscript("⁰⁴⁹"));
 	}
 
 	/**
@@ -167,7 +169,7 @@ public class UtilTest {
 	 */
 	@Test
 	public void testSuperscriptToInt() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(56, Util.superscriptToInt("⁵⁶"));
 	}
 
 	/**
@@ -175,7 +177,8 @@ public class UtilTest {
 	 */
 	@Test
 	public void testIntToSuperscript() {
-		assertEquals(Util.intToSuperscript(6), "⁶");
+		assertEquals("⁶", Util.intToSuperscript(6));
+		assertEquals("⁰", Util.intToSuperscript(0));
 	}
 
 	/**
