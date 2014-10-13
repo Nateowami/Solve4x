@@ -96,11 +96,21 @@ public class Term extends AlgebraicParticle{
 	 */
 	public String getAsString(){
 		String s = "";
-		for(int i = 0; i < this.parts.size(); i++){
-			s += 	//wrap with parentheses only if it's an expression
-					this.parts.get(i) instanceof Expression ? 
-							"(" + this.parts.get(i).getAsString() + ")" : 
-							this.parts.get(i).getAsString();
+		//keep track of whether the previous part of the term was wrapped with parentheses
+		//this is so we can distinguish between 62 and 6(2)
+		boolean prevHadPar = true;
+		String prevClass = "";//the name of the class of the previous part of the term
+		for(AlgebraicParticle p : this.parts){
+			String curClass = p.getClass().getSimpleName();
+			boolean needsPar = false;
+			
+			if(curClass.equals("Expression")) needsPar = true;
+			//MixedNumber and Number should only be wrapped with pars if the previous part was a number and it didn't have pars
+			else if((curClass.equals("MixedNumber") || curClass.equals("Number")) && prevClass.equals("Number")) needsPar = !prevHadPar;
+			s += needsPar ? "(" + p.getAsString() + ")"	: p.getAsString();
+			
+			prevClass = curClass;
+			prevHadPar = needsPar;
 		}
 		return wrapWithSignAndExponent(s);
 	}
@@ -114,7 +124,7 @@ public class Term extends AlgebraicParticle{
 	}
 
 	/** 
-	 * Tells if a specified string s may be parsed as a terrm
+	 * Tells if a specified string s may be parsed as a term
 	 * @param s The string to check.
 	 * @return If s is parseable as a term.
 	 */
@@ -138,5 +148,6 @@ public class Term extends AlgebraicParticle{
 		}
 		else return false;		
 	}
+	
 	
 }

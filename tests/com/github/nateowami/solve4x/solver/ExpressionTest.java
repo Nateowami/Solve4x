@@ -76,9 +76,9 @@ public class ExpressionTest {
 		assertEquals("6xy45", expr1.termAt(2).getAsString());
 		assertEquals("12(23+6xy4)", expr1.termAt(3).getAsString());
 		Expression expr2 = new Expression("-c+(y)/(16+34)-xy2");
-		assertEquals("-c", expr2.termAt(0));
-		assertEquals("(y)/(16+34)", expr2.termAt(1));
-		assertEquals("-xy2", expr2.termAt(2));
+		assertEquals("-c", expr2.termAt(0).getAsString());
+		assertEquals("(y)/(16+34)", expr2.termAt(1).getAsString());
+		assertEquals("-xy2", expr2.termAt(2).getAsString());
 	}
 
 	/**
