@@ -34,7 +34,11 @@ public class TermTest {
 	 */
 	@Test
 	public void testGetAsString() {
-		fail("Not yet implemented"); // TODO
+		assertEquals("2x", new Term("2x").getAsString());
+		assertEquals("47y", new Term("47y").getAsString());
+		assertEquals("2(3+zy)", new Term("2(3+zy)").getAsString());
+		assertEquals("2((3)/(xy+2))", new Term("2((3)/(xy+2))").getAsString());
+		assertEquals("4x(2-4)", new Term("4x(2-4)").getAsString());
 	}
 
 	/**
@@ -45,11 +49,11 @@ public class TermTest {
 	public void testTerm()  {
 		assertEquals("2x", new Term("2x").getAsString());
 		assertEquals("2x4xy", new Term("2x4xy").getAsString());
-		assertEquals("21", new Term("21").getAsString());
+		assertEquals("2(1)", new Term("2(1)").getAsString());
 		assertEquals("6(34)", new Term("6(34)").getAsString());
-		assertEquals("xy(6+2)", new Term("xy(6+2)").getAsString());//FIXME
+		assertEquals("xy(6+2)", new Term("xy(6+2)").getAsString());
 		assertEquals("4y(-y+6)", new Term("4y(-y+6)").getAsString());
-		assertEquals("(4)32", new Term("(4)32").getAsString());
+		assertEquals("4(32)", new Term("4(32)").getAsString());
 	}
 	
 	/**
@@ -71,7 +75,7 @@ public class TermTest {
 		assertEquals(2, new Term("x6").numOfParts());
 		assertEquals(4, new Term("4xy6(4)/(5)").numOfParts());
 		assertEquals(3, new Term("2y(3+6)").numOfParts());
-		assertEquals(1, new Term("((x+6)/(-4y))").numOfParts());
+		assertEquals(2, new Term("2((x+6)/(-4y))").numOfParts());
 		assertEquals(3, new Term("js(4y+3)").numOfParts());
 	}
 
@@ -80,17 +84,12 @@ public class TermTest {
 	 */
 	@Test
 	public void testGetPartAt() {
-		fail("Not yet implemented"); // TODO
+		assertEquals("x", new Term("2x").getPartAt(1).getAsString());
+		assertEquals("x+6", new Term("4y(x+6)").getPartAt(2).getAsString());
+		assertEquals("y", new Term("4xy").getPartAt(2).getAsString());
+		assertEquals("4", new Term("xyz4").getPartAt(3).getAsString());
 	}
 
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#toString()}.
-	 */
-	@Test
-	public void testToString() {
-		fail("Not yet implemented"); // TODO
-	}
-	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#isTerm()}.
 	 */

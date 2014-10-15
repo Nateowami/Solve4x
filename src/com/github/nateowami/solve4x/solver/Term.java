@@ -104,7 +104,7 @@ public class Term extends AlgebraicParticle{
 			String curClass = p.getClass().getSimpleName();
 			boolean needsPar = false;
 			
-			if(curClass.equals("Expression")) needsPar = true;
+			if(curClass.equals("Expression") || curClass.equals("Fraction")) needsPar = true;
 			//MixedNumber and Number should only be wrapped with pars if the previous part was a number and it didn't have pars
 			else if((curClass.equals("MixedNumber") || curClass.equals("Number")) && prevClass.equals("Number")) needsPar = !prevHadPar;
 			s += needsPar ? "(" + p.getAsString() + ")"	: p.getAsString();

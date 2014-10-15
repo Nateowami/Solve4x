@@ -49,7 +49,6 @@ public class Variable extends AlgebraicParticle{
 	public String getAsString() {
 		return wrapWithSignAndExponent(var + "");
 	}
-
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -59,7 +58,6 @@ public class Variable extends AlgebraicParticle{
 		return "Variable [var=" + var + ", sign()=" + sign() + ", exponent()="
 				+ exponent() + "]";
 	}
-
 	
 	/**
 	 * Tells if 
