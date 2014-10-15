@@ -88,6 +88,7 @@ public class ExpressionTest {
 	@Test
 	public void testGetAsString()  {
 		assertEquals("1+2", new Expression("1+2").getAsString());
+		assertEquals("-y+6", new Expression("-y+6").getAsString());
 		assertEquals("1x+45", new Expression("1x+45").getAsString());
 		assertEquals("x+45+6xy45+12(23+6xy4)", new Expression("x+45+6xy45+12(23+6xy4)").getAsString());
 		assertEquals("-c+(y)/(16+34)-xy2", new Expression("-c+(y)/(16+34)-xy2").getAsString());

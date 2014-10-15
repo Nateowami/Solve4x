@@ -78,8 +78,9 @@ public class NumberTest {
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#isNumber(java.lang.String)}.
 	 */
 	@Test
-	public void testIsNumber() {
+	public void testParseable() {
 		assertTrue(Number.parseable("1"));
+		assertTrue(Number.parseable("23"));
 		assertTrue(Number.parseable("0"));
 		assertTrue(Number.parseable("0.1"));
 		assertTrue(Number.parseable("1.63"));

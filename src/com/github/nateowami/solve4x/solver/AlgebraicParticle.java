@@ -53,19 +53,16 @@ public abstract class AlgebraicParticle {
 		System.out.println("ALGEBRAICPARTICLE GETINSTANCE: " + s);
 		String original = s; //for debugging purposes
 		
+		//take care of sign before removing parentheses
+		boolean sign = !(s.charAt(0) == '-');
+		if(s.charAt(0) == '-' || s.charAt(0) == '+') s = s.substring(1);
+		
 		//necessary because expressions like "(4x)" need the parentheses stripped off
 		s = Util.removePar(s);
 		
 		if(s.length() < 1){
 			throw new ParsingException("Cannot construct AlgebraicParticle with length < 1 (length < 1 is after removing any corresponding parentheses, which may affect length)");
 		}
-		
-		//temps
-		boolean sign = true;
-		
-		//take care of sign
-		sign = !(s.charAt(0) == '-');
-		if(s.charAt(0) == '-' || s.charAt(0) == '+') s = s.substring(1);
 		
 		//deal with exponent
 		//one would think Unicode would have superscript integers all together, so we could just use ranges
