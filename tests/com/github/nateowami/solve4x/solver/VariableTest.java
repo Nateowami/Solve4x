@@ -50,10 +50,19 @@ public class VariableTest {
 		try{
 			new Variable(null);
 			fail("No exception thrown when null passed to constructor");
+		}
+		catch(ParsingException e){};
+		try {
 			new Variable("");
 			fail("No exception thrown when empty string passed to constructor");
+		}
+		catch(ParsingException e){};
+		try {
 			new Variable("zy");
 			fail("No exception thrown when string with length of 2 passed to constructor");
+		}
+		catch(ParsingException e){};
+		try {
 			new Variable("2");
 			fail("No exception thrown when non-alphabetic char passed to constructor");
 		}
@@ -75,7 +84,7 @@ public class VariableTest {
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Variable#isVariable()}.
 	 */
 	@Test
-	public void testIsVariable()  {
+	public void testParseable()  {
 		assertTrue(Variable.parseable("n"));
 		assertTrue(Variable.parseable("y"));
 		assertTrue(Variable.parseable("X"));

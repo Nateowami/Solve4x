@@ -126,7 +126,8 @@ public class Term extends AlgebraicParticle{
 	/** 
 	 * Tells if a specified string s may be parsed as a term
 	 * @param s The string to check.
-	 * @return If s is parseable as a term.
+	 * @return If s is parsable as a term.
+	 * FIXME accepts numbers
 	 */
 	public static boolean parseable(String s){
 		int numParsed = 0; //make sure we're not doing someone else's job 
