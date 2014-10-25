@@ -37,24 +37,6 @@ public class Util {
 	public static char[] subscriptInts = "₀₁₂₃₄₅₆₇₈₉".toCharArray();
 	
 	/**
-	 * Evaluates a given string to determine if it has an = sign
-	 * @param str The string to evaluate
-	 * @return If the equation has an equals sign
-	 */
-
-	public static boolean isEq(String str){
-		//debugging
-		Solve4x.debug("isEq()");
-		boolean hasEqualsSign = false;
-		for(int i=0; i < str.length(); i++){
-			if(str.charAt(i) == '='){
-				hasEqualsSign = true;
-			}
-		}
-		return hasEqualsSign;
-	}
-	
-	/**
 	 * Evaluates a char to see if it is a numeral
 	 * @param c The char to evaluate
 	 * @return If the char is a numeral
@@ -81,37 +63,20 @@ public class Util {
 	 * 123
 	 * -234
 	 * Returns false if integer is an empty string
-	 * @param integer The string to check 
+	 * @param n The string to check 
 	 * @return If the string can be parsed as an integer
 	 */
-	public static boolean isInteger(String integer) {
-		Solve4x.debug("isInteger(" + integer + ")");
-		//iterate through chars
-		
-		//check for an empty string
-		if(integer.length()==0){
-			return false;
-		}
-		
-		//this let's us control where the loop starts
-		int i = 0;
-		//if the first char is -
-		if(integer.charAt(0) == '-'){
-			//then make the loop start at 1
-			i++;
-		}
-		
-		//allAreNumerals may not count the first char if it's -, but thats GOOD
-		boolean allAreNumerals = true;
-		for(; i<integer.length(); i++){
-			//if it's not a numeral
-			if(!isNumeral(integer.charAt(i))){
-				allAreNumerals = false;
-				//no use going farther
-				break;
+	public static boolean isInteger(String n) {
+		if(n.length() < 1) return false;
+		else if(n.length() == 1 && n.charAt(0) == '0') return true;
+		else if(n.charAt(0) == '-') n = n.substring(1);
+		if(n.charAt(0) != '0'){
+			for(char c : n.toCharArray()){
+				if(!isNumeral(c)) return false;
 			}
+			return true;
 		}
-		return allAreNumerals;
+		else return false;
 	}
 	
 	/**
@@ -125,16 +90,16 @@ public class Util {
 		System.out.println(Thread.currentThread().getStackTrace()[2]);
 		
 		//check to see if it starts and ends with parentheses
-		if((expr.length() >= 1) && isOpenPar(expr.charAt(0)) && isClosePar(expr.charAt(expr.length()-1))){
+		if((expr.length() >= 1) && expr.charAt(0) == '(' && expr.charAt(expr.length()-1) == ')'){
 
 			int parDepth = 1; //how deep we are into parentheses nesting
 			boolean parDepthReached0 = false;//if parDepth ever reaches 0 we're outside all parentheses
 			//check to see if the entire expr is enclosed with parentheses
 			for (int i = 1; i < expr.length() - 1; i++){
-				if(isOpenPar(expr.charAt(i))){
+				if(expr.charAt(i) == '('){
 					parDepth++;
 				}
-				else if(isClosePar(expr.charAt(i))){
+				else if(expr.charAt(i) == ')'){
 					parDepth--;
 				}
 				if (parDepth == 0){
@@ -161,105 +126,17 @@ public class Util {
 	}
 	
 	/**
-	 * Evaluates a char to see if it's a opening parentheses (or root or caret)
-	 * @param c The char to evaluate
-	 * @return If the char is a opening parentheses
-	 */
-	public static boolean isOpenPar(char c){
-		if(c == '(' || c == '[' || c == '{' || c == '<' || c == '√'){
-			return true;
-		}
-		else return false;
-	}
-	
-	/**
-	 * Evaluates a char to see if it's a closing parentheses (or root or caret)
-	 * @param c The char to evaluate
-	 * @return If the char is a closing parentheses
-	 */
-	public static boolean isClosePar(char c){
-		if(c == ')' || c == ']' || c == '}' || c == '>' || c == '^'){
-			return true;
-		}
-		else return false;
-	}
-
-	/**
 	 * Evaluates a char to see if it is between a-z or A-Z
 	 * @param c The char to evaluate
 	 * @return If the char is a a-z or A-Z
 	 */
-	public static boolean isLetter(char c){
-		//debugging
-		Solve4x.debug("isLetter()" + c);
-		if(c <= 'z' && c >= 'a' || c <= 'Z' && c >= 'A'){
-			Solve4x.debug("isLetter Returns true");
-			return true;
-		}
-		else{
-			Solve4x.debug("isLetter Returns false");
-			return false;
-		}
-	}
-
-	/**
-	 * Tells if a String has only one char and that char is a letter
-	 * @param c The String to check
-	 * @return If it only has one char which is a letter
-	 */
-	public static boolean isLetter(String c){
-		if(c.length() == 1 && isLetter(c.charAt(0)))
-			return true;
-		else return false;
-	}
-	
-	/**
-	 * Tells if a given expression is a fraction AND that both the top and bottom of 
-	 * the fraction contain ONLY INTAGERS
-	 * @param frac The expression to evaluate
-	 * @return If the expression is a fraction with only ints on top and bottom.
-	 */
-	public static boolean isFraction(String frac){
-		
-		//first find the fraction bar
-		for(int i=0; i<frac.length(); i++){
-			//if the current char is '/'
-			if (frac.charAt(i) == '/'){
-				//if both sides are valid fraction sides
-				return isFracSide(frac.substring(0, i)) && isFracSide(frac.substring(i, frac.length()));
-			}
-		}
-		//there's not a '/'
-		return false;
-		
-	}
-	
-	/**
-	 * Tells if a given expression is in the form of <integer>. Example: <56> This is useful
-	 * for determining if an expression is part of a fraction.
-	 * @param side The expression to evaluate
-	 * @return If side is in the form of <integer>.
-	 */
-	public static boolean isFracSide(String side){
-
-		//if it's an integer
-		if(Util.isInteger(side)){
-			return true;
-		}
-		
-		//if it's surrounded by carets and inside is an integer
-		if(side.charAt(0) == '<' && side.charAt(side.length()-1) == '>'){
-			//if what's in the carets is is an integer
-			if(Util.isInteger(side.substring(1, side.length()-1))){
-				return true;
-			}
-			//it's surrounded by carets but it's not an integer
-			else{
+	public static boolean areLetters(String s){
+		for(char c : s.toCharArray()){
+			if(!(c <= 'z' && c >= 'a' || c <= 'Z' && c >= 'A')){
 				return false;
 			}
 		}
-		//it's not a fraction side
-		else return false;
+		return true;
 	}
 	
 	/**
@@ -267,6 +144,7 @@ public class Util {
 	 * If it's a complicated fraction and it's unsure it will return false
 	 * @param expr The number/fraction/mixed number to evaluate
 	 * @return If expr is fully simplified
+	 * TODO this probably needs review badly
 	 */
 	public static boolean isFullySimplified(String expr) {
 		//first check that we're dealing with a number/mixed number/fraction
@@ -320,7 +198,7 @@ public class Util {
 		}
 		//i is now the index of the /
 		//if they have common factors
-		if(getGCF(Integer.parseInt(frac.substring(0, i)), Integer.parseInt(frac.substring(i+1, frac.length()))) > 1){
+		if(GCF(Integer.parseInt(frac.substring(0, i)), Integer.parseInt(frac.substring(i+1, frac.length()))) > 1){
 			return false;
 		}
 		else return true;
@@ -332,9 +210,9 @@ public class Util {
 	 * @param b The second number
 	 * @return The GCF (greatest common factor) of the two numbers
 	 */
-	public static int getGCF(int a, int b){
+	public static int GCF(int a, int b){
 		
-		int commonFactors[] = getCommonFactors(a,b);
+		int commonFactors[] = commonFactors(a,b);
 		//the final answer
 		int answer = 1;
 		//now multiply all the common factors together
@@ -350,10 +228,11 @@ public class Util {
 	 * @param b The second number
 	 * @return And int[] array of common factors
 	 */
-	public static int[] getCommonFactors(int a, int b){
+	public static int[] commonFactors(int a, int b){
 		
 		//XXX on debug check this (4 lines). don't know if it really works
 		//perform intersection logic on two sets
+		//FIXME this won't work because sets don't allow duplicates
 		Set<Integer> s1 = new HashSet<Integer>(Arrays.asList(a));
 		Set<Integer> s2 = new HashSet<Integer>(Arrays.asList(b));
 		s1.retainAll(s2);
@@ -450,9 +329,7 @@ public class Util {
 	public static String intToSuperscript(int n){
 		char[] s = Integer.toString(n).toCharArray();
 		for(int i = 0; i < s.length; i++){
-			s[i] = superscriptInts[
-			                       Integer.parseInt(Character.toString(s[i]))
-			                       ];//FIXME it's now working right
+			s[i] = superscriptInts[Integer.parseInt(Character.toString(s[i]))];
 		}
 		return new String(s);
 	}
@@ -491,6 +368,11 @@ public class Util {
 		return Integer.parseInt(answer);
 	}
 	
+	/**
+	 * Converts an int to a superscript.
+	 * @param n The int to convert.
+	 * @return n, converted to a string and then to superscript.
+	 */
 	public static String intToSubscript(int n){
 		String answer = "";
 		for(char c : (n + "").toCharArray()){

@@ -17,9 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -29,19 +27,16 @@ import org.junit.Test;
 public class UtilTest {
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isEq(java.lang.String)}.
-	 */
-	@Test
-	public void testIsEq() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isNumeral(char)}.
 	 */
 	@Test
 	public void testIsNumeral() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(Util.isNumeral('0'));
+		assertTrue(Util.isNumeral('5'));
+		assertTrue(Util.isNumeral('9'));
+		assertFalse(Util.isNumeral('a'));
+		assertFalse(Util.isNumeral('^'));
+		assertFalse(Util.isNumeral('o'));
 	}
 
 	/**
@@ -49,7 +44,12 @@ public class UtilTest {
 	 */
 	@Test
 	public void testIsInteger() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(Util.isInteger("127"));
+		assertTrue(Util.isInteger("-763"));
+		assertTrue(Util.isInteger("0"));
+		assertFalse(Util.isInteger("-0"));
+		assertFalse(Util.isInteger("07"));
+		assertFalse(Util.isInteger("+8"));
 	}
 
 	/**
@@ -67,51 +67,16 @@ public class UtilTest {
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isOpenPar(char)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#areLetters(java.lang.String)}.
 	 */
 	@Test
-	public void testIsOpenPar() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isClosePar(char)}.
-	 */
-	@Test
-	public void testIsClosePar() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isLetter(char)}.
-	 */
-	@Test
-	public void testIsLetterChar() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isLetter(java.lang.String)}.
-	 */
-	@Test
-	public void testIsLetterString() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isFraction(java.lang.String)}.
-	 */
-	@Test
-	public void testIsFraction() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isFracSide(java.lang.String)}.
-	 */
-	@Test
-	public void testIsFracSide() {
-		fail("Not yet implemented"); // TODO
+	public void testAreLetters() {
+		assertTrue(Util.areLetters("aj"));
+		assertTrue(Util.areLetters("Z"));
+		assertTrue(Util.areLetters("qwRx"));
+		assertFalse(Util.areLetters("t1"));
+		assertFalse(Util.areLetters("h6"));
+		assertFalse(Util.areLetters("l."));
 	}
 
 	/**
@@ -123,18 +88,18 @@ public class UtilTest {
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#getGCF(int, int)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#GCF(int, int)}.
 	 */
 	@Test
-	public void testGetGCF() {
+	public void testGCF() {
 		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#getCommonFactors(int, int)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#commonFactors(int, int)}.
 	 */
 	@Test
-	public void testGetCommonFactors() {
+	public void testCommonFactors() {
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -196,7 +161,9 @@ public class UtilTest {
 	 */
 	@Test
 	public void testSubscriptToInt() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(34, Util.subscriptToInt("₃₄"));
+		assertEquals(12, Util.subscriptToInt("₁₂"));
+		assertEquals(472, Util.subscriptToInt("₄₇₂"));
 	}
 
 	/**
@@ -204,7 +171,10 @@ public class UtilTest {
 	 */
 	@Test
 	public void testIntToSubscript() {
-		assertEquals("₄₄", Util.intToSubscript(44));//TODO change "something"
+		assertEquals("₄₄", Util.intToSubscript(44));
+		assertEquals("₅₆", Util.intToSubscript(56));
+		assertEquals("₁₉₀", Util.intToSubscript(190));
+		assertEquals("₈₄", Util.intToSubscript(84));
 	}
 	
 }
