@@ -112,6 +112,20 @@ public class UtilTest {
 	}
 
 	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#.splitByNonNestedChars(String s, char... c)}.
+	 */
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testSplitByNonNestedChars() {
+		assertEquals(new String[]{"2x", "+6"}, Util.splitByNonNestedChars("2x+6", '+', '-'));
+		assertEquals(new String[]{"4y(6+2)"}, Util.splitByNonNestedChars("4y(6+2)", '+', '-'));
+		assertEquals(new String[]{"x", "-7(4+4)(x+2)", "+2"}, Util.splitByNonNestedChars("x-7(4+4)(x+2)+2", '+', '-'));
+		assertEquals(new String[]{"(x+4)", "/(8)"}, Util.splitByNonNestedChars("(x+4)/(8)", '/'));
+		assertEquals(new String[]{"2x", "+6(34+9xy2(45x+6))"}, Util.splitByNonNestedChars("2x+6(34+9xy2(45x+6))", '+', '-'));
+		assertEquals(new String[]{"j"}, Util.splitByNonNestedChars("j", '+', '-'));
+	}
+	
+	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isSuperscript(char)}.
 	 */
 	@Test

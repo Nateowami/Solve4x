@@ -79,5 +79,16 @@ public class FractionTest {
 		assertEquals("3", new Fraction("(2x+6y)/(3)").getBottom().getAsString());
 		assertEquals("87-6yz4", new Fraction("(42y-16)/(87-6yz4)").getBottom().getAsString());
 	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Fraction#getAsString()}.
+	 * @ 
+	 */
+	@Test
+	public void testGetAsString()  {
+		assertEquals("(3)/(xy+2)", new Fraction("(3)/(xy+2)").getAsString());
+		assertEquals("(24x-73)/(2+5)", new Fraction("(24x-73)/(2+5)").getAsString());
+		assertEquals("(4y((6)/(xy+3)))/(5)", new Fraction("(4y(6)/(xy+3))/(5)").getAsString());
+	}
 
 }

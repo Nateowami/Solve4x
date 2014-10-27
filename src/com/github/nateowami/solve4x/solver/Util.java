@@ -17,6 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -287,6 +288,37 @@ public class Util {
 		return out;
 	}
 
+	/**
+	 * Splits string s by any chars c for every occurrence of chars c that are not nested in parentheses.
+	 * The characters at which s is split will be included at the beginning of the respective elements.
+	 * Occurrences of chars c at the beginning of s will be ignored.
+	 * Examples:
+	 * splitByNonNestedChars("xy+6-4", '+', '-') returns ["xy", "+6", "-4"]
+	 * splitByNonNestedChars("(4x)/(6y(2+x))", '/') returns ["(4x)", "/(6y(2+x))"]
+	 * @param s The string to split.
+	 * @param c The chars by which to split s.
+	 * @return A string array of s split by occurrences of chars c not nested in parentheses.
+	 */
+	public static String[] splitByNonNestedChars(String s, char... c){
+		//get setup
+		int parDepth = 0;
+		String chars = new String(c);
+		ArrayList<String> parts = new ArrayList<String>();
+		//search for matches
+		for(int i = 0; i < s.length(); i++){
+			if(s.charAt(i) == '(') parDepth++;
+			else if(s.charAt(i) == ')') parDepth--;
+			//if it's a char we split at, and it's not the first one
+			else if(parDepth == 0 && i != 0 && chars.indexOf(s.charAt(i)) != -1){
+				parts.add(s.substring(0, i));
+				s = s.substring(i);
+				i = 0;
+			}
+		}
+		parts.add(s); // add the rest of the string
+		return parts.toArray(new String[parts.size()]);
+	}
+	
 	/**
 	 * Tells if a specified char c is a superscript. 
 	 * @param c The char to check.

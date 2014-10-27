@@ -126,15 +126,14 @@ public class Term extends AlgebraicParticle{
 	/** 
 	 * Tells if a specified string s may be parsed as a term
 	 * @param s The string to check.
-	 * @return If s is parsable as a term.
-	 * FIXME accepts numbers
+	 * @return If s is parseable as a term.
 	 */
 	public static boolean parseable(String s){
 		int numParsed = 0; //make sure we're not doing someone else's job 
 		//for example, we shouldn't say "1" is a term, because it should be considered a number
 		
 		//make sure it's a list of algebraic particles
-		for(int i = s.length()-1; i >= 0; i--){
+		for(int i = s.length(); i >= 0; i--){
 			//make sure it doesn't have a sign
 			if(s.length() > 0 && s.charAt(0) != '+' && s.charAt(0) != '-' && AlgebraicParticle.parseable(s.substring(0, i), subParts)){
 				numParsed++;

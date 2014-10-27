@@ -38,24 +38,9 @@ public class Expression extends AlgebraicParticle{
 	 * @param expr The expression to store as terms
 	 */
 	Expression(String expr) {
-		Solve4x.debug("Expression: " + expr);
-		int parDepth = 0;
-		for(int i = 0; i < expr.length(); i++){
-			if(expr.charAt(i) == '(') parDepth++;
-			else if(expr.charAt(i) == ')') parDepth--;
-			/*
-			 * We could be at the end of the string OR there could be a sign at i.
-			 * That's what the i == expr.length()-1 ? i+1 : i is about.
-			 * If we're at the end, we want to parse up to and including i. Otherwise
-			 * we just parse up to and excluding i.
-			 */
-			int breakAt = i == expr.length()-1 ? i+1 : i;
-			if(parDepth == 0 && (expr.charAt(i) == '+' || expr.charAt(i) == '-' || i == expr.length()-1) 
-					&& AlgebraicParticle.parseable(expr.substring(0, breakAt), subParts)){
-				termList.add(AlgebraicParticle.getInstance(expr.substring(0, breakAt), subParts));
-				expr = expr.substring(breakAt);
-				i = 0; 
-			}
+		String[] parts = Util.splitByNonNestedChars(expr, '+', '-');
+		for(String part : parts){
+			termList.add(AlgebraicParticle.getInstance(part, subParts));
 		}
 	}
 	
@@ -104,20 +89,12 @@ public class Expression extends AlgebraicParticle{
 	 * @return If s can be parsed as an expression.
 	 */
 	public static boolean parseable(String expr) {
-		int parDepth = 0, numParsed = 0;
-		for(int i = 0; i < expr.length(); i++){
-			if(expr.charAt(i) == '(') parDepth++;
-			else if(expr.charAt(i) == ')') parDepth--;
-			int breakAt = i == expr.length()-1 ? i+1 : i;//the char at which we break the string, which 
-			//depends on whether we're at the end of the string, or just at a + or - sign
-			if(parDepth == 0 && (expr.charAt(i) == '+' || expr.charAt(i) == '-' || i == expr.length()-1) 
-					&& AlgebraicParticle.parseable(expr.substring(0, breakAt), subParts)){
-				expr = expr.substring(breakAt);
-				numParsed++;
-				i = 0;
-			}
+		String[] parts = Util.splitByNonNestedChars(expr, '+', '-');
+		if(parts.length < 2) return false;
+		for(String part : parts){
+			if(!AlgebraicParticle.parseable(part, subParts))return false;
 		}
-		return numParsed > 1 && expr.length() == 0;
+		return true;
 	}
 
 }

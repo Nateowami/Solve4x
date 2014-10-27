@@ -63,8 +63,10 @@ public class TermTest {
 	@Test
 	public void testParseable()  {
 		assertTrue(Term.parseable("1x"));
-		assertFalse(Term.parseable("6(34+9xy2(45x+6)"));
 		assertTrue(Term.parseable("6(34+9xy2(45x+6))"));
+		assertFalse(Term.parseable("6(34+9xy2(45x+6)"));
+		assertFalse(Term.parseable("xy+2"));
+		assertFalse(Term.parseable("4"));
 	}
 
 	/**
