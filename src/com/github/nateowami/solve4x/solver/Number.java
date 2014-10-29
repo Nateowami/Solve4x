@@ -29,7 +29,7 @@ import com.github.nateowami.solve4x.Solve4x;
 public class Number extends AlgebraicParticle{
 	
 	//The numerical part of a mixed number (could be a decimal)
-	private String integerPart, decimalPart;
+	private String integer, decimal;
 	
 	/**
 	 * Constructs a new number.
@@ -37,26 +37,22 @@ public class Number extends AlgebraicParticle{
 	 * @ if num is not parsable as a decimal.
 	 */
 	protected Number(String num) {
-		Solve4x.debug("Parsing number: " + num);
-		
+		//TODO make "0" parseable
 		//check for empty string
 		if(num.length() == 0){
 			throw new ParsingException("Cannot parse an empty string as a Number.");
 		}
-		//if it's just a numeral
-		if(Util.isInteger(num)){
-			integerPart = num;
+		int d = num.indexOf('.');
+		//check that the decimal point doesn't exist and num doesn't start with 0 unless length is one
+		if(d == -1 && (num.charAt(0) != '0' || num.length() == 1)&& Util.allAreNumerals(num)) this.integer = num;
+		//make sure the decimal point exists and that the first char isn't '0' OR the second char is '.'
+		else if(d > 0 && (d == 1 || num.charAt(0) != '0')){
+			this.integer = num.substring(0, num.indexOf('.'));
+			this.decimal = num.substring(num.indexOf('.')+1);
+			if(!Util.allAreNumerals(this.integer) || !Util.allAreNumerals(this.decimal)){
+				throw new ParsingException("Cannot parse \"" + num + "\" as a number.");
+			}
 		}
-		//if the '.' char exists in the string num and only once
-		else if(num.indexOf('.') != -1 && (num.length() - num.replace(".", "").length()) == 1 
-				//and both sides are integers
-				&& Util.isInteger(num.substring(0, num.indexOf('.'))) 
-				&& Util.isInteger(num.substring(num.indexOf('.') + 1, num.length()))){
-			integerPart = num.substring(0, num.indexOf('.'));
-			//TODO decide whether the decimal part should be added in the case of e.g. "1.0"
-			decimalPart = num.substring(num.indexOf('.') + 1);
-		}
-		//not a valid number
 		else{
 			throw new ParsingException("Cannot parse \"" + num + "\" as a number.");
 		}
@@ -85,7 +81,7 @@ public class Number extends AlgebraicParticle{
 	 */
 	private static String add(String n1, String n2) throws IllegalArgumentException{
 		//first see if they are both ints
-		if(Util.isInteger(n1) && Util.isInteger(n2)){
+		if(Util.allAreNumerals(n1) && Util.allAreNumerals(n2)){
 			//since they can be parsed as ints just convert to ints, add, and convert to String
 			return (Integer.parseInt(n1) + Integer.parseInt(n2)) + "";
 		}
@@ -102,7 +98,7 @@ public class Number extends AlgebraicParticle{
 	 * @return This Number in a string format. 
 	 */
 	public String getAsString(){
-		return (this.sign() ? "" : "-") + integerPart + (decimalPart == null ? "" : "." + decimalPart);
+		return (this.sign() ? "" : "-") + integer + (decimal == null ? "" : "." + decimal);
 	}
 
 	/**
@@ -111,10 +107,22 @@ public class Number extends AlgebraicParticle{
 	 * @param number The number to check
 	 * @return If it's a number and/or fraction combination
 	 */
-	public static boolean parseable(String number) {
-		//make sure it's an int with at least one char followed (optionally) by 
-		//a decimal and any number of numerals
-		return number.matches("^-?[0-9]+(\\.[0-9]+)?$");
+	public static boolean parseable(String num) {
+		//TODO make "0" parseable
+		//check for empty string
+		if(num.length() == 0){
+			return false;
+		}
+		int d = num.indexOf('.');
+		//check that the decimal point doesn't exist and num doesn't start with 0 unless length is one
+		if(d == -1 && (num.charAt(0) != '0' || num.length() == 1) && Util.allAreNumerals(num)) return true;
+		//make sure the decimal point exists and that the first char isn't '0' OR the second char is '.'
+		else if(d > 0 && (d == 1 || num.charAt(0) != '0') && 
+				//make sure both sides of the decimal have only integers
+				Util.allAreNumerals(num.substring(0, num.indexOf('.'))) && Util.allAreNumerals(num.substring(num.indexOf('.')+1))){
+			return true;
+		}
+		else return false;
 	}
 
 	/* (non-Javadoc)
@@ -123,24 +131,24 @@ public class Number extends AlgebraicParticle{
 	@Override
 	public String toString() {
 		return "Number ["
-				+ (integerPart != null ? "integerPart=" + integerPart + ", "
+				+ (integer != null ? "integer=" + integer + ", "
 						: "")
-				+ (decimalPart != null ? "decimalPart=" + decimalPart : "")
+				+ (decimal != null ? "decimal=" + decimal : "")
 				+ "]";
 	}
 	
 	/**
-	 * @return The integer-part (the part from before the decimal)
+	 * @return The integer part (the part from before the decimal)
 	 */
-	public String getIntegerPart() {
-		return integerPart;
+	public String getInteger() {
+		return integer;
 	}
 	
 	/**
 	 * @return The decimal part (the part after the decimal point)
 	 */
-	public String getDecimalPart() {
-		return decimalPart;
+	public String getDecimal() {
+		return decimal;
 	}
 	
 }

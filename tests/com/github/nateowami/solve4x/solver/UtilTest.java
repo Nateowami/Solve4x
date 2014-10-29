@@ -40,16 +40,16 @@ public class UtilTest {
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isInteger(java.lang.String)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#AllAreNumerals(java.lang.String)}.
 	 */
 	@Test
-	public void testIsInteger() {
-		assertTrue(Util.isInteger("127"));
-		assertTrue(Util.isInteger("-763"));
-		assertTrue(Util.isInteger("0"));
-		assertFalse(Util.isInteger("-0"));
-		assertFalse(Util.isInteger("07"));
-		assertFalse(Util.isInteger("+8"));
+	public void testAllAreNumerals() {
+		assertTrue(Util.allAreNumerals("127"));
+		assertTrue(Util.allAreNumerals("763"));
+		assertTrue(Util.allAreNumerals("07"));
+		assertTrue(Util.allAreNumerals("0"));
+		assertFalse(Util.allAreNumerals("-0"));
+		assertFalse(Util.allAreNumerals("0.58"));
 	}
 
 	/**

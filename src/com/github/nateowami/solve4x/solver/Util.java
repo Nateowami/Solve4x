@@ -60,24 +60,21 @@ public class Util {
 	}
 
 	/**
-	 * Tells if a string can be parsed as an integer. Examples:
-	 * 123
-	 * -234
-	 * Returns false if integer is an empty string
+	 * Tells if a string contains only numerals.
+	 * Examples:
+	 * Util.allAreNumerals("234") returns true.
+	 * Util.allAreNumerals("05") returns true.
+	 * Util.allAreNumerals("-6") returns false.
+	 * Returns false if n is an empty string.
 	 * @param n The string to check 
-	 * @return If the string can be parsed as an integer
+	 * @return True if n is not an empty string and contains only numerals, otherwise false.
 	 */
-	public static boolean isInteger(String n) {
+	public static boolean allAreNumerals(String n) {
 		if(n.length() < 1) return false;
-		else if(n.length() == 1 && n.charAt(0) == '0') return true;
-		else if(n.charAt(0) == '-') n = n.substring(1);
-		if(n.charAt(0) != '0'){
-			for(char c : n.toCharArray()){
-				if(!isNumeral(c)) return false;
-			}
-			return true;
+		for(char c : n.toCharArray()){
+			if(!isNumeral(c))return false;
 		}
-		else return false;
+		return true;
 	}
 	
 	/**
