@@ -37,7 +37,6 @@ public class Number extends AlgebraicParticle{
 	 * @ if num is not parsable as a decimal.
 	 */
 	protected Number(String num) {
-		//TODO make "0" parseable
 		//check for empty string
 		if(num.length() == 0){
 			throw new ParsingException("Cannot parse an empty string as a Number.");
@@ -67,7 +66,7 @@ public class Number extends AlgebraicParticle{
 	 */
 	public static Number add(Number n1, Number n2) {
 		//convert to strings, add, and convert back to a Number
-		return new Number(add(n1.getAsString(), n2.getAsString()));
+		return (Number) AlgebraicParticle.getInstance(add(n1.getAsString(), n2.getAsString()), new Class[]{Number.class});
 	}
 	
 	/**
@@ -108,7 +107,6 @@ public class Number extends AlgebraicParticle{
 	 * @return If it's a number and/or fraction combination
 	 */
 	public static boolean parseable(String num) {
-		//TODO make "0" parseable
 		//check for empty string
 		if(num.length() == 0){
 			return false;
