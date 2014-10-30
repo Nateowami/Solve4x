@@ -43,9 +43,9 @@ public class Root extends AlgebraicParticle{
 		int i = 0;
 		for(; i < root.length(); i++){
 			//if it's not a subscript
-			if(!Util.isSubscript(root.charAt(i))) break;
+			if(!Util.isSubscript(Character.toString(root.charAt(i)))) break;
 		}
-		this.nthRoot = root.substring(0,i).equals("") ? 2 : Util.superscriptToInt(root.substring(0,i));
+		this.nthRoot = root.substring(0,i).equals("") ? 2 : Util.subscriptToInt(root.substring(0,i));
 		root = root.substring(i,root.length());
 		
 		//parse the √ symbol
@@ -72,7 +72,7 @@ public class Root extends AlgebraicParticle{
 	static public boolean parseable(String root){
 		//first check for the subscript and radical sign
 		int i = 0;
-		while(i < root.length() && Util.isSubscript(root.charAt(i))) i++;
+		while(i < root.length() && Util.isSubscript(Character.toString(root.charAt(i)))) i++;
 		//remove the subscript
 		root = root.substring(i,root.length());
 		//remove the radical sign, making sure not to throw and exception
@@ -124,7 +124,7 @@ public class Root extends AlgebraicParticle{
 	public String getAsString() {
 		return wrapWithSignAndExponent(
 				//don't show nth root if it's 2 (default)
-				this.nthRoot == 2 ? "" : Util.intToSubscript(this.nthRoot)
+				this.nthRoot == 2 ? "" : Util.toSubscript(Integer.toString(this.nthRoot))
 				+ "√(" + expr.getAsString() + ")");
 	}
 

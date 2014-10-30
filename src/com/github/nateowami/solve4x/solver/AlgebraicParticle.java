@@ -65,7 +65,7 @@ public abstract class AlgebraicParticle {
 		//deal with exponent
 		//one would think Unicode would have superscript integers all together, so we could just use ranges
 		int e = s.length()-1;
-		while(e > 0 && Util.isSuperscript(s.charAt(e)))e--;
+		while(e > 0 && Util.isSuperscript(Character.toString(s.charAt(e))))e--;
 		e++;//because we decrement it before checking if it's a superscript
 		int exponent = "".equals(s.substring(e)) ? 1 : Util.superscriptToInt(s.substring(e));//default to 1
 		s = s.substring(0, e);
@@ -103,7 +103,7 @@ public abstract class AlgebraicParticle {
 		
 		//deal with exponent
 		int e = s.length()-1;
-		while(e > 0 && Util.isSuperscript(s.charAt(e)))e--;
+		while(e > 0 && Util.isSuperscript(Character.toString(s.charAt(e))))e--;
 		e++;//because we decrement it before checking if it's a superscript
 		s = s.substring(0, e);
 		
@@ -133,7 +133,7 @@ public abstract class AlgebraicParticle {
 	 * @return The wrapped version of s.
 	 */
 	protected String wrapWithSignAndExponent(String s){
-		return (sign ? "" : '-') + s + (exponent == 1 ? "" : Util.intToSuperscript(exponent));
+		return (sign ? "" : '-') + s + (exponent == 1 ? "" : Util.toSuperscript(Integer.toString(exponent)));
 	}
 	
 	/**

@@ -19,8 +19,6 @@ package com.github.nateowami.solve4x.solver;
 
 import java.math.BigDecimal;
 
-import com.github.nateowami.solve4x.Solve4x;
-
 /**
  * Represents a integer or decimal such as 35, 45.25, 56.36, 3.1415926535, and 
  * provides methods for adding, subtracting, multiplying, and dividing numbers. (TODO)
@@ -43,12 +41,12 @@ public class Number extends AlgebraicParticle{
 		}
 		int d = num.indexOf('.');
 		//check that the decimal point doesn't exist and num doesn't start with 0 unless length is one
-		if(d == -1 && (num.charAt(0) != '0' || num.length() == 1)&& Util.allAreNumerals(num)) this.integer = num;
+		if(d == -1 && (num.charAt(0) != '0' || num.length() == 1)&& Util.areAllNumerals(num)) this.integer = num;
 		//make sure the decimal point exists and that the first char isn't '0' OR the second char is '.'
 		else if(d > 0 && (d == 1 || num.charAt(0) != '0')){
 			this.integer = num.substring(0, num.indexOf('.'));
 			this.decimal = num.substring(num.indexOf('.')+1);
-			if(!Util.allAreNumerals(this.integer) || !Util.allAreNumerals(this.decimal)){
+			if(!Util.areAllNumerals(this.integer) || !Util.areAllNumerals(this.decimal)){
 				throw new ParsingException("Cannot parse \"" + num + "\" as a number.");
 			}
 		}
@@ -80,7 +78,7 @@ public class Number extends AlgebraicParticle{
 	 */
 	private static String add(String n1, String n2) throws IllegalArgumentException{
 		//first see if they are both ints
-		if(Util.allAreNumerals(n1) && Util.allAreNumerals(n2)){
+		if(Util.areAllNumerals(n1) && Util.areAllNumerals(n2)){
 			//since they can be parsed as ints just convert to ints, add, and convert to String
 			return (Integer.parseInt(n1) + Integer.parseInt(n2)) + "";
 		}
@@ -113,11 +111,11 @@ public class Number extends AlgebraicParticle{
 		}
 		int d = num.indexOf('.');
 		//check that the decimal point doesn't exist and num doesn't start with 0 unless length is one
-		if(d == -1 && (num.charAt(0) != '0' || num.length() == 1) && Util.allAreNumerals(num)) return true;
+		if(d == -1 && (num.charAt(0) != '0' || num.length() == 1) && Util.areAllNumerals(num)) return true;
 		//make sure the decimal point exists and that the first char isn't '0' OR the second char is '.'
 		else if(d > 0 && (d == 1 || num.charAt(0) != '0') && 
 				//make sure both sides of the decimal have only integers
-				Util.allAreNumerals(num.substring(0, num.indexOf('.'))) && Util.allAreNumerals(num.substring(num.indexOf('.')+1))){
+				Util.areAllNumerals(num.substring(0, num.indexOf('.'))) && Util.areAllNumerals(num.substring(num.indexOf('.')+1))){
 			return true;
 		}
 		else return false;
@@ -147,6 +145,23 @@ public class Number extends AlgebraicParticle{
 	 */
 	public String getDecimal() {
 		return decimal;
+	}
+
+	/**
+	 * Tells the GCF (greatest common factor, aka GCD, greatest common deviser) of a and b.
+	 * Both a and b must be positive.
+	 * @param a The first number.
+	 * @param b The second number.
+	 * @return The GCF (greatest common factor) of a and b.
+	 */
+	public static int GCF(int a, int b){
+		//Implementation of the Euclidean algorithm http://en.wikipedia.org/wiki/Euclidean_algorithm
+		while (b > 0){
+			int temp = b;
+	    	b = a % b;
+	    	a = temp;
+		}
+	    return a;
 	}
 	
 }

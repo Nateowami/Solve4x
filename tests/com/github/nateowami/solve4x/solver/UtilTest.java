@@ -27,29 +27,16 @@ import org.junit.Test;
 public class UtilTest {
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isNumeral(char)}.
-	 */
-	@Test
-	public void testIsNumeral() {
-		assertTrue(Util.isNumeral('0'));
-		assertTrue(Util.isNumeral('5'));
-		assertTrue(Util.isNumeral('9'));
-		assertFalse(Util.isNumeral('a'));
-		assertFalse(Util.isNumeral('^'));
-		assertFalse(Util.isNumeral('o'));
-	}
-
-	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#AllAreNumerals(java.lang.String)}.
 	 */
 	@Test
 	public void testAllAreNumerals() {
-		assertTrue(Util.allAreNumerals("127"));
-		assertTrue(Util.allAreNumerals("763"));
-		assertTrue(Util.allAreNumerals("07"));
-		assertTrue(Util.allAreNumerals("0"));
-		assertFalse(Util.allAreNumerals("-0"));
-		assertFalse(Util.allAreNumerals("0.58"));
+		assertTrue(Util.areAllNumerals("127"));
+		assertTrue(Util.areAllNumerals("763"));
+		assertTrue(Util.areAllNumerals("07"));
+		assertTrue(Util.areAllNumerals("0"));
+		assertFalse(Util.areAllNumerals("-0"));
+		assertFalse(Util.areAllNumerals("0.58"));
 	}
 
 	/**
@@ -67,52 +54,20 @@ public class UtilTest {
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#areLetters(java.lang.String)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#areAllLetters(java.lang.String)}.
 	 */
 	@Test
-	public void testAreLetters() {
-		assertTrue(Util.areLetters("aj"));
-		assertTrue(Util.areLetters("Z"));
-		assertTrue(Util.areLetters("qwRx"));
-		assertFalse(Util.areLetters("t1"));
-		assertFalse(Util.areLetters("h6"));
-		assertFalse(Util.areLetters("l."));
+	public void testAreAllLetters() {
+		assertTrue(Util.areAllLetters("aj"));
+		assertTrue(Util.areAllLetters("Z"));
+		assertTrue(Util.areAllLetters("qwRx"));
+		assertFalse(Util.areAllLetters("t1"));
+		assertFalse(Util.areAllLetters("h6"));
+		assertFalse(Util.areAllLetters("l."));
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isFullySimplified(java.lang.String)}.
-	 */
-	@Test
-	public void testIsFullySimplified() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#GCF(int, int)}.
-	 */
-	@Test
-	public void testGCF() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#commonFactors(int, int)}.
-	 */
-	@Test
-	public void testCommonFactors() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#factors(int)}.
-	 */
-	@Test
-	public void testFactors() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#.splitByNonNestedChars(String s, char... c)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#.splitByNonNestedChars(java.lang.String s, char... c)}.
 	 */
 	@SuppressWarnings("deprecation")
 	@Test
@@ -125,16 +80,6 @@ public class UtilTest {
 		assertEquals(new String[]{"j"}, Util.splitByNonNestedChars("j", '+', '-'));
 	}
 	
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isSuperscript(char)}.
-	 */
-	@Test
-	public void testIsSuperscriptChar() {
-		assertTrue(Util.isSuperscript('⁹'));
-		assertTrue(Util.isSuperscript('⁰'));
-		assertTrue(Util.isSuperscript('⁴'));
-	}
-
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isSuperscript(java.lang.String)}.
 	 */
@@ -149,25 +94,29 @@ public class UtilTest {
 	@Test
 	public void testSuperscriptToInt() {
 		assertEquals(56, Util.superscriptToInt("⁵⁶"));
+		assertEquals(109, Util.superscriptToInt("¹⁰⁹"));
+		assertEquals(6372, Util.superscriptToInt("⁶³⁷²"));
+		assertEquals(4, Util.superscriptToInt("⁴"));
+		assertEquals(9, Util.superscriptToInt("⁹"));
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#intToSuperscript(int)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#intToSuperscript(java.lang.String)}.
 	 */
 	@Test
-	public void testIntToSuperscript() {
-		assertEquals("⁶", Util.intToSuperscript(6));
-		assertEquals("⁰", Util.intToSuperscript(0));
+	public void testToSuperscript() {
+		assertEquals("⁶", Util.toSuperscript("6"));
+		assertEquals("⁰", Util.toSuperscript("0"));
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isSubscript(char)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#isSubscript(java.lang.String)}.
 	 */
 	@Test
 	public void testIsSubscript() {
-		assertTrue(Util.isSubscript('₀'));
-		assertTrue(Util.isSubscript('₄'));
-		assertTrue(Util.isSubscript('₉'));
+		assertTrue(Util.isSubscript("₀"));
+		assertTrue(Util.isSubscript("₄"));
+		assertTrue(Util.isSubscript("₉"));
 	}
 
 	/**
@@ -181,14 +130,14 @@ public class UtilTest {
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#intToSubscript(int)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#toSubscript(java.lang.String)}.
 	 */
 	@Test
-	public void testIntToSubscript() {
-		assertEquals("₄₄", Util.intToSubscript(44));
-		assertEquals("₅₆", Util.intToSubscript(56));
-		assertEquals("₁₉₀", Util.intToSubscript(190));
-		assertEquals("₈₄", Util.intToSubscript(84));
+	public void testToSubscript() {
+		assertEquals("₄₄", Util.toSubscript("44"));
+		assertEquals("₅₆", Util.toSubscript("56"));
+		assertEquals("₁₉₀", Util.toSubscript("190"));
+		assertEquals("₈₄", Util.toSubscript("84"));
 	}
 	
 }

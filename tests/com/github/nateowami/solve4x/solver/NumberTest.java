@@ -110,4 +110,14 @@ public class NumberTest {
 		assertFalse(Number.parseable("8.8s"));
 	}
 	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#GCF(int, int)}.
+	 */
+	@Test
+	public void testGCF() {
+		assertEquals(4, Number.GCF(12, 8));
+		assertEquals(1, Number.GCF(7, 43));
+		assertEquals(8, Number.GCF(8, 32));
+	}
+	
 }

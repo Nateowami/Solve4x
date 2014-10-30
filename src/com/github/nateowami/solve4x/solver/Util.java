@@ -33,32 +33,10 @@ public class Util {
 	
 	//Unicode superscripts aren't all contiguous, so it's best to just list them
 	//we'll do regular ints and subscripts too for the sake of completeness
-	public static char[] superscriptInts = "⁰¹²³⁴⁵⁶⁷⁸⁹".toCharArray();
-	public static char[] charInts = "0123456789".toCharArray();
-	public static char[] subscriptInts = "₀₁₂₃₄₅₆₇₈₉".toCharArray();
+	public static String superscriptInts = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+	public static String charInts = "0123456789";
+	public static String subscriptInts = "₀₁₂₃₄₅₆₇₈₉";
 	
-	/**
-	 * Evaluates a char to see if it is a numeral
-	 * @param c The char to evaluate
-	 * @return If the char is a numeral
-	 */
-	public static boolean isNumeral(char c){
-		switch (c){
-			case '0':
-			case '1':
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				return true;
-			default: return false;
-		}
-	}
-
 	/**
 	 * Tells if a string contains only numerals.
 	 * Examples:
@@ -69,10 +47,10 @@ public class Util {
 	 * @param n The string to check 
 	 * @return True if n is not an empty string and contains only numerals, otherwise false.
 	 */
-	public static boolean allAreNumerals(String n) {
+	public static boolean areAllNumerals(String n) {
 		if(n.length() < 1) return false;
 		for(char c : n.toCharArray()){
-			if(!isNumeral(c))return false;
+			if(c < '0' || c > '9')return false;
 		}
 		return true;
 	}
@@ -124,11 +102,11 @@ public class Util {
 	}
 	
 	/**
-	 * Evaluates a char to see if it is between a-z or A-Z
-	 * @param c The char to evaluate
-	 * @return If the char is a a-z or A-Z
+	 * Evaluates a string to see if all chars are alphabetic (a-z or A-Z).
+	 * @param s The string to evaluate
+	 * @return If the s contains only alphabetic characters.
 	 */
-	public static boolean areLetters(String s){
+	public static boolean areAllLetters(String s){
 		for(char c : s.toCharArray()){
 			if(!(c <= 'z' && c >= 'a' || c <= 'Z' && c >= 'A')){
 				return false;
@@ -136,155 +114,7 @@ public class Util {
 		}
 		return true;
 	}
-	
-	/**
-	 * Tells if a number, fraction, or mixed number is fully simplified. 
-	 * If it's a complicated fraction and it's unsure it will return false
-	 * @param expr The number/fraction/mixed number to evaluate
-	 * @return If expr is fully simplified
-	 * TODO this probably needs review badly
-	 */
-	public static boolean isFullySimplified(String expr) {
-		//first check that we're dealing with a number/mixed number/fraction
-		if(Number.parseable(expr)){
-			//it's a number; make sure it's simplified
-			
-			//the index of the first non-numeral
-			int i =0;
-			//update i if there's a - sign
-			if(expr.charAt(0) == '-'){
-				i++;
-			}
-			//tell if we actually found a non-numeral
-			boolean found = false;
-			for(; i<expr.length(); i++){
-				//if it's not a numeral
-				if(!isNumeral(expr.charAt(i))){
-					//we found a non-numeral
-					found = true;
-					break;
-				}
-			}
-			//if we didn't find a non-numeral it's just a number
-			if(!found){
-				return true;
-			}
-			//we did find a non-numeral
-			else{
-				//check if the fraction is simplified
-				return isFracSimplified(expr.substring(i, expr.length()));
-			}
-		}
-		//it's not even a number; return false		
-		return false;
-	}
-
-	/**
-	 * Tells if a fraction is fully simplified. If it contains variables it may return false
-	 * even when it's fully simplified
-	 * @param frac The fraction to check
-	 * @return If it's fully simplified (may be hard to tell; see above)
-	 */
-	private static boolean isFracSimplified(String frac) {
-		//TODO debug
-		//first find the /
-		int i = 0;
-		for(; i < frac.length(); i++){
-			if(frac.charAt(i) == '/'){
-				break;
-			}
-		}
-		//i is now the index of the /
-		//if they have common factors
-		if(GCF(Integer.parseInt(frac.substring(0, i)), Integer.parseInt(frac.substring(i+1, frac.length()))) > 1){
-			return false;
-		}
-		else return true;
-	}	
-	
-	/**
-	 * TODO completely broken if I remember
-	 * @param a The first number
-	 * @param b The second number
-	 * @return The GCF (greatest common factor) of the two numbers
-	 */
-	public static int GCF(int a, int b){
 		
-		int commonFactors[] = commonFactors(a,b);
-		//the final answer
-		int answer = 1;
-		//now multiply all the common factors together
-		for(int i = 0; i < commonFactors.length; i++){
-			answer *= commonFactors[i];
-		}
-		return answer;
-	}
-	
-	/**
-	 * Finds common prime factors of two numbers
-	 * @param a The first number
-	 * @param b The second number
-	 * @return And int[] array of common factors
-	 */
-	public static int[] commonFactors(int a, int b){
-		
-		//XXX on debug check this (4 lines). don't know if it really works
-		//perform intersection logic on two sets
-		//FIXME this won't work because sets don't allow duplicates
-		Set<Integer> s1 = new HashSet<Integer>(Arrays.asList(a));
-		Set<Integer> s2 = new HashSet<Integer>(Arrays.asList(b));
-		s1.retainAll(s2);
-		Integer[] intersection = s1.toArray(new Integer[s1.size()]);
-		
-		//convert Integer[] to int[]
-		int commonFactors[] = new int[intersection.length];
-		for(int i = 0; i < intersection.length; i++){
-			commonFactors[i] = intersection[i].intValue();
-		}
-		return commonFactors;		
-	}
-	
-	/**
-	 * Returns the factors of a given number
-	 * @param num The number  for which you want the factors
-	 * @return An array of factors for the number
-	 */
-	public static int[] factors(int num){
-		//loop through from high to low
-		for(int i = num-1; i > 1; i--){
-			if(num % i == 0){
-				//factors must be i and num/i (try it)
-				//return the factors of the two factors we just found
-				return concat(factors(i), factors(num/i));
-			}
-		}
-		//if we get here there are no factors
-		int ans[] = {};
-		return ans;
-	}
-	
-	/**
-	 * Concatenates two arrays
-	 * @param a The first array
-	 * @param b The second array
-	 * @return The two arrays concatenated
-	 */
-	private static int[] concat(int a[], int b[]){
-		int out[] = new int[a.length + b.length];
-		int i; //we need to keep track of i outside the loop
-		//Iterate through the first one and add the elements to out[]
-		for(i = 0; i < a.length; i++){
-			out[i] = a [i];
-		}
-		//and the second array
-		//we have to keep track of two vars, the place we are in out and the place in b
-		for(int j = 0; j<b.length; j++){
-			i++;//keeping track of i still so we know where to add things to out
-			out[i] = b[j];
-		}
-		return out;
-	}
-
 	/**
 	 * Splits string s by any chars c for every occurrence of chars c that are not nested in parentheses.
 	 * The characters at which s is split will be included at the beginning of the respective elements.
@@ -317,22 +147,13 @@ public class Util {
 	}
 	
 	/**
-	 * Tells if a specified char c is a superscript. 
-	 * @param c The char to check.
-	 * @return If c is a superscript.
-	 */
-	public static boolean isSuperscript(char c){
-		return new String(superscriptInts).indexOf(c) != -1;
-	}
-	
-	/**
 	 * Tells if every char in s is a superscript.
 	 * @param s The string to check.
 	 * @return If every char in s is a valid superscript char.
 	 */
 	public static boolean isSuperscript(String s){
 		for(char c : s.toCharArray()){
-			if(!isSuperscript(c)) return false;
+			if(superscriptInts.indexOf(c) == -1) return false;
 		}
 		return true;
 	}
@@ -343,11 +164,11 @@ public class Util {
 	 * @return The int value of the superscript chars.
 	 */
 	public static int superscriptToInt(String s){
-		String answer = "";
-		for (char c : s.toCharArray()){
-			answer += Character.getNumericValue(c);
+		char[] chars = s.toCharArray();
+		for (int i = 0; i < chars.length; i++){
+			chars[i] = charInts.charAt(superscriptInts.indexOf(chars[i]));
 		}
-		return Integer.parseInt(answer);
+		return Integer.parseInt(new String(chars));
 	}
 	
 	/**
@@ -355,21 +176,12 @@ public class Util {
 	 * @param n The integer to convert.
 	 * @return The superscript form of integer n.
 	 */
-	public static String intToSuperscript(int n){
-		char[] s = Integer.toString(n).toCharArray();
-		for(int i = 0; i < s.length; i++){
-			s[i] = superscriptInts[Integer.parseInt(Character.toString(s[i]))];
+	public static String toSuperscript(String s){
+		char[] chars = s.toCharArray();
+		for(int i = 0; i < chars.length; i++){
+			chars[i] = superscriptInts.charAt(charInts.indexOf(chars[i]));
 		}
-		return new String(s);
-	}
-
-	/**
-	 * Tells if a specified char c is a subscript. 
-	 * @param c The char to check.
-	 * @return If c is a subscript.
-	 */
-	public static boolean isSubscript(char c){
-		return c >= '\u2080' && c <= '\u2089';
+		return new String(chars);
 	}
 	
 	/**
@@ -379,7 +191,7 @@ public class Util {
 	 */
 	public static boolean isSubscript(String s){
 		for(char c : s.toCharArray()){
-			if(!isSubscript(c)) return false;
+			if(subscriptInts.indexOf(c) == -1) return false;
 		}
 		return true;
 	}
@@ -390,11 +202,11 @@ public class Util {
 	 * @return The int value of the subscript chars.
 	 */
 	public static int subscriptToInt(String s){
-		String answer = "";
-		for (char c : s.toCharArray()){
-			answer += (char)(c - 8272);
+		char[] chars = s.toCharArray();
+		for(int i = 0; i < chars.length; i++){
+			chars[i] = charInts.charAt(subscriptInts.indexOf(chars[i]));
 		}
-		return Integer.parseInt(answer);
+		return Integer.parseInt(new String(chars));
 	}
 	
 	/**
@@ -402,12 +214,12 @@ public class Util {
 	 * @param n The int to convert.
 	 * @return n, converted to a string and then to superscript.
 	 */
-	public static String intToSubscript(int n){
-		String answer = "";
-		for(char c : (n + "").toCharArray()){
-			answer += (char)(c + 8272);
+	public static String toSubscript(String s){
+		char[] chars = s.toCharArray();
+		for(int i = 0; i < chars.length; i++){
+			chars[i] = subscriptInts.charAt(charInts.indexOf(chars[i])); 
 		}
-		return answer;
+		return new String(chars);
 	}
 	
 }

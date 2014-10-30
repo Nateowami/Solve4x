@@ -109,7 +109,7 @@ public class Validator {
 		//loop through the chars
 		for(char i : s.toCharArray()){
 			//if it's not a numerals or letter
-			if(!Util.areLetters(Character.toString(i)) && !Util.isNumeral(i)){
+			if(!Util.areAllLetters(Character.toString(i)) && !Util.areAllNumerals(Character.toString(i))){
 				Solve4x.debug("Returns false");
 				return false;
 			}

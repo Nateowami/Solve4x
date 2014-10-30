@@ -184,12 +184,12 @@ public class Solver {
 		}
 		
 		//if the first is a variable and the second is a number
-		else if(Util.areLetters(eq.getExpression(0).getAsString()) && Number.parseable(eq.getExpression(1).getAsString())){
+		else if(Util.areAllLetters(eq.getExpression(0).getAsString()) && Number.parseable(eq.getExpression(1).getAsString())){
 			return true;
 		}
 		
 		//if the second is a variable and the first is a number
-		else if(Util.areLetters(eq.getExpression(1).getAsString()) && Number.parseable(eq.getExpression(0).getAsString())){
+		else if(Util.areAllLetters(eq.getExpression(1).getAsString()) && Number.parseable(eq.getExpression(0).getAsString())){
 			return true;
 		}
 		
@@ -248,7 +248,7 @@ public class Solver {
 			}
 		}
 		//if it's a variable
-		else if(expr.length() == 1 && Util.areLetters(Character.toString(expr.charAt(0)))){
+		else if(expr.length() == 1 && Util.areAllLetters(Character.toString(expr.charAt(0)))){
 			Solve4x.debug("Returning true");
 			return true;
 		}
