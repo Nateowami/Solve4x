@@ -33,9 +33,9 @@ public class Visual {
 	public static void render(Solution solution){
 		System.out.println("************************");
 		try{
-			System.out.println("Solution for " + solution.getEquation().getAsString() + "\n");
+			System.out.println("Solution for " + solution.getLastStep().getEquation().getAsString() + "\n");
 			//print stuff out
-			for(int i=0; i<solution.getNumbOfSteps(); i++){
+			for(int i=0; i<solution.numOfSteps(); i++){
 				System.out.println("Step " + (i+1) + ": ");
 				printStep(solution.getStepAt(i));
 			}
@@ -51,9 +51,7 @@ public class Visual {
 	 * @param step The step to print
 	 */
 	private static void printStep(Step step){
-		for(int i=0; i<step.getStepLength(); i++){
-			System.out.println("\t" + step.getStageAt(i));
-			System.out.println("\tExplanation: " + step.getExplanation(i));
-		}
+		System.out.println("\t" + step.getEquation());
+		System.out.println("\tExplanation: " + step.getExplanation());
 	}
 }

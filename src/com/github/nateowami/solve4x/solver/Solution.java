@@ -17,7 +17,6 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-
 import java.util.ArrayList;
 
 /**
@@ -27,19 +26,14 @@ import java.util.ArrayList;
  */
 public class Solution {
 	
-	private Equation equation;//the original equation or expression
 	ArrayList <Step>steps = new ArrayList<Step>();//a list of steps
-	//holds the latest equation (which would also be in the form of a string in Step)
-	Equation lastEquation;
 	
 	/**
 	 * Creates a new Solution from another Solution
 	 * @param solution The Solution to copy
 	 */
 	public Solution(Solution solution){
-		this.equation = solution.getEquation();
 		this.steps = solution.getList();
-		this.lastEquation = solution.getLastEquation();
 	}
 	
 	/**
@@ -47,14 +41,7 @@ public class Solution {
 	 * @param equation The equation that is being solved
 	 */
 	public Solution(Equation equation){
-		//set the original equation
-		this.equation = equation;
-		//create an array of length one with the equation
-		String stages[] = {equation.getAsString()};
-		//now create a step and add it to the list of steps
-		this.steps.add(new Step(stages, "This is the original equation.", 0));
-		//the first and the last are the same
-		this.lastEquation = equation;
+		this.steps.add(new Step(equation, "This is the original equation.", 0));
 	}
 	
 	/**
@@ -64,14 +51,6 @@ public class Solution {
 	private ArrayList<Step> getList() {
 		return this.steps;
 	}
-
-	/**
-	 * Gets the original equation that the user entered
-	 * @return The original equation
-	 */
-	public Equation getEquation(){
-		return this.equation;
-	}
 	
 	/**
 	 * Adds a Step to the current Solution
@@ -79,14 +58,13 @@ public class Solution {
 	 */
 	public void addStep(Step step) {
 		this.steps.add(step);
-		this.lastEquation = new Equation(step.getLastStage());
 	}
 	
 	/**
 	 * Finds the number of steps in this Solution
 	 * @return The current number of steps
 	 */
-	public int getNumbOfSteps(){
+	public int numOfSteps(){
 		return this.steps.size();
 	}
 	
@@ -100,30 +78,22 @@ public class Solution {
 	}
 	
 	/**
-	 * @return The last Step currently in this Solution
-	 */
-	public Step getLastStep(){
-		return this.steps.get(steps.size()-1);
-	}
-
-	/**
-	 * @return The last equation of this solution
-	 */
-	public Equation getLastEquation() {
-		return lastEquation;
-	}
-
-	/**
 	 * Tells the difficulty of this Solution
 	 * @return The sum of the difficulties of the individual steps.
 	 */
 	public int difficulty() {
 		int difficulty = 0;
-		//loop thorough the steps
-		for(int i = 0; i < this.steps.size(); i++){
-			//and add the current step to the difficulty
-			difficulty += this.steps.get(i).getDifficulty();
+		for(Step s : this.steps){
+			difficulty += s.getDifficulty();
 		}
 		return difficulty;
 	}
+
+	/**
+	 * @return
+	 */
+	public Step getLastStep() {
+		return this.steps.get(this.steps.size()-1);
+	}
+
 }

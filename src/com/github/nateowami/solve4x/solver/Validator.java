@@ -31,7 +31,7 @@ public class Validator {
 	 * @param equation The equation to check
 	 * @return true if the equation is valid, otherwise false
 	 */
-	public static boolean eqIsValid(String e) {
+	public static boolean isEqValid(String e) {
 				
 		//debugging
 		Solve4x.debug("eqIsValid()" + e);

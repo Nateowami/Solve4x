@@ -17,38 +17,49 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import com.github.nateowami.solve4x.Solve4x;
-
 /**
- * Represents a single step in solving or simplifying an equation or expression
+ * Represents a single step in solving or simplifying an equation or expression.
+ * Each step tracks difficulty, explanation, and an equation.
  * @author Nateowami
  */
 public class Step {
 	
-	//list of stages in a step. Normally length will be 1; however cancelling factors
-	//can cause there to be 2 stages in a step; possibly more in the future.
-	private String stages[];
-	private ArrayList <String> explanation = new ArrayList<String>();
-	private int difficulty;//the difficulty of the step
+	private int difficulty;
+	String explanation;
+	Equation eq;
 	
 	/**
-	 * Constructs a Step object
-	 * @param step an ArrayList <String> containing the different stages of this solving step. 
-	 * Usually the length will be one; it can be more if we are cancelling like terms.
-	 * @param explanation The explanation for this step. It needs to be written in a particular 
-	 * syntax.
+	 * Constructs a new Step.
+	 * @param eq The equation for this step.
+	 * @param explanation An explanation for how this step works.
+	 * @param difficulty The difficulty associated with this step.
 	 */
-	public Step(String step[], String explanation, int difficulty){
-		Solve4x.debug("Creating step. Expr is: " + step[0]);
-		//init the stages ArrayList
-		this.stages = step;
-		//init the explanation for this step
-		this.explanation.add(explanation);
-		//init the difficulty
+	public Step(Equation eq, String explanation, int difficulty){
+		this.explanation = explanation;
 		this.difficulty = difficulty;
+		this.explanation = explanation;
+	}
+	
+	/**
+	 * @return the explanation for this step
+	 */
+	public String getExplanation() {
+		return explanation;
+	}
+
+	
+	/**
+	 * @return the Equation
+	 */
+	public Equation getEquation() {
+		return eq;
+	}
+	
+	/**
+	 * @return the difficulty of this step (0-9)
+	 */
+	public int getDifficulty() {
+		return difficulty;
 	}
 	
 	/* (non-Javadoc)
@@ -56,58 +67,8 @@ public class Step {
 	 */
 	@Override
 	public String toString() {
-		return "Step [stages=" + Arrays.toString(stages) + ", explanation="
-				+ explanation + ", difficulty=" + difficulty + "]";
-	}
-
-	/**
-	 * Finds the length of the step. This will often be just one.
-	 * @return The length of the step
-	 */
-	public int getStepLength(){
-		return this.stages.length;
-	}
-	
-	/**
-	 * Finds the stage of the step at the specified index
-	 * @param index The stage of the step to find. For example, if there are 
-	 * Three stages to this step, sending an index of two will find the last
-	 * stage of the solving step.
-	 * @return The part of the step at index. For example, it may return 5x=6 if 
-	 * that's the first stage of this solving step.
-	 */
-	public String getStageAt(int index){
-		return this.stages[index];
-	}
-	
-	/**
-	 * Returns the explanation for a particular stage of this solving step
-	 * @param i The stage of the step you want explained
-	 * @return The explanation
-	 */
-	public String getExplanation(int i){
-		return this.explanation.get(i);
-	}
-
-	/**
-	 * @return the difficulty of this step (0-9)
-	 */
-	public int getDifficulty() {
-		return difficulty;
-	}
-
-	/**
-	 * @param difficulty the difficulty to set for this step (0-9)
-	 */
-	public void setDifficulty(int difficulty) {
-		this.difficulty = difficulty;
-	}
-
-	/**
-	 * @return Returns the last stage of this Step
-	 */
-	public String getLastStage() {
-		return getStageAt(this.stages.length - 1);
+		return "Step [difficulty=" + difficulty + ", explanation="
+				+ explanation + "]";
 	}
 	
 }

@@ -48,24 +48,18 @@ public class Solver {
 	 */
 	public Solver(String equation, SolveFor selection) {
 		
-		//reset the solution from any previous solving
-		finalSolution = null;
-		
 		//remove spaces
 		equation = equation.replaceAll(" ", "");
-		//remove commas (they may be in numbers)
+		//remove any commas that may be in numbers
 		equation = equation.replaceAll(",", "");
 		
 		//validate the equation
-		//if there is an equals sign (=)
-		if(!Validator.eqIsValid(equation)){
+		if(!Validator.isEqValid(equation)){
 			throw new ParsingException("Validator says equation \"" + equation + "\" is invalid.");
 		}
 		
-		Solve4x.debug("Equation successfully validated");
-		
 		//set the solving algorithms list based on what the user selected
-		//if they wanted it solved
+		//if they wanted it solved or simplified
 		if(selection == SolveFor.SOLVE){
 			algor = getSolvingList();
 		}
@@ -74,9 +68,7 @@ public class Solver {
 			algor = getSimplifyingList();
 		}
 		
-		Solve4x.debug(algor.size()+" algorithms are going to be used"); 
-		
-		//OK, now to solve. Nateowami is scared
+		//OK, now to solve
 		//add an initial solution to the solution list
 		solutions.add(new Solution(new Equation(equation)));
 		
@@ -99,13 +91,13 @@ public class Solver {
 				for(int b=0; b<algor.size(); b++){
 					Solve4x.debug("Looping through the algorithms: " + b);
 					//if this algorithm thinks it should be used in this situation
-					if(algor.get(b).getSmarts(copy.get(a).getLastEquation()) >= 4){
+					if(algor.get(b).getSmarts(copy.get(a).getLastStep().getEquation()) >= 4){
 						//use this Algorithm
 						Solve4x.debug("Using an algorithm");
 						//create a solution
 						Solution solution = copy.get(a);
 						//create a step to add to it
-						Step step = algor.get(b).getStep(copy.get(a).getLastEquation());
+						Step step = algor.get(b).getStep(copy.get(a).getLastStep().getEquation());
 						Solve4x.debug(step.toString());
 						//add the step
 						solution.addStep(step);
@@ -210,13 +202,12 @@ public class Solver {
 		Solve4x.debug("checking if we're done. the list of solutions has the following length: " + solList.size());
 		//if there aren't any solutions return -1
 		if(solList.size() == 0) return -1;
-		System.out.println(solList.get(0).getLastStep().getStageAt(0));
 		//check all solutions
 		for(int i=0; i<solList.size(); i++){
 			
 			//check the first and second expressions
-			if(isSimplified(solList.get(i).getEquation().getExpression(0).getAsString())
-					&& isSimplified(solList.get(i).getEquation().getExpression(1).getAsString())){
+			if(isSimplified(solList.get(i).getLastStep().getEquation().getExpression(0).getAsString())
+					&& isSimplified(solList.get(i).getLastStep().getEquation().getExpression(0).getAsString())){
 				Solve4x.debug("Returns " + i);
 				return i;
 			}
