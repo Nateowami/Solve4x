@@ -154,10 +154,10 @@ public class Number extends AlgebraicParticle{
 	 * @param b The second number.
 	 * @return The GCF (greatest common factor) of a and b.
 	 */
-	public static int GCF(int a, int b){
+	public static long GCF(long a, long b){
 		//Implementation of the Euclidean algorithm http://en.wikipedia.org/wiki/Euclidean_algorithm
 		while (b > 0){
-			int temp = b;
+			long temp = b;
 	    	b = a % b;
 	    	a = temp;
 		}

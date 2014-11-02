@@ -85,4 +85,20 @@ public class MixedNumberTest {
 		assertEquals("2(-87)/(-16)", new MixedNumber("2(-87)/(-16)").getAsString());
 	}
 	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.MixedNumber#isSimplified()}.
+	 * @ 
+	 */
+	@Test
+	public void testIsSimplified()  {
+		assertTrue(new MixedNumber("2(3)/(4)").isSimplified());
+		assertTrue(new MixedNumber("1(1)/(2)").isSimplified());
+		assertTrue(new MixedNumber("8(3)/(16)").isSimplified());
+		
+		assertFalse(new MixedNumber("8(4)/(16)").isSimplified());
+		assertFalse(new MixedNumber("3(-1)/(8)").isSimplified());
+		assertFalse(new MixedNumber("2(4)/(12)").isSimplified());
+		assertFalse(new MixedNumber("2(1)/(-12)").isSimplified());
+	}
+	
 }

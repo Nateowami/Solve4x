@@ -77,7 +77,28 @@ public class Fraction extends AlgebraicParticle{
 	public AlgebraicParticle getBottom(){
 		return this.bottom;
 	}
-
+	
+	/**
+	 * Tells if the fraction is fully simplified, that is, that both top and bottom are
+	 * instances of Number, are both whole numbers, the bottom is not negative, the 
+	 * bottom is greater than the top, and they have no common factors (other than 1).
+	 * @return True if the fraction is fully simplified, otherwise false.
+	 */
+	public boolean isSimplified(){
+		if(this.top instanceof Number && this.bottom instanceof Number){
+			Number top = (Number) this.top;
+			Number bottom = (Number) this.bottom;
+			//if they aren't whole numbers or the bottom is negative
+			if(top.getDecimal() != null || bottom.getDecimal() != null || bottom.sign() == false) return false;
+			else{
+				//make sure bottom is greater than top (i.e., it's not an improper fraction) and they have no common factors
+				long topNum = Long.parseLong(top.getInteger()), bottomNum = Long.parseLong(bottom.getInteger());
+				return topNum < bottomNum && Number.GCF(topNum, bottomNum) == 1;
+			}
+		}
+		else return false;
+	}
+	
 	/* (non-Javadoc)
 	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#getAsString()
 	 */

@@ -90,5 +90,24 @@ public class FractionTest {
 		assertEquals("(24x-73)/(2+5)", new Fraction("(24x-73)/(2+5)").getAsString());
 		assertEquals("(4y((6)/(xy+3)))/(5)", new Fraction("(4y(6)/(xy+3))/(5)").getAsString());
 	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Fraction#isSimplified()}.
+	 * @ 
+	 */
+	@Test
+	public void testIsSimplified()  {
+		assertTrue(new Fraction("(2)/(3)").isSimplified());
+		assertTrue(new Fraction("(1)/(89)").isSimplified());
+		assertTrue(new Fraction("(-8)/(9)").isSimplified());
+		
+		assertFalse(new Fraction("(1)/(-12)").isSimplified());
+		assertFalse(new Fraction("(2)/(8)").isSimplified());
+		assertFalse(new Fraction("(3)/(12)").isSimplified());
+		assertFalse(new Fraction("(4)/(3.2)").isSimplified());
+		assertFalse(new Fraction("(4x)/(3)").isSimplified());
+		assertFalse(new Fraction("(12.2)/(3)").isSimplified());
+		assertFalse(new Fraction("(4)/(-3)").isSimplified());
+	}
 
 }

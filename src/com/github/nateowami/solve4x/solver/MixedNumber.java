@@ -86,6 +86,16 @@ public class MixedNumber extends AlgebraicParticle{
 	}
 
 	/**
+	 * Tells if the mixed number is fully simplified, that is, that the fraction part is
+	 * positive (both on top and bottom) and is fully simplified.
+	 * @return If the mixed number is simplified.
+	 * @see {@link com.github.nateowami.solve4x.solver.Fraction#isSimplified()}
+	 */
+	public boolean isSimplified(){
+		return this.fraction.isSimplified() && ((Number) this.fraction.top).sign() == true;
+	}
+	
+	/**
 	 * @return A string representation of the MixedNumber
 	 */
 	public String getAsString(){
