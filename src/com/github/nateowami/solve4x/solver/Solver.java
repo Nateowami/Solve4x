@@ -42,9 +42,9 @@ public class Solver {
 	//the final solution
 	private Solution finalSolution;
 	//a list of solutions that may work. Whichever one is best will be used in the end
-	ArrayList <Solution> solutions = new ArrayList<Solution>();
+	private ArrayList <Solution> solutions = new ArrayList<Solution>();
 	//A list of algorithms that can be used for solving
-	ArrayList <Algorithm> algor;
+	private final ArrayList <Algorithm> algor;
 	
 	
 	/**
@@ -66,15 +66,7 @@ public class Solver {
 			throw new ParsingException("Validator says equation \"" + equation + "\" is invalid.");
 		}
 		
-		//set the solving algorithms list based on what the user selected
-		//if they wanted it solved or simplified
-		if(selection == SolveFor.SOLVE){
-			algor = getSolvingList();
-		}
-		//if the user wanted it simplified
-		else if(selection == SolveFor.SIMPLIFY){
-			algor = getSimplifyingList();
-		}
+		this.algor = getAlgorithms(selection);
 		
 		//OK, now to solve
 		//add an initial solution to the solution list
@@ -112,79 +104,14 @@ public class Solver {
 		finalSolution = getBestSolution(solutions);
 	}
 	
+
 	/**
 	 * @return A Solution object that contains all the steps for solving
 	 */
 	public Solution getSolution(){
 		return finalSolution;
 	}
-	
-	/**
-	 * Makes a list of solving algorithms
-	 * @return An ArrayList of algorithms for solving
-	 * @see #getSimplifyingList()
-	 */
-	private static ArrayList<Algorithm> getSolvingList(){
-		
-		//the list of algorithms
-		ArrayList <Algorithm>algorList = new ArrayList<Algorithm>();
-		
-		//add the list of simplifying algorithms (all simplifying algorithms are also for solving)
-		algorList.addAll(getSimplifyingList());
-		
-		//TODO add more stuff to algorList
-		
-		
-		return algorList;
-		
-	}
-	
-	/**
-	 * Makes a list of algorithms for simplifying
-	 * @return An ArrayList of algorithms for simplifying
-	 * @see #getSolvingList()
-	 */
-	private static ArrayList<Algorithm> getSimplifyingList(){
-		
-		//make the list of algorithms
-		ArrayList <Algorithm>algorList = new ArrayList<Algorithm>();
-		algorList.add((Algorithm) new CombineLikeTerms());
-		//TODO more add stuff to the algorList
-		
-		return algorList;
-	}
-	
-	/**
-	 * Tells if an equation is solved 
-	 * TODO tell is an expression is fully simplified
-	 * @return If the equation is solved
-	 */
-	private boolean isSolved(Equation eq) {
-		//XXX We're assuming this is an equation, which currently is
-		//true, but we need to support more later. Possibly in another method
-		
-		//check for an identity (i.e. 1=1, 3/4=3/4)
-		//in other words, see if they're the same on both sides of the = sign
-		if(eq.getExpression(0).getAsString().equals(eq.getExpression(1).getAsString())){
-			return true; //if it's an identity it's SOLVED (technically)
-		}
-		
-		//if the first is a variable and the second is a number
-		else if(Util.areAllLetters(eq.getExpression(0).getAsString()) && Number.parseable(eq.getExpression(1).getAsString())){
-			return true;
-		}
-		
-		//if the second is a variable and the first is a number
-		else if(Util.areAllLetters(eq.getExpression(1).getAsString()) && Number.parseable(eq.getExpression(0).getAsString())){
-			return true;
-		}
-		
-		//At this time the above three are all that I can think of. If there are more
-		//we will need to talk about them and add them.
-		else return false;
-		
-	}
-	
+			
 	/**
 	 * Tells if we're done solving. It looks through the list of solutions and finds one that is 
 	 * solved, simplified, or whatever needs to be done to it. Returns positive int if it finds one, -1
@@ -252,6 +179,23 @@ public class Solver {
 		}
 		//there is no Solution; return null
 		else return null;
+	}
+	
+	/**
+	 * Returns the applicable solving algorithms for the selection, e.g.,
+	 * algorithms for solving, simplifying, factoring, etc.
+	 * @param selection The user's selection.
+	 * @return An ArrayList of algorithms applicable for the selection.
+	 */
+	private ArrayList<Algorithm> getAlgorithms(SolveFor selection) {
+		ArrayList<Algorithm> algorList = new ArrayList<Algorithm>();
+		switch (selection){
+		case SOLVE:
+		case FACTOR:
+		case SIMPLIFY:
+			algorList.add(new CombineLikeTerms());
+		}
+		return algorList;
 	}
 	
 }
