@@ -17,7 +17,6 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-
 import java.util.ArrayList;
 
 import com.github.nateowami.solve4x.Solve4x;
@@ -30,6 +29,16 @@ import com.github.nateowami.solve4x.algorithm.CombineLikeTerms;
 
 public class Solver {
 	
+	/**
+	 * Represents the possible different ways to solve. For example, maybe the user wants
+	 * the expression simplified, or maybe they want it put in a certain form. Or maybe they
+	 * only need to factor the expression. The user's selection is represented by this enum.
+	 * @author Nateowami
+	 */
+	public enum SolveFor {
+		SOLVE, SIMPLIFY, FACTOR
+	}
+	
 	//the final solution
 	private Solution finalSolution;
 	//a list of solutions that may work. Whichever one is best will be used in the end
@@ -39,12 +48,11 @@ public class Solver {
 	
 	
 	/**
-	 * Creates a new Solver so you can call solve and get the solution.
+	 * Creates a new Solver so you can call getSolution().
 	 * @param equation The equation or expression to solve, simplify, 
 	 * factor, multiply, etc
-	 * @param selection The users selection. Do they want this to be 
-	 * factored, solved, simplified, or what?
-	 * @see com.github.nateowami.solve4x.solver.SolveFor
+	 * @param selection The user's selection. Do they want this to be 
+	 * factored, solved, simplified, or what? See {@link com.github.natewoami.solve4x.solver.Solver.SolveFor}.
 	 */
 	public Solver(String equation, SolveFor selection) {
 		
@@ -74,38 +82,28 @@ public class Solver {
 		
 		//OK, now iterate through the solving algorithms AND the solutions 
 		//(currently only 1 solution, but this could grow as we take forks in the road)
-		//here goes...
 
 		//as long as it's not solved/simplified
-		//currently only loops 25 times
+		//currently loops max 25 times
 		for(int i = 0; whichIsFinished(solutions) == -1 && i<25; i++){
-			Solve4x.debug("Solution iteration begun: " + i);
 			//take out/copy all the solutions and remove them from the list
 			ArrayList <Solution>copy = new ArrayList<Solution>(solutions);
 			solutions = new ArrayList<Solution>();
 			
 			//loop through the solutions
 			for(int a=0; a<copy.size(); a++){
-				Solve4x.debug("Looping through the solutions: " + a);
 				//now loop through the algorithms
 				for(int b=0; b<algor.size(); b++){
-					Solve4x.debug("Looping through the algorithms: " + b);
 					//if this algorithm thinks it should be used in this situation
 					if(algor.get(b).getSmarts(copy.get(a).getLastStep().getEquation()) >= 4){
 						//use this Algorithm
-						Solve4x.debug("Using an algorithm");
 						//create a solution
 						Solution solution = copy.get(a);
 						//create a step to add to it
 						Step step = algor.get(b).getStep(copy.get(a).getLastStep().getEquation());
-						Solve4x.debug(step.toString());
-						//add the step
 						solution.addStep(step);
 						//add it to the solution list
 						solutions.add(solution);
-					}
-					else{
-						Solve4x.debug("Algorithm not used");
 					}
 				}
 			}
@@ -118,7 +116,6 @@ public class Solver {
 	 * @return A Solution object that contains all the steps for solving
 	 */
 	public Solution getSolution(){
-		
 		return finalSolution;
 	}
 	
@@ -127,7 +124,7 @@ public class Solver {
 	 * @return An ArrayList of algorithms for solving
 	 * @see #getSimplifyingList()
 	 */
-	private static <Algorithm>ArrayList getSolvingList(){
+	private static ArrayList<Algorithm> getSolvingList(){
 		
 		//the list of algorithms
 		ArrayList <Algorithm>algorList = new ArrayList<Algorithm>();
@@ -147,7 +144,7 @@ public class Solver {
 	 * @return An ArrayList of algorithms for simplifying
 	 * @see #getSolvingList()
 	 */
-	private static <Algorithm>ArrayList getSimplifyingList(){
+	private static ArrayList<Algorithm> getSimplifyingList(){
 		
 		//make the list of algorithms
 		ArrayList <Algorithm>algorList = new ArrayList<Algorithm>();
@@ -162,12 +159,9 @@ public class Solver {
 	 * TODO tell is an expression is fully simplified
 	 * @return If the equation is solved
 	 */
-	private boolean isSolved(String equation) {
+	private boolean isSolved(Equation eq) {
 		//XXX We're assuming this is an equation, which currently is
-		//true, but we need to support more late. Possibly in another method
-		
-		//create a new equation
-		Equation eq = new Equation(equation);
+		//true, but we need to support more later. Possibly in another method
 		
 		//check for an identity (i.e. 1=1, 3/4=3/4)
 		//in other words, see if they're the same on both sides of the = sign
@@ -206,8 +200,8 @@ public class Solver {
 		for(int i=0; i<solList.size(); i++){
 			
 			//check the first and second expressions
-			if(isSimplified(solList.get(i).getLastStep().getEquation().getExpression(0).getAsString())
-					&& isSimplified(solList.get(i).getLastStep().getEquation().getExpression(0).getAsString())){
+			if(isSimplified(solList.get(i).getLastStep().getEquation().getExpression(0))
+					&& isSimplified(solList.get(i).getLastStep().getEquation().getExpression(0))){
 				Solve4x.debug("Returns " + i);
 				return i;
 			}
@@ -217,43 +211,24 @@ public class Solver {
 	}
 	
 	/**
-	 * Tells if an expression is fully simplified. Examples: 23&lt;2&gt;/&lt;3&gt;
+	 * Tells if an expression is fully simplified. Examples: 23(2)/(3)
 	 * Works best for fractions. If it's complicated it's unreliable and will return false
 	 * @param expr The expression to check
 	 * @return If the expr is fully simplified
 	 */
-	private boolean isSimplified(String expr){
-		Solve4x.debug("Checking if it's simplified: " + expr);
-		//if it's a number
-		if(Number.parseable(expr)){
-			Solve4x.debug("It's a number alright");
-			//AND it's fully simplified (TODO)
-			if(Util.isFullySimplified(expr)){
-				Solve4x.debug("Returning true");
-				return true;
-			}
-			//not fully simplified
-			else{
-				Solve4x.debug("Returning false");
-				return false;
-			}
-		}
-		//if it's a variable
-		else if(expr.length() == 1 && Util.areAllLetters(Character.toString(expr.charAt(0)))){
-			Solve4x.debug("Returning true");
-			return true;
-		}
-		//I can't think of any other way for it to be fully simplified
-		else {
-			Solve4x.debug("Returning false");
-			return false;
-		}
+	private boolean isSimplified(AlgebraicParticle a){
+		if(a.exponent() != 1)return false;
+		else if(a instanceof Number) return true;
+		else if(a instanceof Variable) return true;
+		else if(a instanceof Fraction && ((Fraction)a).isSimplified()) return true;
+		else if(a instanceof MixedNumber && ((MixedNumber)a).isSimplified()) return true;
+		else return false;
 	}
 	
 	/**
 	 * Tells which Solution is the best
 	 * @param solutions An ArrayList of Solutions to search
-	 * @return The Solution that is solved the best
+	 * @return The Solution that is solved the best, or null if no solutions are given.
 	 */
 	private Solution getBestSolution(ArrayList<Solution> solutions) {
 		//the index of the best solution found so far
