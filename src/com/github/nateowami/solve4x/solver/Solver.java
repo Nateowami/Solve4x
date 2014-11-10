@@ -52,7 +52,7 @@ public class Solver {
 	 * @param equation The equation or expression to solve, simplify, 
 	 * factor, multiply, etc
 	 * @param selection The user's selection. Do they want this to be 
-	 * factored, solved, simplified, or what? See {@link com.github.natewoami.solve4x.solver.Solver.SolveFor}.
+	 * factored, solved, simplified, or what? See {@link Solver.SolveFor}.
 	 */
 	public Solver(String equation, SolveFor selection) {
 		
@@ -143,12 +143,12 @@ public class Solver {
 	 * @param expr The expression to check
 	 * @return If the expr is fully simplified
 	 */
-	private boolean isSimplified(AlgebraicParticle a){
-		if(a.exponent() != 1)return false;
-		else if(a instanceof Number) return true;
-		else if(a instanceof Variable) return true;
-		else if(a instanceof Fraction && ((Fraction)a).isSimplified()) return true;
-		else if(a instanceof MixedNumber && ((MixedNumber)a).isSimplified()) return true;
+	private boolean isSimplified(AlgebraicParticle expr){
+		if(expr.exponent() != 1)return false;
+		else if(expr instanceof Number) return true;
+		else if(expr instanceof Variable) return true;
+		else if(expr instanceof Fraction && ((Fraction)expr).isSimplified()) return true;
+		else if(expr instanceof MixedNumber && ((MixedNumber)expr).isSimplified()) return true;
 		else return false;
 	}
 	

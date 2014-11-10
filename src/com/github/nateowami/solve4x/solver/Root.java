@@ -35,7 +35,6 @@ public class Root extends AlgebraicParticle{
 	/**
 	 * Constructs a new Root
 	 * @param root The root to parse. Should be in the form of <i>subscript</i>√<i>expression</i>
-	 * @ If the root in the wrong syntax.
 	 */
 	protected Root(String root) {
 		String original = root; //for debugging purposes

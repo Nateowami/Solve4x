@@ -35,7 +35,6 @@ public class Equation {
 	 * Creates an equation by turning it into two expressions
 	 * @param eq The equation (or expression) to turn into an
 	 * equation, which can be just an expression if necessary
-	 * @ 
 	 */
 	public Equation(String eq) {
 		Solve4x.debug("Creating Equation from String: " + eq);

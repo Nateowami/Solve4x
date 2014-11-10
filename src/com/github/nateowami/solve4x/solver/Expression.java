@@ -85,7 +85,7 @@ public class Expression extends AlgebraicParticle{
 
 	/**
 	 * Tells if string s can be parsed as an expression.
-	 * @param s The string to check.
+	 * @param expr The string to check.
 	 * @return If s can be parsed as an expression.
 	 */
 	public static boolean parseable(String expr) {

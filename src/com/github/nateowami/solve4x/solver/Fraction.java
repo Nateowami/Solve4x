@@ -32,7 +32,6 @@ public class Fraction extends AlgebraicParticle{
 	 * @param frac The String from which to construct the fraction, in the form of
 	 * <i>expression</i>/<i>expression</i>. If an expression has more than one term
 	 * it must be surrounded by parentheses.
-	 * @ 
 	 */
 	protected Fraction(String frac){
 		//find the '/' not nested in parentheses	

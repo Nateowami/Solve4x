@@ -172,9 +172,9 @@ public class Util {
 	}
 	
 	/**
-	 * Converts a given integer n to Unicode superscript.
-	 * @param n The integer to convert.
-	 * @return The superscript form of integer n.
+	 * Converts a given integer (in string form) to Unicode superscript.
+	 * @param s The string to convert.
+	 * @return The superscript form of s.
 	 */
 	public static String toSuperscript(String s){
 		char[] chars = s.toCharArray();
@@ -210,9 +210,9 @@ public class Util {
 	}
 	
 	/**
-	 * Converts an int to a superscript.
-	 * @param n The int to convert.
-	 * @return n, converted to a string and then to superscript.
+	 * Converts an integer to a superscript.
+	 * @param s The integer (in string form) to convert.
+	 * @return s, converted to superscript.
 	 */
 	public static String toSubscript(String s){
 		char[] chars = s.toCharArray();

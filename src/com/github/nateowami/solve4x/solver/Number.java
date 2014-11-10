@@ -32,7 +32,6 @@ public class Number extends AlgebraicParticle{
 	/**
 	 * Constructs a new number.
 	 * @param num The number to parse into a Number. Examples: 2.67, 15, 0.34, 3.1415
-	 * @ if num is not parsable as a decimal.
 	 */
 	protected Number(String num) {
 		//check for empty string
@@ -60,7 +59,6 @@ public class Number extends AlgebraicParticle{
 	 * @param n1 The first Number
 	 * @param n2 The second Number
 	 * @return A Number equal to the value of the two numbers added
-	 * @ If the 
 	 */
 	public static Number add(Number n1, Number n2) {
 		//convert to strings, add, and convert back to a Number
@@ -101,7 +99,7 @@ public class Number extends AlgebraicParticle{
 	/**
 	 * Tells if a string is a number. It must have at least one numeral followed by 
 	 * any number of numerals, and then (optionally) a decimal and at least on numeral.
-	 * @param number The number to check
+	 * @param num The number to check
 	 * @return If it's a number and/or fraction combination
 	 */
 	public static boolean parseable(String num) {

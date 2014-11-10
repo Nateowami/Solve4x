@@ -30,8 +30,7 @@ public class MixedNumber extends AlgebraicParticle{
 	
 	/**
 	 * Constructs a new Mixed Number
-	 * @param s The string from which to construct it.
-	 * @ If s is improperly formatted.
+	 * @param frac The string from which to construct it.
 	 */
 	protected MixedNumber(String frac) {
 		//figure out how much is the numeral
@@ -44,8 +43,8 @@ public class MixedNumber extends AlgebraicParticle{
 
 	/**
 	 * Tells if s is a Mixed Number.
-	 * @param s The string to check.
-	 * @return If s can be parsed as a MixedNumber.
+	 * @param frac The string to check.
+	 * @return If frac can be parsed as a MixedNumber.
 	 */
 	public static boolean parseable(String frac){
 		//basically this is a match of the regex \d+\(\d+\)/\(\d+\), e.g. 2(3)/(4)
@@ -89,7 +88,7 @@ public class MixedNumber extends AlgebraicParticle{
 	 * Tells if the mixed number is fully simplified, that is, that the fraction part is
 	 * positive (both on top and bottom) and is fully simplified.
 	 * @return If the mixed number is simplified.
-	 * @see {@link com.github.nateowami.solve4x.solver.Fraction#isSimplified()}
+	 * @see com.github.nateowami.solve4x.solver.Fraction#isSimplified()
 	 */
 	public boolean isSimplified(){
 		return this.fraction.isSimplified() && ((Number) this.fraction.top).sign() == true;

@@ -33,7 +33,6 @@ public abstract interface Algorithm {
 	 * a given expression or equation
 	 * @param equation The expression or equation to do a bit of solving on
 	 * @return The Step for solving this little bit
-	 * @ 
 	 */
 	public abstract Step getStep(Equation equation) ;
 	

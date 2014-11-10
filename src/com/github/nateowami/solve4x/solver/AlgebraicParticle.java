@@ -42,10 +42,10 @@ public abstract class AlgebraicParticle {
 	
 	/**
 	 * Constructs a new AlgebraicParticle and returns it. May be a Variable Number, Root, Fraction, Fraction, MixedNumber, Term, or Expression.
+	 * @throws ParsingException if s cannot be parsed as an algebraic particle.
 	 * @param s The string to parse as an AlgebraicParticle.
 	 * @param c A list of classes to from which to try construction.
 	 * @return An AlgebraicParticle representing s.
-	 * @ If s cannot be parsed as an AlgebraicParticle.
 	 */
 	public static AlgebraicParticle getInstance(String s, Class[] c) {
 		System.out.println("ALGEBRAICPARTICLE GETINSTANCE: " + s);

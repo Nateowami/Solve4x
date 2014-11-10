@@ -47,8 +47,7 @@ public class Term extends AlgebraicParticle{
 	
 	/**
 	 * Creates a new term from a String
-	 * @param term The term to create
-	 * @ If the term is not properly formatted (and not always even then)
+	 * @param s The string from which to construct the term.
 	 */
 	protected Term(String s) {
 		String original = s; //for debugging purposes
@@ -74,7 +73,7 @@ public class Term extends AlgebraicParticle{
 	 * Tells the number of Expressions in this term. For example,
 	 * 2xy(2x+6) would return 1. x and y are variables, not Expressions.
 	 * @return The number of Expressions in this term.
-	 * @see getExprAt(int i)
+	 * @see com.github.nateowami.solve4x.solver.Term#getPartAt(int)
 	 */
 	public int numOfParts(){
 		return this.parts.size();
@@ -83,7 +82,7 @@ public class Term extends AlgebraicParticle{
 	/**
 	 * @param i The index of the Expression you want.
 	 * @return The Expression at index i.
-	 * @see numOfExprs()
+	 * @see com.github.nateowami.solve4x.solver.Term#numOfParts()
 	 */
 	public AlgebraicParticle getPartAt(int i){
 		return this.parts.get(i);
@@ -92,7 +91,7 @@ public class Term extends AlgebraicParticle{
 	/**
 	 * Returns a String representation of this Term in the form of an algebraic term, not the 
 	 * traditional toString().
-	 * @return
+	 * @return This term rendered as plain text.
 	 */
 	public String getAsString(){
 		String s = "";

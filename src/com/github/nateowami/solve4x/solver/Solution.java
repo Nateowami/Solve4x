@@ -90,7 +90,7 @@ public class Solution {
 	}
 
 	/**
-	 * @return
+	 * @return The last step of the solution (equivalent to Solution.getStepAt(Solution.numOfSteps()-1).
 	 */
 	public Step getLastStep() {
 		return this.steps.get(this.steps.size()-1);

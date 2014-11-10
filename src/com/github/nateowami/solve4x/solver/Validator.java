@@ -28,20 +28,20 @@ public class Validator {
 	
 	/**
 	 * Tells whether a given equation is valid
-	 * @param equation The equation to check
+	 * @param s The string to check
 	 * @return true if the equation is valid, otherwise false
 	 */
-	public static boolean isEqValid(String e) {
+	public static boolean isEqValid(String s) {
 				
 		//debugging
-		Solve4x.debug("eqIsValid()" + e);
-		Solve4x.debug("Testing Equation Validity: "+e);
+		Solve4x.debug("eqIsValid()" + s);
+		Solve4x.debug("Testing Equation Validity: "+s);
 		
 		//create a new Equation
 		Equation eq;
 		//try to parse it
 		try{
-			eq = new Equation(e);
+			eq = new Equation(s);
 			//check all expressions
 			for(int i = 0; i < eq.getSize(); i++){
 				//if the expression is invalid
@@ -101,8 +101,8 @@ public class Validator {
 
 	/**
 	 * Tells if all chars in a String are numerals (0-9) and letters (a-z and A-Z)
-	 * @param s The String to check.
-	 * @return 
+	 * @param s The string to check.
+	 * @return If all chars in s are letters or numbers. 
 	 */
 	private static boolean areLettersAndNums(String s){
 		Solve4x.debug("Param: " + s);

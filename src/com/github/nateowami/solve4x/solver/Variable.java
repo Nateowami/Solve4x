@@ -60,9 +60,9 @@ public class Variable extends AlgebraicParticle{
 	}
 	
 	/**
-	 * Tells if 
-	 * @param s
-	 * @return
+	 * Tells if s is parseable as a variable. Must contain one char, a-z or A-Z.
+	 * @param s The string to check.
+	 * @return If s is a variable.
 	 */
 	public static boolean parseable(String s) {
 		if(s == null || s.length() != 1 || !Util.areAllLetters(Character.toString(s.charAt(0)))){
