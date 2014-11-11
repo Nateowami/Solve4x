@@ -2,17 +2,16 @@ Solve4x
 =======
 An algebra solver that shows its work
 
-The goal of this program is to generate a lesson explaining how to solve a given problem. It aims to be simple to use, and very intuitive. It should solve the way a person would, and should _not_ include unnecessary steps. Equations should be displayed as a person would write them, rather than as single line of text. It is not intended as a cheat-sheet, but rather as a helpful explainer for a problem the user doesn't understand.
+The goal of this program is to generate a lesson explaining how to solve a given problem. It should solve the simplest way possible (i.e., the way a person would), and should not include unnecessary steps. Equations should be rendered nicely, rather than as single line of text. This is not intended as a cheat-sheet, but rather as a helpful explainer for a problem the user doesn't understand.
 
-TODO
-====
-* GUI - 98% finished.  Colors need some changing, but otherwise it's mostly finished. Some soft colors would be good.
-* Solver - Started (about 60%); relies on classes that contain solving algorithms  
-* Equation validator - (95%) appears to be working; will likely need a few changes and updates  
-* Solving algorithms - Barely started; they all need to implement Algorithm. We can start them as soon as the solver is done/debugged.
-* Equation displayer - Not started, except for a command line version intended for debugging. The graphical one is a long way down the road.
+General Progress
+================
+* GUI - 95% finished.  Colors need some changing, and adding a texture may be necessary. 
+* Core solver/parser - Started (about 75%); relies on classes that contain solving algorithms.
+* Solving algorithms - Not started, up next in line for getting worked on.
+* Equation validator - (95%) appears to be working, but may simply be scrapped as the parser practically impliments one itself.
+* Renderer - Not started, except for a command line version intended for debugging.
 
 Documentation
 =============
-You can read generic documentation (as in "how it all works") on [the wiki](https://github.com/Nateowami/Solve4x/wiki). For a basic understanding of how the program should work, check out [an article about program flow](https://github.com/Nateowami/Solve4x/wiki/Program-Flow). Another goot resource is the [algebra syntax definition](https://github.com/Nateowami/Solve4x/wiki/Algebra-Syntax-Definition).  
-The generated JavaDocs can be found at <http://nateowami.github.io/Solve4x/doc/>. Note: current documentation is outdated and is in the process of being replaced. While it could be updated now, core parts of the system are undergoing major changes. Documentation will be updated when this is complete.
+For getting started you may want to checkout [the wiki](https://github.com/Nateowami/Solve4x/wiki), and for a quick overview you can read about [program flow](https://github.com/Nateowami/Solve4x/wiki/Program-Flow). There's also an [algebra syntax definition](https://github.com/Nateowami/Solve4x/wiki/Algebra-Syntax-Definition), though it's just a starting point for now. The generated JavaDocs can be found at <http://nateowami.github.io/Solve4x/doc/>. The `com.github.nateowami.solve4x.solver` package has the best documentation, and is central to the solver, so that's the best place to start.
