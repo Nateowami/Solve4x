@@ -20,28 +20,25 @@ package com.github.nateowami.solve4x.solver;
 
 
 /**
- * An abstract type for all solving strategies to extend. Basically it's a template
- * for classes that will define a particular way to solve (e.g. simplifying). Doing it 
- * this way should allow us to loop through solving strategies. If you can think of a 
- * better name let me know.
+ * The interface for Algorithms used by the solver (which will be in package 
+ * com.github.nateowami.solve4x.algorithm). 
  * @author Nateowami
  */
 public abstract interface Algorithm {
 	
 	/**
-	 * Creates a Step object for performing this algorithm on
-	 * a given expression or equation
-	 * @param equation The expression or equation to do a bit of solving on
-	 * @return The Step for solving this little bit
+	 * Applies the algorithm on the given equation and returns the step.
+	 * @param equation The equation to work on.
+	 * @return The step for solving.
 	 */
-	public abstract Step getStep(Equation equation) ;
+	public abstract Step execute(Equation equation);
 	
 	/**
 	 * To return the approximate smartness of performing the solving technique
-	 * on the given Step
-	 * @param equation The Step to evaluate
+	 * on the given equation.
+	 * @param equation The equation to evaluate
 	 */
-	public abstract int getSmarts(Equation equation);
+	public abstract int smarts(Equation equation);
 	
 
 }

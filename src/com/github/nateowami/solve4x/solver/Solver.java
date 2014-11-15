@@ -87,12 +87,12 @@ public class Solver {
 				//now loop through the algorithms
 				for(int b=0; b<algor.size(); b++){
 					//if this algorithm thinks it should be used in this situation
-					if(algor.get(b).getSmarts(copy.get(a).getLastStep().getEquation()) >= 4){
+					if(algor.get(b).smarts(copy.get(a).getLastStep().getEquation()) >= 4){
 						//use this Algorithm
 						//create a solution
 						Solution solution = copy.get(a);
 						//create a step to add to it
-						Step step = algor.get(b).getStep(copy.get(a).getLastStep().getEquation());
+						Step step = algor.get(b).execute(copy.get(a).getLastStep().getEquation());
 						solution.addStep(step);
 						//add it to the solution list
 						solutions.add(solution);
@@ -114,10 +114,10 @@ public class Solver {
 			
 	/**
 	 * Tells if we're done solving. It looks through the list of solutions and finds one that is 
-	 * solved, simplified, or whatever needs to be done to it. Returns positive int if it finds one, -1
-	 * if there is no solution yet
-	 * @param solList The list of Solutions to check
-	 * @return The index of a Solution that is fully solved
+	 * solved, simplified, or whatever needs to be done to it. Returns positive int (or zero) if 
+	 * it finds one, -1 if there is no solution yet.
+	 * @param solList The list of Solutions to check.
+	 * @return The index of a Solution that is fully solved.
 	 */
 	private int whichIsFinished(ArrayList<Solution> solList){
 		Solve4x.debug("checking if we're done. the list of solutions has the following length: " + solList.size());
@@ -125,10 +125,9 @@ public class Solver {
 		if(solList.size() == 0) return -1;
 		//check all solutions
 		for(int i=0; i<solList.size(); i++){
-			
 			//check the first and second expressions
-			if(isSimplified(solList.get(i).getLastStep().getEquation().getExpression(0))
-					&& isSimplified(solList.get(i).getLastStep().getEquation().getExpression(0))){
+			Equation eq = solList.get(i).getLastStep().getEquation();
+			if(isSimplified(eq.getExpression(0))	&& (eq.getSize() > 0) && isSimplified(eq.getExpression(1))){
 				Solve4x.debug("Returns " + i);
 				return i;
 			}

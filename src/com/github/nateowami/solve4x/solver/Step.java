@@ -46,7 +46,6 @@ public class Step {
 	public String getExplanation() {
 		return explanation;
 	}
-
 	
 	/**
 	 * @return the Equation

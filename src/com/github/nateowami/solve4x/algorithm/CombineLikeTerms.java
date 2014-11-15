@@ -29,8 +29,6 @@ import com.github.nateowami.solve4x.solver.Step;
 import com.github.nateowami.solve4x.solver.Term;
 
 /**
- * TODO Update to reflect changes in Term
- * 
  * @author Nateowami
  */
 public class CombineLikeTerms implements Algorithm {
@@ -43,7 +41,7 @@ public class CombineLikeTerms implements Algorithm {
 	 * @return A Step with this algorithm applied @
 	 */
 	@Override
-	public Step getStep(Equation equation) {
+	public Step execute(Equation equation) {
 		// figure out how many like terms there are in each expression
 
 		// which expression has the most like terms
@@ -183,34 +181,18 @@ public class CombineLikeTerms implements Algorithm {
 	 *         equation
 	 */
 	@Override
-	public int getSmarts(Equation equation) {
-		Solve4x.debug("CombineLikeTerms.getSmarts(" + equation.getAsString());
+	public int smarts(Equation equation) {
 		// find which expression needs simplifying the most
 		int num = 0;
 		for (int i = 0; i < equation.getSize(); i++) {
-			// temp variable
 			int temp;
 			if ((temp = howManyLike(equation.getExpression(i))) > num) {
 				num = temp;
 			}
 		}
-		// figure out the smartness based on number of like terms
-		if (num == 2) {
-			Solve4x.debug("Returns 4");
-			return 4;
-		} else if (num == 3) {
-			Solve4x.debug("Returns 6");
-			return 6;
-		} else if (num == 4) {
-			Solve4x.debug("Returns 8");
-			return 8;
-		} else if (num > 4) {
-			Solve4x.debug("Returns 9");
-			return 9;
-		} else {
-			Solve4x.debug("Returns 0");
-			return 0;
-		}
+		//return the smartness
+		if(num < 4) return num * 2;
+		else return 9;
 	}
 
 	/**
