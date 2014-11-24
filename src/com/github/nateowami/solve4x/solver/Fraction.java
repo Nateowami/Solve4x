@@ -139,4 +139,50 @@ public class Fraction extends AlgebraicParticle{
 		return -1;
 	}
 	
+	/**
+	 * @return True if both top and bottom are instances of Number. Keep in mind that a 
+	 * fraction could be constant if it had a fraction on top and bottom, so strictly speaking,
+	 * this method could be considered a misnomer.
+	 */
+	public boolean constant(){
+		return top instanceof Number && bottom instanceof Number;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((bottom == null) ? 0 : bottom.hashCode());
+		result = prime * result + ((top == null) ? 0 : top.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Fraction other = (Fraction) obj;
+		if (bottom == null) {
+			if (other.bottom != null)
+				return false;
+		} else if (!bottom.equals(other.bottom))
+			return false;
+		if (top == null) {
+			if (other.top != null)
+				return false;
+		} else if (!top.equals(other.top))
+			return false;
+		return true;
+	}
+	
 }

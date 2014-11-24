@@ -161,5 +161,44 @@ public class Number extends AlgebraicParticle{
 		}
 	    return a;
 	}
+
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((decimal == null) ? 0 : decimal.hashCode());
+		result = prime * result + ((integer == null) ? 0 : integer.hashCode());
+		return result;
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Number other = (Number) obj;
+		if (decimal == null) {
+			if (other.decimal != null)
+				return false;
+		} else if (!decimal.equals(other.decimal))
+			return false;
+		if (integer == null) {
+			if (other.integer != null)
+				return false;
+		} else if (!integer.equals(other.integer))
+			return false;
+		return true;
+	}
 	
 }

@@ -70,19 +70,19 @@ public class Term extends AlgebraicParticle{
 	}
 	
 	/**
-	 * Tells the number of Expressions in this term. For example,
-	 * 2xy(2x+6) would return 1. x and y are variables, not Expressions.
+	 * Tells the number of AlgebraicParticles in this term. For example,
+	 * 2xy(2x+6)+2 would return 2.
 	 * @return The number of Expressions in this term.
 	 * @see com.github.nateowami.solve4x.solver.Term#getPartAt(int)
 	 */
-	public int numOfParts(){
+	public int length(){
 		return this.parts.size();
 	}
 	
 	/**
 	 * @param i The index of the Expression you want.
 	 * @return The Expression at index i.
-	 * @see com.github.nateowami.solve4x.solver.Term#numOfParts()
+	 * @see com.github.nateowami.solve4x.solver.Term#length()
 	 */
 	public AlgebraicParticle getPartAt(int i){
 		return this.parts.get(i);
@@ -148,5 +148,35 @@ public class Term extends AlgebraicParticle{
 		else return false;		
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((parts == null) ? 0 : parts.hashCode());
+		return result;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Term other = (Term) obj;
+		if (parts == null) {
+			if (other.parts != null)
+				return false;
+		} else if (!parts.equals(other.parts))
+			return false;
+		return true;
+	}
 	
 }

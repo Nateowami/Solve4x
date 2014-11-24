@@ -65,7 +65,7 @@ public class Validator {
 	 */
 	private static boolean exprIsValid(Expression expr) {
 		//check the terms for being correct
-		for(int i = 0; i < expr.numbOfTerms(); i++){
+		for(int i = 0; i < expr.length(); i++){
 			//if the term is not correct return false
 			if(!termIsValid(expr.termAt(i))){
 				Solve4x.debug("Returns false");
@@ -129,7 +129,7 @@ public class Validator {
 			//make an expression
 			Expression expr = new Expression(s);
 			//if there are multiple terms return true, otherwise false
-			if(expr.numbOfTerms() > 1){
+			if(expr.length() > 1){
 				return true;
 			}
 			else return false;

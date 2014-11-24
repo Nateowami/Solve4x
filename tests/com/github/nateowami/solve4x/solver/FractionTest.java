@@ -109,5 +109,21 @@ public class FractionTest {
 		assertFalse(new Fraction("(12.2)/(3)").isSimplified());
 		assertFalse(new Fraction("(4)/(-3)").isSimplified());
 	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Fraction#constant()}.
+	 * @ 
+	 */
+	@Test
+	public void testConstant()  {
+		assertTrue(new Fraction("(2)/(3)").constant());
+		assertTrue(new Fraction("(2.6)/(3)").constant());
+		assertTrue(new Fraction("(2)/(-3)").constant());
+		assertTrue(new Fraction("(2)/(-243.8)").constant());
+		
+		assertFalse(new Fraction("(1)/(x)").constant());
+		assertFalse(new Fraction("(1)/(4x2)").constant());
+		assertFalse(new Fraction("(y)/(14)").constant());
+	}
 
 }

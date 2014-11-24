@@ -70,15 +70,15 @@ public class TermTest {
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#numOfParts()}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#length()}.
 	 */
 	@Test
-	public void testNumOfParts() {
-		assertEquals(2, new Term("x6").numOfParts());
-		assertEquals(4, new Term("4xy6(4)/(5)").numOfParts());
-		assertEquals(3, new Term("2y(3+6)").numOfParts());
-		assertEquals(2, new Term("2((x+6)/(-4y))").numOfParts());
-		assertEquals(3, new Term("js(4y+3)").numOfParts());
+	public void testLength() {
+		assertEquals(2, new Term("x6").length());
+		assertEquals(4, new Term("4xy6(4)/(5)").length());
+		assertEquals(3, new Term("2y(3+6)").length());
+		assertEquals(2, new Term("2((x+6)/(-4y))").length());
+		assertEquals(3, new Term("js(4y+3)").length());
 	}
 
 	/**

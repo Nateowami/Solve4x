@@ -137,5 +137,44 @@ public class Root extends AlgebraicParticle{
 				+ isConstant + ", sign()=" + sign() + ", exponent()="
 				+ exponent() + "]";
 	}
+
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((expr == null) ? 0 : expr.hashCode());
+		result = prime * result + (isConstant ? 1231 : 1237);
+		result = prime * result + nthRoot;
+		return result;
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Root other = (Root) obj;
+		if (expr == null) {
+			if (other.expr != null)
+				return false;
+		} else if (!expr.equals(other.expr))
+			return false;
+		if (isConstant != other.isConstant)
+			return false;
+		if (nthRoot != other.nthRoot)
+			return false;
+		return true;
+	}
 	
 }

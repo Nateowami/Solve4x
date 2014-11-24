@@ -73,7 +73,7 @@ public class CombineLikeTerms implements Algorithm {
 		// and what that type is
 		String type = "";
 		// loop through the terms
-		for (int i = 0; i < expr.numbOfTerms(); i++) {
+		for (int i = 0; i < expr.length(); i++) {
 			// temp variable
 			int temp;
 			// if the number of of the current type is greater than any found
@@ -92,7 +92,7 @@ public class CombineLikeTerms implements Algorithm {
 		int index = -1;
 		// ArrayList of terms we will combine
 		ArrayList<Term> combinedTerms = new ArrayList<Term>();
-		for (int i = 0; i < expr.numbOfTerms(); i++) {
+		for (int i = 0; i < expr.length(); i++) {
 			// if the current term is not the type that we're combining
 			if (!expr.termAt(i).getBody().equals(type)) {
 				// add it to the list of terms that we don't modify
@@ -206,7 +206,7 @@ public class CombineLikeTerms implements Algorithm {
 	private int howManyLike(Expression expr) {
 		Solve4x.debug(expr.getAsString());
 		int num = 0;
-		for (int i = 0; i < expr.numbOfTerms(); i++) {
+		for (int i = 0; i < expr.length(); i++) {
 			// update num
 			// temp variable
 			int temp;
@@ -233,7 +233,7 @@ public class CombineLikeTerms implements Algorithm {
 				+ term.getBody());
 		int num = 0;
 		// check all terms in the expression for being like term
-		for (int i = 0; i < expr.numbOfTerms(); i++) {
+		for (int i = 0; i < expr.length(); i++) {
 			if (expr.termAt(i).getBody().equals(term.getBody())) {
 				num++;
 			}

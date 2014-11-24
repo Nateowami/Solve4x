@@ -180,5 +180,36 @@ public abstract class AlgebraicParticle {
 		}
 		throw new ParsingException("Cannot parse " + s + " as an algebraic particle.");
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + exponent;
+		result = prime * result + (sign ? 1231 : 1237);
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AlgebraicParticle other = (AlgebraicParticle) obj;
+		if (exponent != other.exponent)
+			return false;
+		if (sign != other.sign)
+			return false;
+		return true;
+	}
 	
 }
