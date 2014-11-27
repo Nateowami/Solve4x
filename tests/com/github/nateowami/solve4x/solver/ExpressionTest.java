@@ -118,8 +118,6 @@ public class ExpressionTest {
 		ArrayList<AlgebraicParticle> a3 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("+12", new Class[]{Number.class})));
 		ArrayList<ArrayList<AlgebraicParticle>> one = new ArrayList(Arrays.asList(a1, a2, a3)), two = e1.likeTerms();
 		
-		
-		
 		assertEquals(new ArrayList(Arrays.asList(a1, a2, a3)).toString().length(), e1.likeTerms().toString().length());
 		assertEquals(new ArrayList(Arrays.asList(a1, a2, a3)), e1.likeTerms());
 	}

@@ -59,7 +59,7 @@ public class Root extends AlgebraicParticle{
 		//we're now safe to parse the expression
 		this.expr = AlgebraicParticle.getInstance(Util.removePar(root), subParts);
 		//if expr is a number
-		isConstant = Number.parseable(Util.removePar(root));//XXX number.parseable() should include decimals, which may or may not be what we want
+		isConstant = Number.parseable(Util.removePar(root));
 	}
 	
 	/**

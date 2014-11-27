@@ -47,41 +47,41 @@ public abstract class AlgebraicParticle {
 	 * @param c A list of classes to from which to try construction.
 	 * @return An AlgebraicParticle representing s.
 	 */
-	public static AlgebraicParticle getInstance(String s, Class[] c) {
-		System.out.println("ALGEBRAICPARTICLE GETINSTANCE: " + s);
+	public static AlgebraicParticle getInstance(String s, Class<? extends AlgebraicParticle>[] c) {
 		String original = s; //for debugging purposes
+		if(s.length() < 1) throw new ParsingException("Cannot construct AlgebraicParticle from empty string.");
 		
-		//take care of sign before removing parentheses
+		//take care of sign
 		boolean sign = !(s.charAt(0) == '-');
 		if(s.charAt(0) == '-' || s.charAt(0) == '+') s = s.substring(1);
 		
-		//necessary because expressions like "(4x)" need the parentheses stripped off
-		s = Util.removePar(s);
+		if(s.length() < 1) throw new ParsingException("Cannot construct AlgebraicParticle from \"" + original + "\"." );
 		
-		if(s.length() < 1){
-			throw new ParsingException("Cannot construct AlgebraicParticle with length < 1 (length < 1 is after removing any corresponding parentheses, which may affect length)");
+		//the exponent
+		int exponent = 1;
+		String ex = exponent(s);
+		if(ex.length() != 0){
+			exponent = Integer.parseInt(ex);
+			s = s.substring(0, s.length() - ex.length());
 		}
 		
-		//deal with exponent
-		//one would think Unicode would have superscript integers all together, so we could just use ranges
-		int e = s.length()-1;
-		while(e > 0 && Util.isSuperscript(Character.toString(s.charAt(e))))e--;
-		e++;//because we decrement it before checking if it's a superscript
-		int exponent = "".equals(s.substring(e)) ? 1 : Util.superscriptToInt(s.substring(e));//default to 1
-		s = s.substring(0, e);
+		if(s.length() < 1) throw new ParsingException("Cannot construct AlgebraicParticle from \"" + original +  "\".");
 		
-		//the particle we'll eventually return
-		AlgebraicParticle partical = construct(s, c);
-		
-		//check if creating it was successful
-		if(partical == null)throw new ParsingException("Failed to construct AlgebraicParticle \"" + original + "\"" 
-				+ ". With sign, exponent, and parentheses removed, it's \"" + s + "\".");
-		
-		partical.exponent = exponent;
-		partical.sign = sign;
-		return partical;		
+		//remove parentheses - necessary because expressions like "(4x)" need the parentheses stripped off
+		s = Util.removePar(s);
+			
+		//construct the algebraic particle and return
+		AlgebraicParticle partical;
+		try{
+			partical = construct(s, c);
+			partical.exponent = exponent;
+			partical.sign = sign;
+			return partical;
+		} catch (ParsingException e){
+			throw new ParsingException("Cannot construct AlgebraicParticle from \"" + original +  "\". With sign, exponent, and parentheses removed it's \"" + s + "\".");
+		}		
 	}
-
+	
 	/**
 	 * Tells if s can be parsed as an AlgebraicParticle.
 	 * @param s The string to check.
@@ -89,27 +89,26 @@ public abstract class AlgebraicParticle {
 	 * @return If s can be parsed as an AlgebraicParticle.
 	 */
 	public static boolean parseable(String s, Class<? extends AlgebraicParticle>[] c){
-		System.out.println("ALGEBRAICPARTICLE ISALGEBRAIC PARTICLE: " + s);
-		if(s.length() < 1){
-			System.out.println("IS ALGEBRAIC PARTICLE RETURNS FALSE");
-			return false;
-		}
-		
+		if (s.length() < 1)return false;
 		//remove the sign
 		if(s.charAt(0) == '-' || s.charAt(0) == '+') s = s.substring(1);
+		if (s.length() < 1)return false;
 		
-		//necessary because expressions like "(4x)" need the parentheses stripped off
+		//remove pars - necessary because expressions like "(4x)" need the parentheses stripped off
 		s = Util.removePar(s);
+		if (s.length() < 1)return false;
+		
+		//remove the exponent
+		s = s.substring(0, s.length() - exponent(s).length());
+		if (s.length() < 1)return false;
 		
 		//deal with exponent
-		int e = s.length()-1;
+		/*int e = s.length()-1;
 		while(e > 0 && Util.isSuperscript(Character.toString(s.charAt(e))))e--;
 		e++;//because we decrement it before checking if it's a superscript
-		s = s.substring(0, e);
+		s = s.substring(0, e);*/
 		
 		if(whichClass(s, c) != null) return true;
-		
-		System.out.println("IS ALGEBRAIC PARTICLE RETURNS FALSE");
 		return false;
 	}
 		
@@ -117,7 +116,7 @@ public abstract class AlgebraicParticle {
 	 * @return The string form of the algebraic particle.
 	 */
 	public abstract String getAsString();
-	
+		
 	/**
 	 * Wraps string s with the sign and exponent. The use case for this
 	 * is in a subclass of AlgebraicParticle in its getAsString() method.
@@ -180,7 +179,7 @@ public abstract class AlgebraicParticle {
 		}
 		throw new ParsingException("Cannot parse " + s + " as an algebraic particle.");
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -192,7 +191,7 @@ public abstract class AlgebraicParticle {
 		result = prime * result + (sign ? 1231 : 1237);
 		return result;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -210,6 +209,17 @@ public abstract class AlgebraicParticle {
 		if (sign != other.sign)
 			return false;
 		return true;
+	}
+	
+	/**
+	 * Extracts a superscript/exponent from the end of string <code>s</code> and returns it.
+	 * @param s The string from which to extract an exponent.
+	 * @return The exponent, as an int.
+	 */
+	private static String exponent(String s){
+		int i;
+		for(i = s.length(); i > 1 && Util.isSuperscript(Character.toString(s.charAt(i-1))); i--);
+		return i == s.length() ? "" : Integer.toString(Util.superscriptToInt(s.substring(i)));
 	}
 	
 }

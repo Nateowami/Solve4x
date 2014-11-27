@@ -39,6 +39,7 @@ public class AlgebraicParticleTest {
 		assertFalse(AlgebraicParticle.getInstance("-2x", new Class[]{Term.class}).sign());
 		assertFalse(AlgebraicParticle.getInstance("-v", all).sign());
 		assertTrue(AlgebraicParticle.getInstance("₄√(4y+x⁶)", all).sign());
+		System.out.println(AlgebraicParticle.getInstance("(2x)", all));
 	}
 
 	/**
@@ -47,8 +48,12 @@ public class AlgebraicParticleTest {
 	@Test
 	public void testExponent() {
 		assertEquals(1, AlgebraicParticle.getInstance("5", new Class[]{Number.class}).exponent());
-		assertEquals(4, AlgebraicParticle.getInstance("x(4+y)⁴", new Class[]{Term.class}).exponent());//XXX Ouch. Going to need higher precedence for exponents
 		assertEquals(12, AlgebraicParticle.getInstance("5¹²", new Class[]{Number.class}).exponent());
+		assertEquals(2, AlgebraicParticle.getInstance("(4y+6)²", new Class[]{Expression.class}).exponent());
+		assertEquals(4, AlgebraicParticle.getInstance("-y⁴", new Class[]{Variable.class}).exponent());
+		
+		assertEquals(1, AlgebraicParticle.getInstance("x(4+y)⁴", new Class[]{Term.class}).exponent());
+		assertEquals(2, AlgebraicParticle.getInstance("5(4y+6)²", new Class[]{Term.class}).exponent());
 	}
 
 	/**
@@ -76,5 +81,5 @@ public class AlgebraicParticleTest {
 		//That no class can parse an empty string
 		assertFalse(AlgebraicParticle.parseable("", all));
 	}
-
+	
 }
