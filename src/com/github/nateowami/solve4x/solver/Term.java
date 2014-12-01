@@ -54,6 +54,7 @@ public class Term extends AlgebraicParticle{
 		Solve4x.debug("Creating term: "+s);
 		//loop backwards to find a match
 		int i;
+		//-1 from s.length() because we should not try to parse the whole thing the first time
 		for(i = s.length()-1; i >=0; i--){
 			if(AlgebraicParticle.parseable(s.substring(0, i), subParts)){
 				Solve4x.debug("Creating algebraic particle: " + s.substring(0, i));
@@ -113,7 +114,7 @@ public class Term extends AlgebraicParticle{
 		}
 		return wrapWithSignAndExponent(s);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -121,7 +122,7 @@ public class Term extends AlgebraicParticle{
 	public String toString() {
 		return "Term [" + (parts != null ? "parts=" + parts : "") + "]";
 	}
-
+	
 	/** 
 	 * Tells if a specified string s may be parsed as a term
 	 * @param s The string to check.
@@ -132,6 +133,7 @@ public class Term extends AlgebraicParticle{
 		//for example, we shouldn't say "1" is a term, because it should be considered a number
 		
 		//make sure it's a list of algebraic particles
+		//don't subtract 1 from s.length() because we need to make sure it won't be able to parse the whole thing at once
 		for(int i = s.length(); i >= 0; i--){
 			//make sure it doesn't have a sign
 			if(s.length() > 0 && s.charAt(0) != '+' && s.charAt(0) != '-' && AlgebraicParticle.parseable(s.substring(0, i), subParts)){

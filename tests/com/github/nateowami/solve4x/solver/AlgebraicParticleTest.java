@@ -63,6 +63,44 @@ public class AlgebraicParticleTest {
 	@Test
 	public void testGetInstance()  {
 		assertEquals("-2x⁹(4+2)", AlgebraicParticle.getInstance("-2x⁹(4+2)", new Class[]{Term.class}).getAsString());
+		
+		AlgebraicParticle a1 = AlgebraicParticle.getInstance("2x+6²", all);
+		assertTrue(a1 instanceof Expression);
+		assertEquals(1, a1.exponent());
+		
+		AlgebraicParticle a2 = AlgebraicParticle.getInstance("(2x+6)²", all);
+		assertTrue(a2 instanceof Expression);
+		assertEquals(2, a2.exponent());
+		
+		AlgebraicParticle a3 = AlgebraicParticle.getInstance("(2x+6²)", all);
+		assertTrue(a3 instanceof Expression);
+		assertEquals(1, a3.exponent());
+		
+		AlgebraicParticle a4 = AlgebraicParticle.getInstance("2x²", all);
+		assertTrue(a4 instanceof Term);
+		assertEquals(1, a4.exponent());
+		
+		AlgebraicParticle a5 = AlgebraicParticle.getInstance("(2x)²", all);
+		assertTrue(a5 instanceof Term);
+		assertEquals(2, a5.exponent());
+		
+		AlgebraicParticle a6 = AlgebraicParticle.getInstance("(2x²)", all);
+		assertTrue(a6 instanceof Term);
+		assertEquals(1, a6.exponent());
+		
+		AlgebraicParticle a7 = AlgebraicParticle.getInstance("5²", all);
+		assertTrue(a7 instanceof Number);
+		assertEquals(2, a7.exponent());
+		
+		try {AlgebraicParticle.getInstance("(2)/(4)²", all); fail();}catch(ParsingException e){}
+		
+		try {AlgebraicParticle.getInstance("2(3)/(6)²", all); fail();}catch(ParsingException e){}
+		
+		try {AlgebraicParticle.getInstance("√(3)²", all); fail();}catch(ParsingException e){}
+		
+		AlgebraicParticle a8 = AlgebraicParticle.getInstance("x²", all);
+		assertTrue(a8 instanceof Variable);
+		assertEquals(2, a8.exponent());
 	}
 
 	/**

@@ -64,9 +64,12 @@ public class TermTest {
 	public void testParseable()  {
 		assertTrue(Term.parseable("1x"));
 		assertTrue(Term.parseable("6(34+9xy2(45x+6))"));
+		assertTrue(Term.parseable("x(4+y)⁴"));
+		
 		assertFalse(Term.parseable("6(34+9xy2(45x+6)"));
 		assertFalse(Term.parseable("xy+2"));
 		assertFalse(Term.parseable("4"));
+		assertFalse(Term.parseable("2+6"));
 	}
 
 	/**
@@ -91,14 +94,5 @@ public class TermTest {
 		assertEquals("y", new Term("4xy").getPartAt(2).getAsString());
 		assertEquals("4", new Term("xyz4").getPartAt(3).getAsString());
 	}
-
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#isTerm()}.
-	 */
-	@Test
-	public void testIsTerm() {
-		assertTrue(Term.parseable("2x"));
-		assertFalse(Term.parseable("2+6"));
-	}
-
+	
 }
