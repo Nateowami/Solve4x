@@ -113,9 +113,9 @@ public class ExpressionTest {
 	@Test
 	public void testLikeTerms()  {
 		Expression e1 = new Expression("2x²+4x-2.3x+12");
-		ArrayList<AlgebraicParticle> a1 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("2x²", new Class[]{Term.class})));
-		ArrayList<AlgebraicParticle> a2 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("+4x", new Class[]{Term.class}), AlgebraicParticle.getInstance("-2.3x", new Class[]{Term.class})));
-		ArrayList<AlgebraicParticle> a3 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("+12", new Class[]{Number.class})));
+		ArrayList<AlgebraicParticle> a1 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("2x²")));
+		ArrayList<AlgebraicParticle> a2 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("+4x"), AlgebraicParticle.getInstance("-2.3x")));
+		ArrayList<AlgebraicParticle> a3 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("+12")));
 		ArrayList<ArrayList<AlgebraicParticle>> one = new ArrayList(Arrays.asList(a1, a2, a3)), two = e1.likeTerms();
 		
 		assertEquals(new ArrayList(Arrays.asList(a1, a2, a3)).toString().length(), e1.likeTerms().toString().length());
@@ -129,21 +129,21 @@ public class ExpressionTest {
 	@Test
 	public void testLikeTermsAlgebraicParticleAlgebraicParticle()  {
 		//check variables
-		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("a", new Class[]{Variable.class}), AlgebraicParticle.getInstance("a²", new Class[]{Variable.class})));
-		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("x³", new Class[]{Variable.class}), AlgebraicParticle.getInstance("x", new Class[]{Variable.class})));
-		assertFalse(Expression.likeTerms(AlgebraicParticle.getInstance("x", new Class[]{Variable.class}), AlgebraicParticle.getInstance("a", new Class[]{Variable.class})));
+		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("a"), AlgebraicParticle.getInstance("a²")));
+		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("x³"), AlgebraicParticle.getInstance("x")));
+		assertFalse(Expression.likeTerms(AlgebraicParticle.getInstance("x"), AlgebraicParticle.getInstance("a")));
 		
 		//check constants such as numbers, mixed numbers, and constant fractions
-		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("4", new Class[]{Number.class}), AlgebraicParticle.getInstance("17.3", new Class[]{Number.class})));
-		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("(4)/(7)", new Class[]{Fraction.class}), AlgebraicParticle.getInstance("(5)/(8)", new Class[]{Fraction.class})));
-		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("4(2)/(3)", new Class[]{MixedNumber.class}), AlgebraicParticle.getInstance("1(7)/(16)", new Class[]{MixedNumber.class})));
-		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("2(4)/(5)", new Class[]{MixedNumber.class}), AlgebraicParticle.getInstance("17.3", new Class[]{Number.class})));
-		assertFalse(Expression.likeTerms(AlgebraicParticle.getInstance("(4)/(x)", new Class[]{Fraction.class}), AlgebraicParticle.getInstance("12", new Class[]{Number.class})));
-		assertFalse(Expression.likeTerms(AlgebraicParticle.getInstance("23.2", new Class[]{Number.class}), AlgebraicParticle.getInstance("(x+4)/(16)", new Class[]{Fraction.class})));
+		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("4"), AlgebraicParticle.getInstance("17.3")));
+		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("(4)/(7)"), AlgebraicParticle.getInstance("(5)/(8)")));
+		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("4(2)/(3)"), AlgebraicParticle.getInstance("1(7)/(16)")));
+		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("2(4)/(5)"), AlgebraicParticle.getInstance("17.3")));
+		assertFalse(Expression.likeTerms(AlgebraicParticle.getInstance("(4)/(x)"), AlgebraicParticle.getInstance("12")));
+		assertFalse(Expression.likeTerms(AlgebraicParticle.getInstance("23.2"), AlgebraicParticle.getInstance("(x+4)/(16)")));
 		
-		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("4x", new Class[]{Term.class}), AlgebraicParticle.getInstance("17.3x", new Class[]{Term.class})));
-		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("2y(3x-6)((4)/(5))", new Class[]{Term.class}), AlgebraicParticle.getInstance("9.2y(3x-6)((4)/(5))", new Class[]{Term.class})));
-		assertFalse(Expression.likeTerms(AlgebraicParticle.getInstance("2y(3-6)((4)/(5))", new Class[]{Term.class}), AlgebraicParticle.getInstance("9.2y(3x-6)((4)/(5))", new Class[]{Term.class})));
+		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("4x"), AlgebraicParticle.getInstance("17.3x")));
+		assertTrue(Expression.likeTerms(AlgebraicParticle.getInstance("2y(3x-6)((4)/(5))"), AlgebraicParticle.getInstance("9.2y(3x-6)((4)/(5))")));
+		assertFalse(Expression.likeTerms(AlgebraicParticle.getInstance("2y(3-6)((4)/(5))"), AlgebraicParticle.getInstance("9.2y(3x-6)((4)/(5))")));
 	}
 
 }

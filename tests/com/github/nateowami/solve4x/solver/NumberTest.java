@@ -63,14 +63,14 @@ public class NumberTest {
 		assertEquals("3", Number.add(new Number("1"), new Number("2")).getAsString());
 		assertEquals("3.737", Number.add(new Number("1.637"), new Number("2.1")).getAsString());
 		assertEquals("-3", Number.add(
-				(Number) AlgebraicParticle.getInstance("-16", new Class[]{Number.class}),
-				(Number) AlgebraicParticle.getInstance("13", new Class[]{Number.class})).getAsString());
+				(Number) AlgebraicParticle.getInstance("-16"),
+				(Number) AlgebraicParticle.getInstance("13")).getAsString());
 		assertEquals("-12.8594073465", Number.add(
-				(Number) AlgebraicParticle.getInstance("3.1415926535", new Class[]{Number.class}),
-				(Number) AlgebraicParticle.getInstance("-16.001", new Class[]{Number.class})).getAsString());
+				(Number) AlgebraicParticle.getInstance("3.1415926535"),
+				(Number) AlgebraicParticle.getInstance("-16.001")).getAsString());
 		assertEquals("23.084", Number.add(new Number("0.024"), new Number("23.06")).getAsString());
 		assertEquals("25", Number.add(new Number("23"), new Number("2")).getAsString());
-		assertEquals("0.99", Number.add((Number) AlgebraicParticle.getInstance("-1.01", new Class[]{Number.class}), new Number("2")).getAsString());
+		assertEquals("0.99", Number.add((Number) AlgebraicParticle.getInstance("-1.01"), new Number("2")).getAsString());
 		assertEquals("19.62", Number.add(new Number("6.6"), new Number("13.02")).getAsString());
 	}
 
@@ -80,9 +80,9 @@ public class NumberTest {
 	 */
 	@Test
 	public void testGetAsString()  {
-		assertEquals("-234.026", AlgebraicParticle.getInstance("-234.026", new Class[]{Number.class}).getAsString());
+		assertEquals("-234.026", AlgebraicParticle.getInstance("-234.026").getAsString());
 		assertEquals("234.6", new Number("234.6").getAsString());
-		assertEquals("-8.87", AlgebraicParticle.getInstance("-8.87", new Class[]{Number.class}).getAsString());
+		assertEquals("-8.87", AlgebraicParticle.getInstance("-8.87").getAsString());
 		assertEquals("1.0", new Number("1.0").getAsString());
 		assertEquals("1", new Number("1").getAsString());
 		assertEquals("6.03", new Number("6.03").getAsString());

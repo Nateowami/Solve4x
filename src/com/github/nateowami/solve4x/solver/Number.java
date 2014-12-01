@@ -59,10 +59,12 @@ public class Number extends AlgebraicParticle{
 	 * @param n1 The first Number
 	 * @param n2 The second Number
 	 * @return A Number equal to the value of the two numbers added
+	 * @throws 
 	 */
 	public static Number add(Number n1, Number n2) {
+		if(n1.exponent() != 1 || n2.exponent() != 1) throw new IllegalArgumentException("Connot add numbers with exponents.");
 		//convert to strings, add, and convert back to a Number
-		return (Number) AlgebraicParticle.getInstance(add(n1.getAsString(), n2.getAsString()), new Class[]{Number.class});
+		return (Number) AlgebraicParticle.getInstance(add(n1.getAsString(), n2.getAsString()), null);
 	}
 	
 	/**
@@ -93,7 +95,9 @@ public class Number extends AlgebraicParticle{
 	 * @return This Number in a string format. 
 	 */
 	public String getAsString(){
-		return (this.sign() ? "" : "-") + integer + (decimal == null ? "" : "." + decimal);
+		return wrapWithSignAndExponent(
+				integer + (decimal == null ? "" : "." + decimal)
+				);
 	}
 
 	/**
@@ -161,7 +165,6 @@ public class Number extends AlgebraicParticle{
 		}
 	    return a;
 	}
-
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -174,7 +177,6 @@ public class Number extends AlgebraicParticle{
 		result = prime * result + ((integer == null) ? 0 : integer.hashCode());
 		return result;
 	}
-
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)

@@ -31,8 +31,6 @@ public class Expression extends AlgebraicParticle{
 	//create an ArrayList for storing a list of terms
 	protected ArrayList <AlgebraicParticle>termList = new ArrayList<AlgebraicParticle>();
 	
-	private static final Class[] subParts = {Variable.class, Number.class, Fraction.class, MixedNumber.class, Root.class, Term.class};
-	
 	/**
 	 * Creates a list of terms from the expression
 	 * @param expr The expression to store as terms
@@ -40,7 +38,7 @@ public class Expression extends AlgebraicParticle{
 	Expression(String expr) {
 		String[] parts = Util.splitByNonNestedChars(expr, '+', '-');
 		for(String part : parts){
-			termList.add(AlgebraicParticle.getInstance(part, subParts));
+			termList.add(AlgebraicParticle.getInstance(part, Expression.class));
 		}
 	}
 	
@@ -92,7 +90,7 @@ public class Expression extends AlgebraicParticle{
 		String[] parts = Util.splitByNonNestedChars(expr, '+', '-');
 		if(parts.length < 2) return false;
 		for(String part : parts){
-			if(!AlgebraicParticle.parseable(part, subParts))return false;
+			if(!AlgebraicParticle.parseable(part, Expression.class))return false;
 		}
 		return true;
 	}

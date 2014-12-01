@@ -24,26 +24,13 @@ import com.github.nateowami.solve4x.Solve4x;
 
 /**
  * Provides a way to work with terms in equations.
- * Terms are represented as follows: A Term (optionally) contains a coefficient (instance of class Number),
- * and two list: one of variables, the other of Expressions. For example, the term 2&lt;3&gt;/&lt;4&gt;xy2(2x+4y)(x+y)2
- * would be represented as follows:
- * 2&lt;3&gt;/&lt;4&gt; (Number)
- * variable list:
- * 		x
- * 		y (variable with power of 2) 
- * Expression list:
- * 		(2x+4y)
- * 		(x+y)2 (Expression with power of two)
- * You can access these values with methods such as hasCoe(), getCoe(), numOfVars(), varAt(int), numOfExprs(), and exprAt(int).
- * Variables and Expressions are held in two separate arrays.
+ * Terms may be are basically a list of AlgebraicParticles.
  * @author Nateowami
  */
 public class Term extends AlgebraicParticle{
 	
 	//the list of variables in this term
 	private ArrayList<AlgebraicParticle> parts = new ArrayList<AlgebraicParticle>();
-	
-	private static final Class[] subParts = {Variable.class, MixedNumber.class, Number.class, Fraction.class, Root.class, Expression.class};
 	
 	/**
 	 * Creates a new term from a String
@@ -56,9 +43,9 @@ public class Term extends AlgebraicParticle{
 		int i;
 		//-1 from s.length() because we should not try to parse the whole thing the first time
 		for(i = s.length()-1; i >=0; i--){
-			if(AlgebraicParticle.parseable(s.substring(0, i), subParts)){
+			if(AlgebraicParticle.parseable(s.substring(0, i), Term.class)){
 				Solve4x.debug("Creating algebraic particle: " + s.substring(0, i));
-				parts.add(AlgebraicParticle.getInstance(s.substring(0, i), subParts));
+				parts.add(AlgebraicParticle.getInstance(s.substring(0, i), Term.class));
 				//reset the loop
 				s = s.substring(i);
 				i = s.length()+1;//+1 because it is about to be subtracted when the loop continues
@@ -136,7 +123,7 @@ public class Term extends AlgebraicParticle{
 		//don't subtract 1 from s.length() because we need to make sure it won't be able to parse the whole thing at once
 		for(int i = s.length(); i >= 0; i--){
 			//make sure it doesn't have a sign
-			if(s.length() > 0 && s.charAt(0) != '+' && s.charAt(0) != '-' && AlgebraicParticle.parseable(s.substring(0, i), subParts)){
+			if(s.length() > 0 && s.charAt(0) != '+' && s.charAt(0) != '-' && AlgebraicParticle.parseable(s.substring(0, i), Term.class)){
 				numParsed++;
 				//reset the loop
 				s = s.substring(i);

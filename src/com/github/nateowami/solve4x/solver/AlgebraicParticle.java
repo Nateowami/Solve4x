@@ -42,12 +42,12 @@ public abstract class AlgebraicParticle {
 	
 	/**
 	 * Constructs a new AlgebraicParticle and returns it. May be a Variable Number, Root, Fraction, Fraction, MixedNumber, Term, or Expression.
-	 * @throws ParsingException if s cannot be parsed as an algebraic particle.
 	 * @param s The string to parse as an AlgebraicParticle.
-	 * @param c A list of classes to from which to try construction.
-	 * @return An AlgebraicParticle representing s.
+	 * @param c A "blacklisted" class that will not be used (directly) in initializing this algebraic particle.
+	 * @return An AlgebraicParticle representing s (may be left null).
+	 * @throws ParsingException if s cannot be parsed as an algebraic particle.
 	 */
-	public static AlgebraicParticle getInstance(String s, Class<? extends AlgebraicParticle>[] c) {
+	public static AlgebraicParticle getInstance(String s, Class<? extends AlgebraicParticle> c) {
 		String original = s; //for debugging purposes
 		if(s.length() < 1) throw new ParsingException("Cannot construct AlgebraicParticle from empty string.");
 		
@@ -103,12 +103,23 @@ public abstract class AlgebraicParticle {
 	}
 	
 	/**
+	 * Works like {@link #getInstance(String, Class<? extends AlgebraicParticle>)}, with c 
+	 * (the class not to use) set to null.
+	 * @param s The string to parse. 
+	 * @return An algebraic particle representing s.
+	 */
+	public static AlgebraicParticle getInstance(String s){
+		return getInstance(s, null);
+	}
+	
+	/**
 	 * Tells if s can be parsed as an AlgebraicParticle.
 	 * @param s The string to check.
-	 * @param c A list of classes to check for being parseable
+	 * @param c A "blacklisted" class that will not be used (directly) in checking 
+	 * whether s can be parsed (may be left null).
 	 * @return If s can be parsed as an AlgebraicParticle.
 	 */
-	public static boolean parseable(String s, Class<? extends AlgebraicParticle>[] c){//TODO test this rewrite
+	public static boolean parseable(String s, Class<? extends AlgebraicParticle> c){
 		if (s.length() < 1)return false;
 		//remove the sign
 		if(s.charAt(0) == '-' || s.charAt(0) == '+') s = s.substring(1);
@@ -131,7 +142,17 @@ public abstract class AlgebraicParticle {
 		if(parseableBySubclasses(withExponent, s, c)) return true;
 		return false;
 	}
-		
+	
+	/**
+	 * Works like {@link #parseable(String, Class<? extends AlgebraicParticle>)} with 
+	 * c (the class not to use) set to null.
+	 * @param s The string to test.
+	 * @return If s can be parsed as an algebraic particle.
+	 */
+	public static boolean parseable(String s){
+		return parseable(s, null);
+	}
+	
 	/**
 	 * @return The string form of the algebraic particle.
 	 */
@@ -173,17 +194,15 @@ public abstract class AlgebraicParticle {
 	 * @return If a class listed in classes can construct from withExponent or exponentRemoved, 
 	 * depending on the situation (see above).
 	 */
-	static private boolean parseableBySubclasses(String withExponent, String exponentRemoved, Class<? extends AlgebraicParticle>[] classes){
-		for(Class<? extends AlgebraicParticle> i : classes){
-			String n = i.getSimpleName();
-			if(n.equals("Variable")    && Variable   .parseable(exponentRemoved)) return true;
-			if(n.equals("Number")      && Number     .parseable(exponentRemoved)) return true;
-			if(n.equals("Root")        && Root       .parseable(withExponent)) return true;
-			if(n.equals("Fraction")    && Fraction   .parseable(withExponent)) return true;
-			if(n.equals("MixedNumber") && MixedNumber.parseable(withExponent)) return true;
-			if(n.equals("Term")        && Term       .parseable(withExponent)) return true;
-			if(n.equals("Expression")  && Expression .parseable(withExponent)) return true;
-		}
+	static private boolean parseableBySubclasses(String withExponent, String exponentRemoved, Class<? extends AlgebraicParticle> bl){
+		String n = bl == null ? "" : bl.getSimpleName();
+		if(!n.equals("Variable")    && Variable   .parseable(exponentRemoved)) return true;
+		if(!n.equals("Number")      && Number     .parseable(exponentRemoved)) return true;
+		if(!n.equals("Root")        && Root       .parseable(withExponent)) return true;
+		if(!n.equals("Fraction")    && Fraction   .parseable(withExponent)) return true;
+		if(!n.equals("MixedNumber") && MixedNumber.parseable(withExponent)) return true;
+		if(!n.equals("Term")        && Term       .parseable(withExponent)) return true;
+		if(!n.equals("Expression")  && Expression .parseable(withExponent)) return true;
 		return false;
 	}
 	
@@ -200,18 +219,16 @@ public abstract class AlgebraicParticle {
 	 * @return An AlgebraicParticle, initialized with withExponent or exponentRemoved, depending
 	 * on the situation (see above).
 	 */
-	static private AlgebraicParticle construct(String withExponent, String exponentRemoved, Class<? extends AlgebraicParticle>[] classes){
-		for(Class<? extends AlgebraicParticle> i : classes){
-			String n = i.getSimpleName();
-			if(n.equals("Variable")    && Variable   .parseable(exponentRemoved))return new Variable(exponentRemoved);
-			if(n.equals("Number")      && Number     .parseable(exponentRemoved))return new Number(exponentRemoved);
-			if(n.equals("Root")        && Root       .parseable(withExponent))   return new Root(withExponent);
-			if(n.equals("Fraction")    && Fraction   .parseable(withExponent))   return new Fraction(withExponent);
-			if(n.equals("MixedNumber") && MixedNumber.parseable(withExponent))   return new MixedNumber(withExponent);
-			if(n.equals("Term")        && Term       .parseable(withExponent))   return new Term(withExponent);
-			if(n.equals("Expression")  && Expression .parseable(withExponent))   return new Expression(withExponent);
-		}
-		throw new ParsingException("Cannot parse " + withExponent + " as an algebraic particle.");
+	static private AlgebraicParticle construct(String withExponent, String exponentRemoved, Class<? extends AlgebraicParticle> bl){
+		String n = bl == null ? "" : bl.getSimpleName();
+		if(!n.equals("Variable")    && Variable   .parseable(exponentRemoved))return new Variable(exponentRemoved);
+		if(!n.equals("Number")      && Number     .parseable(exponentRemoved))return new Number(exponentRemoved);
+		if(!n.equals("Root")        && Root       .parseable(withExponent))   return new Root(withExponent);
+		if(!n.equals("Fraction")    && Fraction   .parseable(withExponent))   return new Fraction(withExponent);
+		if(!n.equals("MixedNumber") && MixedNumber.parseable(withExponent))   return new MixedNumber(withExponent);
+		if(!n.equals("Term")        && Term       .parseable(withExponent))   return new Term(withExponent);
+		if(!n.equals("Expression")  && Expression .parseable(withExponent))   return new Expression(withExponent);
+		throw new ParsingException("Cannot parse " + withExponent + " (with exponent) or " + exponentRemoved + " (exponent removed) as an algebraic particle.");
 	}
 	
 	/* (non-Javadoc)

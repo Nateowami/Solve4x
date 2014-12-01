@@ -25,8 +25,6 @@ public class Fraction extends AlgebraicParticle{
 	
 	protected AlgebraicParticle top, bottom;
 	
-	private static final Class[] subParts = {Variable.class, Root.class, MixedNumber.class, Number.class, Term.class, Expression.class};
-	
 	/**
 	 * Constructs a new Fraction.
 	 * @param frac The String from which to construct the fraction, in the form of
@@ -40,8 +38,8 @@ public class Fraction extends AlgebraicParticle{
 		if(divisionIndex < 1) throw new ParsingException("Non-parentheses-nested '/' not found in proper range (char 1 to end of string)");
 		//split the fraction at divisionIndex, but don't include the slashes or parentheses
 		//it should be in the form of (expr1)/(expr2)
-		this.top = AlgebraicParticle.getInstance(frac.substring(1, divisionIndex-1), subParts);
-		this.bottom = AlgebraicParticle.getInstance(frac.substring(divisionIndex+2, frac.length()-1), subParts);
+		this.top = AlgebraicParticle.getInstance(frac.substring(1, divisionIndex-1), Fraction.class);
+		this.bottom = AlgebraicParticle.getInstance(frac.substring(divisionIndex+2, frac.length()-1), Fraction.class);
 	}
 	
 	/**
@@ -57,8 +55,8 @@ public class Fraction extends AlgebraicParticle{
 		else return false;
 		//make sure there's ) before and ( after the slash
 		if(divisionIndex >= 2 && divisionIndex <= frac.length() - 3 && frac.charAt(divisionIndex-1) == ')' && frac.charAt(divisionIndex+1) == '('){
-			return AlgebraicParticle.parseable(frac.substring(0, divisionIndex-1), subParts) 
-					&& AlgebraicParticle.parseable(frac.substring(divisionIndex+2, frac.length()), subParts);
+			return AlgebraicParticle.parseable(frac.substring(0, divisionIndex-1), Fraction.class) 
+					&& AlgebraicParticle.parseable(frac.substring(divisionIndex+2, frac.length()), Fraction.class);
 		}
 		else return false;
 	}
