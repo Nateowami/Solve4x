@@ -39,6 +39,8 @@ public class TermTest {
 		assertEquals("2(3+zy)", new Term("2(3+zy)").getAsString());
 		assertEquals("2((3)/(xy+2))", new Term("2((3)/(xy+2))").getAsString());
 		assertEquals("4x(2-4)", new Term("4x(2-4)").getAsString());
+		assertEquals("(2x)²", AlgebraicParticle.getInstance("(2x)²").getAsString());
+		assertEquals("2x(4+6)²", AlgebraicParticle.getInstance("2x(4+6)²").getAsString());
 	}
 
 	/**

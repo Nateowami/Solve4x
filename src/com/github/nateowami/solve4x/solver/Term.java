@@ -84,22 +84,23 @@ public class Term extends AlgebraicParticle{
 	public String getAsString(){
 		String s = "";
 		//keep track of whether the previous part of the term was wrapped with parentheses
-		//this is so we can distinguish between 62 and 6(2)
+		//this is so we can distinguish between 62 and 6(2), etc.
 		boolean prevHadPar = true;
 		String prevClass = "";//the name of the class of the previous part of the term
 		for(AlgebraicParticle p : this.parts){
 			String curClass = p.getClass().getSimpleName();
-			boolean needsPar = false;
 			
-			if(curClass.equals("Expression") || curClass.equals("Fraction")) needsPar = true;
+			//if the exponent is not 1, the other class will take care of pars (if they're needed)
+			boolean needsPar =  p.exponent() == 1 && (curClass.equals("Expression") || curClass.equals("Fraction"));
+			
 			//MixedNumber and Number should only be wrapped with pars if the previous part was a number and it didn't have pars
-			else if((curClass.equals("MixedNumber") || curClass.equals("Number")) && prevClass.equals("Number")) needsPar = !prevHadPar;
+			if((curClass.equals("MixedNumber") || curClass.equals("Number")) && prevClass.equals("Number")) needsPar = !prevHadPar;
 			s += needsPar ? "(" + p.getAsString() + ")"	: p.getAsString();
 			
 			prevClass = curClass;
 			prevHadPar = needsPar;
 		}
-		return wrapWithSignAndExponent(s);
+		return wrapWithSignParAndExponent(s, true);
 	}
 	
 	/* (non-Javadoc)

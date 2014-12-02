@@ -98,7 +98,7 @@ public class MixedNumber extends AlgebraicParticle{
 	 * @return A string representation of the MixedNumber
 	 */
 	public String getAsString(){
-		return wrapWithSignAndExponent(numeral + fraction.getAsString());
+		return wrapWithSignParAndExponent(numeral + fraction.getAsString(), true);
 	}
 	
 	/* (non-Javadoc)

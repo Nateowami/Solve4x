@@ -53,7 +53,7 @@ public class AlgebraicParticleTest {
 		assertEquals(4, AlgebraicParticle.getInstance("-y⁴").exponent());
 		
 		assertEquals(1, AlgebraicParticle.getInstance("x(4+y)⁴").exponent());
-		assertEquals(2, AlgebraicParticle.getInstance("5(4y+6)²").exponent());
+		assertEquals(1, AlgebraicParticle.getInstance("5(4y+6)²").exponent());
 	}
 
 	/**

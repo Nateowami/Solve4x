@@ -95,9 +95,9 @@ public class Number extends AlgebraicParticle{
 	 * @return This Number in a string format. 
 	 */
 	public String getAsString(){
-		return wrapWithSignAndExponent(
-				integer + (decimal == null ? "" : "." + decimal)
-				);
+		return wrapWithSignParAndExponent(
+				integer + (decimal == null ? "" : "." + decimal),
+				false);
 	}
 
 	/**

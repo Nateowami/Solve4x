@@ -170,11 +170,20 @@ public abstract class AlgebraicParticle {
 	 * While this functionality could be implemented directly in the 
 	 * subclass, this will keep the code DRYer and be easier to modify.
 	 * @param s The string to be wrapped with the sign and exponent.
+	 * @param pars Tells if parentheses should also be added, if the 
+	 * exponent is not 1.
 	 * @return The wrapped version of s.
 	 */
-	protected String wrapWithSignAndExponent(String s){
-		return (sign ? "" : '-') + s + (exponent == 1 ? "" : Util.toSuperscript(Integer.toString(exponent)));
+	protected String wrapWithSignParAndExponent(String s, boolean pars){
+		//the sign
+		return (sign ? "" : '-') 
+				//the term and parentheses (if needed)
+				+ (exponent != 1 && pars ? "(" + s + ")" : s )
+				//the exponent
+				+ (exponent == 1 ? "" : Util.toSuperscript(Integer.toString(exponent)));
 	}
+	
+	
 	
 	/**
 	 * Every AlgebraicParticle needs to define its own toString() for debugging purposes.

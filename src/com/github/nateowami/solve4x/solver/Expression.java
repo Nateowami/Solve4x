@@ -78,7 +78,7 @@ public class Expression extends AlgebraicParticle{
 			//if it's not the first term, and the term isn't negative, prepend a + sign
 			expr += i != 0 && term.charAt(0) != '-' ? "+" + term : term;
 		}
-		return expr;
+		return wrapWithSignParAndExponent(expr, true);
 	}
 
 	/**

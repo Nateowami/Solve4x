@@ -119,10 +119,11 @@ public class Root extends AlgebraicParticle{
 	 */
 	@Override
 	public String getAsString() {
-		return wrapWithSignAndExponent(
+		return wrapWithSignParAndExponent(
 				//don't show nth root if it's 2 (default)
 				this.nthRoot == 2 ? "" : Util.toSubscript(Integer.toString(this.nthRoot))
-				+ "√(" + expr.getAsString() + ")");
+				+ "√(" + expr.getAsString() + ")",
+				true);
 	}
 
 	/* (non-Javadoc)

@@ -47,7 +47,7 @@ public class Variable extends AlgebraicParticle{
 	 */
 	@Override
 	public String getAsString() {
-		return wrapWithSignAndExponent(var + "");
+		return wrapWithSignParAndExponent(var + "", false);
 	}
 	
 	/* (non-Javadoc)
