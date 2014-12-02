@@ -44,6 +44,7 @@ public abstract class AlgebraicParticle {
 	 * Constructs a new AlgebraicParticle and returns it. May be a Variable Number, Root, Fraction, Fraction, MixedNumber, Term, or Expression.
 	 * @param s The string to parse as an AlgebraicParticle.
 	 * @param c A "blacklisted" class that will not be used (directly) in initializing this algebraic particle.
+	 * Will be ignored if s is parenthesized.
 	 * @return An AlgebraicParticle representing s (may be left null).
 	 * @throws ParsingException if s cannot be parsed as an algebraic particle.
 	 */
@@ -82,6 +83,7 @@ public abstract class AlgebraicParticle {
 		if(rmPars.length() != s.length()){
 			s = rmPars;
 			withExponent = rmPars;
+			c = null;
 		}
 			
 		//construct the algebraic particle and return
@@ -115,7 +117,8 @@ public abstract class AlgebraicParticle {
 	/**
 	 * Tells if s can be parsed as an AlgebraicParticle.
 	 * @param s The string to check.
-	 * @param c A "blacklisted" class that will not be used (directly) in checking 
+	 * @param c A "blacklisted" class that will not be used (directly) in checking. Will be ignored if
+	 * s is parenthesized.
 	 * whether s can be parsed (may be left null).
 	 * @return If s can be parsed as an AlgebraicParticle.
 	 */
@@ -136,6 +139,7 @@ public abstract class AlgebraicParticle {
 		if(rmPars.length() != s.length()){
 			s = rmPars;
 			withExponent = rmPars;
+			c = null;
 		}
 		if (s.length() < 1)return false;
 		
@@ -182,8 +186,6 @@ public abstract class AlgebraicParticle {
 				//the exponent
 				+ (exponent == 1 ? "" : Util.toSuperscript(Integer.toString(exponent)));
 	}
-	
-	
 	
 	/**
 	 * Every AlgebraicParticle needs to define its own toString() for debugging purposes.
