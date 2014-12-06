@@ -7,9 +7,9 @@ The goal of this program is to generate a lesson explaining how to solve a given
 General Progress
 ================
 * GUI - 95% finished.  Colors need some changing, and adding a texture may be necessary. 
-* Core solver/parser - Started (about 75%); relies on classes that contain solving algorithms.
-* Solving algorithms - Not started, up next in line for getting worked on.
-* Equation validator - (95%) appears to be working, but may simply be scrapped as the parser practically impliments one itself.
+* Core solver/parser - Finished, but will need modifications. relies on classes that contain solving algorithms.
+* Solving algorithms - Barely started, up next in line for getting worked on.
+* Equation validator - Finished, but will need modifications.
 * Renderer - Not started, except for a command line version intended for debugging.
 
 Documentation

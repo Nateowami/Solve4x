@@ -59,7 +59,7 @@ public class Number extends AlgebraicParticle{
 	 * @param n1 The first Number
 	 * @param n2 The second Number
 	 * @return A Number equal to the value of the two numbers added
-	 * @throws 
+	 * @throws IllegalArgumentException if either of the numbers have exponents other than 1.
 	 */
 	public static Number add(Number n1, Number n2) {
 		if(n1.exponent() != 1 || n2.exponent() != 1) throw new IllegalArgumentException("Connot add numbers with exponents.");

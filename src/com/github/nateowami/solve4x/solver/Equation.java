@@ -31,7 +31,7 @@ public class Equation {
 	
 	//exprs holds expressions (one if this equation is just representing an 
 	//expression, two if it's representing an equation
-	private Expression exprs[];
+	private AlgebraicParticle exprs[];
 	
 	/**
 	 * Creates an equation by turning it into two expressions
@@ -39,36 +39,9 @@ public class Equation {
 	 * equation, which can be just an expression if necessary
 	 */
 	public Equation(String eq) {
-		Solve4x.debug("Creating Equation from String: " + eq);
-		//find the = sign
-		int i; //needs to be used outside loop
-		//tells if an = sign was even found
-		boolean found = false;
-		for(i = 0; i < eq.length(); i++){
-			//if it's an equals sign
-			if(eq.charAt(i) == '='){
-				//say we found it
-				found = true;
-				//we found the = sign, we're done now (i is index of =)
-				break;
-			}
-		}
-		
-		//if an = sign was found
-		if(found){
-			//create the array and add two expressions to it
-			exprs = new Expression[2];
-			exprs[0] = new Expression(eq.substring(0, i));
-			exprs[1] = new Expression(eq.substring(i+1, eq.length()));
-		}
-		//no = sign found
-		else{
-			exprs = new Expression[1];
-			exprs[0] = new Expression(eq);
-		}
-		//debug
-		Solve4x.debug("Equation created. " + this.getAsString());
-		
+		int i = eq.indexOf('=');
+		if (i < 0) exprs = new Expression[]{new Expression(eq.substring(0, i)), new Expression(eq.substring(i+1))};
+		else exprs = new Expression[]{new Expression(eq)};
 	}
 	
 	/**
@@ -76,7 +49,7 @@ public class Equation {
 	 *Needs to be 0 or 1.
 	 * @return The expression at index i
 	 */
-	public Expression getExpression(int i){
+	public AlgebraicParticle getExpression(int i){
 		Solve4x.debug("about to return expression from equation. index is: " + i);
 		return exprs[i];
 	}
@@ -91,7 +64,12 @@ public class Equation {
 	public int getSize(){
 		return exprs.length;
 	}
-
+	
+	public static boolean parseable(String eq){
+		int i = eq.indexOf('=');
+		return i == -1 && Expression.parseable(eq) || Expression.parseable(eq.substring(0, i)) && Expression.parseable(eq.substring(i+1));
+	}
+	
 	/**
 	 * Sets the specified expression in this equation to the specified expression
 	 * @param expr The expression you want to change it to 
@@ -115,7 +93,6 @@ public class Equation {
 		}
 		return eq;
 	}
-
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -127,7 +104,6 @@ public class Equation {
 		result = prime * result + Arrays.hashCode(exprs);
 		return result;
 	}
-
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -145,6 +121,5 @@ public class Equation {
 			return false;
 		return true;
 	}
-
 	
 }
