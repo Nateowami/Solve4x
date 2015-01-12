@@ -27,19 +27,34 @@ public abstract class AlgebraicParticle {
 	private boolean sign = true;
 	
 	/**
+	 * Constructs a new AlgebraicParticle (only usable by subclasses because AlgebraicParticle is abstract).
+	 * @param sign The sign of the AlgebraicParticle.
+	 * @param exponent The exponent of the AlgebraicParticle.
+	 */
+	protected AlgebraicParticle(boolean sign, int exponent) {
+		this.sign = sign;
+		this.exponent = exponent;
+	}
+	
+	/**
+	 * An empty constructor for AlgebraicParticle (only usable by subclasses because AlgebraicParticle is abstract).
+	 */
+	protected AlgebraicParticle(){};
+	
+	/**
 	 * @return The sign of the AlgebraicParticle (true for +, false for -).
 	 */
 	public boolean sign(){
 		return sign;
 	}
-		
+	
 	/**
 	 * @return The exponent of the AlgebraicParticle.
 	 */
 	public int exponent(){
 		return this.exponent;
 	}
-	
+		
 	/**
 	 * Constructs a new AlgebraicParticle and returns it. May be a Variable Number, Root, Fraction, Fraction, MixedNumber, Term, or Expression.
 	 * @param s The string to parse as an AlgebraicParticle.
@@ -161,7 +176,7 @@ public abstract class AlgebraicParticle {
 	 * @return The string form of the algebraic particle.
 	 */
 	public abstract String getAsString();
-		
+	
 	/**
 	 * Wraps string s with the sign and exponent. The use case for this
 	 * is in a subclass of AlgebraicParticle in its getAsString() method.
@@ -241,6 +256,13 @@ public abstract class AlgebraicParticle {
 		if(!n.equals("Expression")  && Expression .parseable(withExponent))   return new Expression(withExponent);
 		throw new ParsingException("Cannot parse " + withExponent + " (with exponent) or " + exponentRemoved + " (exponent removed) as an algebraic particle.");
 	}
+	
+	/**
+	 * Clones the AlgebraicParticle with a new sign.
+	 * @param sign The sign for the new AlgebraicParticle. May be null, in which case the current sign will be used.
+	 * @return An almost-clone of AlgebraicParticle.
+	 */
+	public abstract AlgebraicParticle cloneWithNewSign(Boolean sign);
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()

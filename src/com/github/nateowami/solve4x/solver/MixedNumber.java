@@ -17,15 +17,13 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-
-
 /**
  * Holds a fraction and integer value, which can be used as an exponent.
  * @author Nateowami
  */
 public class MixedNumber extends AlgebraicParticle{
 	
-	private int numeral;
+	private Number numeral;
 	private Fraction fraction;
 	
 	/**
@@ -33,41 +31,48 @@ public class MixedNumber extends AlgebraicParticle{
 	 * @param frac The string from which to construct it.
 	 */
 	protected MixedNumber(String frac) {
-		//figure out how much is the numeral
-		int i = 0;
-		while(i < frac.length() && frac.charAt(i) >= '0' && frac.charAt(i) <= '9')i++;
 		//set the integer part
-		this.numeral = Integer.parseInt(frac.substring(0, i));
-		this.fraction = new Fraction(frac.substring(i));
+		this.numeral = new Number(frac.substring(0, frac.indexOf('(')));
+		this.fraction = new Fraction(frac.substring(frac.indexOf('(')));
 	}
-
+	
+	/**
+	 * Constructs a new MixedNumber.
+	 * @param numeral The numeral part of the number.
+	 * @param fraction The fraction part of the number.
+	 */
+	public MixedNumber(Number numeral, Fraction fraction) {
+		this.numeral = numeral;
+		this.fraction = fraction;
+	}
+	
+	/**
+	 * Constructs a new MixedNumber.
+	 * @param sign The sign of the MixedNumber.
+	 * @param numeral The numeral part of the MixedNumber.
+	 * @param fraction The fraction part of the MixedNumber.
+	 * @param exponent The exponent of the MixedNumber.
+	 */
+	public MixedNumber(boolean sign, Number numeral, Fraction fraction, int exponent) {
+		super(sign, exponent);
+		this.numeral = numeral;
+		this.fraction = fraction;
+	}
+	
 	/**
 	 * Tells if s is a Mixed Number.
-	 * @param frac The string to check.
-	 * @return If frac can be parsed as a MixedNumber.
+	 * @param s The string to check.
+	 * @return If s can be parsed as a MixedNumber.
 	 */
-	public static boolean parseable(String frac){
-		//basically this is a match of the regex \d+\(\d+\)/\(\d+\), e.g. 2(3)/(4)
-		//figure out how much is the numeral
-		int i = 0;
-		while(i < frac.length() && frac.charAt(i) >= '0' && frac.charAt(i) <= '9')i++;
-		//i is now index of last integer char
-		if(i == 0) return false; //integer part is required
-		//remove the integer part
-		frac = frac.substring(i);
-		//make sure frac is in the form of (2)/(3)
-		if (frac.length() < 7) return false;//there's no way for it to be parseable and less than 7 chars
-		if (frac.charAt(0) != '(' || frac.charAt(frac.length()-1) != ')') return false;
-		frac = frac.substring(1, frac.length()-1);//remove first and last chars
-		int middle = frac.indexOf(")/(");
-		if (middle < 1) return false;
-		String top = frac.substring(0, middle), bottom = frac.substring(middle+3, frac.length());
-		try{
-			//they must be integers and the bottom must be greater
-			return Integer.parseInt(top) < Integer.parseInt(bottom);
-		} catch(NumberFormatException e){
-			return false;
-		}
+	public static boolean parseable(String s){
+		int j = s.indexOf('(');
+		if(j < 1) return false;
+		if(!Util.areAllNumerals(s.substring(0, j)))return false;
+		String frac = s.substring(j);
+		//make sure frac matches (<numerals>)/(<numerals>)
+		int i = frac.indexOf(")/(");
+		return i > 1 && frac.charAt(0) == '(' && frac.charAt(frac.length()-1) == ')' 
+				&& Util.areAllNumerals(frac.substring(1, i)) && Util.areAllNumerals(frac.substring(i+3, frac.length() - 1));
 	}
 	
 	/**
@@ -80,10 +85,10 @@ public class MixedNumber extends AlgebraicParticle{
 	/**
 	 * @return The numeral part of the MixedNumber.
 	 */
-	public int getNumeral() {
+	public Number getNumeral() {
 		return numeral;
 	}
-
+	
 	/**
 	 * Tells if the mixed number is fully simplified, that is, that the fraction part is
 	 * positive (both on top and bottom) and is fully simplified.
@@ -98,7 +103,7 @@ public class MixedNumber extends AlgebraicParticle{
 	 * @return A string representation of the MixedNumber
 	 */
 	public String getAsString(){
-		return wrapWithSignParAndExponent(numeral + fraction.getAsString(), true);
+		return wrapWithSignParAndExponent(numeral.getAsString() + fraction.getAsString(), true);
 	}
 	
 	/* (non-Javadoc)
@@ -109,7 +114,18 @@ public class MixedNumber extends AlgebraicParticle{
 		return "MixedNumber [numeral=" + numeral + ", fraction=" + fraction
 				+ ", sign()=" + sign() + ", exponent()=" + exponent() + "]";
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
+	 */
+	@Override
+	public MixedNumber cloneWithNewSign(Boolean sign) {
+		return new MixedNumber(sign == null ? this.sign() : sign,
+				this.numeral,
+				this.fraction,
+				this.exponent()
+				);
+	}
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -120,10 +136,9 @@ public class MixedNumber extends AlgebraicParticle{
 		int result = super.hashCode();
 		result = prime * result
 				+ ((fraction == null) ? 0 : fraction.hashCode());
-		result = prime * result + numeral;
+		result = prime * result + ((numeral == null) ? 0 : numeral.hashCode());
 		return result;
 	}
-
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -142,9 +157,22 @@ public class MixedNumber extends AlgebraicParticle{
 				return false;
 		} else if (!fraction.equals(other.fraction))
 			return false;
-		if (numeral != other.numeral)
+		if (numeral == null) {
+			if (other.numeral != null)
+				return false;
+		} else if (!numeral.equals(other.numeral))
 			return false;
 		return true;
+	}
+	
+	/**
+	 * Adds a and b.
+	 * @param a The first MixedNumber to add.
+	 * @param b The second MixedNumber to add.
+	 * @return a and b added.
+	 */
+	public static AlgebraicParticle add(MixedNumber a, MixedNumber b) {
+		return new MixedNumber(Number.add(a.numeral, b.numeral), Fraction.add(a.fraction, b.fraction));
 	}
 	
 }

@@ -17,6 +17,8 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import java.util.ArrayList;
+
 /**
  * Represents a single step in solving or simplifying an equation or expression.
  * Each step tracks difficulty, explanation, and an equation.
@@ -25,7 +27,7 @@ package com.github.nateowami.solve4x.solver;
 public class Step {
 	
 	private int difficulty;
-	String explanation;
+	ArrayList<Object> explanation = new ArrayList<Object>();
 	Equation eq;
 	
 	/**
@@ -34,16 +36,18 @@ public class Step {
 	 * @param explanation An explanation for how this step works.
 	 * @param difficulty The difficulty associated with this step.
 	 */
-	public Step(Equation eq, String explanation, int difficulty){
-		this.explanation = explanation;
+	public Step(Equation eq, int difficulty){
+		this.eq = eq;
 		this.difficulty = difficulty;
-		this.explanation = explanation;
 	}
 	
 	/**
-	 * @return the explanation for this step
+	 * Returns an explanation for the step, in an ArrayList&lt;Object&gt;. Each object is
+	 * guaranteed to be of type String or AlgebraicParticle. That way strings and algebra
+	 * can be rendered together later (algebra can't always be rendered nicely as strings).
+	 * @return the explanation for this step.
 	 */
-	public String getExplanation() {
+	public ArrayList<Object> getExplanation() {
 		return explanation;
 	}
 	
@@ -61,13 +65,54 @@ public class Step {
 		return difficulty;
 	}
 	
+	/**
+	 * Appends the given string s to the explanation.
+	 * @param s The string to append to the explanation.
+	 * @return Returns this so you can chain methods.
+	 */
+	public Step explain(String s){
+		this.explanation.add(s);
+		return this;
+	}
+	
+	/**
+	 * Appends the given AlgebraicParticle a to the explanation. This is useful, if, for 
+	 * example, you need an explanation such as "combine 2x(3+4) and 2y". That way, algebra 
+	 * can be rendered however later. 
+	 * @param a The AlgebraicParticle to append.
+	 * @return Returns this so you can chain methods.
+	 */
+	public Step explain(AlgebraicParticle a){
+		this.explanation.add(a);
+		return this;
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return "Step [difficulty=" + difficulty + ", explanation="
-				+ explanation + "]";
+				+ explanation + ", eq=" + eq + "]";
+	}
+
+	
+	/**
+	 * Turns a list of AlgebraicParticles into an English list and adds it to the explanation. 
+	 * For example, an array of [2x, 4y, 2+6] would become "2x, 4y, and 2+6". If the length of
+	 * the given array is 1, it is simply added to the explanation. If the list has a length 
+	 * of two, it is added in the form of "2x and 4y"
+	 * @param list The list to add to the explanation.
+	 * @return Returns this so you can chain methods.
+	 */
+	public Step list(ArrayList<AlgebraicParticle> list) {
+		if(list.size() == 1) explain(list.get(0));
+		else if (list.size() == 2) explain(list.get(0)).explain(" and ").explain(list.get(1));
+		else {
+			for (int i = 0; i < list.size()-1; i++)	explain(list.get(i)).explain(", ");
+			explain("and ").explain(list.get(list.size() - 1));	
+		}
+		return this;
 	}
 	
 }

@@ -33,19 +33,19 @@ public class EquationTest {
 	@Test
 	public void testEquation()  {
 		Equation eq = new Equation("23x2y+14x=6(34xy2+7)");
-		assertEquals("23x2y+14x", eq.getExpression(0).getAsString());
-		assertEquals("6(34xy2+7)", eq.getExpression(1).getAsString());
+		assertEquals("23x2y+14x", eq.getPartAt(0).getAsString());
+		assertEquals("6(34xy2+7)", eq.getPartAt(1).getAsString());
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#getExpression(int)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#getPartAt(int)}.
 	 * @ 
 	 */
 	@Test
 	public void testGetExpression()  {
 		Equation eq = new Equation("12x2y(34+6xa)=45+6x(4+85xy5)");
-		assertEquals("12x2y(34+6xa)", eq.getExpression(0).getAsString());
-		assertEquals("45+6x(4+85xy5)", eq.getExpression(1).getAsString());
+		assertEquals("12x2y(34+6xa)", eq.getPartAt(0).getAsString());
+		assertEquals("45+6x(4+85xy5)", eq.getPartAt(1).getAsString());
 	}
 
 	/**
@@ -59,20 +59,7 @@ public class EquationTest {
 		Equation eq2 = new Equation("2x+45(45+16x2y)");
 		assertEquals(1, eq2.getSize());
 	}
-
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#setExpression(java.lang.String, int)}.
-	 * @ 
-	 */
-	@Test
-	public void testSetExpression()  {
-		Equation eq = new Equation("12x2y(34+6xa)=45+6x(4+85xy5)");
-		eq.setExpression("23x+6", 0);
-		eq.setExpression("s+yz", 1);
-		assertEquals("23x+6", eq.getExpression(0).getAsString());
-		assertEquals("s+yz", eq.getExpression(1).getAsString());
-	}
-
+	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#getAsString()}.
 	 * @ 

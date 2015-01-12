@@ -17,6 +17,7 @@
  */
 package com.github.nateowami.solve4x.visual;
 
+import com.github.nateowami.solve4x.solver.AlgebraicParticle;
 import com.github.nateowami.solve4x.solver.Solution;
 import com.github.nateowami.solve4x.solver.Step;
 
@@ -52,6 +53,13 @@ public class Visual {
 	 */
 	private static void printStep(Step step){
 		System.out.println("\t" + step.getEquation());
-		System.out.println("\tExplanation: " + step.getExplanation());
+		System.out.println("\tExplanation: ");
+		//now print the explanation, which has strings and AlgebraicParticles
+		for(int i = 0; i < step.getExplanation().size(); i++){
+			Object o = step.getExplanation().get(i);
+			if(o instanceof String) System.out.println(o);
+			else System.out.println(((AlgebraicParticle)o).getAsString());
+		}
 	}
+
 }

@@ -17,8 +17,6 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-
-
 /**
  * Holds a root for any expression, e.g √(4x+6)
  * @author Nateowami
@@ -26,9 +24,8 @@ package com.github.nateowami.solve4x.solver;
 public class Root extends AlgebraicParticle{
 	
 	//the root (e.g. 4th root, 2nd root (square root), nth root)
-	private int nthRoot;
-	private AlgebraicParticle expr;
-	private boolean isConstant;
+	private final int nthRoot;
+	private final AlgebraicParticle expr;
 	
 	/**
 	 * Constructs a new Root
@@ -56,10 +53,24 @@ public class Root extends AlgebraicParticle{
 		}
 		//we're now safe to parse the expression
 		this.expr = AlgebraicParticle.getInstance(Util.removePar(root), Root.class);
-		//if expr is a number
-		isConstant = Number.parseable(Util.removePar(root));
 	}
 	
+	/**
+	 * Constructs a new Root.
+	 * @param sign The sign of the root.
+	 * @param nthRoot The number outside the radical (e.g. 3 in a cubic root, 2 in a square root).
+	 * @param expr The expression under the radical sign.
+	 * @param exponent The power to which the root is raised.
+	 */
+	public Root(boolean sign, int nthRoot, AlgebraicParticle expr, int exponent) {
+		super(sign, exponent);
+		this.nthRoot = nthRoot;
+		this.expr = expr;
+	}
+	
+
+
+
 	/**
 	 * Tells if root is a valid root, in the form of <i>subscript</i>√<i>expression</i>. 
 	 * e.g. ₄√(4x+6). Parentheses are only necessary for more than one term.
@@ -89,14 +100,14 @@ public class Root extends AlgebraicParticle{
 		}
 		
 	}
-
+	
 	/**
 	 * @return The nth root (e.g. 2 for a square root, 4 for a fourth root).
 	 */
 	public int getNthRoot() {
 		return this.nthRoot;
 	}
-
+	
 	/**
 	 * @return The expression under the radical sign.
 	 */
@@ -111,9 +122,9 @@ public class Root extends AlgebraicParticle{
 	 * @return If the Root is constant.
 	 */
 	public boolean isConstant(){
-		return isConstant;
+		return Util.constant(this.expr);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#getAsString()
 	 */
@@ -125,19 +136,28 @@ public class Root extends AlgebraicParticle{
 				+ "√(" + expr.getAsString() + ")",
 				true);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Root [nthRoot=" + nthRoot + ", "
-				+ (expr != null ? "expr=" + expr + ", " : "") + "isConstant="
-				+ isConstant + ", sign()=" + sign() + ", exponent()="
-				+ exponent() + "]";
+		return "Root [nthRoot=" + nthRoot + ", expr=" + expr + ", sign()="
+				+ sign() + ", exponent()=" + exponent() + "]";
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
+	 */
+	@Override
+	public AlgebraicParticle cloneWithNewSign(Boolean sign) {
+		return new Root(sign == null ? this.sign() : sign,
+				this.nthRoot,
+				this.expr,
+				this.exponent()
+				);
 	}
 
-	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -146,11 +166,9 @@ public class Root extends AlgebraicParticle{
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((expr == null) ? 0 : expr.hashCode());
-		result = prime * result + (isConstant ? 1231 : 1237);
 		result = prime * result + nthRoot;
 		return result;
 	}
-
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -168,8 +186,6 @@ public class Root extends AlgebraicParticle{
 			if (other.expr != null)
 				return false;
 		} else if (!expr.equals(other.expr))
-			return false;
-		if (isConstant != other.isConstant)
 			return false;
 		if (nthRoot != other.nthRoot)
 			return false;

@@ -44,9 +44,9 @@ public class MixedNumberTest {
 	@Test
 	public void testParseable() {
 		assertTrue(MixedNumber.parseable("1(3)/(4)"));
-		assertTrue(MixedNumber.parseable("1(-5)/(6)"));
+		assertFalse(MixedNumber.parseable("1(-5)/(6)"));
 		assertTrue(MixedNumber.parseable("5(1)/(6)"));
-		assertFalse(MixedNumber.parseable("5(19)/(1)"));
+		assertTrue(MixedNumber.parseable("5(19)/(1)"));
 		assertFalse(MixedNumber.parseable("656/8"));
 		assertFalse(MixedNumber.parseable("-6(56)/(8)"));
 	}
@@ -69,10 +69,10 @@ public class MixedNumberTest {
 	 */
 	@Test
 	public void testGetNumeral()  {
-		assertEquals(4, new MixedNumber("4(2)/(3)").getNumeral());
-		assertEquals(1, new MixedNumber("1(2)/(3)").getNumeral());
-		assertEquals(85, new MixedNumber("85(-2)/(73)").getNumeral());
-		assertEquals(35, new MixedNumber("35(1)/(2)").getNumeral());
+		assertEquals("4", new MixedNumber("4(2)/(3)").getNumeral().getAsString());
+		assertEquals("1", new MixedNumber("1(2)/(3)").getNumeral().getAsString());
+		assertEquals("85", new MixedNumber("85(-2)/(73)").getNumeral().getAsString());
+		assertEquals("35", new MixedNumber("35(1)/(2)").getNumeral().getAsString());
 	}
 
 	/**

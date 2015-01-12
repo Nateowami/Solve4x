@@ -19,226 +19,335 @@ package com.github.nateowami.solve4x.algorithm;
 
 import java.util.ArrayList;
 
-import com.github.nateowami.solve4x.Solve4x;
 import com.github.nateowami.solve4x.solver.AlgebraicParticle;
 import com.github.nateowami.solve4x.solver.Algorithm;
 import com.github.nateowami.solve4x.solver.Equation;
 import com.github.nateowami.solve4x.solver.Expression;
+import com.github.nateowami.solve4x.solver.Fraction;
+import com.github.nateowami.solve4x.solver.MixedNumber;
 import com.github.nateowami.solve4x.solver.Number;
+import com.github.nateowami.solve4x.solver.Root;
 import com.github.nateowami.solve4x.solver.Step;
 import com.github.nateowami.solve4x.solver.Term;
+import com.github.nateowami.solve4x.solver.Util;
+import com.github.nateowami.solve4x.solver.Variable;
 
 /**
  * @author Nateowami
  */
 public class CombineLikeTerms implements Algorithm {
-
-	/**
-	 * Combines like terms in a given equation
-	 * 
-	 * @param equation
-	 *            The equation to combine terms in
-	 * @return A Step with this algorithm applied @
-	 */
+	
 	@Override
 	public Step execute(Equation equation) {
-		// figure out how many like terms there are in each expression
-
-		// which expression has the most like terms
-		int whichHasMost = 0;
-		// and how many like terms it has
-		int numOfLikeTerms = 0;
-		// now loop through to figure out which expression needs to be
-		// simplified the most
-		for (int i = 0; i < equation.getSize(); i++) {
-			// temp variable
-			int temp;
-			// if the current expression needs simplifying more than any up to
-			// this point
-			if ((temp = howManyLike(equation.getExpression(i))) > numOfLikeTerms) {
-				// set the vars most and numbOfLikeTerms
-				whichHasMost = i;
-				numOfLikeTerms = temp;
+		//find the expression most in need of simplifying
+		ArrayList<ArrayList<AlgebraicParticle>> mostLikeTerms = null;
+		int maxDiff = 0, index = 0;
+		
+		//loop over the expressions
+		for(int i = 0; i < equation.getSize(); i++){
+			//if it's not an Expression we're not interested
+			if(!(equation.getPartAt(i) instanceof Expression))continue;
+			
+			Expression expr = (Expression) equation.getPartAt(i);
+			
+			ArrayList<ArrayList<AlgebraicParticle>> terms = listCombineableTerms(expr);
+			//if this expression is in more need of simplifying than any so far
+			if (maxDiff < expr.length() - terms.size()){
+				maxDiff = expr.length() - terms.size();
+				mostLikeTerms = terms;
+				index = i;
 			}
 		}
-
-		// now that we've done that we know that we need to simplify the
-		// expression at index whichHasMost
-		Expression expr = equation.getExpression(whichHasMost);
-
-		// now figure out which type of term needs to be combined most
-
-		// how many there are of a particular type
-		int numOfType = 0;
-		// and what that type is
-		String type = "";
-		// loop through the terms
-		for (int i = 0; i < expr.length(); i++) {
-			// temp variable
-			int temp;
-			// if the number of of the current type is greater than any found
-			// earlier
-			if ((temp = numLikeThis(expr, expr.termAt(i))) > numOfType) {
-				// update vars numOfType and type
-				numOfType = temp;
-				type = expr.termAt(i).getBody();
-			}
+		//simplify mostLikeTerms
+		Expression expr = combineLikeTerms(equation.getPartAt(index).sign(), mostLikeTerms, equation.getPartAt(index).exponent());
+		
+		Step step = new Step(equation.cloneWithNewExpression(expr, index), 5/*TODO*/);
+		//create the explanation
+		step.explain("We need to combine like terms here, in the expression ").explain(equation.getPartAt(index)).explain(".\n");
+		for(int i = 0; i < mostLikeTerms.size(); i++){
+			step.explain("Combine ").list(mostLikeTerms.get(i)).explain(" to get ").explain(expr.termAt(i)).explain(".\n");
 		}
-
-		// now we know that we need to combine all terms of type body
-		// arraylist of terms for the output
-		ArrayList<Term> terms = new ArrayList<Term>();
-		// and the index for us to combine terms at
-		int index = -1;
-		// ArrayList of terms we will combine
-		ArrayList<Term> combinedTerms = new ArrayList<Term>();
-		for (int i = 0; i < expr.length(); i++) {
-			// if the current term is not the type that we're combining
-			if (!expr.termAt(i).getBody().equals(type)) {
-				// add it to the list of terms that we don't modify
-				terms.add(expr.termAt(i));
-			}
-			// this is one of the terms we need to combine
-			else {
-				// add it to the list of the terms to combine
-				combinedTerms.add(expr.termAt(i));
-				// and if this is the first term we've added
-				if (index == -1) {
-					// set the index of the first term that we're combining
-					// we do this so all of these terms combined into one will
-					// be at the index the first one was found at
-					index = i;
-				}
-			}
-		}
-
-		// now we need to combine the all the terms in combinedTerms and add the
-		// result to
-		// terms at the index specified by index
-
-		// first make a list of the numbers/coefficients of the terms to combine
-		Number coefficients[] = new Number[combinedTerms.size()];
-		// add the coefficients of each term to the coefficients array
-		for (int i = 0; i < coefficients.length; i++) {
-			// if it has a coefficient
-			if (combinedTerms.get(i).hasCoe()) {
-				// and if the coefficient is negative, add a - in front of it
-				coefficients[i] = combinedTerms.get(i).getCoe();
-				Solve4x.debug("Just set coefficients[" + i + "] to "
-						+ coefficients[i]);
-			}
-		}
-		// the value of all the coefficients we'll add
-		Number numSoFar = new Number("0");
-		// add all the coefficients
-		for (int i = 0; i < coefficients.length; i++) {
-			// add numSoFar and the current number
-			numSoFar = Number.add(numSoFar, coefficients[i]);
-		}
-		// now the coefficient of the combined term will be numSoFar
-		// add the coefficient and the term type to create a term
-		Term finalTerm = new Term(numSoFar.getAsString() + type);
-		// now add that to the list of terms at index "index"
-		Solve4x.debug("Adding the final term: " + finalTerm.getAsString());
-		terms.add(index, finalTerm);
-
-		// convert that to an expression
-		String finalExpression = "";
-		// put the expression together
-		for (int i = 0; i < terms.size(); i++) {
-			// XXX probably doesn't take signs into account
-			Solve4x.debug("Adding a term to the final expression: "
-					+ terms.get(i).getAsString());
-			finalExpression += terms.get(i).getAsString();// here's where I
-															// forgot to append
-															// .getAsString()
-															// disaster :(
-		}
-		// now that we have the final expression we need to take a take the
-		// expressions we didn't simplify and mush them together into an
-		// equation
-		equation.setExpression(finalExpression, whichHasMost);
-		// now create a string from the equation XXX will not support systems of
-		// equations
-		String finalEquation = equation.getAsString();
-		// the explanation for this algorithm
-		String lameExplanation = "We're combining the terms and the result is "
-				+ finalTerm.getAsString() + ".";
-		// an array containing only one expression
-		String steps[] = { finalEquation };
-		Solve4x.debug("Step created and ready to return. The final equation is: "
-				+ finalEquation);
-		// the final step
-		return new Step(steps, lameExplanation, 4);
+		return step;
 	}
-
-	/**
-	 * Tells how smart it is to use this algorithm to the specified equation
-	 * 
-	 * @param equation
-	 *            The equation to check
-	 * @return On a scale 0-9 how smart it is to use this algorithm on this
-	 *         equation
-	 */
+	
 	@Override
 	public int smarts(Equation equation) {
-		// find which expression needs simplifying the most
-		int num = 0;
-		for (int i = 0; i < equation.getSize(); i++) {
-			int temp;
-			if ((temp = howManyLike(equation.getExpression(i))) > num) {
-				num = temp;
-			}
+		//count how many terms are like: if none, return 0, if 2, return 7, if more, return 9
+		int numLike = 0;
+		for(int i = 0; i < equation.getSize(); i++){
+			//we're not interested if it's not an expression
+			if(!(equation.getPartAt(i) instanceof Expression))continue;
+			Expression expr = (Expression) equation.getPartAt(i);
+			ArrayList<ArrayList<AlgebraicParticle>> likeTerms = listCombineableTerms(expr);
+			//if there are two less types of terms than there are total terms
+			if (likeTerms.size() + 1 < expr.length())return 9;
+			//if there are just two terms alike
+			else if (likeTerms.size() < expr.length())numLike += 2;
+			if(numLike > 2) return 9;
 		}
-		//return the smartness
-		if(num < 4) return num * 2;
-		else return 9;
+		if(numLike == 2)return 7;
+		return 0;
 	}
-
+	
 	/**
-	 * Tells how many terms in a given expression are alike For example
-	 * 3x+4x+5x+5x4+2x4 will return 3
-	 * 
-	 * @param expr
-	 *            The expression to check
-	 * @return The number of like terms
+	 * Combines terms in a 2D (ArrayList of ArrayList) array, constructs and returns a new Expression.
+	 * @param sign The sign of the Expression to create (should be the same as the sign of the 
+	 * expression the terms came from).
+	 * @param terms The terms (i.e. AlgebraicParticles) to combine. Since it's an ArrayList of an 
+	 * ArrayList, the the terms in each of the inner ArrayLists will be combined to be a single term.
+	 * @param exponent The exponent of the Expression to create (should be the same as the exponent of 
+	 * the expression the terms came from).
+	 * @return An expression with terms combined.
 	 */
-	private int howManyLike(Expression expr) {
-		Solve4x.debug(expr.getAsString());
-		int num = 0;
-		for (int i = 0; i < expr.length(); i++) {
-			// update num
-			// temp variable
-			int temp;
-			if (num < (temp = numLikeThis(expr, expr.termAt(i)))) {
-				num = temp;
+	protected static Expression combineLikeTerms(boolean sign, ArrayList<ArrayList<AlgebraicParticle>> terms, int exponent){
+		ArrayList<AlgebraicParticle> combined = new ArrayList<AlgebraicParticle>(terms.size());
+		for(ArrayList<AlgebraicParticle> a : terms){
+			//combine everything into one
+			AlgebraicParticle term = a.get(0);
+			//loop over all remaining terms (all but first)
+			for(int i = 1; i < a.size(); i++){
+				term = combineTerms(term, a.get(i));
 			}
+			combined.add(term);
 		}
-		Solve4x.debug("Returns " + num);
-		return num;
+		return new Expression(sign, combined.toArray(new AlgebraicParticle[combined.size()]), exponent);
 	}
-
+	
 	/**
-	 * Tells how many terms in a given expression are the same type as the
-	 * specified term
-	 * 
-	 * @param expr
-	 *            The expression
-	 * @param term
-	 *            The term
-	 * @return The number of terms in expr that are the same type as term
+	 * Combines the given AlgebraicParticles a and b.
+	 * @param a The first AlgebraicParticle.
+	 * @param b The second AlgebraicParticle.
+	 * @return a and b combined (added/subtracted, depending on signs).
+	 * @throws IllegalArgumentException if a and b cannot be combined.
 	 */
-	private int numLikeThis(Expression expr, AlgebraicParticle term) {
-		Solve4x.debug("Arg1: " + expr.getAsString() + " Arg2: "
-				+ term.getBody());
-		int num = 0;
-		// check all terms in the expression for being like term
-		for (int i = 0; i < expr.length(); i++) {
-			if (expr.termAt(i).getBody().equals(term.getBody())) {
-				num++;
+	protected static AlgebraicParticle combineTerms(AlgebraicParticle a, AlgebraicParticle b){
+		//if one is zero, return the other
+		if(a.equals(Number.ZERO))return b; else if(b.equals(Number.ZERO))return a;
+		
+		//if they're numbers, mixed numbers, or fractions with numbers on top and bottom
+		if(areCombinable(a,b)) return addConstants(a,b);
+		
+		//if they're identical variables
+		else if(a instanceof Variable && b instanceof Variable){
+			if(a.sign() != b.sign()) return Number.ZERO;
+			else return new Variable(a.sign(), ((Variable)a).getVar(), a.exponent());
+		}
+		
+		//if they're terms, and they're like
+		else if(a instanceof Term && b instanceof Term){
+			//cast them to terms
+			Term first = (Term) a, second = (Term) b;
+			//build the new term
+			ArrayList<AlgebraicParticle> termBuilder = new ArrayList<AlgebraicParticle>(first.length());
+			
+			//work with the coefficient
+			AlgebraicParticle coe = addConstants(first.coefficient(), second.coefficient());
+			if(coe.equals(Number.ZERO)) return Number.ZERO;
+			boolean sign = coe.sign();
+			//the coefficient should always be positive, though the term may be negative 
+			//e.g. -2x is a negative term, so the term, not the 2, should be negative
+			if(!sign) coe = coe.cloneWithNewSign(true);
+			if(!coe.equals(Number.ONE)) termBuilder.add(coe);
+				
+			//now add all the remaining parts that are the same
+			//account for the possibility of one term having and exponent and the other not
+			//find the longest term (if they're the same length, it doesn't matter which we get)
+			Term t = first.length() > second.length() ? first : second;
+			for(int i =  Util.constant(t.getPartAt(0)) ? 1 : 0; i < t.length(); i++){
+				termBuilder.add(t.getPartAt(i));
+			}
+			return new Term(sign, termBuilder, first.exponent());
+		}
+		
+		//take care of Expressions and roots
+		else if(a instanceof Expression && b instanceof Expression || a instanceof Root && b instanceof Root){
+			if(a.sign() != b.sign()) return Number.ZERO;
+			else {
+				//the exponent will be 2 (sign is independent of the exponent) so we need to make a term
+				ArrayList<AlgebraicParticle> list = new ArrayList<AlgebraicParticle>(2);
+				list.add(new Number("2"));
+				list.add(a);
+				return new Term(a.sign(), list, a.exponent());
 			}
 		}
-		Solve4x.debug("Returns " + num);
-		return num;
+		
+		else throw new IllegalArgumentException();
 	}
+	
+	/**
+	 * Adds a and b, and returns the result. a and b must be instances of Number, 
+	 * Fraction, or MixedNumber. In addition, fractions (or fractions in a MixedNumber)
+	 * must have the same denominators, and have numbers in the numerator. There are a few
+	 * more qualifications; basically the two should be combinable without rewriting 
+	 * numerators or modifying multiple parts of a MixedNumber.
+	 * @param a The first number to add. If null, it defaults to one.
+	 * @param b The second number to add. If null, it defaults to one.
+	 * @return a and b combined.
+	 */
+	protected static AlgebraicParticle addConstants(AlgebraicParticle a, AlgebraicParticle b){
+		if (a == null) a = Number.ONE; if (b == null) b = Number.ONE;
+		if(a instanceof Number && b instanceof Number) return Number.add((Number)a, (Number)b);
+		if(a instanceof Fraction && b instanceof Fraction){
+			Fraction added = Fraction.add((Fraction)a, (Fraction)b);
+			if(added.getTop().equals(Number.ZERO))return Number.ZERO;
+			if(added.getTop().equals(added.getBottom()))return Number.ONE;
+			else return added;
+		}
+		if(a instanceof MixedNumber && b instanceof MixedNumber) return MixedNumber.add((MixedNumber)a, (MixedNumber)b);
+		
+		//swap some values (e.g. turn Fraction-Number into Number-Fraction) so they can be used mor easily later
+		AlgebraicParticle temp;
+		if(a instanceof Fraction && b instanceof Number || a instanceof MixedNumber && b instanceof Number 
+				|| a instanceof MixedNumber && b instanceof Fraction){temp = a; a = b; b = temp;}
+		
+		if(a instanceof Number && b instanceof Fraction) {
+			Number num = (Number)a;
+			a = num.cloneWithNewSign(true);
+			return new MixedNumber(num.sign(), num, (Fraction)b, 1);
+		}
+		if(a instanceof Number && b instanceof MixedNumber){
+			Number added = Number.add((Number)a, ((MixedNumber)b).getNumeral());
+			boolean sign = added.sign();
+			added = added.cloneWithNewSign(true);
+			return new MixedNumber(sign, added, ((MixedNumber)b).getFraction(), 1);
+		}
+		if(a instanceof Fraction && b instanceof MixedNumber){
+			Fraction frac = (Fraction)a; MixedNumber mn = (MixedNumber)b;
+			Fraction added = Fraction.add(frac, mn.getFraction());
+			
+			if(added.getTop().equals(Number.ZERO)){
+				return mn.getNumeral();
+			}
+			if(added.getTop().equals(added.getBottom())){
+				return Number.add(Number.ONE, mn.getNumeral());
+			}
+			else return new MixedNumber(mn.sign(), mn.getNumeral(), added, 1);
+		}
+		else throw new IllegalArgumentException();
+	}
+	
+	/**
+	 * Combines like terms* into ArrayLists.
+	 * Given an expression like this:<br>
+	 * 2x+4+((x)/(3))+x<br>
+	 * Terms (or AlgebraicParticles) are added to ArrayLists to form a 2d array:<br>
+	 * 2x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x<br>
+	 * 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6<br>
+	 * ((x)/(3))<br>
+	 * Now it can easily be seen that there are three types of terms. The first two 
+	 * lines can then be combined to make a simpler expression:<br>
+	 * 3x+10+((x)/(3))<br>
+	 * *NOTE: If terms have fractional coefficients with different denominators, the terms
+	 * will not be considered like terms. Hence the name "combinableTerms".
+	 * @return A 2d ArrayList (ArrayList of ArrayList) containing like terms. Each row
+	 * contains terms that are alike.
+	 */
+	protected static ArrayList<ArrayList<AlgebraicParticle>> listCombineableTerms(Expression e){
+		//this will be the list we return in the end
+		ArrayList<ArrayList<AlgebraicParticle>> list = new ArrayList<ArrayList<AlgebraicParticle>>(e.length());
+		//loop through the terms
+		bigloop:
+		for(int i = 0; i < e.length(); i++){
+			//place this term in the correct ArrayList
+			for(ArrayList<AlgebraicParticle> array : list){
+				if(areCombinableTerms(array.get(0), e.termAt(i))){
+					array.add(e.termAt(i));
+					continue bigloop;
+				}
+			}
+			//there is no like term, we must add it to a new arraylist
+			ArrayList<AlgebraicParticle> tmp = new ArrayList<AlgebraicParticle>(1);
+			tmp.add(e.termAt(i));
+			list.add(tmp);
+		}
+		return list;
+	}
+	
+	/**
+	 * Tells if a and b are like terms (i.e., they are both numbers, mixed numbers, or fractions with
+	 * numbers on top and bottom, or they are the same variables, or terms with like numerical 
+	 * coefficients (if coefficients are fractions with different denominators, they are not considered
+	 * like terms)).
+	 * @param a The first algebraic particle.
+	 * @param b The second algebraic particle.
+	 * @return If a and b are like terms.
+	 */
+	protected static boolean areCombinableTerms(AlgebraicParticle a, AlgebraicParticle b){
+		if(a.exponent() != 1 || b.exponent() != 1)return false;
+		//if they're numbers, mixed numbers, or fractions with numbers on top and bottom
+		if(areCombinable(a, b))return true;
+		//if they're identical variables
+		else if(a instanceof Variable && b instanceof Variable) return ((Variable)a).getVar() == (((Variable)b).getVar());
+		//if they're terms, and they're like
+		else if(a instanceof Term && b instanceof Term){
+			Term first = (Term) a, second = (Term) b;
+			if(a.equals(b) || a.cloneWithNewSign(!a.sign()).equals(b))return true;
+			if(!areCombinable(first.coefficient(), second.coefficient()))return false;
+			//check if the terms are combinable
+			if(Math.abs(first.length() - second.length()) > 1)return false;
+			
+			//check that the terms are like. offset if necessary, for checking things like xy and 2xy
+			for(int i = first.hasCoefficient() ? 1 : 0, j = second.hasCoefficient() ? 1 : 0; i < first.length() && j < second.length(); i++, j++){
+				if(!first.getPartAt(i).equals(second.getPartAt(j)))return false;
+			}
+			return true;
+		}
+		else if(a instanceof Expression && b instanceof Expression || a instanceof Root && b instanceof Root) return a.equals(b);
+		//account for situations like 2x and x -one is a variable or such, the other a term
+		boolean aTerm = a instanceof Term, bTerm = b instanceof Term;
+		if(aTerm != bTerm){
+			Term term = (Term) (aTerm ? a : b);
+			AlgebraicParticle nonterm = aTerm ? b : a;
+			if(term.length() == 2 && term.hasCoefficient() && term.getPartAt(1).cloneWithNewSign(nonterm.sign()).equals(nonterm)) return true;
+			else return false;
+		}
+		else return false;
+	}
+	
+	/**
+	 * Tells if a and b are combinable, i.e., at least one is a plain number, or if both have 
+	 * fractions, check that the denominators are equal.
+	 * @param a The first term to check.
+	 * @param b The second term to check.
+	 * @return If a and b can be combined without multiplying by the LCD, etc.
+	 */
+	protected static boolean areCombinable(AlgebraicParticle a, AlgebraicParticle b){
+		if(a == null) a = Number.ONE; if (b == null) b = Number.ONE;
+		else if(!(Util.constant(a) && Util.constant(b)))return false;
+		else if(a instanceof Number && b instanceof Number)return true;
+		else if(a instanceof Fraction && b instanceof Fraction){
+			Fraction fa = (Fraction)a, fb = (Fraction)b;
+			return fa.getTop() instanceof Number && fb.getTop() instanceof Number && fa.like(fb);
+		}
+		else if(a instanceof MixedNumber && b instanceof MixedNumber){
+			MixedNumber mna = (MixedNumber)a, mnb = (MixedNumber)b;
+			//the dominant sign is the sign of the mixed number farthest from zero
+			boolean dominantSign = Number.add(mna.getNumeral().cloneWithNewSign(mna.sign()), mnb.getNumeral().cloneWithNewSign(mnb.sign())).sign();
+			return mna.getFraction().like(mnb.getFraction()) 
+					//they have the same sign OR when combined the tops will stay positive
+					&& (	mna.sign() == mnb.sign()
+							|| Number.add((Number)mna.getFraction().getTop().cloneWithNewSign(mna.sign()), 
+									(Number) mnb.getFraction().getTop().cloneWithNewSign(mnb.sign())).sign() == dominantSign
+							);
+		}
+		
+		//swap some values (e.g. turn Fraction-Number into Number-Fraction) so they can be used more easily later
+		AlgebraicParticle temp;
+		if(a instanceof Fraction && b instanceof Number || a instanceof MixedNumber && b instanceof Number
+				|| a instanceof MixedNumber && b instanceof Fraction){temp = a; a = b; b = temp;}
+		
+		if(a instanceof Number && b instanceof Fraction && a.sign() == b.sign())return true;
+		else if(a instanceof Number && b instanceof MixedNumber){
+			Number n = ((MixedNumber)b).getNumeral();
+			//if we add the number and mixed number will the sign change? if so, we shouldn't combine, because it's difficult
+			return Number.add((Number)a, n.cloneWithNewSign(b.sign())).sign() == b.sign();
+		}
+		else if(a instanceof Fraction && b instanceof MixedNumber){
+			Fraction f = (Fraction)a;
+			MixedNumber mn = (MixedNumber)b;
+			return f.like(mn.getFraction()) && Fraction.add(f, mn.getFraction().cloneWithNewSign(mn.sign())).sign() == mn.sign();
+		}
+		return false;
+	}
+	
 }

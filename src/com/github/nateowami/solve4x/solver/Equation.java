@@ -17,8 +17,6 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-
-
 import java.util.Arrays;
 
 import com.github.nateowami.solve4x.Solve4x;
@@ -31,7 +29,7 @@ public class Equation {
 	
 	//exprs holds expressions (one if this equation is just representing an 
 	//expression, two if it's representing an equation
-	private AlgebraicParticle exprs[];
+	private final AlgebraicParticle exprs[];
 	
 	/**
 	 * Creates an equation by turning it into two expressions
@@ -40,16 +38,25 @@ public class Equation {
 	 */
 	public Equation(String eq) {
 		int i = eq.indexOf('=');
-		if (i < 0) exprs = new Expression[]{new Expression(eq.substring(0, i)), new Expression(eq.substring(i+1))};
-		else exprs = new Expression[]{new Expression(eq)};
+		if (i > 0) exprs = new AlgebraicParticle[]{AlgebraicParticle.getInstance(eq.substring(0, i)), AlgebraicParticle.getInstance(eq.substring(i+1))};
+		else exprs = new AlgebraicParticle[]{AlgebraicParticle.getInstance(eq)};
 	}
 	
+	/**
+	 * Constructs a new equation. The expressions passed may be of length 1, or any even number.
+	 * @param exprs The expressions of the equation.
+	 */
+	public Equation(AlgebraicParticle[] exprs) {
+		this.exprs = exprs;
+	}
+	
+
 	/**
 	 * @param i The expression you want in this equation.
 	 *Needs to be 0 or 1.
 	 * @return The expression at index i
 	 */
-	public AlgebraicParticle getExpression(int i){
+	public AlgebraicParticle getPartAt(int i){
 		Solve4x.debug("about to return expression from equation. index is: " + i);
 		return exprs[i];
 	}
@@ -65,20 +72,29 @@ public class Equation {
 		return exprs.length;
 	}
 	
+	/**
+	 * Tells if eq can be parsed as an equation/expression. An equation is really just
+	 * a wrapper around one or two expressions, so if passed a single expression this 
+	 * will still return true.
+	 * @param eq The string to check.
+	 * @return If eq can be parsed as an equation.
+	 */
 	public static boolean parseable(String eq){
 		int i = eq.indexOf('=');
-		return i == -1 && Expression.parseable(eq) || Expression.parseable(eq.substring(0, i)) && Expression.parseable(eq.substring(i+1));
+		return i == -1 && AlgebraicParticle.parseable(eq) || AlgebraicParticle.parseable(eq.substring(0, i)) && AlgebraicParticle.parseable(eq.substring(i+1));
 	}
 	
 	/**
-	 * Sets the specified expression in this equation to the specified expression
-	 * @param expr The expression you want to change it to 
-	 * @param index The index of the Expression you want to change
+	 * Clones the expression, replacing the expression at index "index" with expr in the clone.
+	 * @param expr The expression to replace with.
+	 * @param index The index of the expression to swap out for expr.
+	 * @return A new equation, identical to current one, except that the expression at index 
+	 * is set to expr.
 	 */
-	public void setExpression(String expr, int index) {
-		Solve4x.debug("Expression being set: " + expr);
-		this.exprs[index] = new Expression(expr);
-		
+	public Equation cloneWithNewExpression(Expression expr, int index) {
+		AlgebraicParticle[] newExprs = Arrays.copyOf(this.exprs, this.exprs.length);
+		newExprs[index] = expr;
+		return new Equation(newExprs);
 	}
 	
 	/**

@@ -28,12 +28,13 @@ public class Number extends AlgebraicParticle{
 	
 	//The numerical part of a mixed number (could be a decimal)
 	private String integer, decimal;
+	public static final Number ZERO = new Number("0"), ONE = new Number("1"), NEGATIVE_ONE = new Number(false, "1", null, 1);
 	
 	/**
 	 * Constructs a new number.
 	 * @param num The number to parse into a Number. Examples: 2.67, 15, 0.34, 3.1415
 	 */
-	protected Number(String num) {
+	public Number(String num) {
 		//check for empty string
 		if(num.length() == 0){
 			throw new ParsingException("Cannot parse an empty string as a Number.");
@@ -54,6 +55,12 @@ public class Number extends AlgebraicParticle{
 		}
 	}
 
+	public Number(boolean sign, String integer, String decimal, int exponent){
+		super(sign, exponent);
+		this.integer = integer;
+		this.decimal = decimal;
+	}
+	
 	 /**
 	 * Adds two Numbers and returns the result
 	 * @param n1 The first Number
@@ -99,7 +106,14 @@ public class Number extends AlgebraicParticle{
 				integer + (decimal == null ? "" : "." + decimal),
 				false);
 	}
-
+	
+	/**
+	 * @return true if the Number is equal to zero, otherwise false.
+	 */
+	public boolean isZero(){
+		return this.decimal == null && this.integer.equals("0");
+	}
+	
 	/**
 	 * Tells if a string is a number. It must have at least one numeral followed by 
 	 * any number of numerals, and then (optionally) a decimal and at least on numeral.
@@ -124,15 +138,24 @@ public class Number extends AlgebraicParticle{
 	}
 
 	/* (non-Javadoc)
+	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
+	 */
+	@Override
+	public Number cloneWithNewSign(Boolean sign){
+		return new Number(sign == null ? this.sign() : sign, 
+				this.integer, 
+				this.decimal, 
+				this.exponent()
+				);
+	}
+	
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Number ["
-				+ (integer != null ? "integer=" + integer + ", "
-						: "")
-				+ (decimal != null ? "decimal=" + decimal : "")
-				+ "]";
+		return "Number [integer=" + integer + ", decimal=" + decimal
+				+ ", sign()=" + sign() + ", exponent()=" + exponent() + "]";
 	}
 	
 	/**
@@ -148,7 +171,7 @@ public class Number extends AlgebraicParticle{
 	public String getDecimal() {
 		return decimal;
 	}
-
+	
 	/**
 	 * Tells the GCF (greatest common factor, aka GCD, greatest common deviser) of a and b.
 	 * Both a and b must be positive.
@@ -202,5 +225,6 @@ public class Number extends AlgebraicParticle{
 			return false;
 		return true;
 	}
-	
+
+		
 }

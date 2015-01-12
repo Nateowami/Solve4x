@@ -17,7 +17,6 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-
 import java.util.ArrayList;
 
 import com.github.nateowami.solve4x.Solve4x;
@@ -58,6 +57,17 @@ public class Term extends AlgebraicParticle{
 	}
 	
 	/**
+	 * Constructs a new Term.
+	 * @param sign The sign of the new term.
+	 * @param parts The parts (i.e. algebraic particles) of the term.
+	 * @param exponent The exponent of the term.
+	 */
+	public Term(boolean sign, ArrayList<AlgebraicParticle> parts, int exponent) {
+		super(sign, exponent);
+		this.parts = parts;
+	}
+	
+	/**
 	 * Tells the number of AlgebraicParticles in this term. For example,
 	 * 2xy(2x+6)+2 would return 2.
 	 * @return The number of Expressions in this term.
@@ -65,6 +75,25 @@ public class Term extends AlgebraicParticle{
 	 */
 	public int length(){
 		return this.parts.size();
+	}
+	
+	/**
+	 * @return the first AlgebraicParticle of this term if it is constant (Number, MixedNumber,
+	 * or Fraction with top and bottom constant), otherwise one, with the same sign as this term.
+	 */
+	public AlgebraicParticle coefficient(){
+		return Util.constant(parts.get(0)) ? parts.get(0) : 
+			this.sign() ? Number.ONE : Number.NEGATIVE_ONE;
+	}
+	
+	
+	/**
+	 * Tells if the term has a coefficient, that is, that the first part of the 
+	 * term is a number, mixed number, or fraction with numbers on top and bottom.
+	 * @return True the term has a coefficient, otherwise false.
+	 */
+	public boolean hasCoefficient(){
+		return Util.constant(parts.get(0));
 	}
 	
 	/**
@@ -76,6 +105,7 @@ public class Term extends AlgebraicParticle{
 		return this.parts.get(i);
 	}
 		
+	
 	/**
 	 * Returns a String representation of this Term in the form of an algebraic term, not the 
 	 * traditional toString().
@@ -111,6 +141,7 @@ public class Term extends AlgebraicParticle{
 		return "Term [" + (parts != null ? "parts=" + parts : "") + "]";
 	}
 	
+	
 	/** 
 	 * Tells if a specified string s may be parsed as a term
 	 * @param s The string to check.
@@ -138,6 +169,19 @@ public class Term extends AlgebraicParticle{
 		else return false;		
 	}
 	
+	
+	/* (non-Javadoc)
+	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
+	 */
+	@Override
+	public AlgebraicParticle cloneWithNewSign(Boolean sign) {
+		return new Term(sign == null ? this.sign() : sign,
+				this.parts,
+				this.exponent()
+				);
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -148,6 +192,7 @@ public class Term extends AlgebraicParticle{
 		result = prime * result + ((parts == null) ? 0 : parts.hashCode());
 		return result;
 	}
+	
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)

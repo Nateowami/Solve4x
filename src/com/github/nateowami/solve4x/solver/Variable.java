@@ -17,14 +17,12 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-
-
 /**
  * Represents a variable, A-Z or a-z
  * @author Nateowami
  */
 public class Variable extends AlgebraicParticle{
-	private char var;
+	private final char var;
 	
 	/**
 	 * Constructs a new Variable.
@@ -38,10 +36,24 @@ public class Variable extends AlgebraicParticle{
 		else var = s.charAt(0);
 	}
 	
+	/**
+	 * Constructs a new variable.
+	 * @param sign The sign of the variable.
+	 * @param var The variable itself (e.g. 'x').
+	 * @param exponent The exponent of the variable.
+	 */
+	public Variable(boolean sign, char var, int exponent){
+		super(sign, exponent);
+		this.var = var;
+	}
+	
+	/**
+	 * @return The variables character (e.g. 'x').
+	 */
 	public char getVar(){
 		return var;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#getAsString()
 	 */
@@ -69,6 +81,17 @@ public class Variable extends AlgebraicParticle{
 			return false;
 		}
 		else return true;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
+	 */
+	@Override
+	public AlgebraicParticle cloneWithNewSign(Boolean sign) {
+		return new Variable(sign == null ? this.sign() : sign,
+				this.var,
+				this.exponent()
+				);
 	}
 	
 	/* (non-Javadoc)

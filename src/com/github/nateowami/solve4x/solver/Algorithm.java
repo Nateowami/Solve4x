@@ -17,8 +17,6 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-
-
 /**
  * The interface for Algorithms used by the solver (which will be in package 
  * com.github.nateowami.solve4x.algorithm). 
@@ -40,5 +38,4 @@ public abstract interface Algorithm {
 	 */
 	public abstract int smarts(Equation equation);
 	
-
 }

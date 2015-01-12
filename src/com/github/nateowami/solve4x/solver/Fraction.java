@@ -43,6 +43,19 @@ public class Fraction extends AlgebraicParticle{
 	}
 	
 	/**
+	 * Constructs a new fraction.
+	 * @param sign The sign of the fraction.
+	 * @param top The top of the fraction (numerator).
+	 * @param bottom The bottom of the fraction (denominator).
+	 * @param exponent The exponent of the fraction.
+	 */
+	public Fraction(boolean sign, AlgebraicParticle top, AlgebraicParticle bottom, int exponent) {
+		super(sign, exponent);
+		this.top = top;
+		this.bottom = bottom;
+	}
+	
+	/**
 	 * Tells if a String is in the form of <i>(expression)</i>/<i>(expression)</i>.
 	 * @param frac The String in question.
 	 * @return If frac is a valid fraction.
@@ -145,7 +158,29 @@ public class Fraction extends AlgebraicParticle{
 	public boolean constant(){
 		return top instanceof Number && bottom instanceof Number;
 	}
-
+	
+	/**
+	 * Tells if the denominators (bottoms) of this fraction and the given fraction f
+	 * are the same.
+	 * @param f The fraction to check.
+	 * @return If the denominators of this fraction and f are equal.
+	 */
+	public boolean like(Fraction f){
+		return f.bottom.equals(this.bottom);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
+	 */
+	@Override
+	public Fraction cloneWithNewSign(Boolean sign) {
+		return new Fraction(sign == null ? this.sign() : sign,
+				this.top,
+				this.bottom,
+				this.exponent()
+				);
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -181,6 +216,24 @@ public class Fraction extends AlgebraicParticle{
 		} else if (!top.equals(other.top))
 			return false;
 		return true;
+	}
+	
+	/**
+	 * Adds fractions a and b, which must both have numbers for numerators.
+	 * @param a The first fraction to add.
+	 * @param b The second fraction to add.
+	 * @return a and b added.
+	 * @throws IllegalArgumentException if the denominators of a and b differ.
+	 */
+	public static Fraction add(Fraction a, Fraction b) {
+		//make sure the bottoms are equal
+		if(!a.bottom.equals(b.bottom)) throw new IllegalArgumentException("Cannot add two fractions with differing denominators.");
+		//cast the tops to Number
+		Number a_top = (Number)a.top, b_top = (Number)b.top;
+		//add the top, using the combined signs from the fraction and numerator ( -2/4 is the same as -(2/4) )
+		Number top = Number.add(a_top.cloneWithNewSign(a_top.sign() == a.sign()), b_top.cloneWithNewSign(b_top.sign() == b.sign()));
+		//construct a new fraction, making sure the signs are right
+		return new Fraction(top.sign(), top.cloneWithNewSign(true), a.bottom, 1);
 	}
 	
 }

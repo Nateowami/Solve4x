@@ -41,7 +41,9 @@ public class Solution {
 	 * @param equation The equation that is being solved
 	 */
 	public Solution(Equation equation){
-		this.steps.add(new Step(equation, "This is the original equation.", 0));
+		Step firstStep = new Step(equation, 0);
+		firstStep.explain("Here's the original equation.");
+		this.steps.add(firstStep);
 	}
 	
 	/**
