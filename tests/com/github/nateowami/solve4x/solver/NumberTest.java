@@ -71,7 +71,7 @@ public class NumberTest {
 		assertEquals("-234.026", AlgebraicParticle.getInstance("-234.026").getAsString());
 		assertEquals("234.6", new Number("234.6").getAsString());
 		assertEquals("-8.87", AlgebraicParticle.getInstance("-8.87").getAsString());
-		assertEquals("1.0", new Number("1.0").getAsString());
+		assertEquals("1", new Number("1.0").getAsString());
 		assertEquals("1", new Number("1").getAsString());
 		assertEquals("6.03", new Number("6.03").getAsString());
 	}

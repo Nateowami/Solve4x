@@ -26,20 +26,17 @@ import org.junit.Test;
  */
 public class AlgebraicParticleTest {
 
-	//a list of all subclasses of AlgebraicParticle, which can be passed to
-	//AlgebraicParticle.parseable() and AlgebraicParticle.getInstance()
-	private static final Class[] all = new Class[]{Variable.class, Number.class, Root.class, Fraction.class, MixedNumber.class, Term.class, Expression.class};
-	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.AlgebraicParticle#sign()}.
-	 * @ 
 	 */
 	@Test
 	public void testSign()  {
 		assertFalse(AlgebraicParticle.getInstance("-2x").sign());
 		assertFalse(AlgebraicParticle.getInstance("-v").sign());
 		assertTrue(AlgebraicParticle.getInstance("₄√(4y+x⁶)").sign());
-		System.out.println(AlgebraicParticle.getInstance("(2x)"));
+		AlgebraicParticle a = AlgebraicParticle.getInstance("-2+7");
+		assertTrue(a.sign());
+		assertFalse(((Expression)a).termAt(0).sign());
 	}
 
 	/**
@@ -101,8 +98,6 @@ public class AlgebraicParticleTest {
 		AlgebraicParticle a8 = AlgebraicParticle.getInstance("x²");
 		assertTrue(a8 instanceof Variable);
 		assertEquals(2, a8.exponent());
-		
-		assertTrue(AlgebraicParticle.getInstance("-2+7").sign());
 	}
 
 	/**

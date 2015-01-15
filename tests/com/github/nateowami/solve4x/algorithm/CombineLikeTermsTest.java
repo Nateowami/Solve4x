@@ -21,9 +21,6 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Test;
 
 import com.github.nateowami.solve4x.solver.*;
@@ -84,7 +81,6 @@ public class CombineLikeTermsTest {
 		assertEquals(a("(1(2)/(2))x²"), c.combineTerms(a("((1)/(2))x²"), a("(1(1)/(2))x²")));
 		assertEquals(a("4x"), c.combineTerms(a("7x"), a("-3x")));
 	}
-
 	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#addConstants(com.github.nateowami.solve4x.solver.AlgebraicParticle, com.github.nateowami.solve4x.solver.AlgebraicParticle)}.
@@ -135,7 +131,6 @@ public class CombineLikeTermsTest {
 			//assertEquals(a("1.5(5)/(19)"), c.addConstants(a("1.5"), a("(5)/(19)")));
 		}
 	}
-
 	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#listCombineableTerms(com.github.nateowami.solve4x.solver.Expression)}.
@@ -150,7 +145,6 @@ public class CombineLikeTermsTest {
 		//assertEquals(new ArrayList(Arrays.asList(a1, a2, a3)).toString().length(), e1.combinableTerms().toString().length());
 		assertEquals(one, two);
 	}
-
 	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#areCombinableTerms(com.github.nateowami.solve4x.solver.AlgebraicParticle, com.github.nateowami.solve4x.solver.AlgebraicParticle)}.
@@ -164,11 +158,12 @@ public class CombineLikeTermsTest {
 		assertTrue(c.areCombinableTerms(a("(17)/(5)y(4+2)"), a("(1)/(5)y(4+2)")));
 		assertTrue(c.areCombinableTerms(a("-48r"), a("-r")));
 		assertTrue(c.areCombinableTerms(a("2.5(xy+6)"), a("((2)/(3))(xy+6)")));
+		
 		//check variables
 		assertFalse(c.areCombinableTerms(a("a"), a("a²")));
 		assertFalse(c.areCombinableTerms(a("x³"), a("x")));
 		assertFalse(c.areCombinableTerms(a("x"), a("a")));
-
+		
 		//check constants such as numbers, mixed numbers, and constant fractions
 		assertTrue(c.areCombinableTerms(a("4"), a("17.3")));
 		assertTrue(c.areCombinableTerms(a("(4)/(7)"), a("(5)/(7)")));
@@ -176,13 +171,11 @@ public class CombineLikeTermsTest {
 		assertTrue(c.areCombinableTerms(a("2(4)/(5)"), a("17.3")));
 		assertFalse(c.areCombinableTerms(a("(4)/(x)"), a("12")));
 		assertFalse(c.areCombinableTerms(a("23.2"), a("(x+4)/(16)")));
-
+		
 		assertTrue(c.areCombinableTerms(a("4x"), a("17.3x")));
 		assertTrue(c.areCombinableTerms(a("2y(3x-6)((4)/(5))"), a("9.2y(3x-6)((4)/(5))")));
 		assertFalse(c.areCombinableTerms(a("2y(3-6)((4)/(5))"), a("9.2y(3x-6)((4)/(5))")));
-
 	}
-
 	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#areCombinable(com.github.nateowami.solve4x.solver.AlgebraicParticle, com.github.nateowami.solve4x.solver.AlgebraicParticle)}.
@@ -240,7 +233,6 @@ public class CombineLikeTermsTest {
 					areCombineable, c.areCombinable(a, b));
 		}
 	}
-	
 	
 	/**
 	 * Constructs a new AlgebraicParticle from s.

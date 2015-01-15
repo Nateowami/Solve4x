@@ -116,7 +116,7 @@ public class Equation {
 	public String toString() {
 		return "Equation [exprs=" + Arrays.toString(exprs) + "]";
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
