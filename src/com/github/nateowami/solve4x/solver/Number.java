@@ -35,23 +35,22 @@ public class Number extends AlgebraicParticle{
 	 * @param num The number to parse into a Number. Examples: 2.67, 15, 0.34, 3.1415
 	 */
 	public Number(String num) {
-		//check for empty string
-		if(num.length() == 0){
-			throw new ParsingException("Cannot parse an empty string as a Number.");
+		int i = num.indexOf('.');
+		if(i == -1){
+			this.integer = num;
 		}
-		int d = num.indexOf('.');
-		//check that the decimal point doesn't exist and num doesn't start with 0 unless length is one
-		if(d == -1 && (num.charAt(0) != '0' || num.length() == 1)&& Util.areAllNumerals(num)) this.integer = num;
-		//make sure the decimal point exists and that the first char isn't '0' OR the second char is '.'
-		else if(d > 0 && (d == 1 || num.charAt(0) != '0')){
-			this.integer = num.substring(0, num.indexOf('.'));
-			this.decimal = num.substring(num.indexOf('.')+1);
-			if(!Util.areAllNumerals(this.integer) || !Util.areAllNumerals(this.decimal)){
-				throw new ParsingException("Cannot parse \"" + num + "\" as a number.");
+		else {
+			this.integer = num.substring(0, i);
+			String dec = num.substring(i+1);
+			//make sure dec isn't just 0's
+			if(dec.length() > 0 && (dec.charAt(0) != '0' || dec.length() > 1)){
+				for(int j = 0; j < dec.length(); j++){
+					if (dec.charAt(j) != '0'){
+						this.decimal = dec;
+						return;
+					}
+				}
 			}
-		}
-		else{
-			throw new ParsingException("Cannot parse \"" + num + "\" as a number.");
 		}
 	}
 

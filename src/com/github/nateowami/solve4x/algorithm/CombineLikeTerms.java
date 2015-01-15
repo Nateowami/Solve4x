@@ -141,7 +141,10 @@ public class CombineLikeTerms implements Algorithm {
 			ArrayList<AlgebraicParticle> termBuilder = new ArrayList<AlgebraicParticle>(first.length());
 			
 			//work with the coefficient
-			AlgebraicParticle coe = addConstants(first.coefficient(), second.coefficient());
+			AlgebraicParticle coeA = first.coefficient(), coeB = second.coefficient();
+			if(!a.sign()) coeA = coeA.cloneWithNewSign(false);
+			if(!b.sign()) coeB = coeB.cloneWithNewSign(false);
+			AlgebraicParticle coe = addConstants(coeA, coeB);
 			if(coe.equals(Number.ZERO)) return Number.ZERO;
 			boolean sign = coe.sign();
 			//the coefficient should always be positive, though the term may be negative 
@@ -201,9 +204,10 @@ public class CombineLikeTerms implements Algorithm {
 				|| a instanceof MixedNumber && b instanceof Fraction){temp = a; a = b; b = temp;}
 		
 		if(a instanceof Number && b instanceof Fraction) {
-			Number num = (Number)a;
-			a = num.cloneWithNewSign(true);
-			return new MixedNumber(num.sign(), num, (Fraction)b, 1);
+			Number num = (Number)a; Fraction frac = (Fraction)b;
+			if(!num.sign()) num = num.cloneWithNewSign(true);
+			if(!frac.sign()) frac = frac.cloneWithNewSign(true);
+			return new MixedNumber(a.sign(), num, frac, 1);
 		}
 		if(a instanceof Number && b instanceof MixedNumber){
 			Number added = Number.add((Number)a, ((MixedNumber)b).getNumeral());
@@ -213,14 +217,10 @@ public class CombineLikeTerms implements Algorithm {
 		}
 		if(a instanceof Fraction && b instanceof MixedNumber){
 			Fraction frac = (Fraction)a; MixedNumber mn = (MixedNumber)b;
-			Fraction added = Fraction.add(frac, mn.getFraction());
+			Fraction added = Fraction.add(frac, mn.sign() ? mn.getFraction() : mn.getFraction().cloneWithNewSign(false));
+			if(!added.sign()) added = added.cloneWithNewSign(true);
 			
-			if(added.getTop().equals(Number.ZERO)){
-				return mn.getNumeral();
-			}
-			if(added.getTop().equals(added.getBottom())){
-				return Number.add(Number.ONE, mn.getNumeral());
-			}
+			if(added.getTop().equals(Number.ZERO)) return mn.getNumeral();
 			else return new MixedNumber(mn.sign(), mn.getNumeral(), added, 1);
 		}
 		else throw new IllegalArgumentException();

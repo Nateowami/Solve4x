@@ -106,44 +106,4 @@ public class ExpressionTest {
 		assertFalse(Expression.parseable("6(34+9xy2(45x+6)"));
 	}
 	
-	/** 
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Expression#parseable()}.
-	 * @ 
-	 */
-	@Test
-	public void testcombinableTerms()  {
-		Expression e1 = new Expression("2x²+4x-2.3x+12");
-		ArrayList<AlgebraicParticle> a1 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("2x²")));
-		ArrayList<AlgebraicParticle> a2 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("+4x"), AlgebraicParticle.getInstance("-2.3x")));
-		ArrayList<AlgebraicParticle> a3 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("+12")));
-		ArrayList<ArrayList<AlgebraicParticle>> one = new ArrayList(Arrays.asList(a1, a2, a3)), two = e1.combinableTerms();
-		
-		assertEquals(new ArrayList(Arrays.asList(a1, a2, a3)).toString().length(), e1.combinableTerms().toString().length());
-		assertEquals(new ArrayList(Arrays.asList(a1, a2, a3)), e1.combinableTerms());
-	}
-	
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Expression#combinableTerms(com.github.nateowami.solve4x.solver.AlgebraicParticle, com.github.nateowami.solve4x.solver.AlgebraicParticle)}.
-	 * @ 
-	 */
-	@Test
-	public void testcombinableTermsAlgebraicParticleAlgebraicParticle()  {
-		//check variables
-		assertFalse(Expression.combinableTerms(AlgebraicParticle.getInstance("a"), AlgebraicParticle.getInstance("a²")));
-		assertFalse(Expression.combinableTerms(AlgebraicParticle.getInstance("x³"), AlgebraicParticle.getInstance("x")));
-		assertFalse(Expression.combinableTerms(AlgebraicParticle.getInstance("x"), AlgebraicParticle.getInstance("a")));
-		
-		//check constants such as numbers, mixed numbers, and constant fractions
-		assertTrue(Expression.combinableTerms(AlgebraicParticle.getInstance("4"), AlgebraicParticle.getInstance("17.3")));
-		assertTrue(Expression.combinableTerms(AlgebraicParticle.getInstance("(4)/(7)"), AlgebraicParticle.getInstance("(5)/(7)")));
-		assertFalse(Expression.combinableTerms(AlgebraicParticle.getInstance("4(2)/(3)"), AlgebraicParticle.getInstance("1(7)/(16)")));
-		assertTrue(Expression.combinableTerms(AlgebraicParticle.getInstance("2(4)/(5)"), AlgebraicParticle.getInstance("17.3")));
-		assertFalse(Expression.combinableTerms(AlgebraicParticle.getInstance("(4)/(x)"), AlgebraicParticle.getInstance("12")));
-		assertFalse(Expression.combinableTerms(AlgebraicParticle.getInstance("23.2"), AlgebraicParticle.getInstance("(x+4)/(16)")));
-		
-		assertTrue(Expression.combinableTerms(AlgebraicParticle.getInstance("4x"), AlgebraicParticle.getInstance("17.3x")));
-		assertTrue(Expression.combinableTerms(AlgebraicParticle.getInstance("2y(3x-6)((4)/(5))"), AlgebraicParticle.getInstance("9.2y(3x-6)((4)/(5))")));
-		assertFalse(Expression.combinableTerms(AlgebraicParticle.getInstance("2y(3-6)((4)/(5))"), AlgebraicParticle.getInstance("9.2y(3x-6)((4)/(5))")));
-	}
-
 }

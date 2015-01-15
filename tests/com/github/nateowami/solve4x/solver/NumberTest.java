@@ -40,18 +40,6 @@ public class NumberTest {
 		assertEquals("28", n2.getDecimal());
 		new Number("0.4");
 		new Number("0");
-		
-		//make sure some things can't be parsed
-		try{
-			new Number("05");
-			fail("05 should not be parseable as a number.");
-		}
-		catch(ParsingException e){};
-		try{
-			new Number("00.4");
-			fail("00.4 should not be parseable as a number.");
-		}
-		catch(ParsingException e){};
 	}
 
 	/**

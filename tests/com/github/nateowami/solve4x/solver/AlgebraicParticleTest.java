@@ -101,6 +101,8 @@ public class AlgebraicParticleTest {
 		AlgebraicParticle a8 = AlgebraicParticle.getInstance("x²");
 		assertTrue(a8 instanceof Variable);
 		assertEquals(2, a8.exponent());
+		
+		assertTrue(AlgebraicParticle.getInstance("-2+7").sign());
 	}
 
 	/**

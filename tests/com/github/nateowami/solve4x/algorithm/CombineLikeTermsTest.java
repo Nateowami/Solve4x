@@ -32,7 +32,7 @@ import com.github.nateowami.solve4x.solver.*;
  * @author Nateowami
  */
 public class CombineLikeTermsTest {
-
+	
 	CombineLikeTerms c = new CombineLikeTerms();
 	
 	/**
@@ -40,9 +40,11 @@ public class CombineLikeTermsTest {
 	 */
 	@Test
 	public void testExecute() {
-		fail("Not yet implemented"); // TODO
+		Step s = c.execute(new Equation(new Expression[]{(Expression)a("2x+4y²-6-2.3y²-4x")}));
+		assertEquals(5, s.getDifficulty());
+		assertEquals(new Equation(new Expression[]{(Expression)a("-2x+1.7y²-6")}), s.getEquation());
 	}
-
+	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#smarts(com.github.nateowami.solve4x.solver.Equation)}.
 	 */
@@ -51,23 +53,39 @@ public class CombineLikeTermsTest {
 		assertEquals(7, c.smarts(new Equation("2+2")));
 		assertEquals(7, c.smarts(new Equation("(1)/(3)+(1)/(3)")));
 	}
-
+	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#combineLikeTerms(boolean, java.util.ArrayList, int)}.
 	 */
 	@Test
 	public void testCombineLikeTerms() {
-		fail("Not yet implemented"); // TODO
+		ArrayList<ArrayList<AlgebraicParticle>> terms = new ArrayList<ArrayList<AlgebraicParticle>>();
+		ArrayList<AlgebraicParticle> a1 = new ArrayList<AlgebraicParticle>();
+		a1.add(a("2x"));
+		a1.add(a("7x"));
+		ArrayList<AlgebraicParticle> a2 = new ArrayList<AlgebraicParticle>();
+		a2.add(a("((1)/(5))y²"));
+		a2.add(a("3y²"));
+		ArrayList<AlgebraicParticle> a3 = new ArrayList<AlgebraicParticle>();
+		a3.add(a("6"));
+		terms.add(a1);
+		terms.add(a2);
+		terms.add(a3);
+		assertEquals(a("9x+(3(1)/(5))y²+6"), c.combineLikeTerms(true, terms, 1));
 	}
-
+	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#combineTerms(com.github.nateowami.solve4x.solver.AlgebraicParticle, com.github.nateowami.solve4x.solver.AlgebraicParticle)}.
 	 */
 	@Test
 	public void testCombineTerms() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(a("2x"), c.combineTerms(a("1.5x"), a("0.5x")));
+		assertEquals(a("0"), c.combineTerms(a("xy(4+7)"), a("-xy(4+7)")));
+		assertEquals(a("(1(2)/(2))x²"), c.combineTerms(a("((1)/(2))x²"), a("(1(1)/(2))x²")));
+		assertEquals(a("4x"), c.combineTerms(a("7x"), a("-3x")));
 	}
 
+	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#addConstants(com.github.nateowami.solve4x.solver.AlgebraicParticle, com.github.nateowami.solve4x.solver.AlgebraicParticle)}.
 	 */
@@ -85,12 +103,12 @@ public class CombineLikeTermsTest {
 				"(1)/(4) -(3)/(4) -(2)/(4)",
 				//mixednumbers
 				"2(1)/(4) 3(5)/(4) 5(6)/(4)",
-				"-5(1)/(4) -3(3)/(4) -8(4)/(4)",//FIXME should return negative
+				"-5(1)/(4) -3(3)/(4) -8(4)/(4)",
 				"-2(1)/(4) 3(5)/(4) 1(4)/(4)",
 				"2(1)/(4) -3(5)/(4) -1(4)/(4)",
 				//number-fraction
-				"1.5 (5)/(19) 1.5(5)/(19)",
-				"2.6 (4)/(3) 2.6(4)/(3)",
+				"5 (5)/(19) 5(5)/(19)", 
+				"6 (4)/(3) 6(4)/(3)",
 				//number-mixednumber
 				"-5 6(4)/(15) 1(4)/(15)",
 				//fraction-number
@@ -110,11 +128,15 @@ public class CombineLikeTermsTest {
 			String[] p = tuple.split("\\s");
 			AlgebraicParticle a = AlgebraicParticle.getInstance(p[0]), 
 					b = AlgebraicParticle.getInstance(p[1]),
-					result = AlgebraicParticle.getInstance(p[2]);
-			assertEquals(a.getAsString() + " and " + b.getAsString() + " should combine to be " + p[2] + " which after parsing is " + result.getAsString(), result, c.addConstants(a, b));
+					correctResult = AlgebraicParticle.getInstance(p[2]),
+					actualResult = c.addConstants(a, b);
+			assertEquals(a.getAsString() + " and " + b.getAsString() + " should combine to be " + p[2] + " (parsed as " + correctResult.getAsString() + "), but the result is " + actualResult.getAsString(), correctResult, actualResult);
+			//1.5 (5)/(19) 1.5(5)/(19)
+			//assertEquals(a("1.5(5)/(19)"), c.addConstants(a("1.5"), a("(5)/(19)")));
 		}
 	}
 
+	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#listCombineableTerms(com.github.nateowami.solve4x.solver.Expression)}.
 	 */
@@ -129,6 +151,7 @@ public class CombineLikeTermsTest {
 		assertEquals(one, two);
 	}
 
+	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#areCombinableTerms(com.github.nateowami.solve4x.solver.AlgebraicParticle, com.github.nateowami.solve4x.solver.AlgebraicParticle)}.
 	 */
@@ -160,6 +183,7 @@ public class CombineLikeTermsTest {
 
 	}
 
+	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#areCombinable(com.github.nateowami.solve4x.solver.AlgebraicParticle, com.github.nateowami.solve4x.solver.AlgebraicParticle)}.
 	 */
@@ -216,6 +240,7 @@ public class CombineLikeTermsTest {
 					areCombineable, c.areCombinable(a, b));
 		}
 	}
+	
 	
 	/**
 	 * Constructs a new AlgebraicParticle from s.

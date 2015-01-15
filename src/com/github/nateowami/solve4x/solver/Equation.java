@@ -50,7 +50,6 @@ public class Equation {
 		this.exprs = exprs;
 	}
 	
-
 	/**
 	 * @param i The expression you want in this equation.
 	 *Needs to be 0 or 1.
@@ -110,6 +109,14 @@ public class Equation {
 		return eq;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Equation [exprs=" + Arrays.toString(exprs) + "]";
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

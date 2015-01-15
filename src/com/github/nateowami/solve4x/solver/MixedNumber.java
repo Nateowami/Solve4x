@@ -169,10 +169,28 @@ public class MixedNumber extends AlgebraicParticle{
 	 * Adds a and b.
 	 * @param a The first MixedNumber to add.
 	 * @param b The second MixedNumber to add.
-	 * @return a and b added.
+	 * @return a and b added, which is not necessarily a MixedNumber; it could be a whole number.
 	 */
 	public static AlgebraicParticle add(MixedNumber a, MixedNumber b) {
-		return new MixedNumber(Number.add(a.numeral, b.numeral), Fraction.add(a.fraction, b.fraction));
+		//if the mixednumbers are negative, make the numbers negative before adding
+		Number numA = a.numeral, numB = b.numeral;
+		Fraction fracA = a.fraction, fracB = b.fraction;
+		if(!a.sign()){numA = numA.cloneWithNewSign(false); fracA = fracA.cloneWithNewSign(false);}
+		if(!b.sign()){numB = numB.cloneWithNewSign(false); fracB = fracB.cloneWithNewSign(false);}
+		
+		//Number numA = a.sign() ? a.numeral : a.numeral.cloneWithNewSign(false);
+		//Number numB = b.sign() ? b.numeral : b.numeral.cloneWithNewSign(false);
+		//Fraction fracA = 
+		
+		
+		Number sum = Number.add(numA, numB);
+		Fraction fracSum = Fraction.add(fracA, fracB);
+		//the sign of the new mixednumber should be the sign of the sum of the two numbers
+		boolean sign = sum.sign();
+		if (!sum.sign()) sum = sum.cloneWithNewSign(true);
+		if (!fracSum.sign()) fracSum = fracSum.cloneWithNewSign(true);
+		if (fracSum.getTop().equals(Number.ZERO)) return sum;
+		return new MixedNumber(sign, sum, fracSum, 1);
 	}
 	
 }

@@ -30,7 +30,6 @@ public class Expression extends AlgebraicParticle{
 	//create an ArrayList for storing a list of terms
 	protected final ArrayList <AlgebraicParticle>termList;
 	
-
 	/**
 	 * Creates a list of terms from the expression
 	 * @param expr The expression to store as terms
@@ -57,8 +56,8 @@ public class Expression extends AlgebraicParticle{
 	 */
 	@Override
 	public String toString() {
-		return "Expression ["
-				+ (termList != null ? "termList=" + termList : "") + "]";
+		return "Expression [termList=" + termList + ", sign()=" + sign()
+				+ ", exponent()=" + exponent() + "]";
 	}
 	
 	/**
