@@ -46,7 +46,6 @@ public class Solver {
 	//A list of algorithms that can be used for solving
 	private final ArrayList <Algorithm> algor;
 	
-	
 	/**
 	 * Creates a new Solver so you can call getSolution().
 	 * @param equation The equation or expression to solve, simplify, 
@@ -104,7 +103,6 @@ public class Solver {
 		finalSolution = getBestSolution(solutions);
 	}
 	
-
 	/**
 	 * @return A Solution object that contains all the steps for solving
 	 */

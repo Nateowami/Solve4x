@@ -85,14 +85,14 @@ public class Equation {
 	
 	/**
 	 * Clones the expression, replacing the expression at index "index" with expr in the clone.
-	 * @param expr The expression to replace with.
+	 * @param algebraicParticle The expression to replace with.
 	 * @param index The index of the expression to swap out for expr.
 	 * @return A new equation, identical to current one, except that the expression at index 
 	 * is set to expr.
 	 */
-	public Equation cloneWithNewExpression(Expression expr, int index) {
+	public Equation cloneWithNewExpression(AlgebraicParticle algebraicParticle, int index) {
 		AlgebraicParticle[] newExprs = Arrays.copyOf(this.exprs, this.exprs.length);
-		newExprs[index] = expr;
+		newExprs[index] = algebraicParticle;
 		return new Equation(newExprs);
 	}
 	

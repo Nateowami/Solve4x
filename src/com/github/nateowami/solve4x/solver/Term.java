@@ -86,7 +86,6 @@ public class Term extends AlgebraicParticle{
 			this.sign() ? Number.ONE : Number.NEGATIVE_ONE;
 	}
 	
-	
 	/**
 	 * Tells if the term has a coefficient, that is, that the first part of the 
 	 * term is a number, mixed number, or fraction with numbers on top and bottom.
@@ -105,7 +104,6 @@ public class Term extends AlgebraicParticle{
 		return this.parts.get(i);
 	}
 		
-	
 	/**
 	 * Returns a String representation of this Term in the form of an algebraic term, not the 
 	 * traditional toString().
@@ -138,9 +136,9 @@ public class Term extends AlgebraicParticle{
 	 */
 	@Override
 	public String toString() {
-		return "Term [" + (parts != null ? "parts=" + parts : "") + "]";
+		return "Term [parts=" + parts + ", sign()=" + sign() + ", exponent()="
+				+ exponent() + "]";
 	}
-	
 	
 	/** 
 	 * Tells if a specified string s may be parsed as a term
@@ -169,7 +167,6 @@ public class Term extends AlgebraicParticle{
 		else return false;		
 	}
 	
-	
 	/* (non-Javadoc)
 	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
 	 */
@@ -181,7 +178,6 @@ public class Term extends AlgebraicParticle{
 				);
 	}
 	
-	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -192,7 +188,6 @@ public class Term extends AlgebraicParticle{
 		result = prime * result + ((parts == null) ? 0 : parts.hashCode());
 		return result;
 	}
-	
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)

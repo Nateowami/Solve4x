@@ -61,7 +61,7 @@ public class CombineLikeTerms implements Algorithm {
 		//simplify mostLikeTerms
 		Expression expr = combineLikeTerms(equation.getPartAt(index).sign(), mostLikeTerms, equation.getPartAt(index).exponent());
 		
-		Step step = new Step(equation.cloneWithNewExpression(expr, index), 5/*TODO*/);
+		Step step = new Step(equation.cloneWithNewExpression(expr.length() == 1 ? expr.termAt(0): expr, index), 5/*TODO*/);
 		//create the explanation
 		step.explain("We need to combine like terms here, in the expression ").explain(equation.getPartAt(index)).explain(".\n");
 		for(int i = 0; i < mostLikeTerms.size(); i++){
@@ -150,7 +150,12 @@ public class CombineLikeTerms implements Algorithm {
 			//the coefficient should always be positive, though the term may be negative 
 			//e.g. -2x is a negative term, so the term, not the 2, should be negative
 			if(!sign) coe = coe.cloneWithNewSign(true);
-			if(!coe.equals(Number.ONE)) termBuilder.add(coe);
+			if(coe.equals(Number.ONE)){
+				//if the terms have just a coe and one other thing, return that other thing
+				//for example, 2x and -x should just return x
+				if(first.length() <= 2 && second.length() <= 2) return first.hasCoefficient() ? first.getPartAt(1) : first.getPartAt(0);
+			}
+			else termBuilder.add(coe);
 				
 			//now add all the remaining parts that are the same
 			//account for the possibility of one term having and exponent and the other not

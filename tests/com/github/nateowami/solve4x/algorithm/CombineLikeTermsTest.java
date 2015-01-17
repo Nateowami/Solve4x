@@ -37,9 +37,10 @@ public class CombineLikeTermsTest {
 	 */
 	@Test
 	public void testExecute() {
-		Step s = c.execute(new Equation(new Expression[]{(Expression)a("2x+4y²-6-2.3y²-4x")}));
+		Step s = c.execute(new Equation("2x+4y²-6-2.3y²-4x"));
 		assertEquals(5, s.getDifficulty());
-		assertEquals(new Equation(new Expression[]{(Expression)a("-2x+1.7y²-6")}), s.getEquation());
+		assertEquals(new Equation("-2x+1.7y²-6"), s.getEquation());
+		assertEquals(new Equation("x"), c.execute(new Equation("4x+5x-8x")).getEquation());
 	}
 	
 	/**
@@ -49,6 +50,7 @@ public class CombineLikeTermsTest {
 	public void testSmarts() {
 		assertEquals(7, c.smarts(new Equation("2+2")));
 		assertEquals(7, c.smarts(new Equation("(1)/(3)+(1)/(3)")));
+		assertEquals(9, c.smarts(new Equation("5x+4x-8x")));
 	}
 	
 	/**

@@ -34,7 +34,7 @@ public class Visual {
 	public static void render(Solution solution){
 		System.out.println("************************");
 		try{
-			System.out.println("Solution for " + solution.getLastStep().getEquation().getAsString() + "\n");
+			System.out.println("Solution for " + solution.getStepAt(0).getEquation().getAsString() + "\n");
 			//print stuff out
 			for(int i=0; i<solution.numOfSteps(); i++){
 				System.out.println("Step " + (i+1) + ": ");
@@ -52,14 +52,14 @@ public class Visual {
 	 * @param step The step to print
 	 */
 	private static void printStep(Step step){
-		System.out.println("\t" + step.getEquation());
-		System.out.println("\tExplanation: ");
 		//now print the explanation, which has strings and AlgebraicParticles
 		for(int i = 0; i < step.getExplanation().size(); i++){
 			Object o = step.getExplanation().get(i);
-			if(o instanceof String) System.out.println(o);
-			else System.out.println(((AlgebraicParticle)o).getAsString());
+			if(o instanceof String) System.out.print(o);
+			else System.out.print(((AlgebraicParticle)o).getAsString());
 		}
+		System.out.println();
+		System.out.println("\t" + step.getEquation().getAsString());
 	}
 
 }
