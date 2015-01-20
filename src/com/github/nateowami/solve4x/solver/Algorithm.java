@@ -22,7 +22,7 @@ package com.github.nateowami.solve4x.solver;
  * com.github.nateowami.solve4x.algorithm). 
  * @author Nateowami
  */
-public abstract interface Algorithm {
+public abstract class Algorithm {
 	
 	/**
 	 * Applies the algorithm on the given equation and returns the step.
@@ -37,5 +37,23 @@ public abstract interface Algorithm {
 	 * @param equation The equation to evaluate
 	 */
 	public abstract int smarts(Equation equation);
+	
+	/**
+	 * Given a, if it is an Expression or Term with length one, it returns the AlgebraicParticle 
+	 * inside it. Otherwise it returns a.
+	 * @param a The AlgebraicParticle to unwrap.
+	 * @return a, or if it is a Term or Expressions holding one AlgebraicParticle, that AlgebraicParticle.
+	 */
+	protected AlgebraicParticle unwrap(AlgebraicParticle a){
+		if(a instanceof Term){
+			Term t = (Term) a;
+			return t.length() == 1 ? t.getPartAt(0) : t;
+		}
+		else if(a instanceof Expression){
+			Expression e = (Expression) a;
+			return e.length() == 1 ? e.termAt(0) : e;
+		}
+		else return a;
+	}
 	
 }

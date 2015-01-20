@@ -35,7 +35,7 @@ import com.github.nateowami.solve4x.solver.Variable;
 /**
  * @author Nateowami
  */
-public class CombineLikeTerms implements Algorithm {
+public class CombineLikeTerms extends Algorithm {
 	
 	@Override
 	public Step execute(Equation equation) {
@@ -61,7 +61,7 @@ public class CombineLikeTerms implements Algorithm {
 		//simplify mostLikeTerms
 		Expression expr = combineLikeTerms(equation.getPartAt(index).sign(), mostLikeTerms, equation.getPartAt(index).exponent());
 		
-		Step step = new Step(equation.cloneWithNewExpression(expr.length() == 1 ? expr.termAt(0): expr, index), 5/*TODO*/);
+		Step step = new Step(equation.cloneWithNewExpression(unwrap(expr), index), 5/*TODO*/);
 		//create the explanation
 		step.explain("We need to combine like terms here, in the expression ").explain(equation.getPartAt(index)).explain(".\n");
 		for(int i = 0; i < mostLikeTerms.size(); i++){
