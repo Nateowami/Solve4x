@@ -65,7 +65,8 @@ public class CombineLikeTerms extends Algorithm {
 		//create the explanation
 		step.explain("We need to combine like terms here, in the expression ").explain(equation.getPartAt(index)).explain(".\n");
 		for(int i = 0; i < mostLikeTerms.size(); i++){
-			step.explain("Combine ").list(mostLikeTerms.get(i)).explain(" to get ").explain(expr.termAt(i)).explain(".\n");
+			if (mostLikeTerms.get(i).size() > 1) //don't explain combining a single term with itself
+					step.explain("Combine ").list(mostLikeTerms.get(i)).explain(" to get ").explain(expr.termAt(i)).explain(".\n");
 		}
 		return step;
 	}
