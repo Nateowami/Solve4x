@@ -103,7 +103,27 @@ public class Term extends AlgebraicParticle{
 	public AlgebraicParticle getPartAt(int i){
 		return this.parts.get(i);
 	}
-		
+	
+	/**
+	 * Tells if a term t is like this term, that is, that their exponents are the same 
+	 * and that each part of the term, except the exponents (if there are exponents), are
+	 * equal.
+	 * @param t The term to check against this one.
+	 * @return If t and this term are like terms.
+	 */
+	boolean like(Term t){
+		if(t.exponent() != this.exponent()) return false;
+		//calculate the length of the terms, minus any coefficient
+		int aOffset = t.hasCoefficient() ? 1 : 0, bOffset = this.hasCoefficient() ? 1 : 0;
+		int aLength = t.length() - aOffset, bLength = this.length() - bOffset;
+		if(aLength != bLength) return false;
+		//now make sure all other parts of the term are the same
+		for(int a = aOffset, b = bOffset; a < t.length() && b < this.length(); a++, b++){
+			if(!t.getPartAt(a).equals(this.getPartAt(b))) return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * Returns a String representation of this Term in the form of an algebraic term, not the 
 	 * traditional toString().

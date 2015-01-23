@@ -98,4 +98,15 @@ public class TermTest {
 		assertEquals("4", new Term("xyz4").getPartAt(3).getAsString());
 	}
 	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#like(com.github.nateowami.solve4x.solver.Term)}.
+	 */
+	@Test
+	public void testLike() {
+		assertTrue(new Term("2x").like(new Term("1.7x")));
+		assertTrue(new Term("4y(x+3)").like(new Term("y(x+3)")));
+		assertTrue(new Term("4a(b+c)").like(new Term("-12(2)/(3)a(b+c)")));
+		assertFalse(new Term("4(x+6)").like(new Term("4x")));
+	}
+	
 }
