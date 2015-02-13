@@ -95,10 +95,9 @@ public class Step {
 		return "Step [difficulty=" + difficulty + ", explanation="
 				+ explanation + ", eq=" + eq + "]";
 	}
-
 	
 	/**
-	 * Turns a list of AlgebraicParticles into an English list and adds it to the explanation. 
+	 * * Turns an array of AlgebraicParticles into an English list and adds it to the explanation. 
 	 * For example, an array of [2x, 4y, 2+6] would become "2x, 4y, and 2+6". If the length of
 	 * the given array is 1, it is simply added to the explanation. If the list has a length 
 	 * of two, it is added in the form of "2x and 4y"
@@ -106,11 +105,23 @@ public class Step {
 	 * @return Returns this so you can chain methods.
 	 */
 	public Step list(ArrayList<AlgebraicParticle> list) {
-		if(list.size() == 1) explain(list.get(0));
-		else if (list.size() == 2) explain(list.get(0)).explain(" and ").explain(list.get(1));
+		return this.list(list.toArray(new AlgebraicParticle[list.size()]));
+	}
+	
+	/**
+	 * Turns an array of AlgebraicParticles into an English list and adds it to the explanation. 
+	 * For example, an array of [2x, 4y, 2+6] would become "2x, 4y, and 2+6". If the length of
+	 * the given array is 1, it is simply added to the explanation. If the list has a length 
+	 * of two, it is added in the form of "2x and 4y"
+	 * @param list The list to add to the explanation.
+	 * @return Returns this so you can chain methods.
+	 */
+	public Step list(AlgebraicParticle[] list) {
+		if(list.length == 1) explain(list[0]);
+		else if (list.length == 2) explain(list[0]).explain(" and ").explain(list[1]);
 		else {
-			for (int i = 0; i < list.size()-1; i++)	explain(list.get(i)).explain(", ");
-			explain("and ").explain(list.get(list.size() - 1));	
+			for (int i = 0; i < list.length-1; i++)	explain(list[i]).explain(", ");
+			explain("and ").explain(list[list.length - 1]);	
 		}
 		return this;
 	}

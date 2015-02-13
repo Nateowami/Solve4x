@@ -111,7 +111,7 @@ public class Term extends AlgebraicParticle{
 	 * @param t The term to check against this one.
 	 * @return If t and this term are like terms.
 	 */
-	boolean like(Term t){
+	public boolean like(Term t){
 		if(t.exponent() != this.exponent()) return false;
 		//calculate the length of the terms, minus any coefficient
 		int aOffset = t.hasCoefficient() ? 1 : 0, bOffset = this.hasCoefficient() ? 1 : 0;

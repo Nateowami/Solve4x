@@ -20,7 +20,7 @@ package com.github.nateowami.solve4x.solver;
 import java.util.ArrayList;
 
 import com.github.nateowami.solve4x.Solve4x;
-import com.github.nateowami.solve4x.algorithm.CombineLikeTerms;
+import com.github.nateowami.solve4x.algorithm.*;
 
 /**
  * Solves equations and simplifies expressions
@@ -76,7 +76,7 @@ public class Solver {
 
 		//as long as it's not solved/simplified
 		//currently loops max 25 times
-		for(int i = 0; whichIsFinished(solutions) == -1 && i<25; i++){
+		for(int i = 0; solutions.size() > 0 && whichIsFinished(solutions) == -1 && i<25; i++){
 			//take out/copy all the solutions and remove them from the list
 			ArrayList <Solution>copy = new ArrayList<Solution>(solutions);
 			solutions = new ArrayList<Solution>();
@@ -97,6 +97,10 @@ public class Solver {
 						solutions.add(solution);
 					}
 				}
+			}
+			//for debugging purposes
+			if(solutions.size() == 0){
+				Solve4x.debug("No solutions survived this iteration. Previous solutions: " + copy);
 			}
 		}
 		//set finalSolution
@@ -188,6 +192,7 @@ public class Solver {
 		ArrayList<Algorithm> algorList = new ArrayList<Algorithm>();
 		switch (selection){
 		case SOLVE:
+			algorList.add(new ChangeSides());
 		case FACTOR:
 		case SIMPLIFY:
 			algorList.add(new CombineLikeTerms());
