@@ -27,8 +27,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ AlgebraicParticleTest.class, EquationTest.class,
 		ExpressionTest.class, FractionTest.class, MixedNumberTest.class,
-		NumberTest.class, RootTest.class, TermTest.class, UtilTest.class,
-		VariableTest.class })
-public class AllTests {
+		NumberTest.class, RootTest.class, SolverTest.class, TermTest.class,
+		UtilTest.class, VariableTest.class })
+public class SolverTests {
 
 }
