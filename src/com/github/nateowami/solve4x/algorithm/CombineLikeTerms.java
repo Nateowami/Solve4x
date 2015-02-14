@@ -154,7 +154,10 @@ public class CombineLikeTerms extends Algorithm {
 			if(coe.equals(Number.ONE)){
 				//if the terms have just a coe and one other thing, return that other thing
 				//for example, 2x and -x should just return x
-				if(first.length() <= 2 && second.length() <= 2) return first.hasCoefficient() ? first.getPartAt(1) : first.getPartAt(0);
+				if(first.length() <= 2 && second.length() <= 2){
+					AlgebraicParticle termWithoutCoefficient = first.hasCoefficient() ? first.getPartAt(1) : first.getPartAt(0);
+					return termWithoutCoefficient.sign() == sign ? termWithoutCoefficient : termWithoutCoefficient.cloneWithNewSign(sign);
+				}
 			}
 			else termBuilder.add(coe);
 				
@@ -178,6 +181,28 @@ public class CombineLikeTerms extends Algorithm {
 				list.add(a);
 				return new Term(a.sign(), list, a.exponent());
 			}
+		}
+		//take care terms with half-terms (e.g. x and 2x)
+		if(a instanceof Term || b instanceof Term){
+			//let t = the term and a = the other one
+			Term t = (Term) (a instanceof Term ? a : b);
+			AlgebraicParticle ap = a instanceof Term ? b : a;
+			
+			//calculate the new coefficient
+			AlgebraicParticle coe = addConstants(
+					t.sign() ? t.coefficient() : t.coefficient().cloneWithNewSign(false),
+					ap.sign() ? Number.ONE : Number.NEGATIVE_ONE
+							);
+			boolean sign = coe.sign();
+			
+			//build the new term
+			ArrayList<AlgebraicParticle> term = new ArrayList<AlgebraicParticle>();
+			
+			if (!coe.sign()) coe = coe.cloneWithNewSign(true);
+			//add or subtract one to get the new coefficient
+			if (!coe.equals(Number.ONE) && !coe.equals(Number.NEGATIVE_ONE)) term.add(coe);
+			term.add(ap);
+			return new Term(sign, term, 1);
 		}
 		
 		else throw new IllegalArgumentException();

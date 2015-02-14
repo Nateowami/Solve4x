@@ -56,7 +56,6 @@ public class Equation {
 	 * @return The expression at index i
 	 */
 	public AlgebraicParticle getPartAt(int i){
-		Solve4x.debug("about to return expression from equation. index is: " + i);
 		return exprs[i];
 	}
 	
@@ -85,7 +84,7 @@ public class Equation {
 	
 	/**
 	 * Clones the expression, replacing the expression at index "index" with expr in the clone.
-	 * @param algebraicParticle The expression to replace with.
+	 * @param algebraicParticle expr The expression to replace with.
 	 * @param index The index of the expression to swap out for expr.
 	 * @return A new equation, identical to current one, except that the expression at index 
 	 * is set to expr.

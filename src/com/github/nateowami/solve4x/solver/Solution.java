@@ -97,5 +97,14 @@ public class Solution {
 	public Step getLastStep() {
 		return this.steps.get(this.steps.size()-1);
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Solution [steps=" + steps + ", difficulty()=" + difficulty()
+				+ "]";
+	}
+	
 }

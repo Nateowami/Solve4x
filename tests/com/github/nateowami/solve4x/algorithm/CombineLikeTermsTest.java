@@ -82,6 +82,11 @@ public class CombineLikeTermsTest {
 		assertEquals(a("0"), c.combineTerms(a("xy(4+7)"), a("-xy(4+7)")));
 		assertEquals(a("(1(2)/(2))x²"), c.combineTerms(a("((1)/(2))x²"), a("(1(1)/(2))x²")));
 		assertEquals(a("4x"), c.combineTerms(a("7x"), a("-3x")));
+		assertEquals(a("-x"), c.combineTerms(a("2x"), a("-3x")));
+		assertEquals(a("3x"), c.combineTerms(a("x"), a("+2x")));
+		assertEquals(a("-x").getAsString(), c.combineTerms(a("x"), a("-2x")).getAsString());
+		assertEquals(a("0").getAsString(), c.combineTerms(a("x"), a("-x")).getAsString());
+		assertEquals(a("0").getAsString(), c.combineTerms(a("3x"), a("-3x")).getAsString());
 	}
 	
 	/**
@@ -160,6 +165,8 @@ public class CombineLikeTermsTest {
 		assertTrue(c.areCombinableTerms(a("(17)/(5)y(4+2)"), a("(1)/(5)y(4+2)")));
 		assertTrue(c.areCombinableTerms(a("-48r"), a("-r")));
 		assertTrue(c.areCombinableTerms(a("2.5(xy+6)"), a("((2)/(3))(xy+6)")));
+		assertTrue(c.areCombinableTerms(a("x"), a("2x")));
+		assertTrue(c.areCombinableTerms(a("x"), a("-2x")));
 		
 		//check variables
 		assertFalse(c.areCombinableTerms(a("a"), a("a²")));

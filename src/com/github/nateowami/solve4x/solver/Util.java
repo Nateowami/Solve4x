@@ -61,9 +61,6 @@ public class Util {
 	 */
 	public static String removePar(String expr){
 		String arg = expr;
-		//debugging
-		Solve4x.debug("removePar()" + expr);
-		System.out.println(Thread.currentThread().getStackTrace()[2]);
 		
 		//check to see if it starts and ends with parentheses
 		if((expr.length() >= 1) && expr.charAt(0) == '(' && expr.charAt(expr.length()-1) == ')'){
@@ -84,19 +81,13 @@ public class Util {
 			}
 
 			if(!parDepthReached0){
-				//debugging
-				Solve4x.debug("removePar(" + arg + ") -> " + expr.substring(1, expr.length()-1));
 				return expr.substring(1, expr.length()-1);
 			}
 			else{
-				//debugging
-				Solve4x.debug("removePar(" + arg + ") -> " + expr);
 				return expr;
 			}
 		}
 		else{
-			//debugging
-			Solve4x.debug("removePar(" + arg + ") -> " + expr);
 			return expr;
 		}
 	}
