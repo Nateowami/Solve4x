@@ -27,6 +27,7 @@ import java.util.ArrayList;
 public class Solution {
 	
 	ArrayList <Step>steps = new ArrayList<Step>();//a list of steps
+	Equation original;
 	
 	/**
 	 * Creates a new Solution from another Solution
@@ -38,12 +39,10 @@ public class Solution {
 	
 	/**
 	 * Creates a new Solution
-	 * @param equation The equation that is being solved
+	 * @param equation The equation that is being solved, in it's original form.
 	 */
 	public Solution(Equation equation){
-		Step firstStep = new Step(equation, 0);
-		firstStep.explain("Here's the original equation.");
-		this.steps.add(firstStep);
+		this.original = equation;
 	}
 	
 	/**
@@ -92,10 +91,11 @@ public class Solution {
 	}
 
 	/**
-	 * @return The last step of the solution (equivalent to Solution.getStepAt(Solution.numOfSteps()-1).
+	 * @return The latest state of the equation being solved in the solution. This is either the 
+	 * result of the last solving step, or the original equation if no solving steps have occurred.
 	 */
-	public Step getLastStep() {
-		return this.steps.get(this.steps.size()-1);
+	public Equation getLastEquation(){
+		return this.steps.size() > 0 ? this.steps.get(this.steps.size() - 1).getEquation() : this.original;
 	}
 	
 	/* (non-Javadoc)
@@ -105,6 +105,14 @@ public class Solution {
 	public String toString() {
 		return "Solution [steps=" + steps + ", difficulty()=" + difficulty()
 				+ "]";
+	}
+
+	
+	/**
+	 * @return The original equation, before any solver steps were performed.
+	 */
+	public Equation getOriginalEquation() {
+		return original;
 	}
 	
 }

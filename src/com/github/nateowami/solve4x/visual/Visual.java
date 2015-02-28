@@ -34,7 +34,7 @@ public class Visual {
 	public static void render(Solution solution){
 		System.out.println("************************");
 		try{
-			System.out.println("Solution for " + solution.get(0).getEquation().getAsString() + "\n");
+			System.out.println("Solution for " + solution.getOriginalEquation().getAsString() + "\n");
 			//print stuff out
 			for(int i=0; i<solution.length(); i++){
 				System.out.println("Step " + (i+1) + ": ");

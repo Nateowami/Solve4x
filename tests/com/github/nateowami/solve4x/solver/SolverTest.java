@@ -31,7 +31,7 @@ public class SolverTest {
 	 */
 	@Test
 	public void testGetSolution() {
-		assertEquals("15=x", new Solver("3x+4-2=17+2x", Solver.SolveFor.SOLVE).getSolution().getLastStep().getEquation().getAsString());
+		assertEquals("15=x", new Solver("3x+4-2=17+2x", Solver.SolveFor.SOLVE).getSolution().getLastEquation().getAsString());
 	}
 
 }

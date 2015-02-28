@@ -86,12 +86,12 @@ public class Solver {
 				//now loop through the algorithms
 				for(int b=0; b<algor.size(); b++){
 					//if this algorithm thinks it should be used in this situation
-					if(algor.get(b).smarts(copy.get(a).getLastStep().getEquation()) >= 4){
+					if(algor.get(b).smarts(copy.get(a).getLastEquation()) >= 4){
 						//use this Algorithm
 						//create a solution
 						Solution solution = copy.get(a);
 						//create a step to add to it
-						Step step = algor.get(b).execute(copy.get(a).getLastStep().getEquation());
+						Step step = algor.get(b).execute(copy.get(a).getLastEquation());
 						solution.addStep(step);
 						//add it to the solution list
 						solutions.add(solution);
@@ -128,7 +128,7 @@ public class Solver {
 		//check all solutions
 		for(int i=0; i<solList.size(); i++){
 			//check the first and second expressions
-			Equation eq = solList.get(i).getLastStep().getEquation();
+			Equation eq = solList.get(i).getLastEquation();
 			if(isSimplified(eq.get(0))	&& (eq.length() > 0) && isSimplified(eq.get(1))){
 				Solve4x.debug("Returns " + i);
 				return i;
