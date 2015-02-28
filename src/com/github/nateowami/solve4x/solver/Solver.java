@@ -147,7 +147,7 @@ public class Solver {
 	private boolean isSimplified(AlgebraicParticle expr){
 		if(expr.exponent() != 1)return false;
 		else if(expr instanceof Number) return true;
-		else if(expr instanceof Variable) return true;
+		else if(expr instanceof Variable && expr.sign()) return true;
 		else if(expr instanceof Fraction && ((Fraction)expr).isSimplified()) return true;
 		else if(expr instanceof MixedNumber && ((MixedNumber)expr).isSimplified()) return true;
 		else return false;
