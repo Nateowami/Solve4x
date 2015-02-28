@@ -184,7 +184,7 @@ public class CombineLikeTerms extends Algorithm {
 		}
 		//take care terms with half-terms (e.g. x and 2x)
 		if(a instanceof Term || b instanceof Term){
-			//let t = the term and a = the other one
+			//let t = the term and ap = the other one
 			Term t = (Term) (a instanceof Term ? a : b);
 			AlgebraicParticle ap = a instanceof Term ? b : a;
 			
@@ -194,15 +194,18 @@ public class CombineLikeTerms extends Algorithm {
 					ap.sign() ? Number.ONE : Number.NEGATIVE_ONE
 							);
 			boolean sign = coe.sign();
-			
-			//build the new term
-			ArrayList<AlgebraicParticle> term = new ArrayList<AlgebraicParticle>();
-			
-			if (!coe.sign()) coe = coe.cloneWithNewSign(true);
-			//add or subtract one to get the new coefficient
-			if (!coe.equals(Number.ONE) && !coe.equals(Number.NEGATIVE_ONE)) term.add(coe);
-			term.add(ap);
-			return new Term(sign, term, 1);
+						
+			//if the coefficients remain
+			if (!coe.equals(Number.ONE) && !coe.equals(Number.NEGATIVE_ONE)){
+				//build the new term
+				ArrayList<AlgebraicParticle> term = new ArrayList<AlgebraicParticle>();
+				//add or subtract one to get the new coefficient
+				term.add(coe.sign() ? coe : coe.cloneWithNewSign(true));
+				term.add(ap.sign() ? ap : ap.cloneWithNewSign(true));
+				return new Term(sign, term, 1);
+			}
+			//coefficients cancel
+			else return ap.sign() == sign ? ap : ap.cloneWithNewSign(sign);
 		}
 		
 		else throw new IllegalArgumentException();

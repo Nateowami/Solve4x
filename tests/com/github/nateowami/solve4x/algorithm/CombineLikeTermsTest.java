@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import org.junit.Test;
 
 import com.github.nateowami.solve4x.solver.*;
@@ -28,6 +29,7 @@ import com.github.nateowami.solve4x.solver.*;
 /**
  * @author Nateowami
  */
+@SuppressWarnings("static-access")
 public class CombineLikeTermsTest {
 	
 	CombineLikeTerms c = new CombineLikeTerms();
@@ -41,6 +43,7 @@ public class CombineLikeTermsTest {
 		assertEquals(5, s.getDifficulty());
 		assertEquals(new Equation("-2x+1.7y²-6"), s.getEquation());
 		assertEquals(new Equation("x"), c.execute(new Equation("4x+5x-8x")).getEquation());
+		assertEquals(new Equation("x"), c.execute(new Equation("2x-x")).getEquation());
 	}
 	
 	/**
@@ -51,6 +54,7 @@ public class CombineLikeTermsTest {
 		assertEquals(7, c.smarts(new Equation("2+2")));
 		assertEquals(7, c.smarts(new Equation("(1)/(3)+(1)/(3)")));
 		assertEquals(9, c.smarts(new Equation("5x+4x-8x")));
+		assertEquals(7, c.smarts(new Equation("2x-x")));
 	}
 	
 	/**
@@ -87,6 +91,7 @@ public class CombineLikeTermsTest {
 		assertEquals(a("-x").getAsString(), c.combineTerms(a("x"), a("-2x")).getAsString());
 		assertEquals(a("0").getAsString(), c.combineTerms(a("x"), a("-x")).getAsString());
 		assertEquals(a("0").getAsString(), c.combineTerms(a("3x"), a("-3x")).getAsString());
+		assertEquals(a("x").getAsString(), c.combineTerms(a("2x"), a("-x")).getAsString());
 	}
 	
 	/**
@@ -166,6 +171,7 @@ public class CombineLikeTermsTest {
 		assertTrue(c.areCombinableTerms(a("-48r"), a("-r")));
 		assertTrue(c.areCombinableTerms(a("2.5(xy+6)"), a("((2)/(3))(xy+6)")));
 		assertTrue(c.areCombinableTerms(a("x"), a("2x")));
+		assertTrue(c.areCombinableTerms(a("-x"), a("2x")));
 		assertTrue(c.areCombinableTerms(a("x"), a("-2x")));
 		
 		//check variables
