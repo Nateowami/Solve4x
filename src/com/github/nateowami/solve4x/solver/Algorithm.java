@@ -47,11 +47,11 @@ public abstract class Algorithm {
 	protected AlgebraicParticle unwrap(AlgebraicParticle a){
 		if(a instanceof Term){
 			Term t = (Term) a;
-			return t.length() == 1 ? t.getPartAt(0) : t;
+			return t.length() == 1 ? t.get(0) : t;
 		}
 		else if(a instanceof Expression){
 			Expression e = (Expression) a;
-			return e.length() == 1 ? e.termAt(0) : e;
+			return e.length() == 1 ? e.get(0) : e;
 		}
 		else return a;
 	}

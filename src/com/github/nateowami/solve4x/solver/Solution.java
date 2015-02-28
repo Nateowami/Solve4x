@@ -66,7 +66,7 @@ public class Solution {
 	 * Finds the number of steps in this Solution
 	 * @return The current number of steps
 	 */
-	public int numOfSteps(){
+	public int length(){
 		return this.steps.size();
 	}
 	
@@ -75,7 +75,7 @@ public class Solution {
 	 * @param index The index of the Step you want
 	 * @return The Step specified
 	 */
-	public Step getStepAt(int index){
+	public Step get(int index){
 		return this.steps.get(index);
 	}
 	

@@ -36,7 +36,7 @@ public class AlgebraicParticleTest {
 		assertTrue(AlgebraicParticle.getInstance("₄√(4y+x⁶)").sign());
 		AlgebraicParticle a = AlgebraicParticle.getInstance("-2+7");
 		assertTrue(a.sign());
-		assertFalse(((Expression)a).termAt(0).sign());
+		assertFalse(((Expression)a).get(0).sign());
 	}
 
 	/**

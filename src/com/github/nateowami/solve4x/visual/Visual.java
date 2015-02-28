@@ -34,11 +34,11 @@ public class Visual {
 	public static void render(Solution solution){
 		System.out.println("************************");
 		try{
-			System.out.println("Solution for " + solution.getStepAt(0).getEquation().getAsString() + "\n");
+			System.out.println("Solution for " + solution.get(0).getEquation().getAsString() + "\n");
 			//print stuff out
-			for(int i=0; i<solution.numOfSteps(); i++){
+			for(int i=0; i<solution.length(); i++){
 				System.out.println("Step " + (i+1) + ": ");
-				printStep(solution.getStepAt(i));
+				printStep(solution.get(i));
 			}
 		}
 		//null pointer exceptions will be thrown if there is no solution

@@ -88,14 +88,14 @@ public class TermTest {
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#getPartAt(int)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#get(int)}.
 	 */
 	@Test
 	public void testGetPartAt() {
-		assertEquals("x", new Term("2x").getPartAt(1).getAsString());
-		assertEquals("x+6", new Term("4y(x+6)").getPartAt(2).getAsString());
-		assertEquals("y", new Term("4xy").getPartAt(2).getAsString());
-		assertEquals("4", new Term("xyz4").getPartAt(3).getAsString());
+		assertEquals("x", new Term("2x").get(1).getAsString());
+		assertEquals("x+6", new Term("4y(x+6)").get(2).getAsString());
+		assertEquals("y", new Term("4xy").get(2).getAsString());
+		assertEquals("4", new Term("xyz4").get(3).getAsString());
 	}
 	
 	/**

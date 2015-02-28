@@ -44,11 +44,11 @@ public class CombineLikeTerms extends Algorithm {
 		int maxDiff = 0, index = 0;
 		
 		//loop over the expressions
-		for(int i = 0; i < equation.getSize(); i++){
+		for(int i = 0; i < equation.length(); i++){
 			//if it's not an Expression we're not interested
-			if(!(equation.getPartAt(i) instanceof Expression))continue;
+			if(!(equation.get(i) instanceof Expression))continue;
 			
-			Expression expr = (Expression) equation.getPartAt(i);
+			Expression expr = (Expression) equation.get(i);
 			
 			ArrayList<ArrayList<AlgebraicParticle>> terms = listCombineableTerms(expr);
 			//if this expression is in more need of simplifying than any so far
@@ -59,14 +59,14 @@ public class CombineLikeTerms extends Algorithm {
 			}
 		}
 		//simplify mostLikeTerms
-		Expression expr = combineLikeTerms(equation.getPartAt(index).sign(), mostLikeTerms, equation.getPartAt(index).exponent());
+		Expression expr = combineLikeTerms(equation.get(index).sign(), mostLikeTerms, equation.get(index).exponent());
 		
 		Step step = new Step(equation.cloneWithNewExpression(unwrap(expr), index), 5/*TODO*/);
 		//create the explanation
-		step.explain("We need to combine like terms here, in the expression ").explain(equation.getPartAt(index)).explain(".\n");
+		step.explain("We need to combine like terms here, in the expression ").explain(equation.get(index)).explain(".\n");
 		for(int i = 0; i < mostLikeTerms.size(); i++){
 			if (mostLikeTerms.get(i).size() > 1) //don't explain combining a single term with itself
-					step.explain("Combine ").list(mostLikeTerms.get(i)).explain(" to get ").explain(expr.termAt(i)).explain(".\n");
+					step.explain("Combine ").list(mostLikeTerms.get(i)).explain(" to get ").explain(expr.get(i)).explain(".\n");
 		}
 		return step;
 	}
@@ -75,10 +75,10 @@ public class CombineLikeTerms extends Algorithm {
 	public int smarts(Equation equation) {
 		//count how many terms are like: if none, return 0, if 2, return 7, if more, return 9
 		int numLike = 0;
-		for(int i = 0; i < equation.getSize(); i++){
+		for(int i = 0; i < equation.length(); i++){
 			//we're not interested if it's not an expression
-			if(!(equation.getPartAt(i) instanceof Expression))continue;
-			Expression expr = (Expression) equation.getPartAt(i);
+			if(!(equation.get(i) instanceof Expression))continue;
+			Expression expr = (Expression) equation.get(i);
 			ArrayList<ArrayList<AlgebraicParticle>> likeTerms = listCombineableTerms(expr);
 			//if there are two less types of terms than there are total terms
 			if (likeTerms.size() + 1 < expr.length())return 9;
@@ -155,7 +155,7 @@ public class CombineLikeTerms extends Algorithm {
 				//if the terms have just a coe and one other thing, return that other thing
 				//for example, 2x and -x should just return x
 				if(first.length() <= 2 && second.length() <= 2){
-					AlgebraicParticle termWithoutCoefficient = first.hasCoefficient() ? first.getPartAt(1) : first.getPartAt(0);
+					AlgebraicParticle termWithoutCoefficient = first.hasCoefficient() ? first.get(1) : first.get(0);
 					return termWithoutCoefficient.sign() == sign ? termWithoutCoefficient : termWithoutCoefficient.cloneWithNewSign(sign);
 				}
 			}
@@ -165,8 +165,8 @@ public class CombineLikeTerms extends Algorithm {
 			//account for the possibility of one term having and exponent and the other not
 			//find the longest term (if they're the same length, it doesn't matter which we get)
 			Term t = first.length() > second.length() ? first : second;
-			for(int i =  Util.constant(t.getPartAt(0)) ? 1 : 0; i < t.length(); i++){
-				termBuilder.add(t.getPartAt(i));
+			for(int i =  Util.constant(t.get(0)) ? 1 : 0; i < t.length(); i++){
+				termBuilder.add(t.get(i));
 			}
 			return new Term(sign, termBuilder, first.exponent());
 		}
@@ -281,14 +281,14 @@ public class CombineLikeTerms extends Algorithm {
 		for(int i = 0; i < e.length(); i++){
 			//place this term in the correct ArrayList
 			for(ArrayList<AlgebraicParticle> array : list){
-				if(areCombinableTerms(array.get(0), e.termAt(i))){
-					array.add(e.termAt(i));
+				if(areCombinableTerms(array.get(0), e.get(i))){
+					array.add(e.get(i));
 					continue bigloop;
 				}
 			}
 			//there is no like term, we must add it to a new arraylist
 			ArrayList<AlgebraicParticle> tmp = new ArrayList<AlgebraicParticle>(1);
-			tmp.add(e.termAt(i));
+			tmp.add(e.get(i));
 			list.add(tmp);
 		}
 		return list;
@@ -319,7 +319,7 @@ public class CombineLikeTerms extends Algorithm {
 			
 			//check that the terms are like. offset if necessary, for checking things like xy and 2xy
 			for(int i = first.hasCoefficient() ? 1 : 0, j = second.hasCoefficient() ? 1 : 0; i < first.length() && j < second.length(); i++, j++){
-				if(!first.getPartAt(i).equals(second.getPartAt(j)))return false;
+				if(!first.get(i).equals(second.get(j)))return false;
 			}
 			return true;
 		}
@@ -329,7 +329,7 @@ public class CombineLikeTerms extends Algorithm {
 		if(aTerm != bTerm){
 			Term term = (Term) (aTerm ? a : b);
 			AlgebraicParticle nonterm = aTerm ? b : a;
-			if(term.length() == 2 && term.hasCoefficient() && term.getPartAt(1).cloneWithNewSign(nonterm.sign()).equals(nonterm)) return true;
+			if(term.length() == 2 && term.hasCoefficient() && term.get(1).cloneWithNewSign(nonterm.sign()).equals(nonterm)) return true;
 			else return false;
 		}
 		else return false;

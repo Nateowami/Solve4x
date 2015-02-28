@@ -27,12 +27,12 @@ public class ChangeSides extends Algorithm {
 	@Override
 	public Step execute(Equation eq) {
 		int maxSmarts = 0, index = 0;
-		for(int i = 0; i < eq.getSize(); i+=2){
-			int smarts = smartsForTwoExprssions(eq.getPartAt(i), eq.getPartAt(i+1));
+		for(int i = 0; i < eq.length(); i+=2){
+			int smarts = smartsForTwoExprssions(eq.get(i), eq.get(i+1));
 			if(smarts > maxSmarts){maxSmarts = smarts; index = i;}
 			if(smarts >= 9)break;//no use continuing then
 		}
-		AlgebraicParticle first = eq.getPartAt(index), second = eq.getPartAt(index+1);
+		AlgebraicParticle first = eq.get(index), second = eq.get(index+1);
 		Expression left = first instanceof Expression ? (Expression) first : new Expression(true, new AlgebraicParticle[]{first}, 1),
 				right = second instanceof Expression ? (Expression) second : new Expression(true, new AlgebraicParticle[]{second}, 1);
 		
@@ -93,10 +93,10 @@ public class ChangeSides extends Algorithm {
 		for(int i = 0; i < source.length(); i++){
 			//if this is a constant and we're moving constants, or this is not constant, and we're moving non constants
 			if(sourceMap[i] == moveConstants){
-				move[moveIndex++] = source.termAt(i);
+				move[moveIndex++] = source.get(i);
 			}
 			else{
-				keep[keepIndex++] = source.termAt(i);
+				keep[keepIndex++] = source.get(i);
 			}
 		}
 		
@@ -105,7 +105,7 @@ public class ChangeSides extends Algorithm {
 		AlgebraicParticle[] calculateAdded = new AlgebraicParticle[dest.length() + move.length];
 		int i;
 		for(i = 0; i < dest.length(); i++){
-			calculateAdded[i] = dest.termAt(i);
+			calculateAdded[i] = dest.get(i);
 		}
 		for(int j = 0; j < move.length; j++){
 			//change the sign when we copy the terms we're moving to the other side
@@ -125,8 +125,8 @@ public class ChangeSides extends Algorithm {
 	@Override
 	public int smarts(Equation equation) {
 		int max = 0;
-		for(int i = 0; i < equation.getSize(); i+=2){
-			int smarts = smartsForTwoExprssions(equation.getPartAt(i), equation.getPartAt(i+1));
+		for(int i = 0; i < equation.length(); i+=2){
+			int smarts = smartsForTwoExprssions(equation.get(i), equation.get(i+1));
 			if(smarts > 7) return smarts;
 			else if(max < smarts) max = smarts;
 		}
@@ -179,7 +179,7 @@ public class ChangeSides extends Algorithm {
 			Expression e = (Expression) a;
 			boolean[] map = new boolean[e.length()];
 			for(int i = 0; i < map.length; i++){
-				map[i] = Util.constant(e.termAt(i));
+				map[i] = Util.constant(e.get(i));
 			}
 			return map;
 		}

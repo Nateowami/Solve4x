@@ -71,7 +71,7 @@ public class Expression extends AlgebraicParticle{
 	 * @param i The index of the term you want
 	 * @return The term at index i
 	 */
-	public AlgebraicParticle termAt(int i){
+	public AlgebraicParticle get(int i){
 		return termList.get(i);
 	}
 	

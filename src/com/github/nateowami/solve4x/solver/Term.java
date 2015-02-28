@@ -71,7 +71,7 @@ public class Term extends AlgebraicParticle{
 	 * Tells the number of AlgebraicParticles in this term. For example,
 	 * 2xy(2x+6)+2 would return 2.
 	 * @return The number of Expressions in this term.
-	 * @see com.github.nateowami.solve4x.solver.Term#getPartAt(int)
+	 * @see com.github.nateowami.solve4x.solver.Term#get(int)
 	 */
 	public int length(){
 		return this.parts.size();
@@ -100,7 +100,7 @@ public class Term extends AlgebraicParticle{
 	 * @return The Expression at index i.
 	 * @see com.github.nateowami.solve4x.solver.Term#length()
 	 */
-	public AlgebraicParticle getPartAt(int i){
+	public AlgebraicParticle get(int i){
 		return this.parts.get(i);
 	}
 	
@@ -119,7 +119,7 @@ public class Term extends AlgebraicParticle{
 		if(aLength != bLength) return false;
 		//now make sure all other parts of the term are the same
 		for(int a = aOffset, b = bOffset; a < t.length() && b < this.length(); a++, b++){
-			if(!t.getPartAt(a).equals(this.getPartAt(b))) return false;
+			if(!t.get(a).equals(this.get(b))) return false;
 		}
 		return true;
 	}

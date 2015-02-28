@@ -33,31 +33,31 @@ public class EquationTest {
 	@Test
 	public void testEquation()  {
 		Equation eq = new Equation("23x2y+14x=6(34xy2+7)");
-		assertEquals("23x2y+14x", eq.getPartAt(0).getAsString());
-		assertEquals("6(34xy2+7)", eq.getPartAt(1).getAsString());
+		assertEquals("23x2y+14x", eq.get(0).getAsString());
+		assertEquals("6(34xy2+7)", eq.get(1).getAsString());
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#getPartAt(int)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#get(int)}.
 	 * @ 
 	 */
 	@Test
 	public void testGetExpression()  {
 		Equation eq = new Equation("12x2y(34+6xa)=45+6x(4+85xy5)");
-		assertEquals("12x2y(34+6xa)", eq.getPartAt(0).getAsString());
-		assertEquals("45+6x(4+85xy5)", eq.getPartAt(1).getAsString());
+		assertEquals("12x2y(34+6xa)", eq.get(0).getAsString());
+		assertEquals("45+6x(4+85xy5)", eq.get(1).getAsString());
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#getSize()}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#length()}.
 	 * @ 
 	 */
 	@Test
 	public void testGetSize()  {
 		Equation eq = new Equation("12x2y(34+6xa)=45+6x(4+85xy5)");
-		assertEquals(2, eq.getSize());
+		assertEquals(2, eq.length());
 		Equation eq2 = new Equation("2x+45(45+16x2y)");
-		assertEquals(1, eq2.getSize());
+		assertEquals(1, eq2.length());
 	}
 	
 	/**

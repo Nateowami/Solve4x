@@ -129,7 +129,7 @@ public class Solver {
 		for(int i=0; i<solList.size(); i++){
 			//check the first and second expressions
 			Equation eq = solList.get(i).getLastStep().getEquation();
-			if(isSimplified(eq.getPartAt(0))	&& (eq.getSize() > 0) && isSimplified(eq.getPartAt(1))){
+			if(isSimplified(eq.get(0))	&& (eq.length() > 0) && isSimplified(eq.get(1))){
 				Solve4x.debug("Returns " + i);
 				return i;
 			}

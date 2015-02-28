@@ -55,7 +55,7 @@ public class Equation {
 	 *Needs to be 0 or 1.
 	 * @return The expression at index i
 	 */
-	public AlgebraicParticle getPartAt(int i){
+	public AlgebraicParticle get(int i){
 		return exprs[i];
 	}
 	
@@ -66,7 +66,7 @@ public class Equation {
 	 * of equations.
 	 * @return The number of expressions in this Equation
 	 */
-	public int getSize(){
+	public int length(){
 		return exprs.length;
 	}
 	
