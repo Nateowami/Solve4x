@@ -20,7 +20,7 @@ package com.github.nateowami.solve4x.solver;
 import java.math.BigDecimal;
 
 /**
- * Represents a integer or decimal such as 35, 45.25, 56.36, 3.1415926535, and 
+ * Represents a integer or decimal such as 35, 45.25, 56.36, 3.1415926535, 2.4*10⁴ and 
  * provides methods for adding, subtracting, multiplying, and dividing numbers. (TODO)
  * @author Nateowami
  */
@@ -28,36 +28,46 @@ public class Number extends AlgebraicParticle{
 	
 	//The numerical part of a mixed number (could be a decimal)
 	private String integer, decimal;
-	public static final Number ZERO = new Number("0"), ONE = new Number("1"), NEGATIVE_ONE = new Number(false, "1", null, 1);
+	//the exponent of 10, if this is scientific notation, e.g., in 2.3*10⁴ this would be 4
+	private Integer sciExponent = null;
+	public static final Number ZERO = new Number("0"), ONE = new Number("1"), NEGATIVE_ONE = new Number(false, "1", null, null, 1);
 	
 	/**
 	 * Constructs a new number.
 	 * @param num The number to parse into a Number. Examples: 2.67, 15, 0.34, 3.1415
 	 */
 	public Number(String num) {
+		//check for scientific notation
+		int a = num.indexOf("*10");
+		if(a != -1){
+			sciExponent = Util.superscriptToInt(num.substring(a+3));
+			//remove the *10⁸ part, or whatever it happens to be
+			num = num.substring(0, a);
+		}
+
 		int i = num.indexOf('.');
 		if(i == -1){
 			this.integer = num;
 		}
 		else {
 			this.integer = num.substring(0, i);
-			String dec = num.substring(i+1);
-			//make sure dec isn't just 0's
-			if(dec.length() > 0 && (dec.charAt(0) != '0' || dec.length() > 1)){
-				for(int j = 0; j < dec.length(); j++){
-					if (dec.charAt(j) != '0'){
-						this.decimal = dec;
-						return;
-					}
-				}
-			}
+			this.decimal = num.substring(i+1);
 		}
 	}
-
-	public Number(boolean sign, String integer, String decimal, int exponent){
+	
+	/**
+	 * Constructs a new Number from a sign, integer part, decimal part,  
+	 * @param sign The sign of the number.
+	 * @param integer The part of the number before the decimal point.
+	 * @param decimal The part of the number after the decimal point (may be null).
+	 * @param sciExponent The exponent of 10 if this number is in scientific notation.
+	 * @param exponent The exponent of the number.
+	 */
+	public Number(boolean sign, String integer, String decimal, Integer sciExponent, int exponent){
 		super(sign, exponent);
 		this.integer = integer;
 		this.decimal = decimal;
+		this.sciExponent = sciExponent; 
 	}
 	
 	 /**
@@ -68,6 +78,7 @@ public class Number extends AlgebraicParticle{
 	 * @throws IllegalArgumentException if either of the numbers have exponents other than 1.
 	 */
 	public static Number add(Number n1, Number n2) {
+		//TODO take scientific notation into account
 		if(n1.exponent() != 1 || n2.exponent() != 1) throw new IllegalArgumentException("Connot add numbers with exponents.");
 		//convert to strings, add, and convert back to a Number
 		return (Number) AlgebraicParticle.getInstance(add(n1.getAsString(), n2.getAsString()), null);
@@ -102,7 +113,8 @@ public class Number extends AlgebraicParticle{
 	 */
 	public String getAsString(){
 		return wrapWithSignParAndExponent(
-				integer + (decimal == null ? "" : "." + decimal),
+				integer + (decimal == null ? "" : "." + decimal) + 
+						(sciExponent == null ? "" : "*10" + Util.toSuperscript(Integer.toString(sciExponent))),
 				false);
 	}
 	
@@ -124,6 +136,20 @@ public class Number extends AlgebraicParticle{
 		if(num.length() == 0){
 			return false;
 		}
+		
+		//check for scientific notation
+		int a = num.indexOf("*10");
+		//if there's an asterisk
+		if(a != -1){
+			//if it's in the proper format
+			if(a > 0 && a < num.length() && Util.isSuperscript(num.substring(a+3))){
+				//remove the *10⁸ part, or whatever it happens to be
+				num = num.substring(0, a);
+			}
+			else return false;
+		}
+		//now keep working ignoring that there may have been scientific notation that got removed
+		
 		int d = num.indexOf('.');
 		//check that the decimal point doesn't exist and num doesn't start with 0 unless length is one
 		if(d == -1 && (num.charAt(0) != '0' || num.length() == 1) && Util.areAllNumerals(num)) return true;
@@ -144,6 +170,7 @@ public class Number extends AlgebraicParticle{
 		return new Number(sign == null ? this.sign() : sign, 
 				this.integer, 
 				this.decimal, 
+				this.sciExponent,
 				this.exponent()
 				);
 	}
@@ -154,7 +181,8 @@ public class Number extends AlgebraicParticle{
 	@Override
 	public String toString() {
 		return "Number [integer=" + integer + ", decimal=" + decimal
-				+ ", sign()=" + sign() + ", exponent()=" + exponent() + "]";
+				+ ", sciExponent=" + sciExponent + ", sign()=" + sign()
+				+ ", exponent()=" + exponent() + "]";
 	}
 	
 	/**
@@ -169,6 +197,15 @@ public class Number extends AlgebraicParticle{
 	 */
 	public String getDecimal() {
 		return decimal;
+	}
+	
+	/**
+	 * @return The exponent of 10, if the number is in scientific notation. For example, 
+	 * in 2.3*10⁴ it would be 4. Normally this will not be present, and hence this will 
+	 * return null.
+	 */
+	public Integer getScientificNotationExponent(){
+		return this.sciExponent;
 	}
 	
 	/**
@@ -197,6 +234,8 @@ public class Number extends AlgebraicParticle{
 		int result = super.hashCode();
 		result = prime * result + ((decimal == null) ? 0 : decimal.hashCode());
 		result = prime * result + ((integer == null) ? 0 : integer.hashCode());
+		result = prime * result
+				+ ((sciExponent == null) ? 0 : sciExponent.hashCode());
 		return result;
 	}
 	
@@ -222,8 +261,12 @@ public class Number extends AlgebraicParticle{
 				return false;
 		} else if (!integer.equals(other.integer))
 			return false;
+		if (sciExponent == null) {
+			if (other.sciExponent != null)
+				return false;
+		} else if (!sciExponent.equals(other.sciExponent))
+			return false;
 		return true;
 	}
-
-		
+	
 }

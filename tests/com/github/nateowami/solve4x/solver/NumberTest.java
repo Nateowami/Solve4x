@@ -38,6 +38,14 @@ public class NumberTest {
 		Number n2 = new Number("7.28");
 		assertEquals("7", n2.getInteger());
 		assertEquals("28", n2.getDecimal());
+
+		assertEquals("2.4*10⁷⁸⁹", new Number("2.4*10⁷⁸⁹").getAsString());
+		assertEquals("0.79*10⁴", new Number("0.79*10⁴").getAsString());
+		assertEquals("3.0*10⁷", new Number("3.0*10⁷").getAsString());
+		assertEquals("7.639*10²", new Number("7.639*10²").getAsString());
+		assertEquals("0.0072*10³", new Number("0.0072*10³").getAsString());
+		assertEquals("47.093*10⁷⁸", new Number("47.093*10⁷⁸").getAsString());
+		
 		new Number("0.4");
 		new Number("0");
 	}
@@ -71,7 +79,7 @@ public class NumberTest {
 		assertEquals("-234.026", AlgebraicParticle.getInstance("-234.026").getAsString());
 		assertEquals("234.6", new Number("234.6").getAsString());
 		assertEquals("-8.87", AlgebraicParticle.getInstance("-8.87").getAsString());
-		assertEquals("1", new Number("1.0").getAsString());
+		assertEquals("1.0", new Number("1.0").getAsString());
 		assertEquals("1", new Number("1").getAsString());
 		assertEquals("6.03", new Number("6.03").getAsString());
 	}
@@ -87,6 +95,14 @@ public class NumberTest {
 		assertTrue(Number.parseable("0.1"));
 		assertTrue(Number.parseable("1.63"));
 		assertTrue(Number.parseable("3.141592"));
+
+		assertTrue(Number.parseable("2.4*10⁷⁸⁹"));
+		assertTrue(Number.parseable("0.79*10⁴"));
+		assertTrue(Number.parseable("3.0*10⁷"));
+		assertTrue(Number.parseable("7.639*10²"));
+		assertTrue(Number.parseable("0.0072*10³"));
+		assertTrue(Number.parseable("47.093*10⁷⁸"));
+
 		
 		assertFalse(Number.parseable(""));
 		assertFalse(Number.parseable("05"));
@@ -96,6 +112,14 @@ public class NumberTest {
 		assertFalse(Number.parseable("12."));
 		assertFalse(Number.parseable("j8.7"));
 		assertFalse(Number.parseable("8.8s"));
+	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#cloneWithNewSign(boolean)}.
+	 */
+	@Test
+	public void testCloneWithNewSign() {
+		assertEquals(Number.NEGATIVE_ONE, new Number("1").cloneWithNewSign(false));
 	}
 	
 	/**

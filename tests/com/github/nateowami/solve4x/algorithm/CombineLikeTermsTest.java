@@ -82,6 +82,7 @@ public class CombineLikeTermsTest {
 	 */
 	@Test
 	public void testCombineTerms() {
+		assertEquals(a("2x").getAsString(), c.combineTerms(a("1.5x"), a("0.5x")).getAsString());
 		assertEquals(a("2x"), c.combineTerms(a("1.5x"), a("0.5x")));
 		assertEquals(a("0"), c.combineTerms(a("xy(4+7)"), a("-xy(4+7)")));
 		assertEquals(a("(1(2)/(2))x²"), c.combineTerms(a("((1)/(2))x²"), a("(1(1)/(2))x²")));
