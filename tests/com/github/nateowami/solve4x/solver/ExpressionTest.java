@@ -52,6 +52,8 @@ public class ExpressionTest {
 		assertEquals("x", expr2.get(0).getAsString());
 		assertEquals("6((34)/(6x))", expr2.get(1).getAsString());
 		assertEquals("67", expr2.get(2).getAsString());
+		
+		assertEquals("(6+4)⁴+8(3)", new Expression("(6+4)⁴+8*3").getAsString());
 	}
 
 	/**
@@ -103,6 +105,7 @@ public class ExpressionTest {
 	@Test
 	public void testParseable()  {
 		assertTrue(Expression.parseable("6+2"));
+		assertTrue(Expression.parseable("(6+4)⁴+8*3"));
 		assertFalse(Expression.parseable("6(34+9xy2(45x+6)"));
 	}
 	

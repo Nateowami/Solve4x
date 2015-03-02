@@ -57,6 +57,9 @@ public class TermTest {
 		assertEquals("xy(6+2)", new Term("xy(6+2)").getAsString());
 		assertEquals("4y(-y+6)", new Term("4y(-y+6)").getAsString());
 		assertEquals("4(32)", new Term("4(32)").getAsString());
+		assertEquals("x(4+y)⁴", new Term("x(4+y)⁴").getAsString());
+		assertEquals("x(4y)⁴3", new Term("x(4*y)⁴*3").getAsString());
+		assertEquals("2x4yx", new Term("2x*4yx").getAsString());
 	}
 	
 	/**
@@ -68,6 +71,9 @@ public class TermTest {
 		assertTrue(Term.parseable("1x"));
 		assertTrue(Term.parseable("6(34+9xy2(45x+6))"));
 		assertTrue(Term.parseable("x(4+y)⁴"));
+		assertTrue(Term.parseable("5*6"));
+		assertTrue(Term.parseable("(x+6)⁴*6.4"));
+		assertTrue(Term.parseable("5(x+6)⁴*6.4"));
 		
 		assertFalse(Term.parseable("6(34+9xy2(45x+6)"));
 		assertFalse(Term.parseable("xy+2"));

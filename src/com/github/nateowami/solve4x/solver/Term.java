@@ -37,14 +37,12 @@ public class Term extends AlgebraicParticle{
 	 */
 	protected Term(String s) {
 		String original = s; //for debugging purposes
-		Solve4x.debug("Creating term: "+s);
 		//loop backwards to find a match
-		int i;
 		//-1 from s.length() because we should not try to parse the whole thing the first time
-		for(i = s.length()-1; i >=0; i--){
-			if(AlgebraicParticle.parseable(s.substring(0, i), Term.class)){
-				Solve4x.debug("Creating algebraic particle: " + s.substring(0, i));
-				parts.add(AlgebraicParticle.getInstance(s.substring(0, i), Term.class));
+		for(int i = s.length()-1; i > 0; i--){
+			String part = s.length() != original.length() && s.charAt(0) == '*' ? s.substring(1, i) : s.substring(0, i);
+			if(AlgebraicParticle.parseable(part, Term.class)){
+				parts.add(AlgebraicParticle.getInstance(part, Term.class));
 				//reset the loop
 				s = s.substring(i);
 				i = s.length()+1;//+1 because it is about to be subtracted when the loop continues
@@ -173,7 +171,9 @@ public class Term extends AlgebraicParticle{
 		//don't subtract 1 from s.length() because we need to make sure it won't be able to parse the whole thing at once
 		for(int i = s.length(); i >= 0; i--){
 			//make sure it doesn't have a sign
-			if(s.length() > 0 && s.charAt(0) != '+' && s.charAt(0) != '-' && AlgebraicParticle.parseable(s.substring(0, i), Term.class)){
+			if(s.length() > 0 && s.charAt(0) != '+' && s.charAt(0) != '-'
+					//if the first char is * and this isn't the first one to be parsed, remove it before attempting to parse
+					&& AlgebraicParticle.parseable(numParsed > 0  && s.charAt(0) == '*' ? s.substring(1, i) : s.substring(0, i), Term.class)){
 				numParsed++;
 				//reset the loop
 				s = s.substring(i);
@@ -184,7 +184,7 @@ public class Term extends AlgebraicParticle{
 		if(s.length() == 0 && numParsed > 1){
 			return true;
 		}
-		else return false;		
+		else return false;
 	}
 	
 	/* (non-Javadoc)
