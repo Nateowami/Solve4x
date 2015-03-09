@@ -18,6 +18,7 @@
 package com.github.nateowami.solve4x.solver;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 /**
  * Represents a integer or decimal such as 35, 45.25, 56.36, 3.1415926535, 2.4*10⁴ and 
@@ -50,38 +51,55 @@ public class Number extends AlgebraicParticle{
 			this.integer = num;
 		}
 		else {
-			this.integer = num.substring(0, i);
-			this.decimal = num.substring(i+1);
+			String integ = num.substring(0, i), dec = num.substring(i+1);
+			if(integ.length() != 0) this.integer = integ;
+			if(dec.length() != 0) this.decimal = dec;
 		}
 	}
 	
 	/**
 	 * Constructs a new Number from a sign, integer part, decimal part,  
 	 * @param sign The sign of the number.
-	 * @param integer The part of the number before the decimal point.
-	 * @param decimal The part of the number after the decimal point (may be null).
-	 * @param sciExponent The exponent of 10 if this number is in scientific notation.
+	 * @param integer The part of the number before the decimal point (may be null or empty).
+	 * @param decimal The part of the number after the decimal point (may be null or empty).
+	 * @param sciExponent The exponent of 10 if this number is in scientific notation (may be null).
 	 * @param exponent The exponent of the number.
 	 */
 	public Number(boolean sign, String integer, String decimal, Integer sciExponent, int exponent){
 		super(sign, exponent);
-		this.integer = integer;
-		this.decimal = decimal;
+		if(integer != null && !integer.isEmpty()) this.integer = integer;
+		if(decimal != null && !decimal.isEmpty()) this.decimal = decimal;
 		this.sciExponent = sciExponent; 
 	}
 	
 	 /**
-	 * Adds two Numbers and returns the result
-	 * @param n1 The first Number
-	 * @param n2 The second Number
-	 * @return A Number equal to the value of the two numbers added
-	 * @throws IllegalArgumentException if either of the numbers have exponents other than 1.
+	  * @return A BigDecimal representing this number, with precision set to the number 
+	  * of signification figures in this number, and a rounding mode of HALF_UP.
+	  */
+	protected BigDecimal toBigDecimal() {
+		if(this.exponent() != 1) throw new IllegalArgumentException("Connot a number with an exponent to BigDecimal.");
+		
+		return new BigDecimal(
+				(sign() ? "" : "-") + integer + (decimal == null ? "" : "." + decimal) + (sciExponent == null ? "" : "e" + sciExponent)
+			);
+	}
+	
+	/**
+	 * Converts bd to Number.
+	 * @param bd A BigDecimal to be converted to Number.
+	 * @return bd, converted to Number.
 	 */
-	public static Number add(Number n1, Number n2) {
-		//TODO take scientific notation into account
-		if(n1.exponent() != 1 || n2.exponent() != 1) throw new IllegalArgumentException("Connot add numbers with exponents.");
-		//convert to strings, add, and convert back to a Number
-		return (Number) AlgebraicParticle.getInstance(add(n1.getAsString(), n2.getAsString()), null);
+	protected static Number toNumber(BigDecimal bd){
+		String s = bd.toString();
+		int dot = s.indexOf('.'), e = s.indexOf('E', dot+1);
+		//change e to the end if there is no exponent
+		if(e == -1) e = s.length();
+		//change dot to e if there is no dot
+		if(dot == -1) dot = e;
+		String integer = s.substring(bd.signum() == -1 ? 1 : 0, dot);
+		String decimal = dot >= e ? null : s.substring(dot+1, e);
+		Integer sciExponent = e < s.length() ? new Integer(s.substring(e+2)) : null;//+2 takes care of the 'e' and sign characters, e.g. "e+3"
+		return new Number(bd.signum() == -1 ? false : true, integer, decimal, sciExponent, 1);
 	}
 	
 	/**
@@ -91,20 +109,14 @@ public class Number extends AlgebraicParticle{
 	 * @param n2 The second number to add
 	 * @return The value of two numbers added
 	 * @throws IllegalArgumentException If the Strings cannot be parsed as ints or decimals. An empty String
-	 * will throw an exception.
+	 * will throw an exception. TODO update this doc
 	 */
-	private static String add(String n1, String n2) throws IllegalArgumentException{
-		//first see if they are both ints
-		if(Util.areAllNumerals(n1) && Util.areAllNumerals(n2)){
-			//since they can be parsed as ints just convert to ints, add, and convert to String
-			return (Integer.parseInt(n1) + Integer.parseInt(n2)) + "";
-		}
-		//if they're not ints, try adding them with BigDecimal
-		BigDecimal dec1 = new BigDecimal(n1);
-		BigDecimal dec2 = new BigDecimal(n2);
-		//we don't need to worry about being too overly accurate. Assuming the number of 
-		//decimal places is already realistic, it won't change a whole lot since we're just adding
-		return dec1.add(dec2).toString();
+	public static Number add(Number n1, Number n2) throws IllegalArgumentException{
+		//create the decimals and add
+		int figsA = n1.sigFigs(), figsB = n2.sigFigs();
+		BigDecimal a = n1.toBigDecimal();
+		BigDecimal b = n2.toBigDecimal(); //precision on this one is irrelevant
+		return toNumber(a.add(b, new MathContext(figsA > figsB ? figsB : figsA)));
 	}
 	
 	/**
@@ -206,6 +218,13 @@ public class Number extends AlgebraicParticle{
 	 */
 	public Integer getScientificNotationExponent(){
 		return this.sciExponent;
+	}
+	
+	/**
+	 * @return The number of significant figures in this number (sum of integer length and decimal length).
+	 */
+	public int sigFigs(){
+		return (this.integer == null ? 0 : this.integer.length()) + (this.decimal == null ? 0 : this.decimal.length());
 	}
 	
 	/**
