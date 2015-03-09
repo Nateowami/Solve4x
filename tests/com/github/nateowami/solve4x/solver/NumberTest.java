@@ -21,6 +21,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.github.nateowami.solve4x.config.RoundingRule;
+import com.github.nateowami.solve4x.config.RoundingRule.BySignificantFigures;
+
 /**
  * @author Nateowami
  */
@@ -56,18 +59,39 @@ public class NumberTest {
 	 */
 	@Test
 	public void testAdd()  {
-		assertEquals("3", Number.add(new Number("1"), new Number("2")).getAsString());
-		assertEquals("3.7", Number.add(new Number("1.637"), new Number("2.1")).getAsString());
+		//setup constants
+		RoundingRule all = RoundingRule.ALWAYS,
+				forSci = RoundingRule.FOR_SCIENTIFIC_NOTATION,
+				forSciAndDec = RoundingRule.FOR_SCIENTIFIC_NOTATION_AND_DECIMALS;
+		
+		
+		assertEquals("3", Number.add(new Number("1"), new Number("2"), all).getAsString());
+		assertEquals("3.737", Number.add(new Number("1.637"), new Number("2.1"), forSci).getAsString());
+		
 		assertEquals("-3", Number.add(
 				(Number) AlgebraicParticle.getInstance("-16"),
-				(Number) AlgebraicParticle.getInstance("13")).getAsString());
+				(Number) AlgebraicParticle.getInstance("13"), forSciAndDec ).getAsString());
+		
 		assertEquals("-12.859", Number.add(
 				(Number) AlgebraicParticle.getInstance("3.1415926535"),
-				(Number) AlgebraicParticle.getInstance("-16.001")).getAsString());
-		assertEquals("23.08", Number.add(new Number("0.024"), new Number("23.06")).getAsString());
-		assertEquals("25", Number.add(new Number("23"), new Number("2")).getAsString());
-		assertEquals("0.99", Number.add((Number) AlgebraicParticle.getInstance("-1.01"), new Number("2")).getAsString());
-		assertEquals("19.62", Number.add(new Number("6.6"), new Number("13.02")).getAsString());
+				(Number) AlgebraicParticle.getInstance("-16.001"), all).getAsString());
+		//add more like this ^		
+		
+		assertEquals("23.08", Number.add(new Number("0.024"), new Number("23.06"), forSciAndDec).getAsString());
+		assertEquals("23.08", Number.add(new Number("0.024"), new Number("23.06"), all).getAsString());
+		
+		assertEquals("25", Number.add(new Number("23"), new Number("2"), all).getAsString());
+		assertEquals("25", Number.add(new Number("23"), new Number("2"), forSci).getAsString());
+		assertEquals("25", Number.add(new Number("23"), new Number("2"), forSciAndDec).getAsString());
+		
+		assertEquals("1", Number.add((Number) AlgebraicParticle.getInstance("-1.01"), new Number("2"), all).getAsString());
+		assertEquals("0.99", Number.add((Number) AlgebraicParticle.getInstance("-1.01"), new Number("2"), forSci).getAsString());
+		assertEquals("1", Number.add((Number) AlgebraicParticle.getInstance("-1.01"), new Number("2"), forSciAndDec).getAsString());
+
+		assertEquals("1.0", Number.add((Number) AlgebraicParticle.getInstance("-1.01"), new Number("2.0"), all).getAsString());
+		
+		assertEquals("19.6", Number.add(new Number("6.6"), new Number("13.02"), all).getAsString());
+		assertEquals("19.7", Number.add(new Number("6.6"), new Number("13.05"), all).getAsString());
 	}
 	
 	/**

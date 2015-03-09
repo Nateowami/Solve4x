@@ -24,6 +24,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import com.github.nateowami.solve4x.config.RoundingRule;
 import com.github.nateowami.solve4x.solver.*;
 
 /**
@@ -32,7 +33,7 @@ import com.github.nateowami.solve4x.solver.*;
 @SuppressWarnings("static-access")
 public class CombineLikeTermsTest {
 	
-	CombineLikeTerms c = new CombineLikeTerms();
+	CombineLikeTerms c = new CombineLikeTerms(RoundingRule.FOR_SCIENTIFIC_NOTATION);
 	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#execute(com.github.nateowami.solve4x.solver.Equation)}.
@@ -82,8 +83,7 @@ public class CombineLikeTermsTest {
 	 */
 	@Test
 	public void testCombineTerms() {
-		assertEquals(a("2x").getAsString(), c.combineTerms(a("1.5x"), a("0.5x")).getAsString());
-		assertEquals(a("2x"), c.combineTerms(a("1.5x"), a("0.5x")));
+		assertEquals(a("2.0x"), c.combineTerms(a("1.5x"), a("0.5x")));
 		assertEquals(a("0"), c.combineTerms(a("xy(4+7)"), a("-xy(4+7)")));
 		assertEquals(a("(1(2)/(2))x²"), c.combineTerms(a("((1)/(2))x²"), a("(1(1)/(2))x²")));
 		assertEquals(a("4x"), c.combineTerms(a("7x"), a("-3x")));

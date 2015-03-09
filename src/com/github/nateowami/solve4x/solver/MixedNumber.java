@@ -17,6 +17,8 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import com.github.nateowami.solve4x.config.RoundingRule;
+
 /**
  * Holds a fraction and integer value, which can be used as an exponent.
  * @author Nateowami
@@ -171,7 +173,7 @@ public class MixedNumber extends AlgebraicParticle{
 	 * @param b The second MixedNumber to add.
 	 * @return a and b added, which is not necessarily a MixedNumber; it could be a whole number.
 	 */
-	public static AlgebraicParticle add(MixedNumber a, MixedNumber b) {
+	public static AlgebraicParticle add(MixedNumber a, MixedNumber b, RoundingRule round) {
 		//if the mixednumbers are negative, make the numbers negative before adding
 		Number numA = a.numeral, numB = b.numeral;
 		Fraction fracA = a.fraction, fracB = b.fraction;
@@ -183,8 +185,8 @@ public class MixedNumber extends AlgebraicParticle{
 		//Fraction fracA = 
 		
 		
-		Number sum = Number.add(numA, numB);
-		Fraction fracSum = Fraction.add(fracA, fracB);
+		Number sum = Number.add(numA, numB, round);
+		Fraction fracSum = Fraction.add(fracA, fracB, round);
 		//the sign of the new mixednumber should be the sign of the sum of the two numbers
 		boolean sign = sum.sign();
 		if (!sum.sign()) sum = sum.cloneWithNewSign(true);

@@ -19,6 +19,7 @@ package com.github.nateowami.solve4x.algorithm;
 
 import java.util.ArrayList;
 
+import com.github.nateowami.solve4x.config.RoundingRule;
 import com.github.nateowami.solve4x.solver.AlgebraicParticle;
 import com.github.nateowami.solve4x.solver.Algorithm;
 import com.github.nateowami.solve4x.solver.Equation;
@@ -36,6 +37,12 @@ import com.github.nateowami.solve4x.solver.Variable;
  * @author Nateowami
  */
 public class CombineLikeTerms extends Algorithm {
+	
+	private final RoundingRule round;
+	
+	public CombineLikeTerms(RoundingRule r){
+		this.round = r;
+	}
 	
 	@Override
 	public Step execute(Equation equation) {
@@ -100,7 +107,7 @@ public class CombineLikeTerms extends Algorithm {
 	 * the expression the terms came from).
 	 * @return An expression with terms combined.
 	 */
-	protected static Expression combineLikeTerms(boolean sign, ArrayList<ArrayList<AlgebraicParticle>> terms, int exponent){
+	protected  Expression combineLikeTerms(boolean sign, ArrayList<ArrayList<AlgebraicParticle>> terms, int exponent){
 		ArrayList<AlgebraicParticle> combined = new ArrayList<AlgebraicParticle>(terms.size());
 		for(ArrayList<AlgebraicParticle> a : terms){
 			//combine everything into one
@@ -121,7 +128,7 @@ public class CombineLikeTerms extends Algorithm {
 	 * @return a and b combined (added/subtracted, depending on signs).
 	 * @throws IllegalArgumentException if a and b cannot be combined.
 	 */
-	protected static AlgebraicParticle combineTerms(AlgebraicParticle a, AlgebraicParticle b){
+	protected AlgebraicParticle combineTerms(AlgebraicParticle a, AlgebraicParticle b){
 		//if one is zero, return the other
 		if(a.equals(Number.ZERO))return b; else if(b.equals(Number.ZERO))return a;
 		
@@ -221,16 +228,16 @@ public class CombineLikeTerms extends Algorithm {
 	 * @param b The second number to add. If null, it defaults to one.
 	 * @return a and b combined.
 	 */
-	protected static AlgebraicParticle addConstants(AlgebraicParticle a, AlgebraicParticle b){
+	protected AlgebraicParticle addConstants(AlgebraicParticle a, AlgebraicParticle b){
 		if (a == null) a = Number.ONE; if (b == null) b = Number.ONE;
-		if(a instanceof Number && b instanceof Number) return Number.add((Number)a, (Number)b);
+		if(a instanceof Number && b instanceof Number) return Number.add((Number)a, (Number)b, this.round);
 		if(a instanceof Fraction && b instanceof Fraction){
-			Fraction added = Fraction.add((Fraction)a, (Fraction)b);
+			Fraction added = Fraction.add((Fraction)a, (Fraction)b, this.round);
 			if(added.getTop().equals(Number.ZERO))return Number.ZERO;
 			if(added.getTop().equals(added.getBottom()))return Number.ONE;
 			else return added;
 		}
-		if(a instanceof MixedNumber && b instanceof MixedNumber) return MixedNumber.add((MixedNumber)a, (MixedNumber)b);
+		if(a instanceof MixedNumber && b instanceof MixedNumber) return MixedNumber.add((MixedNumber)a, (MixedNumber)b, this.round);
 		
 		//swap some values (e.g. turn Fraction-Number into Number-Fraction) so they can be used mor easily later
 		AlgebraicParticle temp;
@@ -244,14 +251,14 @@ public class CombineLikeTerms extends Algorithm {
 			return new MixedNumber(a.sign(), num, frac, 1);
 		}
 		if(a instanceof Number && b instanceof MixedNumber){
-			Number added = Number.add((Number)a, ((MixedNumber)b).getNumeral());
+			Number added = Number.add((Number)a, ((MixedNumber)b).getNumeral(), this.round);
 			boolean sign = added.sign();
 			added = added.cloneWithNewSign(true);
 			return new MixedNumber(sign, added, ((MixedNumber)b).getFraction(), 1);
 		}
 		if(a instanceof Fraction && b instanceof MixedNumber){
 			Fraction frac = (Fraction)a; MixedNumber mn = (MixedNumber)b;
-			Fraction added = Fraction.add(frac, mn.sign() ? mn.getFraction() : mn.getFraction().cloneWithNewSign(false));
+			Fraction added = Fraction.add(frac, mn.sign() ? mn.getFraction() : mn.getFraction().cloneWithNewSign(false), this.round);
 			if(!added.sign()) added = added.cloneWithNewSign(true);
 			
 			if(added.getTop().equals(Number.ZERO)) return mn.getNumeral();
@@ -276,7 +283,7 @@ public class CombineLikeTerms extends Algorithm {
 	 * @return A 2d ArrayList (ArrayList of ArrayList) containing like terms. Each row
 	 * contains terms that are alike.
 	 */
-	protected static ArrayList<ArrayList<AlgebraicParticle>> listCombineableTerms(Expression e){
+	protected ArrayList<ArrayList<AlgebraicParticle>> listCombineableTerms(Expression e){
 		//this will be the list we return in the end
 		ArrayList<ArrayList<AlgebraicParticle>> list = new ArrayList<ArrayList<AlgebraicParticle>>(e.length());
 		//loop through the terms
@@ -306,7 +313,7 @@ public class CombineLikeTerms extends Algorithm {
 	 * @param b The second algebraic particle.
 	 * @return If a and b are like terms.
 	 */
-	protected static boolean areCombinableTerms(AlgebraicParticle a, AlgebraicParticle b){
+	protected boolean areCombinableTerms(AlgebraicParticle a, AlgebraicParticle b){
 		if(a.exponent() != 1 || b.exponent() != 1)return false;
 		//if they're numbers, mixed numbers, or fractions with numbers on top and bottom
 		if(areCombinable(a, b))return true;
@@ -345,7 +352,7 @@ public class CombineLikeTerms extends Algorithm {
 	 * @param b The second term to check.
 	 * @return If a and b can be combined without multiplying by the LCD, etc.
 	 */
-	protected static boolean areCombinable(AlgebraicParticle a, AlgebraicParticle b){
+	protected boolean areCombinable(AlgebraicParticle a, AlgebraicParticle b){
 		if(a == null) a = Number.ONE; if (b == null) b = Number.ONE;
 		else if(!(Util.constant(a) && Util.constant(b)))return false;
 		else if(a instanceof Number && b instanceof Number)return true;
@@ -356,12 +363,15 @@ public class CombineLikeTerms extends Algorithm {
 		else if(a instanceof MixedNumber && b instanceof MixedNumber){
 			MixedNumber mna = (MixedNumber)a, mnb = (MixedNumber)b;
 			//the dominant sign is the sign of the mixed number farthest from zero
-			boolean dominantSign = Number.add(mna.getNumeral().cloneWithNewSign(mna.sign()), mnb.getNumeral().cloneWithNewSign(mnb.sign())).sign();
+			boolean dominantSign = Number.add(mna.getNumeral().cloneWithNewSign(mna.sign()), 
+					mnb.getNumeral().cloneWithNewSign(mnb.sign()), 
+					this.round).sign();
 			return mna.getFraction().like(mnb.getFraction()) 
 					//they have the same sign OR when combined the tops will stay positive
 					&& (	mna.sign() == mnb.sign()
 							|| Number.add((Number)mna.getFraction().getTop().cloneWithNewSign(mna.sign()), 
-									(Number) mnb.getFraction().getTop().cloneWithNewSign(mnb.sign())).sign() == dominantSign
+									(Number) mnb.getFraction().getTop().cloneWithNewSign(mnb.sign()),
+									this.round).sign() == dominantSign
 							);
 		}
 		
@@ -374,12 +384,12 @@ public class CombineLikeTerms extends Algorithm {
 		else if(a instanceof Number && b instanceof MixedNumber){
 			Number n = ((MixedNumber)b).getNumeral();
 			//if we add the number and mixed number will the sign change? if so, we shouldn't combine, because it's difficult
-			return Number.add((Number)a, n.cloneWithNewSign(b.sign())).sign() == b.sign();
+			return Number.add((Number)a, n.cloneWithNewSign(b.sign()), this.round).sign() == b.sign();
 		}
 		else if(a instanceof Fraction && b instanceof MixedNumber){
 			Fraction f = (Fraction)a;
 			MixedNumber mn = (MixedNumber)b;
-			return f.like(mn.getFraction()) && Fraction.add(f, mn.getFraction().cloneWithNewSign(mn.sign())).sign() == mn.sign();
+			return f.like(mn.getFraction()) && Fraction.add(f, mn.getFraction().cloneWithNewSign(mn.sign()), this.round).sign() == mn.sign();
 		}
 		return false;
 	}

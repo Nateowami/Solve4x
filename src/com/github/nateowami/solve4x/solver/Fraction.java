@@ -17,6 +17,8 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import com.github.nateowami.solve4x.config.RoundingRule;
+
 /**
  * Contains a fraction with expressions on top and bottom.
  * @author Nateowami
@@ -225,13 +227,13 @@ public class Fraction extends AlgebraicParticle{
 	 * @return a and b added.
 	 * @throws IllegalArgumentException if the denominators of a and b differ.
 	 */
-	public static Fraction add(Fraction a, Fraction b) {
+	public static Fraction add(Fraction a, Fraction b, RoundingRule round) {
 		//make sure the bottoms are equal
 		if(!a.bottom.equals(b.bottom)) throw new IllegalArgumentException("Cannot add two fractions with differing denominators.");
 		//cast the tops to Number
 		Number a_top = (Number)a.top, b_top = (Number)b.top;
 		//add the top, using the combined signs from the fraction and numerator ( -2/4 is the same as -(2/4) )
-		Number top = Number.add(a_top.cloneWithNewSign(a_top.sign() == a.sign()), b_top.cloneWithNewSign(b_top.sign() == b.sign()));
+		Number top = Number.add(a_top.cloneWithNewSign(a_top.sign() == a.sign()), b_top.cloneWithNewSign(b_top.sign() == b.sign()), round);
 		//construct a new fraction, making sure the signs are right
 		return new Fraction(top.sign(), top.cloneWithNewSign(true), a.bottom, 1);
 	}

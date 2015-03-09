@@ -19,6 +19,9 @@ package com.github.nateowami.solve4x.solver;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
+
+import com.github.nateowami.solve4x.config.RoundingRule;
 
 /**
  * Represents a integer or decimal such as 35, 45.25, 56.36, 3.1415926535, 2.4*10⁴ and 
@@ -100,25 +103,50 @@ public class Number extends AlgebraicParticle{
 		String decimal = dot >= e ? null : s.substring(dot+1, e);
 		Integer sciExponent = e < s.length() ? new Integer(s.substring(e+2)) : null;//+2 takes care of the 'e' and sign characters, e.g. "e+3"
 		return new Number(bd.signum() == -1 ? false : true, integer, decimal, sciExponent, 1);
+	}	
+	
+	/**
+	 * Adds two numbers.
+	 * @param n1 The first number to add.
+	 * @param n2 The second number to add.
+	 * @param r The rounding rules to use when adding.
+	 * @return The value of the two numbers added.
+	 * @throws IllegalArgumentException
+	 */
+	public static Number add(Number n1, Number n2, RoundingRule r) throws IllegalArgumentException{
+		//create the decimals and add
+		BigDecimal a = n1.toBigDecimal();
+		BigDecimal b = n2.toBigDecimal();
+		BigDecimal result = a.add(b);
+		
+		//if we're always supposed to use precision rules for rounding
+		if(r == RoundingRule.ALWAYS || 
+				//or we're supposed to use precision rules for rounding except for whole numbers, and one isn't a whole number
+				(r == RoundingRule.FOR_SCIENTIFIC_NOTATION_AND_DECIMALS && (!n1.isWholeNumber() || !n2.isWholeNumber())) ||
+				//or we're supposed to use precision rules only for scientific notation, and one is in scientific notation 
+				(r == RoundingRule.FOR_SCIENTIFIC_NOTATION && (n1.sciExponent != null || n2.sciExponent != null))){
+			//use the smaller of the two scales
+			return toNumber(result.setScale(a.scale() > b.scale() ? b.scale() : a.scale(), RoundingMode.HALF_UP));
+		}
+		//if it is one of the canned rules, and the above failed then we must add and not round
+		else if(r.isCannedRule()){
+			//use the greater scale
+			return toNumber(result);
+		}
+		//it's a custom rule, with r.getValue() the max number of significant decimal places to leave
+		else{
+			//use the whichever is greater of r.getValue() and result.scale()
+			return toNumber(result.setScale(r.getValue() > result.scale() ? r.getValue() : result.scale(), RoundingMode.HALF_UP));
+		}
 	}
 	
 	/**
-	 * Adds two numbers represented by a String. This should not be confused with adding two Numbers;
-	 * this only adds integer/decimal values represented by a string
-	 * @param n1 The first number to add
-	 * @param n2 The second number to add
-	 * @return The value of two numbers added
-	 * @throws IllegalArgumentException If the Strings cannot be parsed as ints or decimals. An empty String
-	 * will throw an exception. TODO update this doc
+	 * @return True if the number has no decimal place and is not multiplied by 10^n
 	 */
-	public static Number add(Number n1, Number n2) throws IllegalArgumentException{
-		//create the decimals and add
-		int figsA = n1.sigFigs(), figsB = n2.sigFigs();
-		BigDecimal a = n1.toBigDecimal();
-		BigDecimal b = n2.toBigDecimal(); //precision on this one is irrelevant
-		return toNumber(a.add(b, new MathContext(figsA > figsB ? figsB : figsA)));
+	private boolean isWholeNumber() {
+		return this.decimal == null && this.sciExponent == null;
 	}
-	
+
 	/**
 	 * Return a string representation of this Number, not the traditional toString()
 	 * @return This Number in a string format. 

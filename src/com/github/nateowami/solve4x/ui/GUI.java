@@ -39,6 +39,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 
 import com.github.nateowami.solve4x.Main;
+import com.github.nateowami.solve4x.config.RoundingRule;
 import com.github.nateowami.solve4x.solver.ParsingException;
 import com.github.nateowami.solve4x.solver.Solver;
 import com.github.nateowami.solve4x.visual.Visual;
@@ -161,7 +162,7 @@ public class GUI {
                 //Check to see if the input was an equation or an expression
                 try {
                     //run the solver
-                    Solver solver = new Solver(equation, Solver.SolveFor.SOLVE);
+                    Solver solver = new Solver(equation, Solver.SolveFor.SOLVE, RoundingRule.ALWAYS);
                     //get the solution and display it to the user
                     Visual.render(solver.getSolution());
                     //notify the user of the equation evaluation status

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import com.github.nateowami.solve4x.Solve4x;
 import com.github.nateowami.solve4x.algorithm.*;
+import com.github.nateowami.solve4x.config.RoundingRule;
 
 /**
  * Solves equations and simplifies expressions
@@ -52,8 +53,9 @@ public class Solver {
 	 * factor, multiply, etc
 	 * @param selection The user's selection. Do they want this to be 
 	 * factored, solved, simplified, or what? See {@link Solver.SolveFor}.
+	 * @param round A RoundingRule for rounding arithmetic operations.
 	 */
-	public Solver(String equation, SolveFor selection) {
+	public Solver(String equation, SolveFor selection, RoundingRule round) {
 		
 		//remove spaces
 		equation = equation.replaceAll(" ", "");
@@ -65,7 +67,7 @@ public class Solver {
 			throw new ParsingException("Validator says equation \"" + equation + "\" is invalid.");
 		}
 		
-		this.algor = getAlgorithms(selection);
+		this.algor = getAlgorithms(selection, round);
 		
 		//OK, now to solve
 		//add an initial solution to the solution list
@@ -186,16 +188,17 @@ public class Solver {
 	 * Returns the applicable solving algorithms for the selection, e.g.,
 	 * algorithms for solving, simplifying, factoring, etc.
 	 * @param selection The user's selection.
+	 * @param round A RoundingRule for rounding arithmetic operations.
 	 * @return An ArrayList of algorithms applicable for the selection.
 	 */
-	private ArrayList<Algorithm> getAlgorithms(SolveFor selection) {
+	private ArrayList<Algorithm> getAlgorithms(SolveFor selection, RoundingRule round) {
 		ArrayList<Algorithm> algorList = new ArrayList<Algorithm>();
 		switch (selection){
 		case SOLVE:
 			algorList.add(new ChangeSides());
 		case FACTOR:
 		case SIMPLIFY:
-			algorList.add(new CombineLikeTerms());
+			algorList.add(new CombineLikeTerms(round));
 		}
 		return algorList;
 	}
