@@ -90,7 +90,7 @@ public class RoundingRule {
 	 * @return If this is a predefined rule.
 	 */
 	public boolean isCannedRule(){
-		return this.value > 0;
+		return this.value < 0;
 	}
 	
 }

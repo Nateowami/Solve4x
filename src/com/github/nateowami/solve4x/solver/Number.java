@@ -135,8 +135,8 @@ public class Number extends AlgebraicParticle{
 		}
 		//it's a custom rule, with r.getValue() the max number of significant decimal places to leave
 		else{
-			//use the whichever is greater of r.getValue() and result.scale()
-			return toNumber(result.setScale(r.getValue() > result.scale() ? r.getValue() : result.scale(), RoundingMode.HALF_UP));
+			//use whichever is smaller of r.getValue() and result.scale()
+			return toNumber(result.setScale(r.getValue() < result.scale() ? r.getValue() : result.scale(), RoundingMode.HALF_UP));
 		}
 	}
 	

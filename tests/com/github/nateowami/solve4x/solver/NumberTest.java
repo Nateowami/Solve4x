@@ -92,6 +92,12 @@ public class NumberTest {
 		
 		assertEquals("19.6", Number.add(new Number("6.6"), new Number("13.02"), all).getAsString());
 		assertEquals("19.7", Number.add(new Number("6.6"), new Number("13.05"), all).getAsString());
+		
+		//TEST CUSTOM ROUNDING RULE
+		assertEquals("19.6", Number.add(new Number("6.6"), new Number("13.02"), new RoundingRule(1)).getAsString());
+		assertEquals("19.62", Number.add(new Number("6.6"), new Number("13.02"), new RoundingRule(2)).getAsString());
+		assertEquals("19.62", Number.add(new Number("6.6"), new Number("13.02"), new RoundingRule(5)).getAsString());
+		assertEquals("-465.9", Number.add(new Number("9.4"), new Number("-475.3"), new RoundingRule(2)).getAsString());		
 	}
 	
 	/**
