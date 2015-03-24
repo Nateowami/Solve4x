@@ -119,25 +119,53 @@ public class Number extends AlgebraicParticle{
 		BigDecimal b = n2.toBigDecimal();
 		BigDecimal result = a.add(b);
 		
-		//if we're always supposed to use precision rules for rounding
-		if(r == RoundingRule.ALWAYS || 
-				//or we're supposed to use precision rules for rounding except for whole numbers, and one isn't a whole number
-				(r == RoundingRule.FOR_SCIENTIFIC_NOTATION_AND_DECIMALS && (!n1.isWholeNumber() || !n2.isWholeNumber())) ||
-				//or we're supposed to use precision rules only for scientific notation, and one is in scientific notation 
-				(r == RoundingRule.FOR_SCIENTIFIC_NOTATION && (n1.sciExponent != null || n2.sciExponent != null))){
-			//use the smaller of the two scales
-			return toNumber(result.setScale(a.scale() > b.scale() ? b.scale() : a.scale(), RoundingMode.HALF_UP));
-		}
-		//if it is one of the canned rules, and the above failed then we must add and not round
-		else if(r.isCannedRule()){
-			//use the greater scale
-			return toNumber(result);
+		if(r.isCannedRule()){
+			if(shouldUsePrecisionRules(r, n1, n2)){
+				//use the smaller of the two scales
+				return toNumber(result.setScale(a.scale() > b.scale() ? b.scale() : a.scale(), RoundingMode.HALF_UP));
+			}
+			//don't use precision rules
+			else{
+				//use the greater scale
+				return toNumber(result);
+			}
 		}
 		//it's a custom rule, with r.getValue() the max number of significant decimal places to leave
 		else{
 			//use whichever is smaller of r.getValue() and result.scale()
 			return toNumber(result.setScale(r.getValue() < result.scale() ? r.getValue() : result.scale(), RoundingMode.HALF_UP));
 		}
+	}
+	
+	/**
+	 * @param number
+	 * @param number2
+	 * @param all
+	 * @return
+	 */
+	public static Number multiply(Number n1, Number n2, RoundingRule round) {
+		//create the decimals and multiply
+		BigDecimal a = n1.toBigDecimal();
+		BigDecimal b = n2.toBigDecimal();
+		BigDecimal result = a.multiply(b);
+		
+		//if it's a canned rule
+		if(round.isCannedRule()){
+			//and in this situation we should use significant figure rules for rounding
+			if(shouldUsePrecisionRules(round, n1, n2)){
+				int sigFigs = a.precision() > b.precision() ? b.precision() : a.precision();
+				return toNumber(result.setScale(result.scale() + sigFigs - result.precision(), RoundingMode.HALF_UP));
+			}
+			//leave full insignificant figures (i.e., 2.2 * 1.2 = 2.64, rather than 2.6)
+			else{
+				return toNumber(result);
+			}
+		}
+		//leave as many decimal places as specified by round.getValue(), but dont' add extra zeros
+		else{
+			return toNumber(result.setScale(round.getValue() > result.scale() ? result.scale() : round.getValue(), RoundingMode.HALF_UP));
+		}
+		
 	}
 	
 	/**
@@ -253,6 +281,24 @@ public class Number extends AlgebraicParticle{
 	 */
 	public int sigFigs(){
 		return (this.integer == null ? 0 : this.integer.length()) + (this.decimal == null ? 0 : this.decimal.length());
+	}
+	
+	/**
+	 * Tells if n1 and n2 should be rounded "normally," i.e., that they should be rounded using 
+	 * the standard rules for precision and significant figures. Basically, given r and two 
+	 * numbers, it tells if r specifies that they should be added with the standard rules.
+	 * @param r The RoundingRule for rounding n1 and n2.
+	 * @param n1 The first number.
+	 * @param n2 The second number.
+	 * @return If n1 and n2 should be added with standard rules for precision and significant figures
+	 */
+	private static boolean shouldUsePrecisionRules(RoundingRule r, Number n1, Number n2){
+		return 
+				r == RoundingRule.ALWAYS || 
+				//or we're supposed to use precision rules for rounding except for whole numbers, and one isn't a whole number
+				(r == RoundingRule.FOR_SCIENTIFIC_NOTATION_AND_DECIMALS && (!n1.isWholeNumber() || !n2.isWholeNumber())) ||
+				//or we're supposed to use precision rules only for scientific notation, and one is in scientific notation 
+				(r == RoundingRule.FOR_SCIENTIFIC_NOTATION && (n1.sciExponent != null || n2.sciExponent != null));
 	}
 	
 	/**

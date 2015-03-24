@@ -101,6 +101,55 @@ public class NumberTest {
 	}
 	
 	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#multiply(com.github.nateowami.solve4x.solver.Number, com.github.nateowami.solve4x.solver.Number)}.
+	 * @ 
+	 */
+	@Test
+	public void testMultiply()  {
+		//setup constants
+		RoundingRule all = RoundingRule.ALWAYS,
+				forSci = RoundingRule.FOR_SCIENTIFIC_NOTATION,
+				forSciAndDec = RoundingRule.FOR_SCIENTIFIC_NOTATION_AND_DECIMALS;
+		
+		
+		assertEquals("2", Number.multiply(new Number("1"), new Number("2"), all).getAsString());
+		assertEquals("3.4377", Number.multiply(new Number("1.637"), new Number("2.1"), forSci).getAsString());
+		
+		assertEquals("-208", Number.multiply(
+				(Number) AlgebraicParticle.getInstance("-16"),
+				(Number) AlgebraicParticle.getInstance("13"), forSciAndDec ).getAsString());
+		
+		assertEquals("-50.269"
+				+ "", Number.multiply(
+				(Number) AlgebraicParticle.getInstance("3.1415926535"),
+				(Number) AlgebraicParticle.getInstance("-16.001"), all).getAsString());
+		//multiply more like this ^		
+		
+		assertEquals("0.55", Number.multiply(new Number("0.024"), new Number("23.06"), forSciAndDec).getAsString());
+		assertEquals("0.55", Number.multiply(new Number("0.024"), new Number("23.06"), all).getAsString());
+		
+		assertEquals("5*10¹", Number.multiply(new Number("23"), new Number("2"), all).getAsString());
+		assertEquals("46", Number.multiply(new Number("23"), new Number("2"), forSci).getAsString());
+		assertEquals("46", Number.multiply(new Number("23"), new Number("2"), forSciAndDec).getAsString());
+		
+		assertEquals("-2", Number.multiply((Number) AlgebraicParticle.getInstance("-1.01"), new Number("2"), all).getAsString());
+		assertEquals("-2.02", Number.multiply((Number) AlgebraicParticle.getInstance("-1.01"), new Number("2"), forSci).getAsString());
+		assertEquals("-2", Number.multiply((Number) AlgebraicParticle.getInstance("-1.01"), new Number("2"), forSciAndDec).getAsString());
+
+		assertEquals("-2.0", Number.multiply((Number) AlgebraicParticle.getInstance("-1.01"), new Number("2.0"), all).getAsString());
+		
+		assertEquals("86", Number.multiply(new Number("6.6"), new Number("13.02"), all).getAsString());
+		assertEquals("86", Number.multiply(new Number("6.6"), new Number("13.05"), all).getAsString());
+		
+		//TEST CUSTOM ROUNDING RULE
+		assertEquals("85.9", Number.multiply(new Number("6.6"), new Number("13.02"), new RoundingRule(1)).getAsString());
+		assertEquals("85.93", Number.multiply(new Number("6.6"), new Number("13.02"), new RoundingRule(2)).getAsString());
+		assertEquals("85.932", Number.multiply(new Number("6.6"), new Number("13.02"), new RoundingRule(5)).getAsString());
+		assertEquals("-4467.82", Number.multiply(new Number("9.4"), new Number("-475.3"), new RoundingRule(2)).getAsString());
+		assertEquals("-4468.6", Number.multiply(new Number("9.4"), new Number("-475.38"), new RoundingRule(1)).getAsString());
+	}
+	
+	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#toBigDecimal()}.
 	 * @ 
 	 */
