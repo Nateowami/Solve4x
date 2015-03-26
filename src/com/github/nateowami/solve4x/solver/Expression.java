@@ -25,10 +25,10 @@ import java.util.Arrays;
  * Represents an algebraic expression with positive and negative terms
  * @author Nateowami
  */
-public class Expression extends AlgebraicParticle{
+public class Expression extends AlgebraicCollection{
 	
 	//create an ArrayList for storing a list of terms
-	protected final ArrayList <AlgebraicParticle>termList;
+	private final ArrayList <AlgebraicParticle>termList;
 	
 	/**
 	 * Creates a list of terms from the expression
@@ -50,7 +50,7 @@ public class Expression extends AlgebraicParticle{
 		super(sign, exponent);
 		this.termList = new ArrayList<AlgebraicParticle>(Arrays.asList(termList));
 	}
-	
+		
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -147,5 +147,6 @@ public class Expression extends AlgebraicParticle{
 			return false;
 		return true;
 	}
+
 	
 }

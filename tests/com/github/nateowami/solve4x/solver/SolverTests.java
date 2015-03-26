@@ -25,10 +25,10 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Nateowami
  */
 @RunWith(Suite.class)
-@SuiteClasses({ AlgebraicParticleTest.class, EquationTest.class,
-		ExpressionTest.class, FractionTest.class, MixedNumberTest.class,
-		NumberTest.class, RootTest.class, SolverTest.class, TermTest.class,
-		UtilTest.class, VariableTest.class })
+@SuiteClasses({ AlgebraicCollectionTest.class, AlgebraicParticleTest.class,
+		EquationTest.class, ExpressionTest.class, FractionTest.class,
+		MixedNumberTest.class, NumberTest.class, RootTest.class,
+		SolverTest.class, TermTest.class, UtilTest.class, VariableTest.class })
 public class SolverTests {
 
 }

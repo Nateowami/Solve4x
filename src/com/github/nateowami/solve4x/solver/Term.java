@@ -26,7 +26,7 @@ import com.github.nateowami.solve4x.Solve4x;
  * Terms may be are basically a list of AlgebraicParticles.
  * @author Nateowami
  */
-public class Term extends AlgebraicParticle{
+public class Term extends AlgebraicCollection{
 	
 	//the list of variables in this term
 	private ArrayList<AlgebraicParticle> parts = new ArrayList<AlgebraicParticle>();
