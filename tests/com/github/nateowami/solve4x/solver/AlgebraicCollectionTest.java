@@ -47,6 +47,18 @@ public class AlgebraicCollectionTest {
 		assertEquals("4xy+4(x+6)", e.replace(((AlgebraicCollection)e.get(0)), a("4xy")).getAsString());
 		assertEquals("2x+7(z+6)", e.replace(((AlgebraicCollection)e.get(1)), a("7(z+6)")).getAsString());
 	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.AlgebraicCollection#flatten()}.
+	 */
+	@Test
+	public void testFlatten() {
+		Term t = (Term) a("2x(x+3)");
+		assertArrayEquals(new AlgebraicParticle[]{a("2x(x+3)"), a("2"), a("x"), a("x+3"), a("x"), a("3")}, t.flatten());
+		Expression e = (Expression) a("2x+4(x+6)");
+		assertArrayEquals(new AlgebraicParticle[]{a("2x+4(x+6)"), a("2x"), a("2"), a("x"), a("4(x+6)"), a("4"), a("x+6"), a("x"), a("6")}, e.flatten());
+		assertArrayEquals(new AlgebraicParticle[]{a("2x"), a("2"), a("x")}, ((Term)a("2x")).flatten());
+	}
 
 	//helper method
 	AlgebraicParticle a(String s){

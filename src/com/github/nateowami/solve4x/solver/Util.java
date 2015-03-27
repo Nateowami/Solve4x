@@ -40,9 +40,9 @@ public class Util {
 	/**
 	 * Tells if a string contains only numerals.
 	 * Examples:
-	 * Util.allAreNumerals("234") returns true.
-	 * Util.allAreNumerals("05") returns true.
-	 * Util.allAreNumerals("-6") returns false.
+	 * areAllNumerals("234") returns true.
+	 * areAllNumerals("05") returns true.
+	 * areAllNumerals("-6") returns false.
 	 * Returns false if n is an empty string.
 	 * @param n The string to check 
 	 * @return True if n is not an empty string and contains only numerals, otherwise false.

@@ -83,4 +83,28 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 		return null;
 	}
 	
+	/**
+	 * Flattens the structure of AlgebraicParticles and returns it as a single array. For example, 
+	 * if the AlgebraicCollection was 2x(3+4y), flattening it would yield the following result:<br>
+	 * [2, x, (3+4y), 3, 4y, 4, y]
+	 * @return A flattened version of this AlgebraicCollection.
+	 */
+	public AlgebraicParticle[] flatten(){
+		//the array we're building of flattened stuff
+		ArrayList<AlgebraicParticle> list = new ArrayList<AlgebraicParticle>();
+		//add this
+		list.add(this);
+		for(int i = 0; i < this.length(); i++){
+			//if this element is a collection, add it and its children
+			if(this.get(i) instanceof AlgebraicCollection){
+				list.addAll(Arrays.asList(
+								((AlgebraicCollection)this.get(i)).flatten()
+						));
+			}
+			//it's not a collection; just add it
+			else list.add(this.get(i));
+		}
+		return list.toArray(new AlgebraicParticle[list.size()]);
+	}
+	
 }
