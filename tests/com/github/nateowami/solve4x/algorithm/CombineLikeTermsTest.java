@@ -30,7 +30,6 @@ import com.github.nateowami.solve4x.solver.*;
 /**
  * @author Nateowami
  */
-@SuppressWarnings("static-access")
 public class CombineLikeTermsTest {
 	
 	CombineLikeTerms c = new CombineLikeTerms(RoundingRule.FOR_SCIENTIFIC_NOTATION);
@@ -45,6 +44,10 @@ public class CombineLikeTermsTest {
 		assertEquals(new Equation("-2x+1.7y²-6"), s.getEquation());
 		assertEquals(new Equation("x"), c.execute(new Equation("4x+5x-8x")).getEquation());
 		assertEquals(new Equation("x"), c.execute(new Equation("2x-x")).getEquation());
+		//nested combinations
+		assertEquals("2(7)", c.execute(new Equation("2(2+5)")).getEquation().getAsString());
+		assertEquals("(7x)4(9)", c.execute(new Equation("(2x+5x)4(9)")).getEquation().getAsString());
+		assertEquals("(8x)(4-2)+45x", c.execute(new Equation("(2x+6x)(4-2)+45x")).getEquation().getAsString());
 	}
 	
 	/**
@@ -56,6 +59,9 @@ public class CombineLikeTermsTest {
 		assertEquals(7, c.smarts(new Equation("(1)/(3)+(1)/(3)")));
 		assertEquals(9, c.smarts(new Equation("5x+4x-8x")));
 		assertEquals(7, c.smarts(new Equation("2x-x")));
+		assertEquals(7, c.smarts(new Equation("2(2+5)")));
+		assertEquals(7, c.smarts(new Equation("(2x+5x)4(9)")));
+		assertEquals(9, c.smarts(new Equation("(2x+6x)(4-2)+45x")));
 	}
 	
 	/**

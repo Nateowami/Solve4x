@@ -67,7 +67,8 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 	 * @param in The AlgebraicParticle to replace out with.
 	 * @return A psudo-copy of tree with in swapped for out.
 	 */
-	public AlgebraicCollection replace(AlgebraicParticle out, AlgebraicParticle in){
+	public AlgebraicParticle replace(AlgebraicParticle out, AlgebraicParticle in){
+		if(out == this)return in;
 		for(int i = 0; i < this.length(); i++){
 			AlgebraicParticle current = this.get(i);
 			//if the current element is the one we're supposed to replace
@@ -76,7 +77,7 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 			}
 			//if the current one is NOT one we're supposed to replace, but it has children
 			else if(current instanceof AlgebraicCollection){
-				AlgebraicCollection replacement = ((AlgebraicCollection)current).replace(out, in);
+				AlgebraicParticle replacement = ((AlgebraicCollection)current).replace(out, in);
 				if(replacement != null) return this.cloneWithNewElement(i, replacement);
 			}
 		}
@@ -105,6 +106,40 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 			else list.add(this.get(i));
 		}
 		return list.toArray(new AlgebraicParticle[list.size()]);
+	}
+	
+	/**
+	 * Flattens the collection as specified by {@link com.github.nateowami.solve4x.solver.AlgebraicCollection#flatten()
+	 *  flatten()}, then limits it to objects of type c.
+	 * @param c A class to limit objects to.
+	 * @return This collection flattened, with all objects that aren't instances of the specified class c removed.
+	 */
+	private ArrayList<? extends AlgebraicParticle> flattenAndLimitByClass(Class<? extends AlgebraicParticle> c){
+		ArrayList<AlgebraicParticle> out = new ArrayList<AlgebraicParticle>();
+		for(AlgebraicParticle a : flatten()){
+			if(c.isInstance(a)){
+				out.add(a);
+			}
+		}
+		return out;
+	}
+	
+	/**
+	 * @return All terms in this AlgebraicCollection after it has been flattened.
+	 * @see com.github.nateowami.solve4x.solver.AlgebraicCollection#flatten()
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<Term> terms(){
+		return (ArrayList<Term>) flattenAndLimitByClass(Term.class);
+	}
+	
+	/**
+	 * @return All expressions in this AlgebraicCollection after it has been flattened.
+	 * @see com.github.nateowami.solve4x.solver.AlgebraicCollection#flatten()
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<Expression> expressions(){
+		return (ArrayList<Expression>) flattenAndLimitByClass(Expression.class);
 	}
 	
 }

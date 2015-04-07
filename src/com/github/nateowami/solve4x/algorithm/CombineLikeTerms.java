@@ -20,18 +20,8 @@ package com.github.nateowami.solve4x.algorithm;
 import java.util.ArrayList;
 
 import com.github.nateowami.solve4x.config.RoundingRule;
-import com.github.nateowami.solve4x.solver.AlgebraicParticle;
-import com.github.nateowami.solve4x.solver.Algorithm;
-import com.github.nateowami.solve4x.solver.Equation;
-import com.github.nateowami.solve4x.solver.Expression;
-import com.github.nateowami.solve4x.solver.Fraction;
-import com.github.nateowami.solve4x.solver.MixedNumber;
+import com.github.nateowami.solve4x.solver.*;
 import com.github.nateowami.solve4x.solver.Number;
-import com.github.nateowami.solve4x.solver.Root;
-import com.github.nateowami.solve4x.solver.Step;
-import com.github.nateowami.solve4x.solver.Term;
-import com.github.nateowami.solve4x.solver.Util;
-import com.github.nateowami.solve4x.solver.Variable;
 
 /**
  * @author Nateowami
@@ -40,6 +30,10 @@ public class CombineLikeTerms extends Algorithm {
 	
 	private final RoundingRule round;
 	
+	/**
+	 * Constructs a new CombineLikeTerms.
+	 * @param r The rounding rule for arithmetic operations performed when combining terms.
+	 */
 	public CombineLikeTerms(RoundingRule r){
 		this.round = r;
 	}
@@ -48,53 +42,55 @@ public class CombineLikeTerms extends Algorithm {
 	public Step execute(Equation equation) {
 		//find the expression most in need of simplifying
 		ArrayList<ArrayList<AlgebraicParticle>> mostLikeTerms = null;
-		int maxDiff = 0, index = 0;
+		int maxDiff = 0, index = 0;;
+		//the expression we're working on; the one that's passed in
+		Expression in = null;
 		
 		//loop over the expressions
 		for(int i = 0; i < equation.length(); i++){
-			//if it's not an Expression we're not interested
-			if(!(equation.get(i) instanceof Expression))continue;
-			
-			Expression expr = (Expression) equation.get(i);
-			
-			ArrayList<ArrayList<AlgebraicParticle>> terms = listCombineableTerms(expr);
-			//if this expression is in more need of simplifying than any so far
-			if (maxDiff < expr.length() - terms.size()){
-				maxDiff = expr.length() - terms.size();
-				mostLikeTerms = terms;
-				index = i;
+			if(equation.get(i) instanceof AlgebraicCollection){
+				for(Expression e : ((AlgebraicCollection)equation.get(i)).expressions()){
+					ArrayList<ArrayList<AlgebraicParticle>> terms = listCombineableTerms(e);
+					//if this expression is in more need of simplifying than any so far
+					int diff = e.length() - terms.size();
+					if (diff > maxDiff){
+						maxDiff = diff;
+						mostLikeTerms = terms;
+						in = e;
+						index = i;
+					}
+				}
 			}
 		}
-		//simplify mostLikeTerms
-		Expression expr = combineLikeTerms(equation.get(index).sign(), mostLikeTerms, equation.get(index).exponent());
+		//the expression simplified; the one we'll pass out
+		Expression out = combineLikeTerms(in.sign(), mostLikeTerms, in.exponent());
 		
-		Step step = new Step(equation.cloneWithNewExpression(unwrap(expr), index), 5/*TODO*/);
+		//replace 
+		Step step = new Step(equation.cloneWithNewExpression(unwrap(((AlgebraicCollection)equation.get(index)).replace(in, out)), index), 5/*TODO*/);
 		//create the explanation
-		step.explain("We need to combine like terms here, in the expression ").explain(equation.get(index)).explain(".\n");
+		step.explain("We need to combine like terms here, in the expression ").explain(in).explain(".\n");
 		for(int i = 0; i < mostLikeTerms.size(); i++){
 			if (mostLikeTerms.get(i).size() > 1) //don't explain combining a single term with itself
-					step.explain("Combine ").list(mostLikeTerms.get(i)).explain(" to get ").explain(expr.get(i)).explain(".\n");
+					step.explain("Combine ").list(mostLikeTerms.get(i)).explain(" to get ").explain(out.get(i)).explain(".\n");
 		}
 		return step;
 	}
 	
 	@Override
 	public int smarts(Equation equation) {
-		//count how many terms are like: if none, return 0, if 2, return 7, if more, return 9
-		int numLike = 0;
+		int combineable = 0;
 		for(int i = 0; i < equation.length(); i++){
-			//we're not interested if it's not an expression
-			if(!(equation.get(i) instanceof Expression))continue;
-			Expression expr = (Expression) equation.get(i);
-			ArrayList<ArrayList<AlgebraicParticle>> likeTerms = listCombineableTerms(expr);
-			//if there are two less types of terms than there are total terms
-			if (likeTerms.size() + 1 < expr.length())return 9;
-			//if there are just two terms alike
-			else if (likeTerms.size() < expr.length())numLike += 2;
-			if(numLike > 2) return 9;
+			//if it's a collection
+			if(equation.get(i) instanceof AlgebraicCollection){
+				//iterate over it and its children
+				for(AlgebraicParticle a : ((AlgebraicCollection)equation.get(i)).expressions()){
+					combineable  += ((Expression)a).length() - listCombineableTerms((Expression)a).size();
+					if(combineable >= 2) return 9;
+				}
+			}
 		}
-		if(numLike == 2)return 7;
-		return 0;
+		if(combineable > 0) return 7;
+		else return 0;
 	}
 	
 	/**
@@ -392,6 +388,31 @@ public class CombineLikeTerms extends Algorithm {
 			return f.like(mn.getFraction()) && Fraction.add(f, mn.getFraction().cloneWithNewSign(mn.sign()), this.round).sign() == mn.sign();
 		}
 		return false;
+	}
+	
+	/**
+	 * Tells how many less terms would exist in a if those that could be combined 
+	 * were combined. Includes nested expressions.
+	 * @param a An AlgebraicParticle to check for combinable terms
+	 * @return The number of terms that could disappear in the event of terms being combined.
+	 */
+	private int numOfCombinableTerms(AlgebraicParticle a){
+		int total = 0;
+		if(a instanceof Expression){
+			Expression e = (Expression) a;
+			for(int i = 0; i < e.length(); i++){
+				total += numOfCombinableTerms(e.get(i));
+			}
+			return total + (e.length() - listCombineableTerms(e).size());
+		}
+		else if(a instanceof Term){
+			Term t = (Term) a;
+			for(int i = 0; i < t.length(); i++){
+				total += numOfCombinableTerms(t.get(i));
+			}
+			return total;
+		}
+		else return 0;
 	}
 	
 }

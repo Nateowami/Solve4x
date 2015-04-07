@@ -46,6 +46,8 @@ public class AlgebraicCollectionTest {
 		assertEquals("2x+4(x+z)", e.replace(((AlgebraicCollection)((AlgebraicCollection)e.get(1)).get(1)).get(1), a("z")).getAsString());
 		assertEquals("4xy+4(x+6)", e.replace(((AlgebraicCollection)e.get(0)), a("4xy")).getAsString());
 		assertEquals("2x+7(z+6)", e.replace(((AlgebraicCollection)e.get(1)), a("7(z+6)")).getAsString());
+		Term t2 = new Term("5x");
+		assertEquals("x", t2.replace(t2, a("x")).getAsString());		
 	}
 	
 	/**
