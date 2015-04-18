@@ -117,4 +117,17 @@ public class AlgebraicParticleTest {
 		assertFalse(AlgebraicParticle.parseable(""));
 	}
 	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSignAndExponent(java.lang.Boolean sign, java.lang.Integer exponent)}.
+	 */
+	@Test
+	public void cloneWithNewSignAndExponent() {
+		assertEquals(a("-2x"), a("2x").cloneWithNewSignAndExponent(false, null));
+		assertEquals(a("-(4(3-5))⁹"), a("-4(3-5)").cloneWithNewSignAndExponent(null, 9));
+	}
+	
+	AlgebraicParticle a(String s){
+		return AlgebraicParticle.getInstance(s);
+	}
+	
 }

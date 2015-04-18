@@ -21,7 +21,7 @@ package com.github.nateowami.solve4x.solver;
  * Represents an AlgebraicParticle. Subclasses include Variable, Number, Root, Fraction, Fraction, MixedNumber, Term, and Expression.
  * @author Nateowami
  */
-public abstract class AlgebraicParticle {
+public abstract class AlgebraicParticle implements Cloneable {
 	
 	private int exponent = 1;
 	private boolean sign = true;
@@ -267,8 +267,16 @@ public abstract class AlgebraicParticle {
 	 * Clones the AlgebraicParticle with a new sign.
 	 * @param sign The sign for the new AlgebraicParticle. May be null, in which case the current sign will be used.
 	 * @return An almost-clone of AlgebraicParticle.
+	 * TODO this doesn't need to be defined in subclasses; see cloneWithNewSignAndExponent(boolean,sign)
 	 */
 	public abstract AlgebraicParticle cloneWithNewSign(Boolean sign);
+	
+	/**
+	 * Tells if a equals this, without regard for signs or powers.
+	 * @param a An AlgebraicParticle to compare to this.
+	 * @return If a almost equals this.
+	 */
+	public abstract boolean almostEquals(Object a);
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -310,6 +318,25 @@ public abstract class AlgebraicParticle {
 		int i;
 		for(i = s.length(); i > 1 && Util.isSuperscript(Character.toString(s.charAt(i-1))); i--);
 		return i == s.length() ? "" : Integer.toString(Util.superscriptToInt(s.substring(i)));
+	}
+	
+	/**
+	 * Makes a psudo-clone this object (psudo in that a variable or two may be changed, though not 
+	 * necessarily), optionally modifying two variables, sign and exponent.
+	 * @param sign The sign of the returned object (if null, defaults to the sign of this).
+	 * @param exponent The exponent of the returned object (if null, defaults to the exponent of this).
+	 * @return A psudo-clone of this object
+	 */
+	public AlgebraicParticle cloneWithNewSignAndExponent(Boolean sign, Integer exponent){
+		try {
+			AlgebraicParticle copy = (AlgebraicParticle) this.clone();
+			copy.sign = sign == null ? this.sign : sign;
+			copy.exponent = exponent == null ? this.exponent : exponent;
+			return copy;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 	
 }

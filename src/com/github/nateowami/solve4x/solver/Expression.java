@@ -133,10 +133,12 @@ public class Expression extends AlgebraicCollection{
 	 */
 	@Override
 	public boolean equals(Object obj) {
+		return almostEquals(obj) && super.equals(obj);
+	}
+	
+	public boolean almostEquals(Object obj){
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
-			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Expression other = (Expression) obj;
@@ -147,6 +149,5 @@ public class Expression extends AlgebraicCollection{
 			return false;
 		return true;
 	}
-
 	
 }

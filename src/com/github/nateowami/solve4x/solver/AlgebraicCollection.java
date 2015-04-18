@@ -114,7 +114,7 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 	 * @param c A class to limit objects to.
 	 * @return This collection flattened, with all objects that aren't instances of the specified class c removed.
 	 */
-	private ArrayList<? extends AlgebraicParticle> flattenAndLimitByClass(Class<? extends AlgebraicParticle> c){
+	protected ArrayList<? extends AlgebraicParticle> flattenAndLimitByClass(Class<? extends AlgebraicParticle> c){
 		ArrayList<AlgebraicParticle> out = new ArrayList<AlgebraicParticle>();
 		for(AlgebraicParticle a : flatten()){
 			if(c.isInstance(a)){
