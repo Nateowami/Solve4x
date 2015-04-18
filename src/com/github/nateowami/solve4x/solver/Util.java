@@ -215,13 +215,13 @@ public class Util {
 	
 	/**
 	 * Tells if an AlgebraicParticle is constant (i.e., Number, MixedNumber that is constant, 
-	 * or Fraction that is constant).
+	 * or Fraction that is constant, and it has an exponent of 1).
 	 * @param a The AlgebraicParticle to check.
 	 * @return If a is constant.
 	 */
 	public static boolean constant(AlgebraicParticle a){
-		return a instanceof Number || a instanceof Fraction && ((Fraction)a).constant()
-				|| a instanceof MixedNumber && ((MixedNumber)a).getFraction().constant();
+		return a.exponent() == 1 && (a instanceof Number || a instanceof Fraction && ((Fraction)a).constant()
+				|| a instanceof MixedNumber && ((MixedNumber)a).getFraction().constant());
 	}
-	
+		
 }
