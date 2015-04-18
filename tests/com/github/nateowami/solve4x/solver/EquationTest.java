@@ -19,6 +19,8 @@ package com.github.nateowami.solve4x.solver;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 /**
@@ -69,5 +71,30 @@ public class EquationTest {
 		Equation eq = new Equation("12x2y4(34+6xa(43x2+6+1(43)))=45+6x(4+85xy5)");
 		assertEquals("12x2y4(34+6xa(43x2+6+1(43)))=45+6x(4+85xy5)", eq.getAsString());
 	}
-
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#replace()}.
+	 * @ 
+	 */
+	@Test
+	public void testReplace()  {
+		Equation eq = new Equation("2x+4y=6x(4-3)");
+		assertEquals(new Equation("2x+4y=6x(17x-3)"), eq.replace(((Expression)((Term)eq.get(1)).get(2)).get(0), new Term("17x")));
+	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#flattenAndLimitByClass()}.
+	 * @ 
+	 */
+	@Test
+	public void testFlattenAndLimitByClass()  {
+		Equation eq = new Equation("2x+4y=6x(17x-3)");
+		ArrayList<Term> a = new ArrayList<Term>();
+		a.add(new Term("2x"));
+		a.add(new Term("4y"));
+		a.add(new Term("6x(17x-3)"));
+		a.add(new Term("17x"));
+		assertEquals(a, eq.flattenAndLimitByClass(Term.class));
+	}
+	
 }

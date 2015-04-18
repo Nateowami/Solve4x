@@ -17,6 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.github.nateowami.solve4x.Solve4x;
@@ -96,6 +97,37 @@ public class Equation {
 	}
 	
 	/**
+	 * Replaces out with in in this equation, even if out is nested deeply in an AlgebraicParticle.
+	 * @param out The AlgebraicParticle to swap out.
+	 * @param in The AlgebraicParticle to swap in.
+	 * @return out swapped for in.
+	 */
+	public Equation replace(AlgebraicParticle out, AlgebraicParticle in){
+		//find which expression has out
+		int index = 0;
+		AlgebraicParticle replaced = null;
+		for(int i = 0; i < this.exprs.length; i++){
+			//if it's an AlgebraicCollection try replacing out with in
+			if(exprs[i] instanceof AlgebraicCollection){
+				AlgebraicParticle a = ((AlgebraicCollection)exprs[i]).replace(out, in);
+				if(a != null){
+					index = i;
+					replaced = a;
+					break;
+				}
+			}
+			//else maybe this IS the expression to swap (note that if it is, the expression to swap, 
+			//and it's an AlgebraicCollection, it will already be taken care of)
+			else if(exprs[i] == out){
+				index = i;
+				replaced = in;
+				break;
+			}
+		}
+		return this.cloneWithNewExpression(replaced, index);
+	}
+	
+	/**
 	 * @return A String representation of this equation. Example: 2x+x=5
 	 */
 	public String getAsString(){
@@ -106,6 +138,39 @@ public class Equation {
 			eq += exprs[i].getAsString();
 		}
 		return eq;
+	}
+	
+	/**
+	 * Flattens the equation and AlgebraicParticles it contains, and then limits them to instances of 
+	 * class c.
+	 * @param c The class to limit objects to.
+	 * @return this flattened and all objects not an instance of c removed.
+	 */
+	protected ArrayList<? extends AlgebraicParticle> flattenAndLimitByClass(Class<? extends AlgebraicParticle> c){
+		ArrayList<AlgebraicParticle> out = new ArrayList<AlgebraicParticle>();
+		for(AlgebraicParticle a : this.exprs){
+			if(a instanceof AlgebraicCollection){
+				out.addAll(((AlgebraicCollection)a).flattenAndLimitByClass(c));
+			}
+			else out.add(a);
+		}
+		return out;
+	}
+	
+	/**
+	 * @return All terms in the flattened version of this equation.
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<Term> terms(){
+		return (ArrayList<Term>)flattenAndLimitByClass(Term.class);
+	}
+	
+	/**
+	 * @return All expressions in the flattened version of this equation.
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<Expression> expression(){
+		return (ArrayList<Expression>)flattenAndLimitByClass(Expression.class);
 	}
 	
 	/* (non-Javadoc)
