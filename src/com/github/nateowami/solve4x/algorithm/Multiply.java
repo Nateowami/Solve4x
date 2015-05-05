@@ -54,8 +54,8 @@ public class Multiply extends Algorithm {
 		//term is now the term to work on, and groups is the list of combinable AlgebraicParticles
 		Term multiplied = multiply(term, groups);
 		
-		Step step = new Step(equation.replace(term, multiplied), 5/*TODO*/);
-		step.explain("In the term ").explain(term).explain(" we neeed to multiply.");
+		Step step = new Step(equation.replace(term, unwrap(multiplied)), 5/*TODO*/);
+		step.explain("In the term ").explain(term).explain(" we neeed to multiply.\n");
 		for(int i = 0; i < groups.size(); i++){
 			if(groups.get(i).size() > 1){
 				step.explain("Multiply ").list(groups.get(i)).explain(" to get ").explain(multiplied.get(i)).explain(".\n");

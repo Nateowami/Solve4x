@@ -152,7 +152,7 @@ public class Equation {
 			if(a instanceof AlgebraicCollection){
 				out.addAll(((AlgebraicCollection)a).flattenAndLimitByClass(c));
 			}
-			else out.add(a);
+			else if(a.getClass().equals(c)) out.add(a);
 		}
 		return out;
 	}

@@ -162,7 +162,7 @@ public class GUI {
                 //Check to see if the input was an equation or an expression
                 try {
                     //run the solver
-                    Solver solver = new Solver(equation, Solver.SolveFor.SOLVE, RoundingRule.ALWAYS);
+                    Solver solver = new Solver(equation, Solver.SolveFor.SOLVE, RoundingRule.FOR_SCIENTIFIC_NOTATION);
                     //get the solution and display it to the user
                     Visual.render(solver.getSolution());
                     //notify the user of the equation evaluation status

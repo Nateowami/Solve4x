@@ -95,6 +95,10 @@ public class EquationTest {
 		a.add(new Term("6x(17x-3)"));
 		a.add(new Term("17x"));
 		assertEquals(a, eq.flattenAndLimitByClass(Term.class));
+		
+		ArrayList<Term> b = new ArrayList<Term>();
+		b.add(new Term("2*2"));
+		assertEquals(b, new Equation("2*2=x").flattenAndLimitByClass(Term.class));
 	}
 	
 }

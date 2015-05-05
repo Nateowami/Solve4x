@@ -39,6 +39,7 @@ public class MultiplyTest {
 	@Test
 	public void testExecute() {
 		assertEquals(a("2x²"), m.execute(new Equation(new AlgebraicParticle[]{a("2xx")})).getEquation().terms().get(0));
+		assertEquals(a("4"), m.execute(new Equation(new AlgebraicParticle[]{a("2*2")})).getEquation().get(0));
 	}
 
 	/**
@@ -48,6 +49,7 @@ public class MultiplyTest {
 	public void testSmarts() {
 		assertEquals(9, m.smarts(new Equation("2(4)(8)")));
 		assertEquals(7, m.smarts(new Equation("2+x(y-4)2x7y")));
+		assertEquals(7, m.smarts(new Equation("2*2")));
 	}
 	
 	/**

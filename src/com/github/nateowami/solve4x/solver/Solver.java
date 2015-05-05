@@ -199,6 +199,7 @@ public class Solver {
 		case FACTOR:
 		case SIMPLIFY:
 			algorList.add(new CombineLikeTerms(round));
+			algorList.add(new Multiply(round));
 		}
 		return algorList;
 	}

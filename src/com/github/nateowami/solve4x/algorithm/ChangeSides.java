@@ -18,6 +18,7 @@
 package com.github.nateowami.solve4x.algorithm;
 
 import com.github.nateowami.solve4x.solver.*;
+import com.github.nateowami.solve4x.solver.Number;
 
 /**
  * @author Nateowami
@@ -100,7 +101,7 @@ public class ChangeSides extends Algorithm {
 			}
 		}
 		
-		AlgebraicParticle removed = unwrap(new Expression(true, keep, 1));
+		AlgebraicParticle removed = keep.length == 0 ? Number.ZERO : unwrap(new Expression(true, keep, 1));
 		//concat move and dest to get the result
 		AlgebraicParticle[] calculateAdded = new AlgebraicParticle[dest.length() + move.length];
 		int i;
@@ -113,10 +114,9 @@ public class ChangeSides extends Algorithm {
 		}	
 		AlgebraicParticle added = new Expression(true, calculateAdded, 1);
 		
-		//TODO wrap up, with added and removed as the results. need to check which is the left and which is the right though.
 		//clone the equation, putting source and dest beside each other, in the proper order
 		eq = eq.cloneWithNewExpression(putConstOnRight == moveConstants ? removed : added, index);
-		eq = eq.cloneWithNewExpression(putConstOnRight != moveConstants ? removed: added, index+1);
+		eq = eq.cloneWithNewExpression(putConstOnRight != moveConstants ? removed : added, index+1);
 		Step step = new Step(eq, 5/*TODO*/);
 		return step.explain("We need to move ").list(move)
 				.explain(" to the " + (putConstOnRight == moveConstants ? "right" : "left") + " and change the sign" + (move.length == 1 ? "" : "s") + ".");
@@ -179,11 +179,33 @@ public class ChangeSides extends Algorithm {
 			Expression e = (Expression) a;
 			boolean[] map = new boolean[e.length()];
 			for(int i = 0; i < map.length; i++){
-				map[i] = Util.constant(e.get(i));
+				map[i] = !hasVariable(e.get(i));
 			}
 			return map;
 		}
-		else return new boolean[]{Util.constant(a)};
+		else return new boolean[]{!hasVariable(a)};
+	}
+	
+	/**
+	 * Tells if any object of type Variable is found in a, anywhere in the algebraic 
+	 * hierarchy.
+	 * @param a An object to check for variables.
+	 * @return True if a has a variable, otherwise false.
+	 */
+	private boolean hasVariable(AlgebraicParticle a){
+		if(a instanceof Variable) return true;
+		else if(a instanceof AlgebraicCollection){
+			AlgebraicCollection c = (AlgebraicCollection) a;
+			for(int i = 0; i < c.length(); i++){
+				if(hasVariable(c.get(i))) return true;
+			}
+			return false;
+		}
+		else if(a instanceof Fraction){
+			Fraction f = (Fraction) a;
+			return hasVariable(f.getTop()) || hasVariable(f.getBottom()); 
+		}
+		else return false;
 	}
 	
 }

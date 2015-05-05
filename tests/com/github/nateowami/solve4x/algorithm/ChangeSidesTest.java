@@ -45,6 +45,7 @@ public class ChangeSidesTest {
 		assertEquals(new Equation("2x²-5x+2x-14+x²=73"), c.execute(new Equation("2x²-5x+2x-14=73-x²")).getEquation());
 		assertEquals(new Equation("2x²-5x+2x+x²=73+14"), c.execute(new Equation("2x²-5x+2x-14+x²=73")).getEquation());
 		assertEquals(new Equation("x=14-4"), c.execute(new Equation("x+4=14")).getEquation());
+		assertEquals(new Equation("0=14-4"), c.execute(new Equation("4=14")).getEquation());
 	}
 
 	/**
@@ -59,6 +60,7 @@ public class ChangeSidesTest {
 		assertEquals(0, c.smarts(new Equation("2x+27y(4+3)=4")));
 		assertEquals(5, c.smarts(new Equation("x-6=4")));
 		assertEquals(9, c.smarts(new Equation("2x+6-2(3)/(9)+48=4")));
+		assertEquals(0, c.smarts(new Equation("2*2=x")));
 	}
 
 }
