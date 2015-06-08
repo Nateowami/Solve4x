@@ -18,6 +18,7 @@
 package com.github.nateowami.solve4x.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.github.nateowami.solve4x.config.RoundingRule;
 import com.github.nateowami.solve4x.solver.*;
@@ -134,7 +135,11 @@ public class CombineLikeTerms extends Algorithm {
 		//if they're identical variables
 		else if(a instanceof Variable && b instanceof Variable){
 			if(a.sign() != b.sign()) return Number.ZERO;
-			else return new Variable(a.sign(), ((Variable)a).getVar(), a.exponent());
+			//combine a and b to make a term with coefficient of 2 and sign the same as a and b 
+			else return new Term(
+					a.sign(), 
+					new ArrayList<AlgebraicParticle>(Arrays.asList(new AlgebraicParticle[]{new Number(true, "2", null, null, 1), ((Variable)a).cloneWithNewSign(true)})),
+					a.exponent());
 		}
 		
 		//if they're terms, and they're like
