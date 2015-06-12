@@ -1,6 +1,8 @@
 Solve4x
 =======
 
+[![Build Status](https://travis-ci.org/Nateowami/Solve4x.svg?branch=master)](https://travis-ci.org/Nateowami/Solve4x)
+
 An algebra solver that shows its work, step-by-step, with instructions (and pretty-prints/formats math nicely). The goal? Show Epsilon how he could have solved the math problem without ever leaving the doghouse.
 
 Usage
@@ -19,3 +21,4 @@ Documentation & contributing
 ============================
 
 Get started by heading over to [CONTRIBUTING.md](https://github.com/Nateowami/Solve4x/blob/master/CONTRIBUTING.md) or [the wiki](https://github.com/Nateowami/Solve4x/wiki). You might want to pay particular attention to the pages on  [program flow](https://github.com/Nateowami/Solve4x/wiki/Program-Flow) and the [algebra syntax definition](https://github.com/Nateowami/Solve4x/wiki/Algebra-Syntax-Definition). If you enjoy reading ugly Javadocs, head over to http://nateowami.github.io/Solve4x/doc/ and check out `com.github.nateowami.solve4x.solver`, as it has the best documentation and is central to the solver (but be warned, the docs there get a bit dated sometimes).
+
