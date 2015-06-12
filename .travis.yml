@@ -1,0 +1,6 @@
+language: java
+script: 
+  - ant
+  - ant AllTests
+notifications:
+  email: false
