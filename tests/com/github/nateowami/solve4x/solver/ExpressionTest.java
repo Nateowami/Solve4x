@@ -37,23 +37,23 @@ public class ExpressionTest {
 	@Test
 	public void testExpression()  {
 		Expression expr0 = new Expression("6+2");
-		assertEquals("6", expr0.get(0).getAsString());
-		assertEquals("2", expr0.get(1).getAsString());
+		assertEquals("6", expr0.get(0).render());
+		assertEquals("2", expr0.get(1).render());
 		
 		Expression exprx = new Expression("2x+6(34)");
-		assertEquals("2x", exprx.get(0).getAsString());
-		assertEquals("6(34)", exprx.get(1).getAsString());
+		assertEquals("2x", exprx.get(0).render());
+		assertEquals("6(34)", exprx.get(1).render());
 		
 		Expression expr1 = new Expression("2x+6(34+9xy2(45x+6))");
-		assertEquals("2x", expr1.get(0).getAsString());
-		assertEquals("6(34+9xy2(45x+6))", expr1.get(1).getAsString());
+		assertEquals("2x", expr1.get(0).render());
+		assertEquals("6(34+9xy2(45x+6))", expr1.get(1).render());
 		
 		Expression expr2 = new Expression("x+6((34)/(6x))+67");
-		assertEquals("x", expr2.get(0).getAsString());
-		assertEquals("6((34)/(6x))", expr2.get(1).getAsString());
-		assertEquals("67", expr2.get(2).getAsString());
+		assertEquals("x", expr2.get(0).render());
+		assertEquals("6((34)/(6x))", expr2.get(1).render());
+		assertEquals("67", expr2.get(2).render());
 		
-		assertEquals("(6+4)⁴+8(3)", new Expression("(6+4)⁴+8*3").getAsString());
+		assertEquals("(6+4)⁴+8(3)", new Expression("(6+4)⁴+8*3").render());
 	}
 
 	/**
@@ -75,27 +75,27 @@ public class ExpressionTest {
 	@Test
 	public void testTermAt()  {
 		Expression expr1 = new Expression("2x+45+6xy45+12(23+6xy4)");
-		assertEquals("2x", expr1.get(0).getAsString());
-		assertEquals("45", expr1.get(1).getAsString());
-		assertEquals("6xy45", expr1.get(2).getAsString());
-		assertEquals("12(23+6xy4)", expr1.get(3).getAsString());
+		assertEquals("2x", expr1.get(0).render());
+		assertEquals("45", expr1.get(1).render());
+		assertEquals("6xy45", expr1.get(2).render());
+		assertEquals("12(23+6xy4)", expr1.get(3).render());
 		Expression expr2 = new Expression("-c+(y)/(16+34)-xy2");
-		assertEquals("-c", expr2.get(0).getAsString());
-		assertEquals("(y)/(16+34)", expr2.get(1).getAsString());
-		assertEquals("-xy2", expr2.get(2).getAsString());
+		assertEquals("-c", expr2.get(0).render());
+		assertEquals("(y)/(16+34)", expr2.get(1).render());
+		assertEquals("-xy2", expr2.get(2).render());
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Expression#getAsString()}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Expression#render()}.
 	 * @ 
 	 */
 	@Test
 	public void testGetAsString()  {
-		assertEquals("1+2", new Expression("1+2").getAsString());
-		assertEquals("-y+6", new Expression("-y+6").getAsString());
-		assertEquals("1x+45", new Expression("1x+45").getAsString());
-		assertEquals("x+45+6xy45+12(23+6xy4)", new Expression("x+45+6xy45+12(23+6xy4)").getAsString());
-		assertEquals("-c+(y)/(16+34)-xy2", new Expression("-c+(y)/(16+34)-xy2").getAsString());
+		assertEquals("1+2", new Expression("1+2").render());
+		assertEquals("-y+6", new Expression("-y+6").render());
+		assertEquals("1x+45", new Expression("1x+45").render());
+		assertEquals("x+45+6xy45+12(23+6xy4)", new Expression("x+45+6xy45+12(23+6xy4)").render());
+		assertEquals("-c+(y)/(16+34)-xy2", new Expression("-c+(y)/(16+34)-xy2").render());
 	}
 	
 	/**

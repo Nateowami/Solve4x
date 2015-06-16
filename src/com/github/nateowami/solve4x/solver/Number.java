@@ -179,7 +179,7 @@ public class Number extends AlgebraicParticle{
 	 * Return a string representation of this Number, not the traditional toString()
 	 * @return This Number in a string format. 
 	 */
-	public String getAsString(){
+	public String render(){
 		return wrapWithSignParAndExponent(
 				integer + (decimal == null ? "" : "." + decimal) + 
 						(sciExponent == null ? "" : "*10" + Util.toSuperscript(Integer.toString(sciExponent))),

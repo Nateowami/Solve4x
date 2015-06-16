@@ -56,7 +56,7 @@ public class Visual {
 		for(int i = 0; i < step.getExplanation().size(); i++){
 			Object o = step.getExplanation().get(i);
 			if(o instanceof String) System.out.print(o);
-			else System.out.print(((AlgebraicParticle)o).getAsString());
+			else System.out.print(((AlgebraicParticle)o).render());
 		}
 		System.out.println();
 		System.out.println("\t" + step.getEquation().getAsString());

@@ -80,10 +80,10 @@ public class Expression extends AlgebraicCollection{
 	 * This should not be used in most situations.
 	 * @return The expression in String form
 	 */
-	public String getAsString(){
+	public String render(){
 		String expr = "";
 		for(int i = 0; i < termList.size(); i++){
-			String term = termList.get(i).getAsString();
+			String term = termList.get(i).render();
 			//if it's not the first term, and the term isn't negative, prepend a + sign
 			expr += i != 0 && term.charAt(0) != '-' ? "+" + term : term;
 		}

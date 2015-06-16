@@ -35,12 +35,12 @@ public class FractionTest {
 	@Test
 	public void testFraction()  {
 		Fraction frac1 = new Fraction("(2)/(3)");
-		assertEquals("2", frac1.getTop().getAsString());
-		assertEquals("3", frac1.getBottom().getAsString());
+		assertEquals("2", frac1.getTop().render());
+		assertEquals("3", frac1.getBottom().render());
 		
 		Fraction frac2 = new Fraction("(x3+2)/(17)");
-		assertEquals("x3+2", frac2.getTop().getAsString());
-		assertEquals("17", frac2.getBottom().getAsString());
+		assertEquals("x3+2", frac2.getTop().render());
+		assertEquals("17", frac2.getBottom().render());
 	}
 
 	/**
@@ -66,8 +66,8 @@ public class FractionTest {
 	 */
 	@Test
 	public void testGetTop()  {
-		assertEquals("2x+6y", new Fraction("(2x+6y)/(3)").getTop().getAsString());
-		assertEquals("42y-16", new Fraction("(42y-16)/(87-6)").getTop().getAsString());
+		assertEquals("2x+6y", new Fraction("(2x+6y)/(3)").getTop().render());
+		assertEquals("42y-16", new Fraction("(42y-16)/(87-6)").getTop().render());
 	}
 
 	/**
@@ -76,19 +76,19 @@ public class FractionTest {
 	 */
 	@Test
 	public void testGetBottom()  {
-		assertEquals("3", new Fraction("(2x+6y)/(3)").getBottom().getAsString());
-		assertEquals("87-6yz4", new Fraction("(42y-16)/(87-6yz4)").getBottom().getAsString());
+		assertEquals("3", new Fraction("(2x+6y)/(3)").getBottom().render());
+		assertEquals("87-6yz4", new Fraction("(42y-16)/(87-6yz4)").getBottom().render());
 	}
 	
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Fraction#getAsString()}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Fraction#render()}.
 	 * @ 
 	 */
 	@Test
 	public void testGetAsString()  {
-		assertEquals("(3)/(xy+2)", new Fraction("(3)/(xy+2)").getAsString());
-		assertEquals("(24x-73)/(2+5)", new Fraction("(24x-73)/(2+5)").getAsString());
-		assertEquals("(4y((6)/(xy+3)))/(5)", new Fraction("(4y(6)/(xy+3))/(5)").getAsString());
+		assertEquals("(3)/(xy+2)", new Fraction("(3)/(xy+2)").render());
+		assertEquals("(24x-73)/(2+5)", new Fraction("(24x-73)/(2+5)").render());
+		assertEquals("(4y((6)/(xy+3)))/(5)", new Fraction("(4y(6)/(xy+3))/(5)").render());
 	}
 	
 	/**

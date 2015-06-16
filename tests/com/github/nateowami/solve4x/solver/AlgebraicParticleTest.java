@@ -59,7 +59,7 @@ public class AlgebraicParticleTest {
 	 */
 	@Test
 	public void testGetInstance()  {
-		assertEquals("-2x⁹(4+2)", AlgebraicParticle.getInstance("-2x⁹(4+2)").getAsString());
+		assertEquals("-2x⁹(4+2)", AlgebraicParticle.getInstance("-2x⁹(4+2)").render());
 		
 		AlgebraicParticle a1 = AlgebraicParticle.getInstance("2x+6²");
 		assertTrue(a1 instanceof Expression);

@@ -186,7 +186,7 @@ public class Multiply extends Algorithm {
 			boolean sign = a.sign() == b.sign();
 			return a.cloneWithNewSignAndExponent(sign, exponent);
 		}
-		else throw new IllegalArgumentException("Cannot multiply " + a.getAsString() + " and " + b.getAsString() + " because they are not of the same type.");
+		else throw new IllegalArgumentException("Cannot multiply " + a.render() + " and " + b.render() + " because they are not of the same type.");
 	}
 	
 }

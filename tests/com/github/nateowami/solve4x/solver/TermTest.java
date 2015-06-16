@@ -30,18 +30,18 @@ import org.junit.Test;
 public class TermTest {
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#getAsString()}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#render()}.
 	 */
 	@Test
 	public void testGetAsString() {
-		assertEquals("2x", new Term("2x").getAsString());
-		assertEquals("47y", new Term("47y").getAsString());
-		assertEquals("2(3+zy)", new Term("2(3+zy)").getAsString());
-		assertEquals("2((3)/(xy+2))", new Term("2((3)/(xy+2))").getAsString());
-		assertEquals("4x(2-4)", new Term("4x(2-4)").getAsString());
-		assertEquals("(2x)²", AlgebraicParticle.getInstance("(2x)²").getAsString());
-		assertEquals("2x(4+6)²", AlgebraicParticle.getInstance("2x(4+6)²").getAsString());
-		assertEquals("2(xy)²", AlgebraicParticle.getInstance("2(xy)²").getAsString());
+		assertEquals("2x", new Term("2x").render());
+		assertEquals("47y", new Term("47y").render());
+		assertEquals("2(3+zy)", new Term("2(3+zy)").render());
+		assertEquals("2((3)/(xy+2))", new Term("2((3)/(xy+2))").render());
+		assertEquals("4x(2-4)", new Term("4x(2-4)").render());
+		assertEquals("(2x)²", AlgebraicParticle.getInstance("(2x)²").render());
+		assertEquals("2x(4+6)²", AlgebraicParticle.getInstance("2x(4+6)²").render());
+		assertEquals("2(xy)²", AlgebraicParticle.getInstance("2(xy)²").render());
 	}
 
 	/**
@@ -50,16 +50,16 @@ public class TermTest {
 	 */
 	@Test
 	public void testTerm()  {
-		assertEquals("2x", new Term("2x").getAsString());
-		assertEquals("2x4xy", new Term("2x4xy").getAsString());
-		assertEquals("2(1)", new Term("2(1)").getAsString());
-		assertEquals("6(34)", new Term("6(34)").getAsString());
-		assertEquals("xy(6+2)", new Term("xy(6+2)").getAsString());
-		assertEquals("4y(-y+6)", new Term("4y(-y+6)").getAsString());
-		assertEquals("4(32)", new Term("4(32)").getAsString());
-		assertEquals("x(4+y)⁴", new Term("x(4+y)⁴").getAsString());
-		assertEquals("x(4y)⁴3", new Term("x(4*y)⁴*3").getAsString());
-		assertEquals("2x4yx", new Term("2x*4yx").getAsString());
+		assertEquals("2x", new Term("2x").render());
+		assertEquals("2x4xy", new Term("2x4xy").render());
+		assertEquals("2(1)", new Term("2(1)").render());
+		assertEquals("6(34)", new Term("6(34)").render());
+		assertEquals("xy(6+2)", new Term("xy(6+2)").render());
+		assertEquals("4y(-y+6)", new Term("4y(-y+6)").render());
+		assertEquals("4(32)", new Term("4(32)").render());
+		assertEquals("x(4+y)⁴", new Term("x(4+y)⁴").render());
+		assertEquals("x(4y)⁴3", new Term("x(4*y)⁴*3").render());
+		assertEquals("2x4yx", new Term("2x*4yx").render());
 	}
 	
 	/**
@@ -99,10 +99,10 @@ public class TermTest {
 	 */
 	@Test
 	public void testGetPartAt() {
-		assertEquals("x", new Term("2x").get(1).getAsString());
-		assertEquals("x+6", new Term("4y(x+6)").get(2).getAsString());
-		assertEquals("y", new Term("4xy").get(2).getAsString());
-		assertEquals("4", new Term("xyz4").get(3).getAsString());
+		assertEquals("x", new Term("2x").get(1).render());
+		assertEquals("x+6", new Term("4y(x+6)").get(2).render());
+		assertEquals("y", new Term("4xy").get(2).render());
+		assertEquals("4", new Term("xyz4").get(3).render());
 	}
 	
 	/**

@@ -115,8 +115,8 @@ public class Fraction extends AlgebraicParticle{
 	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#getAsString()
 	 */
 	@Override
-	public String getAsString() {
-		return wrapWithSignParAndExponent("(" + this.top.getAsString() + ")/(" + this.bottom.getAsString() + ")", true);
+	public String render() {
+		return wrapWithSignParAndExponent("(" + this.top.render() + ")/(" + this.bottom.render() + ")", true);
 	}
 
 	/* (non-Javadoc)

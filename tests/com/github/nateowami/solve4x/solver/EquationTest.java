@@ -35,8 +35,8 @@ public class EquationTest {
 	@Test
 	public void testEquation()  {
 		Equation eq = new Equation("23x2y+14x=6(34xy2+7)");
-		assertEquals("23x2y+14x", eq.get(0).getAsString());
-		assertEquals("6(34xy2+7)", eq.get(1).getAsString());
+		assertEquals("23x2y+14x", eq.get(0).render());
+		assertEquals("6(34xy2+7)", eq.get(1).render());
 	}
 
 	/**
@@ -46,8 +46,8 @@ public class EquationTest {
 	@Test
 	public void testGetExpression()  {
 		Equation eq = new Equation("12x2y(34+6xa)=45+6x(4+85xy5)");
-		assertEquals("12x2y(34+6xa)", eq.get(0).getAsString());
-		assertEquals("45+6x(4+85xy5)", eq.get(1).getAsString());
+		assertEquals("12x2y(34+6xa)", eq.get(0).render());
+		assertEquals("45+6x(4+85xy5)", eq.get(1).render());
 	}
 
 	/**

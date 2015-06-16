@@ -36,10 +36,10 @@ public class RootTest {
 	public void testRoot()  {
 		Root root1 = new Root("₄√(4x+6)");
 		assertEquals(4, root1.getNthRoot());
-		assertEquals("4x+6", root1.getExpr().getAsString());
+		assertEquals("4x+6", root1.getExpr().render());
 		Root root2 = new Root("₂₀₉√(74xy2)");
 		assertEquals(209, root2.getNthRoot());
-		assertEquals("74xy2", root2.getExpr().getAsString());
+		assertEquals("74xy2", root2.getExpr().render());
 	}
 
 	/**

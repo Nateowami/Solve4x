@@ -30,15 +30,15 @@ import org.junit.Test;
 public class VariableTest {
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Variable#getAsString()}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Variable#render()}.
 	 * @ 
 	 */
 	@Test
 	public void testGetAsString()  {
-		assertEquals("z", new Variable("z").getAsString());
-		assertEquals("Q", new Variable("Q").getAsString());
-		assertEquals("t", new Variable("t").getAsString());
-		assertEquals("S", new Variable("S").getAsString());
+		assertEquals("z", new Variable("z").render());
+		assertEquals("Q", new Variable("Q").render());
+		assertEquals("t", new Variable("t").render());
+		assertEquals("S", new Variable("S").render());
 	}
 
 	/**

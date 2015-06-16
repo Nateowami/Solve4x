@@ -135,7 +135,7 @@ public class Equation {
 		for(int i = 0; i < exprs.length; i++){
 			//if i is odd append '='
 			eq += i % 2 == 0 ? "" : "=";
-			eq += exprs[i].getAsString();
+			eq += exprs[i].render();
 		}
 		return eq;
 	}

@@ -176,7 +176,7 @@ public abstract class AlgebraicParticle implements Cloneable {
 	/**
 	 * @return The string form of the algebraic particle.
 	 */
-	public abstract String getAsString();
+	public abstract String render();
 	
 	/**
 	 * Wraps string s with the sign and exponent. The use case for this

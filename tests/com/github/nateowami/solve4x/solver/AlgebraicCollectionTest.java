@@ -31,8 +31,8 @@ public class AlgebraicCollectionTest {
 	 */
 	@Test
 	public void testCloneWithNewElement() {
-		assertEquals("2x+3", ((Expression)a("2x+6")).cloneWithNewElement(1, a("3")).getAsString());
-		assertEquals("2x3", ((Term)a("2y3")).cloneWithNewElement(1, a("x")).getAsString());
+		assertEquals("2x+3", ((Expression)a("2x+6")).cloneWithNewElement(1, a("3")).render());
+		assertEquals("2x3", ((Term)a("2y3")).cloneWithNewElement(1, a("x")).render());
 	}
 
 	/**
@@ -41,13 +41,13 @@ public class AlgebraicCollectionTest {
 	@Test
 	public void testReplace() {
 		Term t = (Term) a("2x(x+3)");
-		assertEquals("2x(y+3)", t.replace(((AlgebraicCollection)t.get(2)).get(0), a("y")).getAsString());
+		assertEquals("2x(y+3)", t.replace(((AlgebraicCollection)t.get(2)).get(0), a("y")).render());
 		Expression e = (Expression) a("2x+4(x+6)");
-		assertEquals("2x+4(x+z)", e.replace(((AlgebraicCollection)((AlgebraicCollection)e.get(1)).get(1)).get(1), a("z")).getAsString());
-		assertEquals("4xy+4(x+6)", e.replace(((AlgebraicCollection)e.get(0)), a("4xy")).getAsString());
-		assertEquals("2x+7(z+6)", e.replace(((AlgebraicCollection)e.get(1)), a("7(z+6)")).getAsString());
+		assertEquals("2x+4(x+z)", e.replace(((AlgebraicCollection)((AlgebraicCollection)e.get(1)).get(1)).get(1), a("z")).render());
+		assertEquals("4xy+4(x+6)", e.replace(((AlgebraicCollection)e.get(0)), a("4xy")).render());
+		assertEquals("2x+7(z+6)", e.replace(((AlgebraicCollection)e.get(1)), a("7(z+6)")).render());
 		Term t2 = new Term("5x");
-		assertEquals("x", t2.replace(t2, a("x")).getAsString());		
+		assertEquals("x", t2.replace(t2, a("x")).render());
 	}
 	
 	/**

@@ -34,8 +34,8 @@ public class MixedNumberTest {
 	 */
 	@Test
 	public void testMixedNumber()  {
-		assertEquals("1(3)/(4)", new MixedNumber("1(3)/(4)").getAsString());
-		assertEquals("45(67)/(-18)", new MixedNumber("45(67)/(-18)").getAsString());
+		assertEquals("1(3)/(4)", new MixedNumber("1(3)/(4)").render());
+		assertEquals("45(67)/(-18)", new MixedNumber("45(67)/(-18)").render());
 	}
 
 	/**
@@ -57,10 +57,10 @@ public class MixedNumberTest {
 	 */
 	@Test
 	public void testGetFraction()  {
-		assertEquals("(2)/(3)", new MixedNumber("57(2)/(3)").getFraction().getAsString());
-		assertEquals("(2)/(3)", new MixedNumber("1(2)/(3)").getFraction().getAsString());
-		assertEquals("(-2)/(3)", new MixedNumber("6(-2)/(3)").getFraction().getAsString());
-		assertEquals("(5)/(8)", new MixedNumber("3(5)/(8)").getFraction().getAsString());
+		assertEquals("(2)/(3)", new MixedNumber("57(2)/(3)").getFraction().render());
+		assertEquals("(2)/(3)", new MixedNumber("1(2)/(3)").getFraction().render());
+		assertEquals("(-2)/(3)", new MixedNumber("6(-2)/(3)").getFraction().render());
+		assertEquals("(5)/(8)", new MixedNumber("3(5)/(8)").getFraction().render());
 	}
 
 	/**
@@ -69,20 +69,20 @@ public class MixedNumberTest {
 	 */
 	@Test
 	public void testGetNumeral()  {
-		assertEquals("4", new MixedNumber("4(2)/(3)").getNumeral().getAsString());
-		assertEquals("1", new MixedNumber("1(2)/(3)").getNumeral().getAsString());
-		assertEquals("85", new MixedNumber("85(-2)/(73)").getNumeral().getAsString());
-		assertEquals("35", new MixedNumber("35(1)/(2)").getNumeral().getAsString());
+		assertEquals("4", new MixedNumber("4(2)/(3)").getNumeral().render());
+		assertEquals("1", new MixedNumber("1(2)/(3)").getNumeral().render());
+		assertEquals("85", new MixedNumber("85(-2)/(73)").getNumeral().render());
+		assertEquals("35", new MixedNumber("35(1)/(2)").getNumeral().render());
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.MixedNumber#getAsString()}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.MixedNumber#render()}.
 	 * @ 
 	 */
 	@Test
 	public void testGetAsString()  {
-		assertEquals("256(-7)/(56)", new MixedNumber("256(-7)/(56)").getAsString());
-		assertEquals("2(-87)/(-16)", new MixedNumber("2(-87)/(-16)").getAsString());
+		assertEquals("256(-7)/(56)", new MixedNumber("256(-7)/(56)").render());
+		assertEquals("2(-87)/(-16)", new MixedNumber("2(-87)/(-16)").render());
 	}
 	
 	/**

@@ -127,7 +127,7 @@ public class Term extends AlgebraicCollection{
 	 * traditional toString().
 	 * @return This term rendered as plain text.
 	 */
-	public String getAsString(){
+	public String render(){
 		String s = "";
 		//keep track of whether the previous part of the term was wrapped with parentheses
 		//this is so we can distinguish between 62 and 6(2), etc.
@@ -141,7 +141,7 @@ public class Term extends AlgebraicCollection{
 			
 			//MixedNumber and Number should only be wrapped with pars if the previous part was a number and it didn't have pars
 			if((curClass.equals("MixedNumber") || curClass.equals("Number")) && prevClass.equals("Number")) needsPar = !prevHadPar;
-			s += needsPar ? "(" + p.getAsString() + ")"	: p.getAsString();
+			s += needsPar ? "(" + p.render() + ")"	: p.render();
 			
 			prevClass = curClass;
 			prevHadPar = needsPar;

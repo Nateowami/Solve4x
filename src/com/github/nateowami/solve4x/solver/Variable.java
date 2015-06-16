@@ -58,7 +58,7 @@ public class Variable extends AlgebraicParticle{
 	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#getAsString()
 	 */
 	@Override
-	public String getAsString() {
+	public String render() {
 		return wrapWithSignParAndExponent(var + "", false);
 	}
 	

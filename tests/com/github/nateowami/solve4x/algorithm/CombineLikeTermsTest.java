@@ -97,11 +97,11 @@ public class CombineLikeTermsTest {
 		assertEquals(a("4x"), c.combineTerms(a("7x"), a("-3x")));
 		assertEquals(a("-x"), c.combineTerms(a("2x"), a("-3x")));
 		assertEquals(a("3x"), c.combineTerms(a("x"), a("+2x")));
-		assertEquals(a("-x").getAsString(), c.combineTerms(a("x"), a("-2x")).getAsString());
-		assertEquals(a("0").getAsString(), c.combineTerms(a("x"), a("-x")).getAsString());
-		assertEquals(a("0").getAsString(), c.combineTerms(a("3x"), a("-3x")).getAsString());
-		assertEquals(a("x").getAsString(), c.combineTerms(a("2x"), a("-x")).getAsString());
-		assertEquals(a("-2x").getAsString(), c.combineTerms(a("-x"), a("-x")).getAsString());
+		assertEquals(a("-x").render(), c.combineTerms(a("x"), a("-2x")).render());
+		assertEquals(a("0").render(), c.combineTerms(a("x"), a("-x")).render());
+		assertEquals(a("0").render(), c.combineTerms(a("3x"), a("-3x")).render());
+		assertEquals(a("x").render(), c.combineTerms(a("2x"), a("-x")).render());
+		assertEquals(a("-2x").render(), c.combineTerms(a("-x"), a("-x")).render());
 	}
 	
 	/**
@@ -148,7 +148,7 @@ public class CombineLikeTermsTest {
 					b = AlgebraicParticle.getInstance(p[1]),
 					correctResult = AlgebraicParticle.getInstance(p[2]),
 					actualResult = c.addConstants(a, b);
-			assertEquals(a.getAsString() + " and " + b.getAsString() + " should combine to be " + p[2] + " (parsed as " + correctResult.getAsString() + "), but the result is " + actualResult.getAsString(), correctResult, actualResult);
+			assertEquals(a.render() + " and " + b.render() + " should combine to be " + p[2] + " (parsed as " + correctResult.render() + "), but the result is " + actualResult.render(), correctResult, actualResult);
 			//1.5 (5)/(19) 1.5(5)/(19)
 			//assertEquals(a("1.5(5)/(19)"), c.addConstants(a("1.5"), a("(5)/(19)")));
 		}
@@ -254,7 +254,7 @@ public class CombineLikeTermsTest {
 			AlgebraicParticle a = AlgebraicParticle.getInstance(p[0]), 
 					b = AlgebraicParticle.getInstance(p[1]);
 			boolean areCombineable = p[2].charAt(0) == 't';
-			assertEquals("The following two should " + (areCombineable ? "" : "not ") + "be combineable: " + a.getAsString() + " and " + b.getAsString(), 
+			assertEquals("The following two should " + (areCombineable ? "" : "not ") + "be combineable: " + a.render() + " and " + b.render(), 
 					areCombineable, c.areCombinable(a, b));
 		}
 	}
