@@ -38,8 +38,8 @@ public class MultiplyTest {
 	 */
 	@Test
 	public void testExecute() {
-		assertEquals(a("2x²"), m.execute(new Equation(new AlgebraicParticle[]{a("2xx")})).getEquation().terms().get(0));
-		assertEquals(a("4"), m.execute(new Equation(new AlgebraicParticle[]{a("2*2")})).getEquation().get(0));
+		assertEquals(a("2x²"), m.execute(new Equation("2xx")).getEquation().terms().get(0));
+		assertEquals(a("4"), m.execute(new Equation("2*2")).getEquation().left());
 	}
 
 	/**

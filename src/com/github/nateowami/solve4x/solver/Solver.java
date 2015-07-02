@@ -131,7 +131,7 @@ public class Solver {
 		for(int i=0; i<solList.size(); i++){
 			//check the first and second expressions
 			Equation eq = solList.get(i).getLastEquation();
-			if(isSimplified(eq.get(0))	&& (eq.length() > 0) && isSimplified(eq.get(1))){
+			if(isSimplified(eq.left())	&& isSimplified(eq.right())){
 				Solve4x.debug("Returns " + i);
 				return i;
 			}
