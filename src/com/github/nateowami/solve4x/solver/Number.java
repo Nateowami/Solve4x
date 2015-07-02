@@ -199,7 +199,7 @@ public class Number extends AlgebraicParticle{
 	 * @param num The number to check
 	 * @return If it's a number and/or fraction combination
 	 */
-	public static boolean parseable(String num) {
+	public static boolean parsable(String num) {
 		//check for empty string
 		if(num.length() == 0){
 			return false;

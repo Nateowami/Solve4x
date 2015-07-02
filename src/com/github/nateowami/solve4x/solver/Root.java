@@ -77,7 +77,7 @@ public class Root extends AlgebraicParticle{
 	 * @param root The root to check.
 	 * @return If root is a valid root.
 	 */
-	static public boolean parseable(String root){
+	static public boolean parsable(String root){
 		//first check for the subscript and radical sign
 		int i = 0;
 		while(i < root.length() && Util.isSubscript(Character.toString(root.charAt(i)))) i++;
@@ -96,7 +96,7 @@ public class Root extends AlgebraicParticle{
 		//it has parentheses
 		else {
 			//if it's an algebraic particle
-			return AlgebraicParticle.parseable(root, Root.class);
+			return AlgebraicParticle.parsable(root, Root.class);
 		}
 		
 	}
@@ -126,7 +126,7 @@ public class Root extends AlgebraicParticle{
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#getAsString()
+	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#render()
 	 */
 	@Override
 	public String render() {

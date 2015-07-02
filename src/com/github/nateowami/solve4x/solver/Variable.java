@@ -55,7 +55,7 @@ public class Variable extends AlgebraicParticle{
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#getAsString()
+	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#render()
 	 */
 	@Override
 	public String render() {
@@ -72,11 +72,11 @@ public class Variable extends AlgebraicParticle{
 	}
 	
 	/**
-	 * Tells if s is parseable as a variable. Must contain one char, a-z or A-Z.
+	 * Tells if s is parsable as a variable. Must contain one char, a-z or A-Z.
 	 * @param s The string to check.
 	 * @return If s is a variable.
 	 */
-	public static boolean parseable(String s) {
+	public static boolean parsable(String s) {
 		if(s == null || s.length() != 1 || !Util.areAllLetters(Character.toString(s.charAt(0)))){
 			return false;
 		}

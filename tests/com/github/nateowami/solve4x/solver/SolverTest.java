@@ -32,13 +32,13 @@ public class SolverTest {
 	 */
 	@Test
 	public void testGetSolution() {
-		assertEquals("4=x", new Solver("2*2=x", Solver.SolveFor.SOLVE, RoundingRule.ALWAYS).getSolution().getLastEquation().getAsString());
+		assertEquals("4=x", new Solver("2*2=x", Solver.SolveFor.SOLVE, RoundingRule.ALWAYS).getSolution().getLastEquation().render());
 	}
 	
 	@Test
 	@Ignore("Not yet implimented.")
 	public void testXMadePositive() {
-		assertEquals("15=x", new Solver("3x+4-2=17+2x", Solver.SolveFor.SOLVE, RoundingRule.ALWAYS).getSolution().getLastEquation().getAsString());
+		assertEquals("15=x", new Solver("3x+4-2=17+2x", Solver.SolveFor.SOLVE, RoundingRule.ALWAYS).getSolution().getLastEquation().render());
 	}
 
 }

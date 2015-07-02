@@ -66,7 +66,7 @@ public class MixedNumber extends AlgebraicParticle{
 	 * @param s The string to check.
 	 * @return If s can be parsed as a MixedNumber.
 	 */
-	public static boolean parseable(String s){
+	public static boolean parsable(String s){
 		int j = s.indexOf('(');
 		if(j < 1) return false;
 		if(!Util.areAllNumerals(s.substring(0, j)))return false;

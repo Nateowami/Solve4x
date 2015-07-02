@@ -135,7 +135,7 @@ public abstract class AlgebraicParticle implements Cloneable {
 	 * whether s can be parsed (may be left null).
 	 * @return If s can be parsed as an AlgebraicParticle.
 	 */
-	public static boolean parseable(String s, Class<? extends AlgebraicParticle> c){
+	public static boolean parsable(String s, Class<? extends AlgebraicParticle> c){
 		String original = s;
 		boolean pars = false;
 		if (s.length() < 1)return false;
@@ -159,18 +159,18 @@ public abstract class AlgebraicParticle implements Cloneable {
 		}
 		if (s.length() < 1)return false;
 		
-		if(parseableBySubclasses(pars ? s : original, withExponent, s, c)) return true;
+		if(parsableBySubclasses(pars ? s : original, withExponent, s, c)) return true;
 		return false;
 	}
 	
 	/**
-	 * Works like {@link #parseable(String, Class<? extends AlgebraicParticle>)} with 
+	 * Works like {@link #parsable(String, Class<? extends AlgebraicParticle>)} with 
 	 * c (the class not to use) set to null.
 	 * @param s The string to test.
 	 * @return If s can be parsed as an algebraic particle.
 	 */
-	public static boolean parseable(String s){
-		return parseable(s, null);
+	public static boolean parsable(String s){
+		return parsable(s, null);
 	}
 	
 	/**
@@ -180,7 +180,7 @@ public abstract class AlgebraicParticle implements Cloneable {
 	
 	/**
 	 * Wraps string s with the sign and exponent. The use case for this
-	 * is in a subclass of AlgebraicParticle in its getAsString() method.
+	 * is in a subclass of AlgebraicParticle in its render() method.
 	 * The subclass should call this method to wrap a string with the sign
 	 * and exponent. For example, the Number class could call 
 	 * wrapWithSignAndExponent("3.14") which, depending on the values in 
@@ -222,15 +222,15 @@ public abstract class AlgebraicParticle implements Cloneable {
 	 * @return If a class listed in classes can construct from withExponent or exponentRemoved, 
 	 * depending on the situation (see above).
 	 */
-	static private boolean parseableBySubclasses(String withSign, String withExponent, String allRemoved, Class<? extends AlgebraicParticle> bl){
+	static private boolean parsableBySubclasses(String withSign, String withExponent, String allRemoved, Class<? extends AlgebraicParticle> bl){
 		String n = bl == null ? "" : bl.getSimpleName();
-		if(!n.equals("Variable")    && Variable   .parseable(allRemoved)) return true;
-		if(!n.equals("Number")      && Number     .parseable(allRemoved)) return true;
-		if(!n.equals("Root")        && Root       .parseable(withExponent)) return true;
-		if(!n.equals("Fraction")    && Fraction   .parseable(withExponent)) return true;
-		if(!n.equals("MixedNumber") && MixedNumber.parseable(withExponent)) return true;
-		if(!n.equals("Term")        && Term       .parseable(withExponent)) return true;
-		if(!n.equals("Expression")  && Expression .parseable(withSign)) return true;
+		if(!n.equals("Variable")    && Variable   .parsable(allRemoved)) return true;
+		if(!n.equals("Number")      && Number     .parsable(allRemoved)) return true;
+		if(!n.equals("Root")        && Root       .parsable(withExponent)) return true;
+		if(!n.equals("Fraction")    && Fraction   .parsable(withExponent)) return true;
+		if(!n.equals("MixedNumber") && MixedNumber.parsable(withExponent)) return true;
+		if(!n.equals("Term")        && Term       .parsable(withExponent)) return true;
+		if(!n.equals("Expression")  && Expression .parsable(withSign)) return true;
 		return false;
 	}
 	
@@ -253,13 +253,13 @@ public abstract class AlgebraicParticle implements Cloneable {
 	 */
 	static private AlgebraicParticle construct(String withSign, String withExponent, String allRemoved, Class<? extends AlgebraicParticle> bl){
 		String n = bl == null ? "" : bl.getSimpleName();
-		if(!n.equals("Variable")    && Variable   .parseable(allRemoved))return new Variable(allRemoved);
-		if(!n.equals("Number")      && Number     .parseable(allRemoved))return new Number(allRemoved);
-		if(!n.equals("Root")        && Root       .parseable(withExponent))   return new Root(withExponent);
-		if(!n.equals("Fraction")    && Fraction   .parseable(withExponent))   return new Fraction(withExponent);
-		if(!n.equals("MixedNumber") && MixedNumber.parseable(withExponent))   return new MixedNumber(withExponent);
-		if(!n.equals("Term")        && Term       .parseable(withExponent))   return new Term(withExponent);
-		if(!n.equals("Expression")  && Expression .parseable(withSign))   return new Expression(withSign);
+		if(!n.equals("Variable")    && Variable   .parsable(allRemoved))return new Variable(allRemoved);
+		if(!n.equals("Number")      && Number     .parsable(allRemoved))return new Number(allRemoved);
+		if(!n.equals("Root")        && Root       .parsable(withExponent))   return new Root(withExponent);
+		if(!n.equals("Fraction")    && Fraction   .parsable(withExponent))   return new Fraction(withExponent);
+		if(!n.equals("MixedNumber") && MixedNumber.parsable(withExponent))   return new MixedNumber(withExponent);
+		if(!n.equals("Term")        && Term       .parsable(withExponent))   return new Term(withExponent);
+		if(!n.equals("Expression")  && Expression .parsable(withSign))   return new Expression(withSign);
 		throw new ParsingException("Cannot parse " + withSign + " (with sign) or "+ withExponent + " (with exponent) or " + allRemoved + " (exponent removed) as an algebraic particle.");
 	}
 	

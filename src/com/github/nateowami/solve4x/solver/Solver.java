@@ -63,7 +63,7 @@ public class Solver {
 		equation = equation.replaceAll(",", "");
 		
 		//validate the equation
-		if(!Equation.parseable(equation)){
+		if(!Equation.parsable(equation)){
 			throw new ParsingException("Validator says equation \"" + equation + "\" is invalid.");
 		}
 		

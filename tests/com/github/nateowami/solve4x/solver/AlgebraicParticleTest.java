@@ -101,20 +101,20 @@ public class AlgebraicParticleTest {
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.AlgebraicParticle#parseable(java.lang.String, java.lang.Class<com.github.nateowami.solve4x.solver.AlgebraicParticle>[])}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.AlgebraicParticle#parsable(java.lang.String, java.lang.Class<com.github.nateowami.solve4x.solver.AlgebraicParticle>[])}.
 	 */
 	@Test
-	public void testParseable() {
+	public void testparsable() {
 		//Term
-		assertTrue(AlgebraicParticle.parseable("2x"));
-		assertTrue(AlgebraicParticle.parseable("2x6y"));
-		assertTrue(AlgebraicParticle.parseable("2x⁹"));
-		assertTrue(AlgebraicParticle.parseable("-2x"));
+		assertTrue(AlgebraicParticle.parsable("2x"));
+		assertTrue(AlgebraicParticle.parsable("2x6y"));
+		assertTrue(AlgebraicParticle.parsable("2x⁹"));
+		assertTrue(AlgebraicParticle.parsable("-2x"));
 		//Number
-		assertTrue(AlgebraicParticle.parseable("2"));
-		assertTrue(AlgebraicParticle.parseable("-4x⁹"));
+		assertTrue(AlgebraicParticle.parsable("2"));
+		assertTrue(AlgebraicParticle.parsable("-4x⁹"));
 		//That no class can parse an empty string
-		assertFalse(AlgebraicParticle.parseable(""));
+		assertFalse(AlgebraicParticle.parsable(""));
 	}
 	
 	/**

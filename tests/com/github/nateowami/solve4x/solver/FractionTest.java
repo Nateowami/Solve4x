@@ -44,20 +44,20 @@ public class FractionTest {
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Fraction#parseable(java.lang.String)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Fraction#parsable(java.lang.String)}.
 	 * @ 
 	 */
 	@Test
-	public void testParseable()  {
-		assertTrue(Fraction.parseable("(2)/(3)"));
-		assertTrue(Fraction.parseable("(23+xy6)/(43xy+6)"));
-		assertTrue(Fraction.parseable("(23xy2)/(x+6-3xy)"));
+	public void testparsable()  {
+		assertTrue(Fraction.parsable("(2)/(3)"));
+		assertTrue(Fraction.parsable("(23+xy6)/(43xy+6)"));
+		assertTrue(Fraction.parsable("(23xy2)/(x+6-3xy)"));
 		
-		assertFalse(Fraction.parseable("xy6(4)/(5)"));
-		assertFalse(Fraction.parseable("2/3"));
-		assertFalse(Fraction.parseable("23xy2/(x+6-3xy"));
-		assertFalse(Fraction.parseable("4/15+6"));
-		assertFalse(Fraction.parseable("x+6"));
+		assertFalse(Fraction.parsable("xy6(4)/(5)"));
+		assertFalse(Fraction.parsable("2/3"));
+		assertFalse(Fraction.parsable("23xy2/(x+6-3xy"));
+		assertFalse(Fraction.parsable("4/15+6"));
+		assertFalse(Fraction.parsable("x+6"));
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class FractionTest {
 	 * @ 
 	 */
 	@Test
-	public void testGetAsString()  {
+	public void testrender()  {
 		assertEquals("(3)/(xy+2)", new Fraction("(3)/(xy+2)").render());
 		assertEquals("(24x-73)/(2+5)", new Fraction("(24x-73)/(2+5)").render());
 		assertEquals("(4y((6)/(xy+3)))/(5)", new Fraction("(4y(6)/(xy+3))/(5)").render());

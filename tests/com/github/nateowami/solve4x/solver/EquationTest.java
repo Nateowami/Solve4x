@@ -63,13 +63,13 @@ public class EquationTest {
 	}
 	
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#getAsString()}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#render()}.
 	 * @ 
 	 */
 	@Test
-	public void testGetAsString()  {
+	public void testrender()  {
 		Equation eq = new Equation("12x2y4(34+6xa(43x2+6+1(43)))=45+6x(4+85xy5)");
-		assertEquals("12x2y4(34+6xa(43x2+6+1(43)))=45+6x(4+85xy5)", eq.getAsString());
+		assertEquals("12x2y4(34+6xa(43x2+6+1(43)))=45+6x(4+85xy5)", eq.render());
 	}
 	
 	/**

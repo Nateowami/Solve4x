@@ -20,8 +20,6 @@ package com.github.nateowami.solve4x.solver;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.github.nateowami.solve4x.Solve4x;
-
 /**
  * Represents an algebraic equation
  * @author Nateowami
@@ -78,9 +76,9 @@ public class Equation {
 	 * @param eq The string to check.
 	 * @return If eq can be parsed as an equation.
 	 */
-	public static boolean parseable(String eq){
+	public static boolean parsable(String eq){
 		int i = eq.indexOf('=');
-		return i == -1 && AlgebraicParticle.parseable(eq) || AlgebraicParticle.parseable(eq.substring(0, i)) && AlgebraicParticle.parseable(eq.substring(i+1));
+		return i == -1 && AlgebraicParticle.parsable(eq) || AlgebraicParticle.parsable(eq.substring(0, i)) && AlgebraicParticle.parsable(eq.substring(i+1));
 	}
 	
 	/**
@@ -130,7 +128,7 @@ public class Equation {
 	/**
 	 * @return A String representation of this equation. Example: 2x+x=5
 	 */
-	public String getAsString(){
+	public String render(){
 		String eq= "";
 		for(int i = 0; i < exprs.length; i++){
 			//if i is odd append '='
@@ -169,7 +167,7 @@ public class Equation {
 	 * @return All expressions in the flattened version of this equation.
 	 */
 	@SuppressWarnings("unchecked")
-	public ArrayList<Expression> expression(){
+	public ArrayList<Expression> expressions(){
 		return (ArrayList<Expression>)flattenAndLimitByClass(Expression.class);
 	}
 	

@@ -44,11 +44,11 @@ public class CombineLikeTermsTest {
 		assertEquals(new Equation("-2x+1.7y²-6"), s.getEquation());
 		assertEquals(new Equation("x"), c.execute(new Equation("4x+5x-8x")).getEquation());
 		assertEquals(new Equation("x"), c.execute(new Equation("2x-x")).getEquation());
-		assertEquals(new Equation("-2x").getAsString(), c.execute(new Equation("-x-x")).getEquation().getAsString());
+		assertEquals(new Equation("-2x").render(), c.execute(new Equation("-x-x")).getEquation().render());
 		//nested combinations
-		assertEquals("2(7)", c.execute(new Equation("2(2+5)")).getEquation().getAsString());
-		assertEquals("(7x)4(9)", c.execute(new Equation("(2x+5x)4(9)")).getEquation().getAsString());
-		assertEquals("(8x)(4-2)+45x", c.execute(new Equation("(2x+6x)(4-2)+45x")).getEquation().getAsString());
+		assertEquals("2(7)", c.execute(new Equation("2(2+5)")).getEquation().render());
+		assertEquals("(7x)4(9)", c.execute(new Equation("(2x+5x)4(9)")).getEquation().render());
+		assertEquals("(8x)(4-2)+45x", c.execute(new Equation("(2x+6x)(4-2)+45x")).getEquation().render());
 	}
 	
 	/**

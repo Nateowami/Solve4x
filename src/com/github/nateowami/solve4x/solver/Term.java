@@ -41,7 +41,7 @@ public class Term extends AlgebraicCollection{
 		//-1 from s.length() because we should not try to parse the whole thing the first time
 		for(int i = s.length()-1; i > 0; i--){
 			String part = s.length() != original.length() && s.charAt(0) == '*' ? s.substring(1, i) : s.substring(0, i);
-			if(AlgebraicParticle.parseable(part, Term.class)){
+			if(AlgebraicParticle.parsable(part, Term.class)){
 				parts.add(AlgebraicParticle.getInstance(part, Term.class));
 				//reset the loop
 				s = s.substring(i);
@@ -161,9 +161,9 @@ public class Term extends AlgebraicCollection{
 	/** 
 	 * Tells if a specified string s may be parsed as a term
 	 * @param s The string to check.
-	 * @return If s is parseable as a term.
+	 * @return If s is parsable as a term.
 	 */
-	public static boolean parseable(String s){
+	public static boolean parsable(String s){
 		int numParsed = 0; //make sure we're not doing someone else's job 
 		//for example, we shouldn't say "1" is a term, because it should be considered a number
 		
@@ -173,14 +173,14 @@ public class Term extends AlgebraicCollection{
 			//make sure it doesn't have a sign
 			if(s.length() > 0 && s.charAt(0) != '+' && s.charAt(0) != '-'
 					//if the first char is * and this isn't the first one to be parsed, remove it before attempting to parse
-					&& AlgebraicParticle.parseable(numParsed > 0  && s.charAt(0) == '*' ? s.substring(1, i) : s.substring(0, i), Term.class)){
+					&& AlgebraicParticle.parsable(numParsed > 0  && s.charAt(0) == '*' ? s.substring(1, i) : s.substring(0, i), Term.class)){
 				numParsed++;
 				//reset the loop
 				s = s.substring(i);
 				i = s.length()+1;//+1 because it's about to be subtracted 1
 			}
 		}
-		//if the whole thing was parseable
+		//if the whole thing was parsable
 		if(s.length() == 0 && numParsed > 1){
 			return true;
 		}

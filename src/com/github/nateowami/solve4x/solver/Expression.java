@@ -95,11 +95,11 @@ public class Expression extends AlgebraicCollection{
 	 * @param expr The string to check.
 	 * @return If s can be parsed as an expression.
 	 */
-	public static boolean parseable(String expr) {
+	public static boolean parsable(String expr) {
 		String[] parts = Util.splitByNonNestedChars(expr, '+', '-');
 		if(parts.length < 2) return false;
 		for(String part : parts){
-			if(!AlgebraicParticle.parseable(part, Expression.class))return false;
+			if(!AlgebraicParticle.parsable(part, Expression.class))return false;
 		}
 		return true;
 	}

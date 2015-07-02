@@ -34,7 +34,7 @@ public class VariableTest {
 	 * @ 
 	 */
 	@Test
-	public void testGetAsString()  {
+	public void testrender()  {
 		assertEquals("z", new Variable("z").render());
 		assertEquals("Q", new Variable("Q").render());
 		assertEquals("t", new Variable("t").render());
@@ -84,13 +84,13 @@ public class VariableTest {
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Variable#isVariable()}.
 	 */
 	@Test
-	public void testParseable()  {
-		assertTrue(Variable.parseable("n"));
-		assertTrue(Variable.parseable("y"));
-		assertTrue(Variable.parseable("X"));
-		assertFalse(Variable.parseable("2"));
-		assertFalse(Variable.parseable("Ü"));
-		assertFalse(Variable.parseable("ó"));
+	public void testparsable()  {
+		assertTrue(Variable.parsable("n"));
+		assertTrue(Variable.parsable("y"));
+		assertTrue(Variable.parsable("X"));
+		assertFalse(Variable.parsable("2"));
+		assertFalse(Variable.parsable("Ü"));
+		assertFalse(Variable.parsable("ó"));
 	}
 
 }

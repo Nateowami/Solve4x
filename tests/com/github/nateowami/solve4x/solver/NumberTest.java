@@ -176,7 +176,7 @@ public class NumberTest {
 	 * @ 
 	 */
 	@Test
-	public void testGetAsString()  {
+	public void testrender()  {
 		assertEquals("-234.026", AlgebraicParticle.getInstance("-234.026").render());
 		assertEquals("234.6", new Number("234.6").render());
 		assertEquals("-8.87", AlgebraicParticle.getInstance("-8.87").render());
@@ -189,30 +189,30 @@ public class NumberTest {
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#isNumber(java.lang.String)}.
 	 */
 	@Test
-	public void testParseable() {
-		assertTrue(Number.parseable("1"));
-		assertTrue(Number.parseable("23"));
-		assertTrue(Number.parseable("0"));
-		assertTrue(Number.parseable("0.1"));
-		assertTrue(Number.parseable("1.63"));
-		assertTrue(Number.parseable("3.141592"));
+	public void testparsable() {
+		assertTrue(Number.parsable("1"));
+		assertTrue(Number.parsable("23"));
+		assertTrue(Number.parsable("0"));
+		assertTrue(Number.parsable("0.1"));
+		assertTrue(Number.parsable("1.63"));
+		assertTrue(Number.parsable("3.141592"));
 
-		assertTrue(Number.parseable("2.4*10⁷⁸⁹"));
-		assertTrue(Number.parseable("0.79*10⁴"));
-		assertTrue(Number.parseable("3.0*10⁷"));
-		assertTrue(Number.parseable("7.639*10²"));
-		assertTrue(Number.parseable("0.0072*10³"));
-		assertTrue(Number.parseable("47.093*10⁷⁸"));
+		assertTrue(Number.parsable("2.4*10⁷⁸⁹"));
+		assertTrue(Number.parsable("0.79*10⁴"));
+		assertTrue(Number.parsable("3.0*10⁷"));
+		assertTrue(Number.parsable("7.639*10²"));
+		assertTrue(Number.parsable("0.0072*10³"));
+		assertTrue(Number.parsable("47.093*10⁷⁸"));
 
 		
-		assertFalse(Number.parseable(""));
-		assertFalse(Number.parseable("05"));
-		assertFalse(Number.parseable("00.4"));
-		assertFalse(Number.parseable("1.9.639"));
-		assertFalse(Number.parseable(".1111"));
-		assertFalse(Number.parseable("12."));
-		assertFalse(Number.parseable("j8.7"));
-		assertFalse(Number.parseable("8.8s"));
+		assertFalse(Number.parsable(""));
+		assertFalse(Number.parsable("05"));
+		assertFalse(Number.parsable("00.4"));
+		assertFalse(Number.parsable("1.9.639"));
+		assertFalse(Number.parsable(".1111"));
+		assertFalse(Number.parsable("12."));
+		assertFalse(Number.parsable("j8.7"));
+		assertFalse(Number.parsable("8.8s"));
 	}
 	
 	/**

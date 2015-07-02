@@ -33,7 +33,7 @@ public class TermTest {
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#render()}.
 	 */
 	@Test
-	public void testGetAsString() {
+	public void testrender() {
 		assertEquals("2x", new Term("2x").render());
 		assertEquals("47y", new Term("47y").render());
 		assertEquals("2(3+zy)", new Term("2(3+zy)").render());
@@ -63,23 +63,23 @@ public class TermTest {
 	}
 	
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#parseable(java.lang.String)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#parsable(java.lang.String)}.
 	 * @ 
 	 */
 	@Test
-	public void testParseable()  {
-		assertTrue(Term.parseable("1x"));
-		assertTrue(Term.parseable("6(34+9xy2(45x+6))"));
-		assertTrue(Term.parseable("x(4+y)⁴"));
-		assertTrue(Term.parseable("5*6"));
-		assertTrue(Term.parseable("(x+6)⁴*6.4"));
-		assertTrue(Term.parseable("5(x+6)⁴*6.4"));
-		assertTrue(Term.parseable("3.0*10⁷x"));
+	public void testparsable()  {
+		assertTrue(Term.parsable("1x"));
+		assertTrue(Term.parsable("6(34+9xy2(45x+6))"));
+		assertTrue(Term.parsable("x(4+y)⁴"));
+		assertTrue(Term.parsable("5*6"));
+		assertTrue(Term.parsable("(x+6)⁴*6.4"));
+		assertTrue(Term.parsable("5(x+6)⁴*6.4"));
+		assertTrue(Term.parsable("3.0*10⁷x"));
 		
-		assertFalse(Term.parseable("6(34+9xy2(45x+6)"));
-		assertFalse(Term.parseable("xy+2"));
-		assertFalse(Term.parseable("4"));
-		assertFalse(Term.parseable("2+6"));
+		assertFalse(Term.parsable("6(34+9xy2(45x+6)"));
+		assertFalse(Term.parsable("xy+2"));
+		assertFalse(Term.parsable("4"));
+		assertFalse(Term.parsable("2+6"));
 	}
 
 	/**

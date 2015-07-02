@@ -47,17 +47,17 @@ public class RootTest {
 	 * @ 
 	 */
 	@Test
-	public void testparseable()  {
-		assertTrue(Root.parseable("√(4)"));
-		assertTrue(Root.parseable("√(xyz+6x4)"));
-		assertTrue(Root.parseable("₄√(4x+6)"));
-		assertTrue(Root.parseable("₄√(4y+x⁶)"));
-		assertTrue(Root.parseable("₂₀₉√(74xy2)"));
+	public void testparsable()  {
+		assertTrue(Root.parsable("√(4)"));
+		assertTrue(Root.parsable("√(xyz+6x4)"));
+		assertTrue(Root.parsable("₄√(4x+6)"));
+		assertTrue(Root.parsable("₄√(4y+x⁶)"));
+		assertTrue(Root.parsable("₂₀₉√(74xy2)"));
 		
-		assertFalse(Root.parseable("√4xy2"));
-		assertFalse(Root.parseable("√xyz+6x4"));
-		assertFalse(Root.parseable("2√15"));
-		assertFalse(Root.parseable(""));
+		assertFalse(Root.parsable("√4xy2"));
+		assertFalse(Root.parsable("√xyz+6x4"));
+		assertFalse(Root.parsable("2√15"));
+		assertFalse(Root.parsable(""));
 	}
 
 	/**

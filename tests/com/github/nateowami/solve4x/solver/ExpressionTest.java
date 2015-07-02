@@ -90,7 +90,7 @@ public class ExpressionTest {
 	 * @ 
 	 */
 	@Test
-	public void testGetAsString()  {
+	public void testrender()  {
 		assertEquals("1+2", new Expression("1+2").render());
 		assertEquals("-y+6", new Expression("-y+6").render());
 		assertEquals("1x+45", new Expression("1x+45").render());
@@ -99,14 +99,14 @@ public class ExpressionTest {
 	}
 	
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Expression#parseable()}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Expression#parsable()}.
 	 * @ 
 	 */
 	@Test
-	public void testParseable()  {
-		assertTrue(Expression.parseable("6+2"));
-		assertTrue(Expression.parseable("(6+4)⁴+8*3"));
-		assertFalse(Expression.parseable("6(34+9xy2(45x+6)"));
+	public void testparsable()  {
+		assertTrue(Expression.parsable("6+2"));
+		assertTrue(Expression.parsable("(6+4)⁴+8*3"));
+		assertFalse(Expression.parsable("6(34+9xy2(45x+6)"));
 	}
 	
 }

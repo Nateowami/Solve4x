@@ -42,13 +42,13 @@ public class MixedNumberTest {
 	 * Test method for {@link com.github.nateowami.solve4x.solver.MixedNumber#isMixedNumber(java.lang.String)}.
 	 */
 	@Test
-	public void testParseable() {
-		assertTrue(MixedNumber.parseable("1(3)/(4)"));
-		assertFalse(MixedNumber.parseable("1(-5)/(6)"));
-		assertTrue(MixedNumber.parseable("5(1)/(6)"));
-		assertTrue(MixedNumber.parseable("5(19)/(1)"));
-		assertFalse(MixedNumber.parseable("656/8"));
-		assertFalse(MixedNumber.parseable("-6(56)/(8)"));
+	public void testparsable() {
+		assertTrue(MixedNumber.parsable("1(3)/(4)"));
+		assertFalse(MixedNumber.parsable("1(-5)/(6)"));
+		assertTrue(MixedNumber.parsable("5(1)/(6)"));
+		assertTrue(MixedNumber.parsable("5(19)/(1)"));
+		assertFalse(MixedNumber.parsable("656/8"));
+		assertFalse(MixedNumber.parsable("-6(56)/(8)"));
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class MixedNumberTest {
 	 * @ 
 	 */
 	@Test
-	public void testGetAsString()  {
+	public void testrender()  {
 		assertEquals("256(-7)/(56)", new MixedNumber("256(-7)/(56)").render());
 		assertEquals("2(-87)/(-16)", new MixedNumber("2(-87)/(-16)").render());
 	}

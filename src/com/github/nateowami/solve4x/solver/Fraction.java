@@ -62,7 +62,7 @@ public class Fraction extends AlgebraicParticle{
 	 * @param frac The String in question.
 	 * @return If frac is a valid fraction.
 	 */
-	public static boolean parseable(String frac){
+	public static boolean parsable(String frac){
 		if(frac.length() < 7) return false;//can't possibly be right if it's shorter than 7 chars
 		//make sure it's surrounded by parentheses and remove them if so
 		int divisionIndex = indexOfSlash(frac) - 1;//-1 because we're about to remove the first char
@@ -70,8 +70,8 @@ public class Fraction extends AlgebraicParticle{
 		else return false;
 		//make sure there's ) before and ( after the slash
 		if(divisionIndex >= 2 && divisionIndex <= frac.length() - 3 && frac.charAt(divisionIndex-1) == ')' && frac.charAt(divisionIndex+1) == '('){
-			return AlgebraicParticle.parseable(frac.substring(0, divisionIndex-1), Fraction.class) 
-					&& AlgebraicParticle.parseable(frac.substring(divisionIndex+2, frac.length()), Fraction.class);
+			return AlgebraicParticle.parsable(frac.substring(0, divisionIndex-1), Fraction.class) 
+					&& AlgebraicParticle.parsable(frac.substring(divisionIndex+2, frac.length()), Fraction.class);
 		}
 		else return false;
 	}
@@ -112,7 +112,7 @@ public class Fraction extends AlgebraicParticle{
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#getAsString()
+	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#render()
 	 */
 	@Override
 	public String render() {
