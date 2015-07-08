@@ -110,7 +110,7 @@ public class Variable extends AlgebraicParticle{
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		return almostEquals(obj) && super.equals(obj);
+		return super.equals(obj) && almostEquals(obj);
 	}
 	
 	public boolean almostEquals(Object obj) {
