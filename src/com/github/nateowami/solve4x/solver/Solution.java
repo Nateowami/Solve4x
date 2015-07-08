@@ -35,7 +35,7 @@ public class Solution {
 	 */
 	public Solution(Solution solution){
 		this.original = solution.original;
-		this.steps = solution.getList();
+		this.steps.addAll(solution.getList());
 	}
 	
 	/**

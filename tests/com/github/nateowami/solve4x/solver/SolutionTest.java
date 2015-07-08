@@ -17,18 +17,26 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 /**
  * @author Nateowami
  */
-@RunWith(Suite.class)
-@SuiteClasses({ AlgebraicCollectionTest.class, AlgebraicParticleTest.class,
-		EquationTest.class, ExpressionTest.class, FractionTest.class,
-		MixedNumberTest.class, NumberTest.class, RootTest.class, SolutionTest.class,
-		SolverTest.class, TermTest.class, UtilTest.class, VariableTest.class })
-public class SolverTests {
+public class SolutionTest {
 
+	@Test
+	public void testSolution() {
+		Solution solution1 = new Solution(a("1"));
+		Solution solution2 = new Solution(solution1);
+		solution2.addStep(new Step(a("2")));
+		assertEquals(0, solution1.length());
+	}
+	
+	//alias
+	private static AlgebraicParticle a(String s) {
+		return AlgebraicParticle.getInstance(s);
+	}
+	
 }
