@@ -26,19 +26,16 @@ import java.util.ArrayList;
  */
 public class Step {
 	
-	private int difficulty;
-	ArrayList<Object> explanation = new ArrayList<Object>();
-	Equation eq;
+	private final ArrayList<Object> explanation = new ArrayList<Object>();
+	private Algebra algebraicExpression;
+	private final Algebra change;
 	
 	/**
 	 * Constructs a new Step.
-	 * @param eq The equation for this step.
-	 * @param explanation An explanation for how this step works.
-	 * @param difficulty The difficulty associated with this step.
+	 * @param change The algebra that changes in this step.
 	 */
-	public Step(Equation eq, int difficulty){
-		this.eq = eq;
-		this.difficulty = difficulty;
+	public Step(Algebra change){
+		this.change = change;
 	}
 	
 	/**
@@ -52,17 +49,29 @@ public class Step {
 	}
 	
 	/**
-	 * @return the Equation
+	 * Sets the equation or expression (i.e. the state of the equation or expression after it has 
+	 * been modified by this step in the solving process).
+	 * @param eq The equation to set it to.
+	 * @throws IllegalArgumentException if the equation has already been set (it should only be set 
+	 * once).
 	 */
-	public Equation getEquation() {
-		return eq;
+	public void setAlgebraicExpression(Algebra algebra) {
+		if(this.algebraicExpression != null) throw new IllegalArgumentException("Algebraic expression has already been set.");
+		else this.algebraicExpression = algebra;
 	}
 	
 	/**
-	 * @return the difficulty of this step (0-9)
+	 * @return the Equation
 	 */
-	public int getDifficulty() {
-		return difficulty;
+	public Algebra getAlgebraicExpression() {
+		return this.algebraicExpression;
+	}
+	
+	/**
+	 * @return the AlgebraicParticel or Equation that was changed in this step.
+	 */
+	public Algebra getChange() {
+		return this.change;
 	}
 	
 	/**
@@ -92,12 +101,12 @@ public class Step {
 	 */
 	@Override
 	public String toString() {
-		return "Step [difficulty=" + difficulty + ", explanation="
-				+ explanation + ", eq=" + eq + "]";
+		return "Step [explanation=" + explanation + ", algebraicExpression="
+				+ algebraicExpression + ", change=" + change + "]";
 	}
 	
 	/**
-	 * * Turns an array of AlgebraicParticles into an English list and adds it to the explanation. 
+	 * Turns an array of AlgebraicParticles into an English list and adds it to the explanation. 
 	 * For example, an array of [2x, 4y, 2+6] would become "2x, 4y, and 2+6". If the length of
 	 * the given array is 1, it is simply added to the explanation. If the list has a length 
 	 * of two, it is added in the form of "2x and 4y"

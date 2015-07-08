@@ -40,6 +40,16 @@ public class EquationTest {
 	}
 	
 	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#replace()}.
+	 * @ 
+	 */
+	@Test
+	public void testReplace()  {
+		Equation eq = new Equation("2x+4y=6x(4-3)");
+		assertEquals(new Equation("2x+4y=6x(17x-3)"), eq.replace(((Expression)((Term)eq.right()).get(2)).get(0), new Term("17x")));
+	}
+	
+	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#render()}.
 	 * @ 
 	 */

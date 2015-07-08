@@ -36,7 +36,6 @@ public class ChangeSidesTest {
 	@Test
 	public void testExecute() {
 		Step s = c.execute(new Equation("x+4=16"));
-		assertEquals(5, s.getDifficulty());
 		assertEquals(new Equation("x=16-4"), s.getEquation());
 		
 		assertEquals(new Equation("x=41-18.2"), c.execute(new Equation("x+18.2=41")).getEquation());

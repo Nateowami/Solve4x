@@ -25,6 +25,13 @@ import com.github.nateowami.solve4x.solver.Number;
  */
 public class ChangeSides extends Algorithm {
 
+	/**
+	 * Constructs a new ChangeSides algorithm.
+	 */
+	public ChangeSides() {
+		super(Equation.class); // declare that ChangeSides works on equations
+	}
+
 	@Override
 	public Step execute(Equation eq) {
 		int maxSmarts = 0, index = 0;

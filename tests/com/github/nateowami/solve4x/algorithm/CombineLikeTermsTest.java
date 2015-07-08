@@ -39,16 +39,18 @@ public class CombineLikeTermsTest {
 	 */
 	@Test
 	public void testExecute() {
-		Step s = c.execute(new Equation("2x+4y²-6-2.3y²-4x"));
-		assertEquals(5, s.getDifficulty());
-		assertEquals(new Equation("-2x+1.7y²-6"), s.getEquation());
-		assertEquals(new Equation("x"), c.execute(new Equation("4x+5x-8x")).getEquation());
-		assertEquals(new Equation("x"), c.execute(new Equation("2x-x")).getEquation());
-		assertEquals(new Equation("-2x").render(), c.execute(new Equation("-x-x")).getEquation().render());
+		Step s = c.execute(a("2x+4y²-6-2.3y²-4x"));
+		assertEquals(
+				a("-2x+1.7y²-6"), 
+				s.getAlgebraicExpression()
+				);
+		assertEquals(a("x"), c.execute(a("4x+5x-8x")).getAlgebraicExpression());
+		assertEquals(a("x"), c.execute(a("2x-x")).getAlgebraicExpression());
+		assertEquals(a("-2x").render(), c.execute(a("-x-x")).getAlgebraicExpression().render());
 		//nested combinations
-		assertEquals("2(7)", c.execute(new Equation("2(2+5)")).getEquation().render());
-		assertEquals("(7x)4(9)", c.execute(new Equation("(2x+5x)4(9)")).getEquation().render());
-		assertEquals("(8x)(4-2)+45x", c.execute(new Equation("(2x+6x)(4-2)+45x")).getEquation().render());
+		assertEquals("2(7)", c.execute(a("2(2+5)")).getAlgebraicExpression().render());
+		assertEquals("(7x)4(9)", c.execute(a("(2x+5x)4(9)")).getAlgebraicExpression().render());
+		assertEquals("(8x)(4-2)+45x", c.execute(a("(2x+6x)(4-2)+45x")).getAlgebraicExpression().render());
 	}
 	
 	/**
@@ -56,14 +58,14 @@ public class CombineLikeTermsTest {
 	 */
 	@Test
 	public void testSmarts() {
-		assertEquals(7, c.smarts(new Equation("2+2")));
-		assertEquals(7, c.smarts(new Equation("-x-x")));
-		assertEquals(7, c.smarts(new Equation("(1)/(3)+(1)/(3)")));
-		assertEquals(9, c.smarts(new Equation("5x+4x-8x")));
-		assertEquals(7, c.smarts(new Equation("2x-x")));
-		assertEquals(7, c.smarts(new Equation("2(2+5)")));
-		assertEquals(7, c.smarts(new Equation("(2x+5x)4(9)")));
-		assertEquals(9, c.smarts(new Equation("(2x+6x)(4-2)+45x")));
+		assertEquals(7, c.smarts(a("2+2")));
+		assertEquals(7, c.smarts(a("-x-x")));
+		assertEquals(7, c.smarts(a("(1)/(3)+(1)/(3)")));
+		assertEquals(9, c.smarts(a("5x+4x-8x")));
+		assertEquals(7, c.smarts(a("2x-x")));
+		assertEquals(7, c.smarts(a("2+5")));
+		assertEquals(7, c.smarts(a("2x+5x")));
+		assertEquals(9, c.smarts(a("2x+6x+4-2+45x")));
 	}
 	
 	/**
@@ -155,14 +157,14 @@ public class CombineLikeTermsTest {
 	}
 	
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#listCombineableTerms(com.github.nateowami.solve4x.solver.Expression)}.
+	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#listCombinableTerms(com.github.nateowami.solve4x.solver.Expression)}.
 	 */
 	@Test
 	public void testListCombineableTerms() {
 		ArrayList<AlgebraicParticle> a1 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("2x²")));
 		ArrayList<AlgebraicParticle> a2 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("+4x"), AlgebraicParticle.getInstance("-2.3x")));
 		ArrayList<AlgebraicParticle> a3 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("+12")));
-		ArrayList<ArrayList<AlgebraicParticle>> one = new ArrayList(Arrays.asList(a1, a2, a3)), two = c.listCombineableTerms((Expression) a("2x²+4x-2.3x+12"));
+		ArrayList<ArrayList<AlgebraicParticle>> one = new ArrayList(Arrays.asList(a1, a2, a3)), two = c.listCombinableTerms((Expression) a("2x²+4x-2.3x+12"));
 		
 		//assertEquals(new ArrayList(Arrays.asList(a1, a2, a3)).toString().length(), e1.combinableTerms().toString().length());
 		assertEquals(one, two);

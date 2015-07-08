@@ -30,7 +30,12 @@ public class Multiply extends Algorithm {
 
 	private final RoundingRule roundingRule;
 	
+	/**
+	 * Constructs a new Multiply algorithm.
+	 * @param r The RoundingRule to use for arithemetic operations.
+	 */
 	public Multiply(RoundingRule r){
+		super(Term.class); // declare that this algorithm works on terms
 		this.roundingRule = r;
 	}
 	

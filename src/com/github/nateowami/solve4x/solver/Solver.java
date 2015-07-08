@@ -42,20 +42,18 @@ public class Solver {
 	
 	//the final solution
 	private Solution finalSolution;
-	//a list of solutions that may work. Whichever one is best will be used in the end
-	private ArrayList <Solution> solutions = new ArrayList<Solution>();
 	//A list of algorithms that can be used for solving
-	private final ArrayList <Algorithm> algor;
+	private final ArrayList <Algorithm> algorithms;
 	
 	/**
 	 * Creates a new Solver so you can call getSolution().
 	 * @param equation The equation or expression to solve, simplify, 
 	 * factor, multiply, etc
-	 * @param selection The user's selection. Do they want this to be 
+	 * @param solveFor The user's selection regarding what to solve for. Do they want this to be 
 	 * factored, solved, simplified, or what? See {@link Solver.SolveFor}.
 	 * @param round A RoundingRule for rounding arithmetic operations.
 	 */
-	public Solver(String equation, SolveFor selection, RoundingRule round) {
+	public Solver(String equation, SolveFor solveFor, RoundingRule round) {
 		
 		//remove spaces
 		equation = equation.replaceAll(" ", "");
@@ -67,46 +65,37 @@ public class Solver {
 			throw new ParsingException("Validator says equation \"" + equation + "\" is invalid.");
 		}
 		
-		this.algor = getAlgorithms(selection, round);
+		this.algorithms = getAlgorithms(solveFor, round);
 		
-		//OK, now to solve
-		//add an initial solution to the solution list
-		solutions.add(new Solution(new Equation(equation)));
+		//create a list of solutions
+		ArrayList<Solution> currentSolutions = new ArrayList<Solution>();
+		currentSolutions.add(new Solution(new Equation(equation)));
 		
-		//OK, now iterate through the solving algorithms AND the solutions 
-		//(currently only 1 solution, but this could grow as we take forks in the road)
-
-		//as long as it's not solved/simplified
-		//currently loops max 25 times
-		for(int i = 0; solutions.size() > 0 && whichIsFinished(solutions) == -1 && i<25; i++){
+		// Loop until one of the following conditions is met:
+		// - No solutions have survived
+		// - A complete solution has been found
+		// - We've looped 25 times already
+		for(int i = 0; currentSolutions.size() > 0 && findSolution(currentSolutions, solveFor) == null && i < 25; i++){
 			//take out/copy all the solutions and remove them from the list
-			ArrayList <Solution>copy = new ArrayList<Solution>(solutions);
-			solutions = new ArrayList<Solution>();
+			ArrayList<Solution> previousSolutions = new ArrayList<Solution>(currentSolutions);
+			currentSolutions = new ArrayList<Solution>();
 			
 			//loop through the solutions
-			for(int a=0; a<copy.size(); a++){
+			for(Solution solution : previousSolutions){
 				//now loop through the algorithms
-				for(int b=0; b<algor.size(); b++){
-					//if this algorithm thinks it should be used in this situation
-					if(algor.get(b).smarts(copy.get(a).getLastEquation()) >= 4){
-						//use this Algorithm
-						//create a solution
-						Solution solution = copy.get(a);
-						//create a step to add to it
-						Step step = algor.get(b).execute(copy.get(a).getLastEquation());
-						solution.addStep(step);
-						//add it to the solution list
-						solutions.add(solution);
-					}
-				}
+				currentSolutions.addAll(dispatchAlgorithms(solution, solveFor, round));
 			}
 			//for debugging purposes
-			if(solutions.size() == 0){
-				Solve4x.debug("No solutions survived this iteration. Previous solutions: " + copy);
+			if(currentSolutions.size() == 0){
+				Solve4x.debug("No solutions survived this iteration. Previous solutions: " + previousSolutions);
 			}
+			Solve4x.debug("currentSolutions.size() = " + currentSolutions.size());
 		}
+		
+		System.out.println(currentSolutions.size() > 0 && findSolution(currentSolutions, solveFor) == null);
+		
 		//set finalSolution
-		finalSolution = getBestSolution(solutions);
+		finalSolution = findSolution(currentSolutions, solveFor);
 	}
 	
 	/**
@@ -114,30 +103,6 @@ public class Solver {
 	 */
 	public Solution getSolution(){
 		return finalSolution;
-	}
-			
-	/**
-	 * Tells if we're done solving. It looks through the list of solutions and finds one that is 
-	 * solved, simplified, or whatever needs to be done to it. Returns positive int (or zero) if 
-	 * it finds one, -1 if there is no solution yet.
-	 * @param solList The list of Solutions to check.
-	 * @return The index of a Solution that is fully solved.
-	 */
-	private int whichIsFinished(ArrayList<Solution> solList){
-		Solve4x.debug("checking if we're done. the list of solutions has the following length: " + solList.size());
-		//if there aren't any solutions return -1
-		if(solList.size() == 0) return -1;
-		//check all solutions
-		for(int i=0; i<solList.size(); i++){
-			//check the first and second expressions
-			Equation eq = solList.get(i).getLastEquation();
-			if(isSimplified(eq.left())	&& isSimplified(eq.right())){
-				Solve4x.debug("Returns " + i);
-				return i;
-			}
-		}
-		Solve4x.debug("Returns -1");
-		return -1;
 	}
 	
 	/**
@@ -155,53 +120,164 @@ public class Solver {
 		else return false;
 	}
 	
-	/**
-	 * Tells which Solution is the best
-	 * @param solutions An ArrayList of Solutions to search
-	 * @return The Solution that is solved the best, or null if no solutions are given.
-	 */
-	private Solution getBestSolution(ArrayList<Solution> solutions) {
-		//the index of the best solution found so far
-		int index = -1;
-		//how "difficult" that solution is
-		int difficulty = -1;
-		//now iterate over the solutions and find the best one
-		for(int i = 0; i< solutions.size(); i++){
-			//if the difficulty of the current Solution is less than that of any Solution found so far
-			//or it's the first solution we've looked at 
-			if(solutions.get(i).difficulty() < difficulty || i == 0){
-				index = i;
-			}
-		}
-		//index is now the the index of the best Solution or is -1, if there is no solution
-		
-		//if index is 0 or positive
-		if(index >= 0){
-			//return the solution that was found
-			return solutions.get(index);
-		}
-		//there is no Solution; return null
-		else return null;
+	private boolean isSolved(Equation eq){
+		//identity
+		if(eq.left().equals(eq.right()))return true;
+		//both sides simplified
+		else return isSimplified(eq.left()) && isSimplified(eq.right());
 	}
 	
 	/**
-	 * Returns the applicable solving algorithms for the selection, e.g.,
-	 * algorithms for solving, simplifying, factoring, etc.
-	 * @param selection The user's selection.
-	 * @param round A RoundingRule for rounding arithmetic operations.
-	 * @return An ArrayList of algorithms applicable for the selection.
+	 * Tells if algebra is in the state specified by solveFor. For example, if solveFor is SOLVE, 
+	 * this method will return true if algebra is fully solved.
+	 * @param algebra The algebra to check.
+	 * @param solveFor What we're doing (solving/simplifying/factoring).
+	 * @return If algebra is done being worked on, as specified by solveFor.
 	 */
-	private ArrayList<Algorithm> getAlgorithms(SolveFor selection, RoundingRule round) {
-		ArrayList<Algorithm> algorList = new ArrayList<Algorithm>();
-		switch (selection){
+	private boolean isFinished(Algebra algebra, SolveFor solveFor) {
+		switch(solveFor) {
 		case SOLVE:
-			algorList.add(new ChangeSides());
+			return algebra instanceof Equation && isSolved((Equation) algebra);
+		case SIMPLIFY:
+			return algebra instanceof Expression && isSimplified((Expression) algebra);
+		case FACTOR:
+			return algebra instanceof Term;
+		default: return false;
+		}
+	}
+	
+	/**
+	 * Tells which Solution is the best.
+	 * @param solutions An ArrayList of Solutions to search.
+	 * @param solveFor What we're supposed to solve for (e.g. solve, simplify, factor).
+	 * @return The Solution that is solved with fewest steps, or null if no solutions are given, or 
+	 * none are completely solved/simplified.
+	 */
+	private Solution findSolution(ArrayList<Solution> solutions, SolveFor solveFor) {
+		//the best-so-far solution
+		Solution workingSolution = null;
+		boolean firstIteration = true;
+		
+		//iterate over the solutions and find the shortest one
+		for(Solution solution : solutions){
+			if(isFinished(solution.getLastAlgebraicExpression(), solveFor) 
+					&& (firstIteration || solution.length() < workingSolution.length())){
+				workingSolution = solution;
+				firstIteration = false;
+			}
+		}
+		return workingSolution;
+	}
+	
+	/**
+	 * Returns the applicable solving algorithms for the what is being solved for, e.g.,
+	 * algorithms for solving, simplifying, factoring, etc.
+	 * @param selection The user's selection regarding what to solve for.
+	 * @param round A RoundingRule for rounding arithmetic operations.
+	 * @return An ArrayList of algorithms applicable for what's being solved for.
+	 */
+	private ArrayList<Algorithm> getAlgorithms(SolveFor solveFor, RoundingRule round) {
+		ArrayList<Algorithm> algorList = new ArrayList<Algorithm>();
+		switch (solveFor){
+		case SOLVE:
+			//algorList.add(new ChangeSides());
 		case FACTOR:
 		case SIMPLIFY:
 			algorList.add(new CombineLikeTerms(round));
-			algorList.add(new Multiply(round));
+			//algorList.add(new Multiply(round));
 		}
 		return algorList;
+	}
+	
+	/**
+	 * Dispatches an algorithm to work on equation s. This method will choose the proper algorithms 
+	 * to use, and if more than one is applicable, it will
+	 * @param e A Solution to work on solving.
+	 * @return An array of Solutions that that continue solving s.
+	 */
+	private ArrayList<Solution> dispatchAlgorithms(Solution s, SolveFor solveFor, RoundingRule round){
+		ArrayList<Solution> solutions = new ArrayList<Solution>();
+		for(Algorithm a : this.getAlgorithms(solveFor, round)) solutions.addAll(dispatchAlgorithm(s, a, round));
+		return solutions;
+	}
+	
+	/**
+	 * Dispatches a given algorithm with a given rounding rule and a partial solution. The solution 
+	 * is given so new solutions may be constructed off of it.
+	 * @param s The (unfinished) solution that we are extending by adding a step.
+	 * @param a The algorithm to use in solving.
+	 * @param round The rounding rule to use for arithmetic operations.
+	 * @return A list of solutions, each having one more step than the given solution. This list 
+	 * may be empty.
+	 */
+	private ArrayList<Solution> dispatchAlgorithm(Solution s, Algorithm a, RoundingRule round) {
+		ArrayList<Solution> list = new ArrayList<Solution>();
+		for(Algebra resource : resourcesForAlgorithm(s.getLastAlgebraicExpression(), a)) {
+			if(a.smarts(resource) > 3){
+				Solution solution = new Solution(s);
+				solution.addStep(dispatchAlgorithmWithResource(a, resource, s.getLastAlgebraicExpression()));
+				list.add(solution);
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * Dispatches an algorithm with a given resource and top-level expression. In other words, it 
+	 * takes an algorithm, a piece of algebra to feed to that algorithm, and the piece of algebra 
+	 * that the first piece belongs to. For example, if we wanted to combine like terms in x(2+4), 
+	 * algorithm would be an instance of CombineLikeTerms, the resource would be 2+4, and the 
+	 * top-level algebra would be x(2+4) (Unless, of course, the x(2+4) was part of another 
+	 * expression or equation, in which case it would be that).
+	 * @param algorithm The algorithm to dispatch.
+	 * @param resource The resource to give to the algorithm.
+	 * @param topLevel The top-level ancestor of resource (e.g. an equation that resource is a part 
+	 * of).
+	 * @return A new solving step which uses the algorithm and resource.
+	 */
+	//protected so it can be tested
+	protected static Step dispatchAlgorithmWithResource(Algorithm algorithm, Algebra resource, Algebra topLevel){
+		Step step = algorithm.execute(resource);
+		
+		//figure out what algebraic particle was modified, and what it was modified to
+		Algebra out = resource, in = step.getChange();
+		//the final top-level equation, expression, term, etc.
+		Algebra result = null;
+		
+		//if the top level expression was changed
+		if(resource == topLevel) result = step.getChange();
+		//it was nested then
+		else {
+			if(topLevel instanceof Equation) result = ((Equation)topLevel).replace((AlgebraicParticle)out, (AlgebraicParticle)in);
+			else if(topLevel instanceof Expression) result = ((Expression)topLevel).replace((AlgebraicParticle)out, (AlgebraicParticle)in);
+			else throw new IllegalArgumentException("Unknown something-a-rather error.");
+		}
+		
+		step.setAlgebraicExpression(result);
+		
+		return step;
+	}
+	
+	/**
+	 * Calculates the Algebra to be sent to a given algorithm 
+	 * @param e
+	 * @param algorithm
+	 * @return
+	 */
+	private ArrayList<? extends Algebra> resourcesForAlgorithm(Algebra algebra, Algorithm algorithm){
+		ArrayList<Algebra> list = new ArrayList<Algebra>();
+		if(algorithm.ALGORITHM_LEVEL.equals(algebra.getClass())){
+			list.add(algebra);
+			return list;
+		}
+		else if(algebra instanceof AlgebraicCollection){
+			return ((AlgebraicCollection)algebra).flattenAndLimitByClass((Class<AlgebraicParticle>) algorithm.ALGORITHM_LEVEL);
+		}
+		else if(algebra instanceof Equation) {
+			return ((Equation)algebra).flattenAndLimitByClass((Class<AlgebraicParticle>) algorithm.ALGORITHM_LEVEL);
+		}
+		//return an empty list
+		else return list;
 	}
 	
 }

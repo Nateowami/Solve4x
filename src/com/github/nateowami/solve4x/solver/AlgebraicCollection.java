@@ -65,7 +65,8 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 	 * @param tree The structure to search for out in.
 	 * @param out The AlgebraicParticle to remove.
 	 * @param in The AlgebraicParticle to replace out with.
-	 * @return A psudo-copy of tree with in swapped for out.
+	 * @return A psudo-copy of tree with in swapped for out, or null, if there is nothing to be 
+	 * replaced.
 	 */
 	public AlgebraicParticle replace(AlgebraicParticle out, AlgebraicParticle in){
 		if(out == this)return in;

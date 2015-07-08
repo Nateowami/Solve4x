@@ -27,13 +27,14 @@ import java.util.ArrayList;
 public class Solution {
 	
 	ArrayList <Step>steps = new ArrayList<Step>();//a list of steps
-	Equation original;
+	Algebra original;
 	
 	/**
 	 * Creates a new Solution from another Solution
 	 * @param solution The Solution to copy
 	 */
 	public Solution(Solution solution){
+		this.original = solution.original;
 		this.steps = solution.getList();
 	}
 	
@@ -41,8 +42,8 @@ public class Solution {
 	 * Creates a new Solution
 	 * @param equation The equation that is being solved, in it's original form.
 	 */
-	public Solution(Equation equation){
-		this.original = equation;
+	public Solution(Algebra algebra){
+		this.original = algebra;
 	}
 	
 	/**
@@ -79,23 +80,12 @@ public class Solution {
 	}
 	
 	/**
-	 * Tells the difficulty of this Solution
-	 * @return The sum of the difficulties of the individual steps.
+	 * @return The latest state of the equation or algebraic expression being solved in the 
+	 * solution. This is either the result of the last solving step, or the original expression if 
+	 * no solving steps have occurred.
 	 */
-	public int difficulty() {
-		int difficulty = 0;
-		for(Step s : this.steps){
-			difficulty += s.getDifficulty();
-		}
-		return difficulty;
-	}
-
-	/**
-	 * @return The latest state of the equation being solved in the solution. This is either the 
-	 * result of the last solving step, or the original equation if no solving steps have occurred.
-	 */
-	public Equation getLastEquation(){
-		return this.steps.size() > 0 ? this.steps.get(this.steps.size() - 1).getEquation() : this.original;
+	public Algebra getLastAlgebraicExpression(){
+		return this.steps.size() > 0 ? this.steps.get(this.steps.size() - 1).getAlgebraicExpression() : this.original;
 	}
 	
 	/* (non-Javadoc)
@@ -103,15 +93,13 @@ public class Solution {
 	 */
 	@Override
 	public String toString() {
-		return "Solution [steps=" + steps + ", difficulty()=" + difficulty()
-				+ "]";
+		return "Solution [steps=" + steps + ", original=" + original + "]";
 	}
-
 	
 	/**
-	 * @return The original equation, before any solver steps were performed.
+	 * @return The original algebraic expression, before any solver steps were performed.
 	 */
-	public Equation getOriginalEquation() {
+	public Algebra getOriginalAlgebraicExpression() {
 		return original;
 	}
 	

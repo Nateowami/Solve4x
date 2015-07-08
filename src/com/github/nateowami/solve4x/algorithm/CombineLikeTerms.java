@@ -32,66 +32,43 @@ public class CombineLikeTerms extends Algorithm {
 	private final RoundingRule round;
 	
 	/**
-	 * Constructs a new CombineLikeTerms.
+	 * Constructs a new CombineLikeTerms algorithm.
 	 * @param r The rounding rule for arithmetic operations performed when combining terms.
 	 */
 	public CombineLikeTerms(RoundingRule r){
+		super(Expression.class); // declare that this Algorithm works on expressions
 		this.round = r;
 	}
 	
 	@Override
-	public Step execute(Equation equation) {
-		//find the expression most in need of simplifying
-		ArrayList<ArrayList<AlgebraicParticle>> mostLikeTerms = null;
-		int maxDiff = 0, index = 0;;
-		//the expression we're working on; the one that's passed in
-		Expression in = null;
+	public Step execute(Algebra algebra) {
+		//the expression to simplify
+		Expression expression = (Expression) algebra;
 		
-		//loop over the expressions
-		for(int i = 0; i < equation.length(); i++){
-			if(equation.get(i) instanceof AlgebraicCollection){
-				for(Expression e : ((AlgebraicCollection)equation.get(i)).expressions()){
-					ArrayList<ArrayList<AlgebraicParticle>> terms = listCombineableTerms(e);
-					//if this expression is in more need of simplifying than any so far
-					int diff = e.length() - terms.size();
-					if (diff > maxDiff){
-						maxDiff = diff;
-						mostLikeTerms = terms;
-						in = e;
-						index = i;
-					}
-				}
-			}
-		}
-		//the expression simplified; the one we'll pass out
-		Expression out = combineLikeTerms(in.sign(), mostLikeTerms, in.exponent());
+		//a list of lists of like terms to combine
+		ArrayList<ArrayList<AlgebraicParticle>> likeTerms = listCombinableTerms(expression);
+		//combine the terms and construct and expression
+		Expression out = combineLikeTerms(expression.sign(), likeTerms, expression.exponent());
 		
-		//replace 
-		Step step = new Step(equation.cloneWithNewExpression(unwrap(((AlgebraicCollection)equation.get(index)).replace(in, out)), index), 5/*TODO*/);
+		//construct the solving step
+		Step step = new Step(unwrap(out));
+		
 		//create the explanation
-		step.explain("We need to combine like terms here, in the expression ").explain(in).explain(".\n");
-		for(int i = 0; i < mostLikeTerms.size(); i++){
-			if (mostLikeTerms.get(i).size() > 1) //don't explain combining a single term with itself
-					step.explain("Combine ").list(mostLikeTerms.get(i)).explain(" to get ").explain(out.get(i)).explain(".\n");
+		step.explain("We need to combine like terms here, in the expression ").explain(expression).explain(".\n");
+		for(int i = 0; i < likeTerms.size(); i++){
+			if (likeTerms.get(i).size() > 1) //don't explain combining a single term with itself
+					step.explain("Combine ").list(likeTerms.get(i)).explain(" to get ").explain(out.get(i)).explain(".\n");
 		}
 		return step;
 	}
 	
 	@Override
-	public int smarts(Equation equation) {
-		int combineable = 0;
-		for(int i = 0; i < equation.length(); i++){
-			//if it's a collection
-			if(equation.get(i) instanceof AlgebraicCollection){
-				//iterate over it and its children
-				for(AlgebraicParticle a : ((AlgebraicCollection)equation.get(i)).expressions()){
-					combineable  += ((Expression)a).length() - listCombineableTerms((Expression)a).size();
-					if(combineable >= 2) return 9;
-				}
-			}
-		}
-		if(combineable > 0) return 7;
-		else return 0;
+	public int smarts(Algebra algebra) {
+		Expression expression = (Expression) algebra;
+		int combinable = expression.length() - listCombinableTerms(expression).size();
+		if(combinable == 0) return 0;
+		else if(combinable == 1) return 7;
+		else return 9;
 	}
 	
 	/**
@@ -284,7 +261,7 @@ public class CombineLikeTerms extends Algorithm {
 	 * @return A 2d ArrayList (ArrayList of ArrayList) containing like terms. Each row
 	 * contains terms that are alike.
 	 */
-	protected ArrayList<ArrayList<AlgebraicParticle>> listCombineableTerms(Expression e){
+	protected ArrayList<ArrayList<AlgebraicParticle>> listCombinableTerms(Expression e){
 		//this will be the list we return in the end
 		ArrayList<ArrayList<AlgebraicParticle>> list = new ArrayList<ArrayList<AlgebraicParticle>>(e.length());
 		//loop through the terms
@@ -408,7 +385,7 @@ public class CombineLikeTerms extends Algorithm {
 			for(int i = 0; i < e.length(); i++){
 				total += numOfCombinableTerms(e.get(i));
 			}
-			return total + (e.length() - listCombineableTerms(e).size());
+			return total + (e.length() - listCombinableTerms(e).size());
 		}
 		else if(a instanceof Term){
 			Term t = (Term) a;

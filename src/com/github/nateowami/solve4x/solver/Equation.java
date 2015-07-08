@@ -24,7 +24,7 @@ import java.util.Arrays;
  * Represents an algebraic equation
  * @author Nateowami
  */
-public class Equation {
+public class Equation implements Algebra {
 	
 	//exprs holds expressions (one if this equation is just representing an 
 	//expression, two if it's representing an equation
@@ -56,7 +56,6 @@ public class Equation {
 	public AlgebraicParticle left() {
 		return a;
 	}
-
 	
 	/**
 	 * @return The expression to the right of the equals sign.
@@ -65,7 +64,6 @@ public class Equation {
 		return b;
 	}
 	
-
 	/**
 	 * Tells if eq can be parsed as an equation.
 	 * @param eq The string to check.
@@ -74,6 +72,30 @@ public class Equation {
 	public static boolean parsable(String eq){
 		int i = eq.indexOf('=');
 		return AlgebraicParticle.parsable(eq.substring(0, i)) && AlgebraicParticle.parsable(eq.substring(i+1));
+	}
+	
+	/**
+	 * Replaces out with in in this equation, even if out is nested deeply in an AlgebraicParticle.
+	 * @param out The AlgebraicParticle to swap out.
+	 * @param in The AlgebraicParticle to swap in.
+	 * @return out swapped for in.
+	 */
+	public Equation replace(AlgebraicParticle out, AlgebraicParticle in){
+		//if one side of the equation needs to be completely replaced
+		if(this.a == out) return new Equation(in, b);
+		if(this.b == out) return new Equation(a, in);
+		//or one side is a term or expression and one of its decendents needs to be replaced
+		if(a instanceof AlgebraicCollection) {
+			AlgebraicCollection ac = (AlgebraicCollection) a;
+			AlgebraicParticle replaced = ac.replace(out, in);
+			if(replaced != null) return new Equation(replaced, b);
+		}
+		if(b instanceof AlgebraicCollection) {
+			AlgebraicCollection ac = (AlgebraicCollection) b;
+			AlgebraicParticle replaced = ac.replace(out, in);
+			if(replaced != null) return new Equation(a, replaced);
+		}
+		throw new IllegalArgumentException("Nothing to replace.");
 	}
 	
 	/**

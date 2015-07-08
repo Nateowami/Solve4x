@@ -22,7 +22,7 @@ package com.github.nateowami.solve4x.solver;
  * etc.).
  * @author Nateowami
  */
-public abstract class Algebra {
+public interface Algebra {
 	
 	public abstract String render();
 	

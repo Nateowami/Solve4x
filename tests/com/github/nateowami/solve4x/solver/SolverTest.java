@@ -18,8 +18,10 @@
 package com.github.nateowami.solve4x.solver;
 
 import static org.junit.Assert.*;
+
 import org.junit.*;
 
+import com.github.nateowami.solve4x.algorithm.CombineLikeTerms;
 import com.github.nateowami.solve4x.config.RoundingRule;
 
 /**
@@ -32,13 +34,28 @@ public class SolverTest {
 	 */
 	@Test
 	public void testGetSolution() {
-		assertEquals("4=x", new Solver("2*2=x", Solver.SolveFor.SOLVE, RoundingRule.ALWAYS).getSolution().getLastEquation().render());
+		Solver.SolveFor solve = Solver.SolveFor.SOLVE;
+		RoundingRule round = RoundingRule.ALWAYS;
+		assertEquals(new Equation("4=x"), new Solver("2+2=x", solve, round).getSolution().getLastAlgebraicExpression());
+		assertEquals(new Equation("4=x"), new Solver("4=3x-2x", solve, round).getSolution().getLastAlgebraicExpression());
+		//assertEquals(new Equation("4=x"), new Solver("2*2=x", solve, round).getSolution().getLastAlgebraicExpression());
+	}
+	
+	@Test
+	public void testDispatchAlgorithmWithResource() {
+		Equation eq1 = new Equation("2+2=x"), eq2 = new Equation("4=x");
+		
+		Step step = Solver.dispatchAlgorithmWithResource(new CombineLikeTerms(RoundingRule.ALWAYS), eq1.left(), eq1);
+		
+		System.out.println(step.getChange().render());
+		assertEquals(step.getChange(), eq2.left());
+		assertEquals(step.getAlgebraicExpression(), eq2);
 	}
 	
 	@Test
 	@Ignore("Not yet implimented.")
 	public void testXMadePositive() {
-		assertEquals("15=x", new Solver("3x+4-2=17+2x", Solver.SolveFor.SOLVE, RoundingRule.ALWAYS).getSolution().getLastEquation().render());
+		assertEquals("15=x", new Solver("3x+4-2=17+2x", Solver.SolveFor.SOLVE, RoundingRule.ALWAYS).getSolution().getLastAlgebraicExpression().render());
 	}
 
 }

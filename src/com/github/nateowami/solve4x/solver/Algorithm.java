@@ -24,27 +24,38 @@ package com.github.nateowami.solve4x.solver;
  */
 public abstract class Algorithm {
 	
+	public final Class<? extends Object> ALGORITHM_LEVEL;
+	
+	/**
+	 * Constructs an Algorithm.
+	 * @param level The level at which the algorithm works. For example, if it adds terms, it would 
+	 * work at the expression level, whereas if it divides numbers it would work on fractions.
+	 */
+	protected Algorithm(Class<? extends Object> level) {
+		this.ALGORITHM_LEVEL = level;
+	}
+	
 	/**
 	 * Applies the algorithm on the given equation and returns the step.
-	 * @param equation The equation to work on.
+	 * @param resource The equation to work on.
 	 * @return The step for solving.
 	 */
-	public abstract Step execute(Equation equation);
+	public abstract Step execute(Algebra resource);
 	
 	/**
 	 * To return the approximate smartness of performing the solving technique
 	 * on the given equation.
 	 * @param equation The equation to evaluate
 	 */
-	public abstract int smarts(Equation equation);
+	public abstract int smarts(Algebra equation);
 	
 	/**
 	 * Given a, if it is an Expression or Term with length one, it returns the AlgebraicParticle 
 	 * inside it. Otherwise it returns a.
-	 * @param a The AlgebraicParticle to unwrap.
+	 * @param a The algebra to unwrap.
 	 * @return a, or if it is a Term or Expressions holding one AlgebraicParticle, that AlgebraicParticle.
 	 */
-	protected AlgebraicParticle unwrap(AlgebraicParticle a){
+	protected Algebra unwrap(Algebra a){
 		if(a instanceof Term){
 			Term t = (Term) a;
 			return t.length() == 1 ? t.get(0) : t;
