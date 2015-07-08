@@ -36,15 +36,15 @@ public class ChangeSidesTest {
 	@Test
 	public void testExecute() {
 		Step s = c.execute(new Equation("x+4=16"));
-		assertEquals(new Equation("x=16-4"), s.getEquation());
+		assertEquals(new Equation("x=16-4"), s.getChange());
 		
-		assertEquals(new Equation("x=41-18.2"), c.execute(new Equation("x+18.2=41")).getEquation());
-		assertEquals(new Equation("x=41+18.2"), c.execute(new Equation("x-18.2=41")).getEquation());
-		assertEquals(new Equation("-18+41=x"), c.execute(new Equation("-18=x-41")).getEquation());
-		assertEquals(new Equation("2x²-5x+2x-14+x²=73"), c.execute(new Equation("2x²-5x+2x-14=73-x²")).getEquation());
-		assertEquals(new Equation("2x²-5x+2x+x²=73+14"), c.execute(new Equation("2x²-5x+2x-14+x²=73")).getEquation());
-		assertEquals(new Equation("x=14-4"), c.execute(new Equation("x+4=14")).getEquation());
-		assertEquals(new Equation("0=14-4"), c.execute(new Equation("4=14")).getEquation());
+		assertEquals(new Equation("x=41-18.2"), c.execute(new Equation("x+18.2=41")).getChange());
+		assertEquals(new Equation("x=41+18.2"), c.execute(new Equation("x-18.2=41")).getChange());
+		assertEquals(new Equation("-18+41=x"), c.execute(new Equation("-18=x-41")).getChange());
+		assertEquals(new Equation("2x²-5x+2x-14+x²=73"), c.execute(new Equation("2x²-5x+2x-14=73-x²")).getChange());
+		assertEquals(new Equation("2x²-5x+2x+x²=73+14"), c.execute(new Equation("2x²-5x+2x-14+x²=73")).getChange());
+		assertEquals(new Equation("x=14-4"), c.execute(new Equation("x+4=14")).getChange());
+		assertEquals(new Equation("0=14-4"), c.execute(new Equation("4=14")).getChange());
 	}
 
 	/**

@@ -67,4 +67,17 @@ public abstract class Algorithm {
 		else return a;
 	}
 	
+	/**
+	 * The same as {@link com.github.nateowami.solve4x.solver.Algorithm#unwrap(Algebra)}, except 
+	 * that it takes an AlgebraicParticle and return an AlgebraicParticle (as opposed to both being 
+	 * Algebra). This is useful so the other method may be called with equations (which will simply 
+	 * return themselves), and this one with AlgebraicParticles, so you don't have to cast on your 
+	 * end.
+	 * @param a The AlgebraicParticle to unwrap.
+	 * @return a, unwrapped, if it is the only child of a collection.
+	 */
+	protected AlgebraicParticle unwrap(AlgebraicParticle a){
+		return (AlgebraicParticle) unwrap((Algebra)a);
+	}
+	
 }

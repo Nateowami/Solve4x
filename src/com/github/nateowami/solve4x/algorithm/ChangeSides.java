@@ -33,14 +33,9 @@ public class ChangeSides extends Algorithm {
 	}
 
 	@Override
-	public Step execute(Equation eq) {
-		int maxSmarts = 0, index = 0;
-		for(int i = 0; i < eq.length(); i+=2){
-			int smarts = smartsForTwoExprssions(eq.get(i), eq.get(i+1));
-			if(smarts > maxSmarts){maxSmarts = smarts; index = i;}
-			if(smarts >= 9)break;//no use continuing then
-		}
-		AlgebraicParticle first = eq.get(index), second = eq.get(index+1);
+	public Step execute(Algebra algebra) {
+		Equation equation = (Equation) algebra;
+		AlgebraicParticle first = equation.left(), second = equation.right();
 		Expression left = first instanceof Expression ? (Expression) first : new Expression(true, new AlgebraicParticle[]{first}, 1),
 				right = second instanceof Expression ? (Expression) second : new Expression(true, new AlgebraicParticle[]{second}, 1);
 		
@@ -122,22 +117,16 @@ public class ChangeSides extends Algorithm {
 		AlgebraicParticle added = new Expression(true, calculateAdded, 1);
 		
 		//clone the equation, putting source and dest beside each other, in the proper order
-		eq = eq.cloneWithNewExpression(putConstOnRight == moveConstants ? removed : added, index);
-		eq = eq.cloneWithNewExpression(putConstOnRight != moveConstants ? removed : added, index+1);
-		Step step = new Step(eq, 5/*TODO*/);
+		Equation eq = new Equation(putConstOnRight == moveConstants ? removed : added, putConstOnRight != moveConstants ? removed : added);
+		Step step = new Step(eq);
 		return step.explain("We need to move ").list(move)
 				.explain(" to the " + (putConstOnRight == moveConstants ? "right" : "left") + " and change the sign" + (move.length == 1 ? "" : "s") + ".");
 	}
 
 	@Override
-	public int smarts(Equation equation) {
-		int max = 0;
-		for(int i = 0; i < equation.length(); i+=2){
-			int smarts = smartsForTwoExprssions(equation.get(i), equation.get(i+1));
-			if(smarts > 7) return smarts;
-			else if(max < smarts) max = smarts;
-		}
-		return max;
+	public int smarts(Algebra algebra) {
+		Equation equation = (Equation) algebra;
+		return smartsForTwoExprssions(equation.left(), equation.right());
 	}
 
 	/**
