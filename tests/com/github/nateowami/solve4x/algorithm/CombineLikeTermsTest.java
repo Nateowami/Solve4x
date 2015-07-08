@@ -40,17 +40,10 @@ public class CombineLikeTermsTest {
 	@Test
 	public void testExecute() {
 		Step s = c.execute(a("2x+4y²-6-2.3y²-4x"));
-		assertEquals(
-				a("-2x+1.7y²-6"), 
-				s.getAlgebraicExpression()
-				);
-		assertEquals(a("x"), c.execute(a("4x+5x-8x")).getAlgebraicExpression());
-		assertEquals(a("x"), c.execute(a("2x-x")).getAlgebraicExpression());
-		assertEquals(a("-2x").render(), c.execute(a("-x-x")).getAlgebraicExpression().render());
-		//nested combinations
-		assertEquals("2(7)", c.execute(a("2(2+5)")).getAlgebraicExpression().render());
-		assertEquals("(7x)4(9)", c.execute(a("(2x+5x)4(9)")).getAlgebraicExpression().render());
-		assertEquals("(8x)(4-2)+45x", c.execute(a("(2x+6x)(4-2)+45x")).getAlgebraicExpression().render());
+		assertEquals(a("-2x+1.7y²-6"), s.getChange());
+		assertEquals(a("x"), c.execute(a("4x+5x-8x")).getChange());
+		assertEquals(a("x"), c.execute(a("2x-x")).getChange());
+		assertEquals(a("-2x").render(), c.execute(a("-x-x")).getChange().render());
 	}
 	
 	/**
