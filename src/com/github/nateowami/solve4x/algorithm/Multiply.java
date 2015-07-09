@@ -40,26 +40,14 @@ public class Multiply extends Algorithm {
 	}
 	
 	@Override
-	public Step execute(Equation equation) {
-		Term term = null;
-		ArrayList<ArrayList<AlgebraicParticle>> groups = null;
-		int maxDiff = 0;
-		//find the term most in need of multiplication
-		for(Term t : equation.terms()){
-			ArrayList<ArrayList<AlgebraicParticle>> list = multipliableGroups(t);
-			System.out.println("mult groups: " + list);
-			int diff = t.length() - list.size();
-			if(maxDiff < diff){
-				maxDiff = diff;
-				term = t;
-				groups = list;
-			}
-		}
+	public Step execute(Algebra algebra) {
+		Term term = (Term) algebra;
+		ArrayList<ArrayList<AlgebraicParticle>> groups = multipliableGroups(term);
 		
 		//term is now the term to work on, and groups is the list of combinable AlgebraicParticles
 		Term multiplied = multiply(term, groups);
 		
-		Step step = new Step(equation.replace(term, unwrap(multiplied)), 5/*TODO*/);
+		Step step = new Step(unwrap(multiplied));
 		step.explain("In the term ").explain(term).explain(" we neeed to multiply.\n");
 		for(int i = 0; i < groups.size(); i++){
 			if(groups.get(i).size() > 1){
@@ -70,27 +58,12 @@ public class Multiply extends Algorithm {
 	}
 	
 	@Override
-	public int smarts(Equation equation) {
-		int smarts = 0;
-		//iterate over all terms of all algebraic collections in this equation
-		for(int i = 0; i < equation.length(); i++){
-			if(equation.get(i) instanceof AlgebraicCollection){
-				for(Term t : ((AlgebraicCollection)equation.get(i)).terms()){
-					//analyze this term
-					int nums = 0;
-					for(int j = 0; j < t.length(); j++){
-						if(t.get(j) instanceof Number) nums++;
-					}
-					//"register" the term
-					if(nums > 1){
-						smarts += nums - 1;
-						if(smarts >= 3 || nums >= 3) return 9;
-					}
-				}
-			}
-		}
-		if(smarts == 0) return 0;
-		else return 7;
+	public int smarts(Algebra algebra) {
+		Term term = (Term) algebra;
+		int combinable = term.length() - multipliableGroups(term).size();
+		if(combinable == 0) return 0;
+		else if(combinable == 1) return 7;
+		else return 9;
 	}
 	
 	/**
