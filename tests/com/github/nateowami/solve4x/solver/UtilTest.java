@@ -86,6 +86,7 @@ public class UtilTest {
 	@Test
 	public void testIsSuperscriptString() {
 		assertTrue(Util.isSuperscript("⁰⁴⁹"));
+		assertFalse(Util.isSuperscript(""));
 	}
 
 	/**
@@ -117,6 +118,8 @@ public class UtilTest {
 		assertTrue(Util.isSubscript("₀"));
 		assertTrue(Util.isSubscript("₄"));
 		assertTrue(Util.isSubscript("₉"));
+		assertTrue(Util.isSubscript("₄₉"));
+		assertFalse(Util.isSuperscript(""));
 	}
 
 	/**

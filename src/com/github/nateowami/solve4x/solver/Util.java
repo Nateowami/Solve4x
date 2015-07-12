@@ -138,11 +138,12 @@ public class Util {
 	}
 	
 	/**
-	 * Tells if every char in s is a superscript.
+	 * Tells if every char in s is a superscript. If the string is empty, false is returned.
 	 * @param s The string to check.
 	 * @return If every char in s is a valid superscript char.
 	 */
 	public static boolean isSuperscript(String s){
+		if(s.isEmpty())return false;
 		for(char c : s.toCharArray()){
 			if(superscriptInts.indexOf(c) == -1) return false;
 		}
@@ -176,11 +177,12 @@ public class Util {
 	}
 	
 	/**
-	 * Tells if every char in s is a subscript.
+	 * Tells if every char in s is a subscript. If the string is empty, false is returned.
 	 * @param s The string to check.
 	 * @return If every char in s is a valid subscript char.
 	 */
 	public static boolean isSubscript(String s){
+		if(s.isEmpty())return false;
 		for(char c : s.toCharArray()){
 			if(subscriptInts.indexOf(c) == -1) return false;
 		}

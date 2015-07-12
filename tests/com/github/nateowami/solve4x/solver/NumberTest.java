@@ -203,7 +203,6 @@ public class NumberTest {
 		assertTrue(Number.parsable("7.639*10²"));
 		assertTrue(Number.parsable("0.0072*10³"));
 		assertTrue(Number.parsable("47.093*10⁷⁸"));
-
 		
 		assertFalse(Number.parsable(""));
 		assertFalse(Number.parsable("05"));
@@ -213,6 +212,7 @@ public class NumberTest {
 		assertFalse(Number.parsable("12."));
 		assertFalse(Number.parsable("j8.7"));
 		assertFalse(Number.parsable("8.8s"));
+		assertFalse(Number.parsable("7.98*10"));
 	}
 	
 	/**
