@@ -64,57 +64,89 @@ public abstract class AlgebraicParticle implements Algebra, Cloneable {
 	 * @throws ParsingException if s cannot be parsed as an algebraic particle.
 	 */
 	public static AlgebraicParticle getInstance(String s, Class<? extends AlgebraicParticle> c) {
-		String original = s;
-		boolean pars = false;
 		if(s.length() < 1) throw new ParsingException("Cannot construct AlgebraicParticle from empty string.");
 		
-		//take care of sign
-		boolean sign = !(s.charAt(0) == '-');
-		if(s.charAt(0) == '-' || s.charAt(0) == '+') s = s.substring(1);
+		String withSignAndExponent, withExponent, bothRemoved;
 		
-		if(s.length() < 1) throw new ParsingException("Cannot construct AlgebraicParticle from \"" + original + "\"." );
+		//find the first char, set the sign to true/false, and remove the +/- sign
+		char first = s.charAt(0);
+		boolean sign = first != '-';
+		boolean hadSign = false;
+		if(first == '+' || first == '-') {
+			withExponent = s.substring(1);
+			hadSign = true;
+		}
+		else withExponent = s;
 		
-		/*
-		 * We need to distinguish between exponents like x(4+y)⁴ and stuff like (4x+6)⁴. With the latter,
-		 * the whole expression is raised to the fourth power. For the former, just the 4+y part is raised
-		 * to the fourth power. withExponent will be used for the former case, so that terms and expressions
-		 * that don't have parentheses around them will not get their exponents set. See 
-		 * https://github.com/Nateowami/Solve4x/issues/23 for more info.
-		 */
-		String withExponent = s;//save for later
-		
-		//the exponent
+		//remove the exponent
+		String superscript = exponent(withExponent);
 		int exponent = 1;
-		String ex = exponent(s);
-		if(ex.length() != 0){
-			exponent = Integer.parseInt(ex);
-			s = s.substring(0, s.length() - ex.length());
+		boolean hadExponent = false;
+		//if superscript, set it and remove it
+		if(!superscript.isEmpty()) {
+			exponent = Integer.parseInt(superscript);
+			bothRemoved = withExponent.substring(0, withExponent.length() - superscript.length());
+			hadExponent = true;
+		}
+		else bothRemoved = withExponent;
+		
+		//remove parentheses
+		int oldLen = bothRemoved.length();
+		bothRemoved = Util.removePar(bothRemoved);
+		boolean hadPars = bothRemoved.length() != oldLen;
+		
+		//if there were parentheses and [sign or exponent] outside them
+		if(hadPars && (hadSign || hadExponent)){
+			AlgebraicParticle result = construct(bothRemoved, bothRemoved, bothRemoved, null);
+			result.sign = sign;
+			result.exponent = exponent;
+			return result;
 		}
 		
-		if(s.length() < 1) throw new ParsingException("Cannot construct AlgebraicParticle from \"" + original +  "\".");
-		
-		//remove parentheses - necessary because expressions like "(4x)" need the parentheses stripped off
-		String rmPars = Util.removePar(s);
-		//if there are parentheses to remove, then withExponent should be set to rmPars too
-		if(rmPars.length() != s.length()){
-			pars = true;
-			s = rmPars;
-			withExponent = rmPars;
-			c = null;
-		}
+		else {
+			//if it had pars, we haven't removed sign and exponent yet
+			if(hadPars) {
+				
+				withSignAndExponent = bothRemoved;
+				//remove sign and set it (if applicable)
+				first = withSignAndExponent.charAt(0);
+				sign = first != '-';
+				if(first == '+' || first == '-') {
+					hadSign = true;
+					withExponent = withSignAndExponent.substring(1);
+				}
+				else withExponent = withSignAndExponent;
+				
+				//remove superscript and set exponent (if applicable)
+				superscript = exponent(withSignAndExponent);
+				exponent = 1;
+				if(!superscript.isEmpty()) {
+					exponent = Integer.parseInt(superscript);
+					hadExponent = true;
+					bothRemoved = withExponent.substring(0, withExponent.length() - superscript.length());
+				}
+				else bothRemoved = withExponent;
+			}
+			//else it didn't have pars, in which case sign and exponent were removed
+			else withSignAndExponent = s;
 			
-		//construct the algebraic particle and return
-		AlgebraicParticle particle;
-		particle = construct(pars ? s : original, withExponent, s, c);
-		/*
-		 * The exponent is not the one calculated if it was applied to a term or expression and that term or
-		 * Expression wasn't surrounded with parentheses. For example, with 4x+6⁴ we calculate that the 
-		 * exponent is 4, but in reality there is no exponent (same as exponent of 1). In this case, withExponent
-		 * would equal 4x+6⁴, and s would be 4x+6. So we use exponent of 1.
-		 */
-		particle.exponent = !withExponent.equals(s) && (particle instanceof Term || particle instanceof Expression) ? 1 : exponent;
-		particle.sign = withExponent.equals(s) && particle instanceof Expression ? true : sign;
-		return particle;		
+			AlgebraicParticle result = construct(withSignAndExponent, withExponent, bothRemoved, hadPars?null:c);
+			// In this case, with expressions, the sign would go with the first term, not the whole,
+			// expression, so don't set the sign. For example, in -2x+6, only 2x is negative, not 
+			// the whole expression.
+			if(!(result instanceof Expression)) {
+				result.sign = sign;
+				// Set the exponent if it's a variable or a number, and the number DOESN'T have a 
+				// scientific notation exponent. For example, in 2.6*10⁹, the 9 is the exponent of 
+				// the 10 in scientific notation, and doesn't belong to the whole number
+				if(result instanceof Variable || result instanceof Number 
+						&& ((Number)result).getScientificNotationExponent() == null){
+					result.exponent = exponent;
+				}
+			}
+			return result;			
+		}
+
 	}
 	
 	/**
@@ -132,35 +164,54 @@ public abstract class AlgebraicParticle implements Algebra, Cloneable {
 	 * @param s The string to check.
 	 * @param c A "blacklisted" class that will not be used (directly) in checking. Will be ignored if
 	 * s is parenthesized.
-	 * whether s can be parsed (may be left null).
 	 * @return If s can be parsed as an AlgebraicParticle.
 	 */
 	public static boolean parsable(String s, Class<? extends AlgebraicParticle> c){
 		String original = s;
-		boolean pars = false;
-		if (s.length() < 1)return false;
-		//remove the sign
-		if(s.charAt(0) == '-' || s.charAt(0) == '+') s = s.substring(1);
-		if (s.length() < 1)return false;
+		if(s.length() < 1)return false;
 		
-		String withExponent = s;//temporarily hold it with exponent and pars intact
+		String withExponent, bothRemoved, parsRemoved;
+		boolean hadPars, hadSign = false, hadExponent = false;
 		
-		//remove the exponent
-		s = s.substring(0, s.length() - exponent(s).length());
-		if (s.length() < 1)return false;
-		
-		//remove pars - necessary because expressions like "(4x)" need the parentheses stripped off
-		String rmPars = Util.removePar(s);
-		if(rmPars.length() != s.length()){
-			pars = true;
-			s = rmPars;
-			withExponent = rmPars;
-			c = null;
+		//remove sign
+		if(s.charAt(0) == '+' || s.charAt(0) == '-') {
+			withExponent = s.substring(1);
+			hadSign = true;
 		}
-		if (s.length() < 1)return false;
+		else withExponent = s;
 		
-		if(parsableBySubclasses(pars ? s : original, withExponent, s, c)) return true;
-		return false;
+		//remove exponent
+		String exponent = exponent(withExponent);
+		if(!exponent.isEmpty())hadExponent = true;
+		bothRemoved = withExponent.substring(0, withExponent.length() - exponent.length());
+		
+		//remove pars
+		parsRemoved = Util.removePar(bothRemoved);
+		hadPars = bothRemoved.length() != parsRemoved.length();
+		
+		//if had pars and exponent or sign outside it
+		if(hadPars && (hadSign || hadExponent)) {
+			return parsableBySubclasses(parsRemoved, parsRemoved, parsRemoved, null);
+		}
+		
+		//not fully surrounded by pars
+		else {
+			//had pars, but no sign or exponent
+			if(hadPars) {
+				//remove sign
+				if(parsRemoved.charAt(0) == '+' || parsRemoved.charAt(0) == '-')withExponent = parsRemoved.substring(1);
+				else withExponent = parsRemoved;
+				
+				//remove exponent
+				bothRemoved = withExponent.substring(0, withExponent.length() - exponent(withExponent).length());
+				
+				c = null; // any class can parse it if it has pars around it
+			}
+			//TODO might need else; see getInstance
+			return parsableBySubclasses(parsRemoved, withExponent, bothRemoved, c);
+			
+		}
+		
 	}
 	
 	/**
@@ -211,21 +262,23 @@ public abstract class AlgebraicParticle implements Algebra, Cloneable {
 	/**
 	 * Tells if any class can parse withSign, withExponent or allRemoved. exponentRemoved will be 
 	 * used when checking classes Variable and Number, while withExponent will be used in all 
-	 * other cases, except for expressions, which will use withSign.
+	 * other cases, except for expressions, which will use withSign, and sometimes in the case of 
+	 * Number, when allRemoved contains *10, in which case withExponent will be passed to it.
 	 * @param withSign The string to test, with the sign and exponent still remaining, only if 
-	 * after removing any sign and exponent, it is stilly fully nested in parentheses.
+	 * after removing any sign and exponent, it is not fully nested in parentheses.
 	 * @param withExponent The string to test, with the exponent still remaining, only if after
 	 * removing any exponent, it is not fully nested in parentheses.
 	 * @param allRemoved The string to test, with the exponent and any parentheses removed.
 	 * @param classes The classes to consider (i.e. these classes will be checked to see if they
-	 * can parse the given strings.
+	 * can parse the given strings. FIXME that is completely wrong
 	 * @return If a class listed in classes can construct from withExponent or exponentRemoved, 
 	 * depending on the situation (see above).
 	 */
-	static private boolean parsableBySubclasses(String withSign, String withExponent, String allRemoved, Class<? extends AlgebraicParticle> bl){
-		String n = bl == null ? "" : bl.getSimpleName();
+	static private boolean parsableBySubclasses(String withSign, String withExponent, String allRemoved, Class<? extends AlgebraicParticle> classes){
+		String n = classes == null ? "" : classes.getSimpleName();
+		String forNumber = allRemoved.indexOf("*10") == -1 ? allRemoved : withExponent;
 		if(!n.equals("Variable")    && Variable   .parsable(allRemoved)) return true;
-		if(!n.equals("Number")      && Number     .parsable(allRemoved)) return true;
+		if(!n.equals("Number")      && Number     .parsable(forNumber)) return true;
 		if(!n.equals("Root")        && Root       .parsable(withExponent)) return true;
 		if(!n.equals("Fraction")    && Fraction   .parsable(withExponent)) return true;
 		if(!n.equals("MixedNumber") && MixedNumber.parsable(withExponent)) return true;
@@ -238,7 +291,8 @@ public abstract class AlgebraicParticle implements Algebra, Cloneable {
 	 * Constructs a new algebraic particle from withSign, withExponent, or allRemoved.
 	 * allRemoved is used when attempting to construct Variable or Number, while in all 
 	 * other cases withExponent will be used, except in the case of expressions, which always
-	 * use withSign.
+	 * use withSign, and sometimes in the case of Number, when allRemoved contains *10, in which 
+	 * case withExponent will be passed to it.
 	 * @param withSign The string from which to construct an AlgebraicParticle, with the sign 
 	 * and exponent still remaining, only if after removing any sign and exponent, it is not 
 	 * fully nested in parentheses.
@@ -247,20 +301,23 @@ public abstract class AlgebraicParticle implements Algebra, Cloneable {
 	 * in parentheses.
 	 * @param allRemoved The string from which to construct an AlgebraicParticle, with 
 	 * the exponent and any parentheses removed.
-	 * @param classes A list of classes to consider in constructing an AlgebraicParticle.
+	 * @param classes A list of classes to consider in constructing an AlgebraicParticle. FIXME that is completely wrong
 	 * @return An AlgebraicParticle, initialized with withExponent or exponentRemoved, depending
 	 * on the situation (see above).
 	 */
-	static private AlgebraicParticle construct(String withSign, String withExponent, String allRemoved, Class<? extends AlgebraicParticle> bl){
-		String n = bl == null ? "" : bl.getSimpleName();
+	static private AlgebraicParticle construct(String withSign, String withExponent, String allRemoved, Class<? extends AlgebraicParticle> classes){
+		String n = classes == null ? "" : classes.getSimpleName();
+		String forNumber = allRemoved.indexOf("*10") == -1 ? allRemoved : withExponent;
 		if(!n.equals("Variable")    && Variable   .parsable(allRemoved))return new Variable(allRemoved);
-		if(!n.equals("Number")      && Number     .parsable(allRemoved))return new Number(allRemoved);
+		if(!n.equals("Number")      && Number     .parsable(forNumber))return new Number(forNumber);
 		if(!n.equals("Root")        && Root       .parsable(withExponent))   return new Root(withExponent);
 		if(!n.equals("Fraction")    && Fraction   .parsable(withExponent))   return new Fraction(withExponent);
-		if(!n.equals("MixedNumber") && MixedNumber.parsable(withExponent))   return new MixedNumber(withExponent);
+		if(!n.equals("MixedNumber") && MixedNumber.parsable(withExponent))   return new MixedNumber(withExponent); // XXX shouldn't this use allRemoved?
 		if(!n.equals("Term")        && Term       .parsable(withExponent))   return new Term(withExponent);
 		if(!n.equals("Expression")  && Expression .parsable(withSign))   return new Expression(withSign);
-		throw new ParsingException("Cannot parse " + withSign + " (with sign) or "+ withExponent + " (with exponent) or " + allRemoved + " (exponent removed) as an algebraic particle.");
+		throw new ParsingException("Cannot parse "+withSign+" (with sign) or "+withExponent
+				+" (with exponent) "+allRemoved+" (exponent removed) or "+forNumber
+				+" (for parsing as a number) as an algebraic particle.");
 	}
 	
 	/**
@@ -312,7 +369,7 @@ public abstract class AlgebraicParticle implements Algebra, Cloneable {
 	/**
 	 * Extracts a superscript/exponent from the end of string <code>s</code> and returns it.
 	 * @param s The string from which to extract an exponent.
-	 * @return The exponent, as an int.
+	 * @return The exponent, converted to an int and then string.
 	 */
 	private static String exponent(String s){
 		int i;
@@ -338,5 +395,5 @@ public abstract class AlgebraicParticle implements Algebra, Cloneable {
 			throw new RuntimeException(e);
 		}
 	}
-	
+		
 }

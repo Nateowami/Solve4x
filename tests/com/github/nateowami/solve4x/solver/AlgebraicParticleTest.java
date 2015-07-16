@@ -59,6 +59,9 @@ public class AlgebraicParticleTest {
 	 */
 	@Test
 	public void testGetInstance()  {
+		assertEquals("2xy", AlgebraicParticle.getInstance("(2x)y").render());
+		assertEquals("-(2x+4)y", AlgebraicParticle.getInstance("-(2x+4)y").render());
+		assertEquals("-2x⁹", AlgebraicParticle.getInstance("-2x⁹").render());
 		assertEquals("-2x⁹(4+2)", AlgebraicParticle.getInstance("-2x⁹(4+2)").render());
 		
 		AlgebraicParticle a1 = AlgebraicParticle.getInstance("2x+6²");
@@ -98,6 +101,19 @@ public class AlgebraicParticleTest {
 		AlgebraicParticle a8 = AlgebraicParticle.getInstance("x²");
 		assertTrue(a8 instanceof Variable);
 		assertEquals(2, a8.exponent());
+		
+		assertTrue(AlgebraicParticle.getInstance("2.34*10²") instanceof Number);
+		assertTrue(AlgebraicParticle.getInstance("-2.34*10²") instanceof Number);
+		
+		AlgebraicParticle.getInstance("(-2.34*10²)");
+		
+		Term a9 = (Term) AlgebraicParticle.getInstance("x(-2.34*10²)");
+		assertEquals(Integer.valueOf(2), ((Number)a9.get(1)).getScientificNotationExponent());
+		assertFalse(a9.get(1).sign());
+		
+		AlgebraicParticle.getInstance("(2.34*9⁴)");
+		
+		assertEquals("-y+6", AlgebraicParticle.getInstance("-y+6").render());
 	}
 
 	/**
@@ -106,6 +122,7 @@ public class AlgebraicParticleTest {
 	@Test
 	public void testparsable() {
 		//Term
+		assertTrue(AlgebraicParticle.parsable("(2x)"));
 		assertTrue(AlgebraicParticle.parsable("2x"));
 		assertTrue(AlgebraicParticle.parsable("2x6y"));
 		assertTrue(AlgebraicParticle.parsable("2x⁹"));
@@ -113,6 +130,14 @@ public class AlgebraicParticleTest {
 		//Number
 		assertTrue(AlgebraicParticle.parsable("2"));
 		assertTrue(AlgebraicParticle.parsable("-4x⁹"));
+		assertTrue(AlgebraicParticle.parsable("(-10x)"));
+		assertTrue(AlgebraicParticle.parsable("(-2.34*10²)"));
+		assertTrue(AlgebraicParticle.parsable("-(2x)⁹"));
+		assertTrue(AlgebraicParticle.parsable("(2x)²"));
+		assertTrue(AlgebraicParticle.parsable("(-4y)"));
+		assertTrue(AlgebraicParticle.parsable("(-4y)²"));
+		assertTrue(AlgebraicParticle.parsable("-2(-4+3²)²"));
+		assertFalse(AlgebraicParticle.parsable("-(-2)"));
 		//That no class can parse an empty string
 		assertFalse(AlgebraicParticle.parsable(""));
 	}

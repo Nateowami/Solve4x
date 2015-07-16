@@ -171,7 +171,7 @@ public class Term extends AlgebraicCollection{
 		//don't subtract 1 from s.length() because we need to make sure it won't be able to parse the whole thing at once
 		for(int i = s.length(); i >= 0; i--){
 			//make sure it doesn't have a sign
-			if(s.length() > 0 && s.charAt(0) != '+' && s.charAt(0) != '-'
+			if(s.length() > 0 
 					//if the first char is * and this isn't the first one to be parsed, remove it before attempting to parse
 					&& AlgebraicParticle.parsable(numParsed > 0  && s.charAt(0) == '*' ? s.substring(1, i) : s.substring(0, i), Term.class)){
 				numParsed++;
