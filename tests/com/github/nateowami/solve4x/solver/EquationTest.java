@@ -54,7 +54,7 @@ public class EquationTest {
 	 * @ 
 	 */
 	@Test
-	public void testrender()  {
+	public void testRender()  {
 		Equation eq = new Equation("12x2y4(34+6xa(43x2+6+1(43)))=45+6x(4+85xy5)");
 		assertEquals("12x2y4(34+6xa(43x2+6+1(43)))=45+6x(4+85xy5)", eq.render());
 	}

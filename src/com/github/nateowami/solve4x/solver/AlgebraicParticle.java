@@ -17,6 +17,8 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import com.github.nateowami.solve4x.Solve4x;
+
 /**
  * Represents an AlgebraicParticle. Subclasses include Variable, Number, Root, Fraction, Fraction, MixedNumber, Term, and Expression.
  * @author Nateowami
@@ -162,56 +164,50 @@ public abstract class AlgebraicParticle implements Algebra, Cloneable {
 	/**
 	 * Tells if s can be parsed as an AlgebraicParticle.
 	 * @param s The string to check.
-	 * @param c A "blacklisted" class that will not be used (directly) in checking. Will be ignored if
+	 * @param blacklist A "blacklisted" class that will not be used (directly) in checking. Will be ignored if
 	 * s is parenthesized.
 	 * @return If s can be parsed as an AlgebraicParticle.
 	 */
-	public static boolean parsable(String s, Class<? extends AlgebraicParticle> c){
-		String original = s;
+	public static boolean parsable(String s, Class<? extends AlgebraicParticle> blacklist){
 		if(s.length() < 1)return false;
+		String original = s;
 		
-		String withExponent, bothRemoved, parsRemoved;
-		boolean hadPars, hadSign = false, hadExponent = false;
+		String withExponent, bothRemoved;
+		boolean hadPars = false;
 		
+		s = Util.removePar(s);
+		if(s.length() != original.length()) {
+			hadPars = true;
+			blacklist = null;
+		}
+				
 		//remove sign
 		if(s.charAt(0) == '+' || s.charAt(0) == '-') {
 			withExponent = s.substring(1);
-			hadSign = true;
 		}
 		else withExponent = s;
 		
 		//remove exponent
 		String exponent = exponent(withExponent);
-		if(!exponent.isEmpty())hadExponent = true;
-		bothRemoved = withExponent.substring(0, withExponent.length() - exponent.length());
-		
-		//remove pars
-		parsRemoved = Util.removePar(bothRemoved);
-		hadPars = bothRemoved.length() != parsRemoved.length();
-		
-		//if had pars and exponent or sign outside it
-		if(hadPars && (hadSign || hadExponent)) {
-			return parsableBySubclasses(parsRemoved, parsRemoved, parsRemoved, null);
+		if(!exponent.isEmpty()) {
+			bothRemoved = withExponent.substring(0, withExponent.length() - exponent.length());
 		}
+		else bothRemoved = withExponent;
 		
-		//not fully surrounded by pars
-		else {
-			//had pars, but no sign or exponent
-			if(hadPars) {
-				//remove sign
-				if(parsRemoved.charAt(0) == '+' || parsRemoved.charAt(0) == '-')withExponent = parsRemoved.substring(1);
-				else withExponent = parsRemoved;
-				
-				//remove exponent
-				bothRemoved = withExponent.substring(0, withExponent.length() - exponent(withExponent).length());
-				
-				c = null; // any class can parse it if it has pars around it
-			}
-			//TODO might need else; see getInstance
-			return parsableBySubclasses(parsRemoved, withExponent, bothRemoved, c);
+		//remove pars if not removed already
+		if(!hadPars) {
+			String parsRemoved = Util.removePar(bothRemoved);
 			
+			//if there were pars to remove
+			if(parsRemoved.length() != bothRemoved.length()) {
+				withExponent = parsRemoved;
+				bothRemoved = parsRemoved;
+				hadPars = true;
+				blacklist = null;
+			}
 		}
 		
+		return parsableBySubclasses(hadPars ? withExponent : s, withExponent, bothRemoved, blacklist);
 	}
 	
 	/**
