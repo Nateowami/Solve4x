@@ -41,6 +41,8 @@ public class FractionTest {
 		Fraction frac2 = new Fraction("(x3+2)/(17)");
 		assertEquals("x3+2", frac2.getTop().render());
 		assertEquals("17", frac2.getBottom().render());
+		
+		new Fraction("((4.3)/(2))/(4)");
 	}
 
 	/**
@@ -54,6 +56,7 @@ public class FractionTest {
 		assertTrue(Fraction.parsable("(23xy2)/(x+6-3xy)"));
 		assertTrue(Fraction.parsable("(4.3)/(2)"));
 		assertTrue(Fraction.parsable("((4.3)/(2))/(4)"));
+		assertTrue(Fraction.parsable("(4.3)/(2)"));
 		
 		assertFalse(Fraction.parsable("xy6(4)/(5)"));
 		assertFalse(Fraction.parsable("2/3"));

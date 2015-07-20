@@ -17,7 +17,6 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import com.github.nateowami.solve4x.Solve4x;
 import com.github.nateowami.solve4x.config.RoundingRule;
 
 /**
@@ -41,8 +40,8 @@ public class Fraction extends AlgebraicParticle{
 		if(divisionIndex < 1) throw new ParsingException("Non-parentheses-nested '/' not found in proper range (char 1 to end of string)");
 		//split the fraction at divisionIndex, but don't include the slashes or parentheses
 		//it should be in the form of (expr1)/(expr2)
-		this.top = AlgebraicParticle.getInstance(frac.substring(1, divisionIndex-1), Fraction.class);
-		this.bottom = AlgebraicParticle.getInstance(frac.substring(divisionIndex+2, frac.length()-1), Fraction.class);
+		this.top = AlgebraicParticle.getInstance(frac.substring(1, divisionIndex-1));
+		this.bottom = AlgebraicParticle.getInstance(frac.substring(divisionIndex+2, frac.length()-1));
 	}
 	
 	/**
