@@ -28,7 +28,7 @@ import java.util.Arrays;
 public class Expression extends AlgebraicCollection{
 	
 	//create an ArrayList for storing a list of terms
-	private final ArrayList <AlgebraicParticle>termList;
+	private final ArrayList<AlgebraicParticle> termList;
 	
 	/**
 	 * Creates a list of terms from the expression
@@ -148,6 +148,11 @@ public class Expression extends AlgebraicCollection{
 		} else if (!termList.equals(other.termList))
 			return false;
 		return true;
+	}
+
+	@Override
+	public ArrayList<AlgebraicParticle> getList() {
+		return this.termList;
 	}
 	
 }

@@ -230,5 +230,11 @@ public class Term extends AlgebraicCollection{
 			return false;
 		return true;
 	}
+
+	
+	@Override
+	public ArrayList<AlgebraicParticle> getList() {
+		return this.parts;
+	}
 	
 }

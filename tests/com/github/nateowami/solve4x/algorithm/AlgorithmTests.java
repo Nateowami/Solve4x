@@ -25,7 +25,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Nateowami
  */
 @RunWith(Suite.class)
-@SuiteClasses({ ChangeSidesTest.class, CombineLikeTermsTest.class, MultiplyTest.class })
+@SuiteClasses({ ChangeSidesTest.class, CombineLikeTermsTest.class, 
+			MultiplyTest.class, DivideBothSidesTest.class })
 public class AlgorithmTests {
 
 }

@@ -178,13 +178,16 @@ public class Solver {
 	 */
 	private ArrayList<Algorithm> getAlgorithms(SolveFor solveFor, RoundingRule round) {
 		ArrayList<Algorithm> algorList = new ArrayList<Algorithm>();
+		
+		//this switch is deliberately fall-through (not using break)
 		switch (solveFor){
 		case SOLVE:
-			//algorList.add(new ChangeSides());
+			algorList.add(new ChangeSides());
+			algorList.add(new DivideBothSides());
 		case FACTOR:
 		case SIMPLIFY:
 			algorList.add(new CombineLikeTerms(round));
-			//algorList.add(new Multiply(round));
+			algorList.add(new Multiply(round));
 		}
 		return algorList;
 	}

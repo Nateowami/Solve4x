@@ -143,4 +143,10 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 		return (ArrayList<Expression>) flattenAndLimitByClass(Expression.class);
 	}
 	
+	/**
+	 * Returns an ArrayList of AlgebraicParticles in this AlgebraicCollection.
+	 * @return This collections's items.
+	 */
+	public abstract ArrayList<AlgebraicParticle> getList();
+	
 }
