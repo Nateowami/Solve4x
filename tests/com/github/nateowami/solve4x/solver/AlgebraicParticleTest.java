@@ -59,8 +59,11 @@ public class AlgebraicParticleTest {
 	 */
 	@Test
 	public void testGetInstance()  {
+		assertEquals("2x", AlgebraicParticle.getInstance("(2x)").render());
 		assertEquals("2xy", AlgebraicParticle.getInstance("(2x)y").render());
 		assertEquals("-(2x+4)y", AlgebraicParticle.getInstance("-(2x+4)y").render());
+		assertEquals("x⁹", AlgebraicParticle.getInstance("x⁹").render());
+		assertEquals("2x⁹", AlgebraicParticle.getInstance("2x⁹").render());
 		assertEquals("-2x⁹", AlgebraicParticle.getInstance("-2x⁹").render());
 		assertEquals("-2x⁹(4+2)", AlgebraicParticle.getInstance("-2x⁹(4+2)").render());
 		
