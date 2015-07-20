@@ -52,6 +52,8 @@ public class FractionTest {
 		assertTrue(Fraction.parsable("(2)/(3)"));
 		assertTrue(Fraction.parsable("(23+xy6)/(43xy+6)"));
 		assertTrue(Fraction.parsable("(23xy2)/(x+6-3xy)"));
+		assertTrue(Fraction.parsable("(4.3)/(2)"));
+		assertTrue(Fraction.parsable("((4.3)/(2))/(4)"));
 		
 		assertFalse(Fraction.parsable("xy6(4)/(5)"));
 		assertFalse(Fraction.parsable("2/3"));

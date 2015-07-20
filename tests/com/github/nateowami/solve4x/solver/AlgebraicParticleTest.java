@@ -133,6 +133,8 @@ public class AlgebraicParticleTest {
 		assertTrue(AlgebraicParticle.parsable("x"));
 		assertTrue(AlgebraicParticle.parsable("(4+y)⁴"));
 		assertTrue(AlgebraicParticle.parsable("x(4+y)⁴"));
+		assertTrue(AlgebraicParticle.parsable("x+6-3xy"));
+
 		//Number
 		assertTrue(AlgebraicParticle.parsable("2"));
 		assertTrue(AlgebraicParticle.parsable("-4x⁹"));
