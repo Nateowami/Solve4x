@@ -43,7 +43,8 @@ public class CombineLikeTermsTest {
 		assertEquals(a("-2x+1.7y²-6"), s.getChange());
 		assertEquals(a("x"), c.execute(a("4x+5x-8x")).getChange());
 		assertEquals(a("x"), c.execute(a("2x-x")).getChange());
-		assertEquals(a("-2x").render(), c.execute(a("-x-x")).getChange().render());
+		assertEquals(a("-2x"), c.execute(a("-x-x")).getChange());
+		assertEquals(a("5x"), c.execute(a("2x+3x")).getChange());
 	}
 	
 	/**
@@ -59,6 +60,7 @@ public class CombineLikeTermsTest {
 		assertEquals(7, c.smarts(a("2+5")));
 		assertEquals(7, c.smarts(a("2x+5x")));
 		assertEquals(9, c.smarts(a("2x+6x+4-2+45x")));
+		assertEquals(0, c.smarts(a("13x-2x3")));
 	}
 	
 	/**
@@ -139,9 +141,9 @@ public class CombineLikeTermsTest {
 		};
 		for(String tuple : s){
 			String[] p = tuple.split("\\s");
-			AlgebraicParticle a = AlgebraicParticle.getInstance(p[0]), 
-					b = AlgebraicParticle.getInstance(p[1]),
-					correctResult = AlgebraicParticle.getInstance(p[2]),
+			AlgebraicParticle a = a(p[0]), 
+					b = a(p[1]),
+					correctResult = a(p[2]),
 					actualResult = c.addConstants(a, b);
 			assertEquals(a.render() + " and " + b.render() + " should combine to be " + p[2] + " (parsed as " + correctResult.render() + "), but the result is " + actualResult.render(), correctResult, actualResult);
 			//1.5 (5)/(19) 1.5(5)/(19)
@@ -154,13 +156,15 @@ public class CombineLikeTermsTest {
 	 */
 	@Test
 	public void testListCombineableTerms() {
-		ArrayList<AlgebraicParticle> a1 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("2x²")));
-		ArrayList<AlgebraicParticle> a2 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("+4x"), AlgebraicParticle.getInstance("-2.3x")));
-		ArrayList<AlgebraicParticle> a3 = new ArrayList<AlgebraicParticle>(Arrays.asList(AlgebraicParticle.getInstance("+12")));
+		ArrayList<AlgebraicParticle> a1 = new ArrayList<AlgebraicParticle>(Arrays.asList(a("2x²")));
+		ArrayList<AlgebraicParticle> a2 = new ArrayList<AlgebraicParticle>(Arrays.asList(a("+4x"), a("-2.3x")));
+		ArrayList<AlgebraicParticle> a3 = new ArrayList<AlgebraicParticle>(Arrays.asList(a("+12")));
 		ArrayList<ArrayList<AlgebraicParticle>> one = new ArrayList(Arrays.asList(a1, a2, a3)), two = c.listCombinableTerms((Expression) a("2x²+4x-2.3x+12"));
 		
 		//assertEquals(new ArrayList(Arrays.asList(a1, a2, a3)).toString().length(), e1.combinableTerms().toString().length());
 		assertEquals(one, two);
+		
+		assertEquals(2, c.listCombinableTerms((Expression)a("13x-2x3")).size());
 	}
 	
 	/**
@@ -195,6 +199,8 @@ public class CombineLikeTermsTest {
 		assertTrue(c.areCombinableTerms(a("4x"), a("17.3x")));
 		assertTrue(c.areCombinableTerms(a("2y(3x-6)((4)/(5))"), a("9.2y(3x-6)((4)/(5))")));
 		assertFalse(c.areCombinableTerms(a("2y(3-6)((4)/(5))"), a("9.2y(3x-6)((4)/(5))")));
+		assertFalse(c.areCombinableTerms(a("13x"), a("2x3")));
+		assertFalse(c.areCombinableTerms(a("13x"), a("-2x3")));
 	}
 	
 	/**
@@ -246,8 +252,8 @@ public class CombineLikeTermsTest {
 				};
 		for(String tuple : s){
 			String[] p = tuple.split("\\s");
-			AlgebraicParticle a = AlgebraicParticle.getInstance(p[0]), 
-					b = AlgebraicParticle.getInstance(p[1]);
+			AlgebraicParticle a = a(p[0]), 
+					b = a(p[1]);
 			boolean areCombineable = p[2].charAt(0) == 't';
 			assertEquals("The following two should " + (areCombineable ? "" : "not ") + "be combineable: " + a.render() + " and " + b.render(), 
 					areCombineable, c.areCombinable(a, b));

@@ -47,9 +47,12 @@ public class SolverTest {
 		
 		Step step = Solver.dispatchAlgorithmWithResource(new CombineLikeTerms(RoundingRule.ALWAYS), eq1.left(), eq1);
 		
-		System.out.println(step.getChange().render());
 		assertEquals(step.getChange(), eq2.left());
 		assertEquals(step.getAlgebraicExpression(), eq2);
+		
+		Equation eq3 = new Equation("2x+3x=1");
+		Step step2 = Solver.dispatchAlgorithmWithResource(new CombineLikeTerms(RoundingRule.ALWAYS), eq3.left(), eq3);
+		assertEquals(AlgebraicParticle.getInstance("5x"), ((Equation)step2.getAlgebraicExpression()).left());
 	}
 	
 	@Test

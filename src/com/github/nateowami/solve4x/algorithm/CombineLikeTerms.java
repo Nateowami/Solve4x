@@ -300,10 +300,14 @@ public class CombineLikeTerms extends Algorithm {
 		//if they're terms, and they're like
 		else if(a instanceof Term && b instanceof Term){
 			Term first = (Term) a, second = (Term) b;
-			if(a.equals(b) || a.cloneWithNewSign(!a.sign()).equals(b))return true;
+			if(a.equals(b) || a.sign() != b.sign() && a.cloneWithNewSign(!a.sign()).equals(b))return true;
 			if(!areCombinable(first.coefficient(), second.coefficient()))return false;
 			//check if the terms are combinable
 			if(Math.abs(first.length() - second.length()) > 1)return false;
+			
+			
+			//if the they both have coefficients (or both don't) then their length must be the same
+			if(first.hasCoefficient() == second.hasCoefficient() && first.length() != second.length())return false;
 			
 			//check that the terms are like. offset if necessary, for checking things like xy and 2xy
 			for(int i = first.hasCoefficient() ? 1 : 0, j = second.hasCoefficient() ? 1 : 0; i < first.length() && j < second.length(); i++, j++){
