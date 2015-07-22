@@ -17,8 +17,6 @@
  */
 package com.github.nateowami.solve4x.algorithm;
 
-import java.util.ArrayList;
-
 import com.github.nateowami.solve4x.solver.*;
 import com.github.nateowami.solve4x.solver.Number;
 
@@ -47,13 +45,14 @@ public class DivideBothSides extends Algorithm {
 		AlgebraicParticle to = (AlgebraicParticle) (from == eq.left() ? eq.right() : eq.left());
 		
 		//the number we need to divide by (Watch for signs. In -2x we divide by -2)
-		AlgebraicParticle numeric = numeric(from);
+		int indexOfNumeric = indexOfNumeric(from);
+		AlgebraicParticle numeric = from.get(indexOfNumeric);
 		Number divisor = (Number) (from.sign() ? numeric : numeric.cloneWithNewSign(false));
 		
 		//now calculate the resulting fraction
 		Fraction frac = new Fraction(true, to, divisor, 1);
 		//and calculate the side we're moving from
-		AlgebraicParticle resultingFromSide = removeFromTerm(from, numeric);
+		AlgebraicParticle resultingFromSide = unwrap(from.cloneAndRemove(indexOfNumeric));
 		//calculate the final equation
 		Equation out = new Equation(resultingFromSide, frac);
 		
@@ -70,25 +69,26 @@ public class DivideBothSides extends Algorithm {
 	public int smarts(Algebra algebra) {
 		Equation eq =  (Equation) algebra;
 		//if one side is a term with a numeric part and the other is numeric
-		if(numeric(eq.left()) != null && isNumeric(eq.right()) || isNumeric(eq.left()) && numeric(eq.right()) != null) {
+		if(indexOfNumeric(eq.left()) != -1 && isNumeric(eq.right()) || isNumeric(eq.left()) && indexOfNumeric(eq.right()) != -1) {
 			return 7;
 		}
 		else return 0;
 	}
 	
 	/**
-	 * Finds a numeric item in a (Number, MixedNumber, or constant Fraction).
+	 * Finds a numeric item in a (Number, MixedNumber, or constant Fraction) and 
+	 * returns its index.
 	 * @param a A term to search.
-	 * @return The first numeric element in a. If none exist null is returned.
+	 * @return The index of the first numeric element in a. If none exist -1 is returned.
 	 */
-	private AlgebraicParticle numeric(Algebra a) {
+	private int indexOfNumeric(Algebra a) {
 		if(a instanceof Term) {
 			Term t = (Term) a;
 			for(int i = 0; i < t.length(); i++) {
-				if(isNumeric(t.get(i))) return t.get(i);
+				if(isNumeric(t.get(i))) return i;
 			}
 		}
-		return null;
+		return -1;
 	}
 	
 	/**
@@ -98,21 +98,6 @@ public class DivideBothSides extends Algorithm {
 	 */
 	private boolean isNumeric(AlgebraicParticle a) {
 		return a instanceof Number || a instanceof Fraction  && ((Fraction)a).constant() || a instanceof MixedNumber;
-	}
-	
-	/**
-	 * Constructs and returns a "copy" of term, with numeric, one of its elements, 
-	 * removed.
-	 * @param term The term from which to remove numeric.
-	 * @param numeric The element to remove from term.
-	 * @return A pseudo-clone of term, with numeric removed.
-	 */
-	private AlgebraicParticle removeFromTerm(Term term, AlgebraicParticle numeric){
-		ArrayList<AlgebraicParticle> list = term.getList();
-		list.remove(numeric);
-		if(list.size() == 1)return list.get(0);
-		else if(list.size() == 0)return Number.ONE;
-		else return new Term(true, list, 1);
 	}
 	
 }

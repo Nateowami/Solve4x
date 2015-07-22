@@ -28,7 +28,7 @@ public class Solve4x {
 	private static final boolean DEBUG = true;
 	
 	//remove a class from this list if you want to be able to see console/debug output from it
-	private static final String blackList[] = {"Util"};
+	private static final String blackList[] = {"Util", "Solver"};
 	
 	/**
 	 * Starts the program rolling by starting the GUI

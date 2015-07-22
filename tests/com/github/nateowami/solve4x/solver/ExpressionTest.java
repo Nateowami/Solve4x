@@ -109,4 +109,13 @@ public class ExpressionTest {
 		assertFalse(Expression.parsable("6(34+9xy2(45x+6)"));
 	}
 	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Expression#cloneAndRemove()}.
+	 * @ 
+	 */
+	@Test
+	public void testCloneAndRemove()  {
+		assertEquals(new Expression("2+x+y"), new Expression("2+t+x+y").cloneAndRemove(1));
+	}
+	
 }

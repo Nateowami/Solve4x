@@ -118,4 +118,12 @@ public class TermTest {
 		assertFalse(new Term("4(x+6)").like(new Term("4x")));
 	}
 	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Term#cloneAndRemove()}.
+	 */
+	@Test
+	public void testCloneAndRemove() {
+		assertEquals(new Term("2*4*xz"), new Term("2*4*xyz").cloneAndRemove(3));
+	}
+	
 }

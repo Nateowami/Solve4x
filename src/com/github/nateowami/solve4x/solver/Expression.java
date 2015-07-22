@@ -151,8 +151,10 @@ public class Expression extends AlgebraicCollection{
 	}
 
 	@Override
-	public ArrayList<AlgebraicParticle> getList() {
-		return this.termList;
+	public AlgebraicCollection cloneAndRemove(int i) {
+		ArrayList<AlgebraicParticle> list = (ArrayList<AlgebraicParticle>) this.termList.clone();
+		list.remove(i);
+		return new Expression(this.sign(), list.toArray(new AlgebraicParticle[list.size()]), this.exponent());
 	}
 	
 }

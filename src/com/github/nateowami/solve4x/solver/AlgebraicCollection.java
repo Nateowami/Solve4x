@@ -144,9 +144,10 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 	}
 	
 	/**
-	 * Returns an ArrayList of AlgebraicParticles in this AlgebraicCollection.
-	 * @return This collections's items.
+	 * Clones this AlgebraicCollection and removes the element at index i.
+	 * @param i The index of the element to remove.
+	 * @return This cloned with element at index i removed.
 	 */
-	public abstract ArrayList<AlgebraicParticle> getList();
+	public abstract AlgebraicCollection cloneAndRemove(int i);
 	
 }

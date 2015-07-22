@@ -230,11 +230,12 @@ public class Term extends AlgebraicCollection{
 			return false;
 		return true;
 	}
-
 	
 	@Override
-	public ArrayList<AlgebraicParticle> getList() {
-		return this.parts;
+	public AlgebraicCollection cloneAndRemove(int index) {
+		ArrayList<AlgebraicParticle> list = (ArrayList<AlgebraicParticle>) this.parts.clone();
+		list.remove(index);
+		return new Term(this.sign(), list, this.exponent());
 	}
 	
 }
