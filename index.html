@@ -22,28 +22,26 @@
       <h1>
 <a id="solve4x" class="anchor" href="#solve4x" aria-hidden="true"><span class="octicon octicon-link"></span></a>Solve4x</h1>
 
-<p>An algebra solver that shows its work</p>
+<p><a href="https://travis-ci.org/Nateowami/Solve4x"><img src="https://travis-ci.org/Nateowami/Solve4x.svg?branch=master" alt="Build Status"></a></p>
 
-<p>The goal of this program is to generate a lesson explaining how to solve a given problem. It aims to be simple to use, and very intuitive. It should solve the way a person would, and should <em>not</em> include unnecessary steps. Equations should be displayed as a person would write them, rather than as single line of text. It is not intended as a cheat-sheet, but rather as a helpful explainer for a problem the user doesn't understand.</p>
-
-<h1>
-<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO</h1>
-
-<ul>
-<li>GUI - 98% finished.  Colors need some changing, but otherwise it's mostly finished. Some soft colors would be good.</li>
-<li>Solver - Started (about 60%); relies on classes that contain solving algorithms<br>
-</li>
-<li>Equation validator - (95%) appears to be working; will likely need a few changes and updates<br>
-</li>
-<li>Solving algorithms - Barely started; they all need to implement Algorithm. We can start them as soon as the solver is done/debugged.</li>
-<li>Equation displayer - Not started, except for a command line version intended for debugging. The graphical one is a long way down the road.</li>
-</ul>
+<p>An algebra solver that shows its work, step-by-step, with instructions (and pretty-prints/formats math nicely). The goal? Show Epsilon how he could have solved the math problem without ever leaving the doghouse.</p>
 
 <h1>
-<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h1>
 
-<p>You can read generic documentation (as in "how it all works") on <a href="https://github.com/Nateowami/Solve4x/wiki">the wiki</a>. For a basic understanding of how the program should work, check out <a href="https://github.com/Nateowami/Solve4x/wiki/Program-Flow">an article about program flow</a>. Another goot resource is the <a href="https://github.com/Nateowami/Solve4x/wiki/Algebra-Syntax-Definition">algebra syntax definition</a>.<br>
-The generated JavaDocs can be found at <a href="http://nateowami.github.io/Solve4x/doc/">http://nateowami.github.io/Solve4x/doc/</a>. Note: current documentation is outdated and is in the process of being replaced. While it could be updated now, core parts of the system are undergoing major changes. Documentation will be updated when this is complete.</p>
+<p>Building the project is as easy as running <code>ant</code> from within the project root directory. To run it, execute <code>java -cp bin com.github.nateowami.solve4x.Main</code>. To run the JUnit tests, run <code>ant AllTests</code>, generate a report with <code>ant junitreport</code>, and view the results in <code>bin/index.html</code>. You can also import the project in Eclipse and run the program or its tests with a single click. See <a href="https://github.com/Nateowami/Solve4x/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a> for more information.</p>
+
+<p>The UI is mostly non-functional, but you can type a super-simple equation (as in simple operations, not few operations), click "Build Lesson," and watch the text box say "Equation Evaluation Status: true" if it happens to like your input, or throw an ugly exception in the terminal if it feels inclined to do so. If a solution can be found, the solving steps are printed to the terminal, otherwise you'll be told that no solution was found. If you feel like playing around with it, here's a basic equation that shows every step Solve4x is currently capable of: <code>-x-2=2(8.6)-2x</code>.</p>
+
+<h1>
+<a id="the-state-of-things" class="anchor" href="#the-state-of-things" aria-hidden="true"><span class="octicon octicon-link"></span></a>The state of things</h1>
+
+<p>Solve4x can currently combine like terms, add or subtract a term from both sides of an equation, and multiply terms. These operations are performed by classes in <code>com.github.nateowami.solve4x.algorithm</code>, which act on objects from <code>com.github.nateowami.solve4x.solver</code>, which is the parser and holds the internal representation of algebra. The algorithms need to be expanded (first priority right now), and eventually the GUI and CLI need to be independent of each other. Rendering of equations needs to come next, eventually supporting plain text, graphics (SVG, PNG, or both), JSON, and possibly XML. Ultimately support for second-degree equations should be added, but right now the focus is solely on first-degree equations.</p>
+
+<h1>
+<a id="documentation--contributing" class="anchor" href="#documentation--contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation &amp; contributing</h1>
+
+<p>Get started by heading over to <a href="https://github.com/Nateowami/Solve4x/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a> or <a href="https://github.com/Nateowami/Solve4x/wiki">the wiki</a>. You might want to pay particular attention to the pages on  <a href="https://github.com/Nateowami/Solve4x/wiki/Program-Flow">program flow</a> and the <a href="https://github.com/Nateowami/Solve4x/wiki/Algebra-Syntax-Definition">algebra syntax definition</a>. If you enjoy reading ugly Javadocs, head over to <a href="http://nateowami.github.io/Solve4x/doc/">http://nateowami.github.io/Solve4x/doc/</a> and check out <code>com.github.nateowami.solve4x.solver</code>, as it has the best documentation and is central to the solver (but be warned, the docs there get a bit dated sometimes).</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/Nateowami/Solve4x">Solve4x</a> is maintained by <a href="https://github.com/Nateowami">Nateowami</a>.</span>
