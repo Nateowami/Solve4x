@@ -127,7 +127,7 @@ public class Multiply extends Algorithm {
 		return  new Term(term.sign(), combined, term.exponent());
 	}
 	
-	private AlgebraicParticle multiply(AlgebraicParticle a, AlgebraicParticle b){
+	protected AlgebraicParticle multiply(AlgebraicParticle a, AlgebraicParticle b){
 		if(Util.constant(a) && Util.constant(b)){
 			if(a instanceof Number && b instanceof Number) return Number.multiply((Number)a, (Number)b, this.roundingRule);
 			else if(a instanceof Fraction && b instanceof Fraction){

@@ -26,7 +26,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({ ChangeSidesTest.class, CombineLikeTermsTest.class, 
-			MultiplyTest.class, DivideBothSidesTest.class })
+			MultiplyTest.class, DivideBothSidesTest.class, DistributeTest.class })
 public class AlgorithmTests {
 
 }

@@ -188,6 +188,7 @@ public class Solver {
 		case SIMPLIFY:
 			algorList.add(new CombineLikeTerms(round));
 			algorList.add(new Multiply(round));
+			algorList.add(new Distribute(round));
 		}
 		return algorList;
 	}
