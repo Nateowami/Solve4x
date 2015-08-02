@@ -74,7 +74,23 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 			AlgebraicParticle current = this.get(i);
 			//if the current element is the one we're supposed to replace
 			if(current == out){
-				return this.cloneWithNewElement(i, in);
+				// In cases like replacing 2x in 4+2x+3y with 4x+6, don't add it as 4+(4x+6)+3y, but 
+				// unwrap it so it's 4+(4x+6)+3y. Do likewise for Terms. Only applies if the sign is 
+				// the same as the sign of its parent.
+				if(in.getClass().equals(this.getClass()) && in.sign() == this.sign()) {
+					AlgebraicCollection collectionIn = (AlgebraicCollection) in;
+					ArrayList<AlgebraicParticle> elements = new ArrayList<AlgebraicParticle>(this.length() + collectionIn.length() - 1);
+					//add elements from before the replacement
+					for(int j = 0; j < i; j++) elements.add(this.get(j));
+					//add elements for the replacement
+					for(int j = 0; j < collectionIn.length(); j++) elements.add(collectionIn.get(j));
+					//add elements after the replacement
+					for(int j = i + 1; j < this.length(); j++) elements.add(this.get(j));
+					if(in instanceof Expression) return new Expression(in.sign(), elements.toArray(new AlgebraicParticle[elements.size()]), in.exponent());
+					else if(in instanceof Term) return new Term(in.sign(), elements, in.exponent());
+					else throw new RuntimeException("This wasn't supposed to happen. Throwing an exception won't help the least, but it's more helpful than a strange NPE.");
+				}
+				else return this.cloneWithNewElement(i, in);
 			}
 			//if the current one is NOT one we're supposed to replace, but it has children
 			else if(current instanceof AlgebraicCollection){

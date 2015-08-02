@@ -41,13 +41,17 @@ public class AlgebraicCollectionTest {
 	@Test
 	public void testReplace() {
 		Term t = (Term) a("2x(x+3)");
-		assertEquals("2x(y+3)", t.replace(((AlgebraicCollection)t.get(2)).get(0), a("y")).render());
+		assertEquals(a("2x(y+3)"), t.replace(((AlgebraicCollection)t.get(2)).get(0), a("y")));
+		assertEquals(a("2x3xy"), t.replace(((AlgebraicCollection)t.get(2)), a("3xy")));
+
 		Expression e = (Expression) a("2x+4(x+6)");
-		assertEquals("2x+4(x+z)", e.replace(((AlgebraicCollection)((AlgebraicCollection)e.get(1)).get(1)).get(1), a("z")).render());
-		assertEquals("4xy+4(x+6)", e.replace(((AlgebraicCollection)e.get(0)), a("4xy")).render());
-		assertEquals("2x+7(z+6)", e.replace(((AlgebraicCollection)e.get(1)), a("7(z+6)")).render());
+		assertEquals(a("2x+4(x+z)"), e.replace(((AlgebraicCollection)((AlgebraicCollection)e.get(1)).get(1)).get(1), a("z")));
+		assertEquals(a("4xy+4(x+6)"), e.replace(((AlgebraicCollection)e.get(0)), a("4xy")));
+		assertEquals(a("2x+7(z+6)"), e.replace(((AlgebraicCollection)e.get(1)), a("7(z+6)")));
+		assertEquals(a("2x+xy+4"), e.replace(((AlgebraicCollection)e.get(1)), a("xy+4")));
+		
 		Term t2 = new Term("5x");
-		assertEquals("x", t2.replace(t2, a("x")).render());
+		assertEquals(a("x"), t2.replace(t2, a("x")));
 	}
 	
 	/**
