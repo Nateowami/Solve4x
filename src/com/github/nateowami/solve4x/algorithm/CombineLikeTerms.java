@@ -51,7 +51,7 @@ public class CombineLikeTerms extends Algorithm {
 		Expression out = combineLikeTerms(expression.sign(), likeTerms, expression.exponent());
 		
 		//construct the solving step
-		Step step = new Step(unwrap(out));
+		Step step = new Step(removeZeros(out));
 		
 		//create the explanation
 		step.explain("We need to combine like terms here, in the expression ").explain(expression).explain(".\n");
@@ -62,6 +62,7 @@ public class CombineLikeTerms extends Algorithm {
 		return step;
 	}
 	
+
 	@Override
 	public int smarts(Algebra algebra) {
 		Expression expression = (Expression) algebra;
@@ -292,9 +293,12 @@ public class CombineLikeTerms extends Algorithm {
 	 * @return If a and b are like terms.
 	 */
 	protected boolean areCombinableTerms(AlgebraicParticle a, AlgebraicParticle b){
-		if(a.exponent() != 1 || b.exponent() != 1)return false;
+		if(a.exponent() == b.exponent() && a.almostEquals(b)) {
+			return true;
+		}
+		else if(a.exponent() != 1 || b.exponent() != 1)return false;
 		//if they're numbers, mixed numbers, or fractions with numbers on top and bottom
-		if(areCombinable(a, b))return true;
+		else if(areCombinable(a, b))return true;
 		//if they're identical variables
 		else if(a instanceof Variable && b instanceof Variable) return ((Variable)a).getVar() == (((Variable)b).getVar());
 		//if they're terms, and they're like
@@ -377,28 +381,21 @@ public class CombineLikeTerms extends Algorithm {
 	}
 	
 	/**
-	 * Tells how many less terms would exist in a if those that could be combined 
-	 * were combined. Includes nested expressions.
-	 * @param a An AlgebraicParticle to check for combinable terms
-	 * @return The number of terms that could disappear in the event of terms being combined.
+	 * Removes zeros from a given term. Afterwards, if there's only one term in the expression, that 
+	 * term is returned. If there are no terms, zero is returned.
+	 * @param expr The expression from which to remove zeros.
+	 * @return expr with zeros removed.
 	 */
-	private int numOfCombinableTerms(AlgebraicParticle a){
-		int total = 0;
-		if(a instanceof Expression){
-			Expression e = (Expression) a;
-			for(int i = 0; i < e.length(); i++){
-				total += numOfCombinableTerms(e.get(i));
-			}
-			return total + (e.length() - listCombinableTerms(e).size());
+	private Algebra removeZeros(Expression expr) {
+		ArrayList<AlgebraicParticle> nonZeros = new ArrayList<AlgebraicParticle>(expr.length());
+		for(int i = 0; i < expr.length(); i++) {
+			if(!expr.get(i).equals(Number.ZERO)) nonZeros.add(expr.get(i));
 		}
-		else if(a instanceof Term){
-			Term t = (Term) a;
-			for(int i = 0; i < t.length(); i++){
-				total += numOfCombinableTerms(t.get(i));
-			}
-			return total;
-		}
-		else return 0;
+		if(nonZeros.size() == 1) return nonZeros.get(0);
+		else if(nonZeros.size() == 0) return Number.ZERO;
+		//if there weren't zeros, don't allocate a new expression, just return the given one
+		else if(nonZeros.size() == expr.length()) return expr;
+		else return new Expression(expr.sign(), nonZeros.toArray(new AlgebraicParticle[nonZeros.size()]), expr.exponent());
 	}
 	
 }

@@ -45,6 +45,7 @@ public class CombineLikeTermsTest {
 		assertEquals(a("x"), c.execute(a("2x-x")).getChange());
 		assertEquals(a("-2x"), c.execute(a("-x-x")).getChange());
 		assertEquals(a("5x"), c.execute(a("2x+3x")).getChange());
+		assertEquals(a("10x+24"), c.execute(a("x²+10x+24-x²")).getChange());
 	}
 	
 	/**
@@ -60,6 +61,7 @@ public class CombineLikeTermsTest {
 		assertEquals(7, c.smarts(a("2+5")));
 		assertEquals(7, c.smarts(a("2x+5x")));
 		assertEquals(9, c.smarts(a("2x+6x+4-2+45x")));
+		assertEquals(7, c.smarts(a("x²+10x+24-x²")));
 		assertEquals(0, c.smarts(a("13x-2x3")));
 	}
 	
