@@ -91,9 +91,7 @@ public class Solver {
 			}
 			Solve4x.debug("currentSolutions.size() = " + currentSolutions.size());
 		}
-		
-		System.out.println(currentSolutions.size() > 0 && findSolution(currentSolutions, solveFor) == null);
-		
+				
 		//set finalSolution
 		finalSolution = findSolution(currentSolutions, solveFor);
 	}

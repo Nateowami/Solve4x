@@ -46,6 +46,14 @@ public class CombineLikeTermsTest {
 		assertEquals(a("-2x"), c.execute(a("-x-x")).getChange());
 		assertEquals(a("5x"), c.execute(a("2x+3x")).getChange());
 		assertEquals(a("10x+24"), c.execute(a("x²+10x+24-x²")).getChange());
+		assertEquals(a("-(5+x)²"), c.execute(a("-(3+2+x)²")).getChange());
+		assertEquals(a("-5²"), c.execute(a("-(3+2)²")).getChange());
+		
+		//assert that when the result is a number raised to a power it keeps it's power and the 
+		//expression's power is kept too
+		ArrayList<AlgebraicParticle> list = new ArrayList<AlgebraicParticle>();
+		list.add(a("3⁴"));
+		assertEquals(new Term(false, list, 2)/*-(3⁴)²*/, c.execute(a("-(3⁴-2+2)²")).getChange());
 	}
 	
 	/**
@@ -63,26 +71,6 @@ public class CombineLikeTermsTest {
 		assertEquals(9, c.smarts(a("2x+6x+4-2+45x")));
 		assertEquals(7, c.smarts(a("x²+10x+24-x²")));
 		assertEquals(0, c.smarts(a("13x-2x3")));
-	}
-	
-	/**
-	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CombineLikeTerms#combineLikeTerms(boolean, java.util.ArrayList, int)}.
-	 */
-	@Test
-	public void testCombineLikeTerms() {
-		ArrayList<ArrayList<AlgebraicParticle>> terms = new ArrayList<ArrayList<AlgebraicParticle>>();
-		ArrayList<AlgebraicParticle> a1 = new ArrayList<AlgebraicParticle>();
-		a1.add(a("2x"));
-		a1.add(a("7x"));
-		ArrayList<AlgebraicParticle> a2 = new ArrayList<AlgebraicParticle>();
-		a2.add(a("((1)/(5))y²"));
-		a2.add(a("3y²"));
-		ArrayList<AlgebraicParticle> a3 = new ArrayList<AlgebraicParticle>();
-		a3.add(a("6"));
-		terms.add(a1);
-		terms.add(a2);
-		terms.add(a3);
-		assertEquals(a("9x+(3(1)/(5))y²+6"), c.combineLikeTerms(true, terms, 1));
 	}
 	
 	/**

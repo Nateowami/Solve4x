@@ -43,21 +43,21 @@ public class CombineLikeTerms extends Algorithm {
 	@Override
 	public Step execute(Algebra algebra) {
 		//the expression to simplify
-		Expression expression = (Expression) algebra;
+		Expression expr = (Expression) algebra;
 		
 		//a list of lists of like terms to combine
-		ArrayList<ArrayList<AlgebraicParticle>> likeTerms = listCombinableTerms(expression);
-		//combine the terms and construct and expression
-		Expression out = combineLikeTerms(expression.sign(), likeTerms, expression.exponent());
+		ArrayList<ArrayList<AlgebraicParticle>> likeTerms = listCombinableTerms(expr);
+		ArrayList<AlgebraicParticle> combined = combineLikeTerms(likeTerms);
+		AlgebraicParticle out = constructExpression(expr.sign(), removeZeros(combined), expr.exponent());
 		
 		//construct the solving step
-		Step step = new Step(removeZeros(out));
+		Step step = new Step(out);
 		
 		//create the explanation
-		step.explain("We need to combine like terms here, in the expression ").explain(expression).explain(".\n");
+		step.explain("We need to combine like terms here, in the expression ").explain(expr).explain(".\n");
 		for(int i = 0; i < likeTerms.size(); i++){
 			if (likeTerms.get(i).size() > 1) //don't explain combining a single term with itself
-					step.explain("Combine ").list(likeTerms.get(i)).explain(" to get ").explain(out.get(i)).explain(".\n");
+					step.explain("Combine ").list(likeTerms.get(i)).explain(" to get ").explain(combined.get(i)).explain(".\n");
 		}
 		return step;
 	}
@@ -82,7 +82,7 @@ public class CombineLikeTerms extends Algorithm {
 	 * the expression the terms came from).
 	 * @return An expression with terms combined.
 	 */
-	protected  Expression combineLikeTerms(boolean sign, ArrayList<ArrayList<AlgebraicParticle>> terms, int exponent){
+	protected  ArrayList<AlgebraicParticle> combineLikeTerms(ArrayList<ArrayList<AlgebraicParticle>> terms){
 		ArrayList<AlgebraicParticle> combined = new ArrayList<AlgebraicParticle>(terms.size());
 		for(ArrayList<AlgebraicParticle> a : terms){
 			//combine everything into one
@@ -93,7 +93,7 @@ public class CombineLikeTerms extends Algorithm {
 			}
 			combined.add(term);
 		}
-		return new Expression(sign, combined.toArray(new AlgebraicParticle[combined.size()]), exponent);
+		return combined;
 	}
 	
 	/**
@@ -380,22 +380,42 @@ public class CombineLikeTerms extends Algorithm {
 		return false;
 	}
 	
+	private AlgebraicParticle constructExpression(boolean sign, ArrayList<AlgebraicParticle> list, int exponent) {
+		if(list.size() == 0) {
+			//if the exponent isn't one then it needs to be carried over to the number
+			if(exponent != 1) return Number.ZERO.cloneWithNewSignAndExponent(sign, exponent);
+			return Number.ZERO;
+		}
+		else if(list.size() == 1) {
+			AlgebraicParticle a = list.get(0);
+			boolean resultingSign = sign == a.sign();
+			//if sign and exponent are right already
+			if(exponent == 1 && a.sign() == resultingSign) return a;
+			else if((exponent == 1 || a.exponent() == 1)) {
+				// Set the sign, and exponent. At least one exponent is 1, so multiplying gives us 
+				// the one that isn't.
+				return a.cloneWithNewSignAndExponent(resultingSign, exponent * a.exponent());
+			}
+			// Neither exponent is 1. 
+			// Return a single-element term. Maybe a bad idea; not sure what to do.
+			else {
+				return new Term(resultingSign, list, exponent);
+			}
+		}
+		else return new Expression(sign, list.toArray(new AlgebraicParticle[list.size()]), exponent);
+	}
+	
 	/**
-	 * Removes zeros from a given term. Afterwards, if there's only one term in the expression, that 
-	 * term is returned. If there are no terms, zero is returned.
-	 * @param expr The expression from which to remove zeros.
+	 * Removes zeros from an ArrayList of AlgebraicParticles. 
+	 * @param combined The expression from which to remove zeros.
 	 * @return expr with zeros removed.
 	 */
-	private Algebra removeZeros(Expression expr) {
-		ArrayList<AlgebraicParticle> nonZeros = new ArrayList<AlgebraicParticle>(expr.length());
-		for(int i = 0; i < expr.length(); i++) {
-			if(!expr.get(i).equals(Number.ZERO)) nonZeros.add(expr.get(i));
+	private ArrayList<AlgebraicParticle> removeZeros(ArrayList<AlgebraicParticle> list) {
+		ArrayList<AlgebraicParticle> removed = new ArrayList<AlgebraicParticle>(list.size());
+		for(AlgebraicParticle a : list) {
+			if(!a.equals(Number.ZERO)) removed.add(a);
 		}
-		if(nonZeros.size() == 1) return nonZeros.get(0);
-		else if(nonZeros.size() == 0) return Number.ZERO;
-		//if there weren't zeros, don't allocate a new expression, just return the given one
-		else if(nonZeros.size() == expr.length()) return expr;
-		else return new Expression(expr.sign(), nonZeros.toArray(new AlgebraicParticle[nonZeros.size()]), expr.exponent());
+		return removed;
 	}
 	
 }
