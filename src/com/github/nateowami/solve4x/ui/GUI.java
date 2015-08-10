@@ -1,6 +1,6 @@
 /*
     Solve4x - An algebra solver that shows its work
-    Copyright (C) 2014 Solve4x project
+    Copyright (C) 2015  Nathaniel Paulus
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -457,7 +457,7 @@ public class GUI {
         //set a background color
         MainFrame.setBackground(new Color(230, 230, 230));
         //set the title of the window
-        MainFrame.setTitle("Solve4x - An Audio-Visual Algebra Solver");
+        MainFrame.setTitle("Solve4x");
         //make the window visible
         MainFrame.setVisible(true);
 

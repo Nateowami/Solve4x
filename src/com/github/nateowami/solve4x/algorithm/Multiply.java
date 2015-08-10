@@ -1,6 +1,6 @@
 /*
     Solve4x - An algebra solver that shows its work
-    Copyright (C) 2014 Solve4x project
+    Copyright (C) 2015  Nathaniel Paulus
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
