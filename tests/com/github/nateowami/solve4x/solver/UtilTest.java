@@ -143,4 +143,23 @@ public class UtilTest {
 		assertEquals("₈₄", Util.toSubscript("84"));
 	}
 	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Util#PrimeFactors(long)}.
+	 */
+	@Test
+	public void testPrimeFactors() {
+		assertArrayEquals(new Long[]{3L, 7L}, Util.primeFactors(21));
+		assertArrayEquals(new Long[]{3L, 3L, 3L, 3L}, Util.primeFactors(81));
+		assertArrayEquals(new Long[]{3L, 3L, 5L, 13L}, Util.primeFactors(585));
+		assertArrayEquals(new Long[]{2L, 3L, 112139L}, Util.primeFactors(672834));
+		assertArrayEquals(new Long[]{3L, 11L, 89L}, Util.primeFactors(2937));
+
+		assertArrayEquals(new Long[]{1L}, Util.primeFactors(1));
+		assertArrayEquals(new Long[]{2L}, Util.primeFactors(2));
+		assertArrayEquals(new Long[]{3L}, Util.primeFactors(3));
+		assertArrayEquals(new Long[]{2L, 2L}, Util.primeFactors(4));
+		assertArrayEquals(new Long[]{5L}, Util.primeFactors(5));
+		assertArrayEquals(new Long[]{2L, 3L}, Util.primeFactors(6));
+	}
+	
 }

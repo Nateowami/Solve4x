@@ -225,5 +225,23 @@ public class Util {
 		return a.exponent() == 1 && (a instanceof Number || a instanceof Fraction && ((Fraction)a).constant()
 				|| a instanceof MixedNumber && ((MixedNumber)a).getFraction().constant());
 	}
-		
+	
+	/**
+	 * Calculates prime factors for a given number, from smallest to largest.
+	 * @param num The number to calculate prime factors for.
+	 * @return All prime factors of num. 
+	 */
+	public static Long[] primeFactors(long num) {
+		ArrayList<Long> primes = new ArrayList<Long>(1);
+		for(long i = 2; i*i <= num;) {
+			if(num % i == 0) {
+				primes.add((Long)i);
+				num /= i;
+			}
+			else i++;
+		}
+		primes.add(num);
+		return primes.toArray(new Long[primes.size()]);
+	}
+	
 }
