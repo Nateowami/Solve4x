@@ -104,8 +104,8 @@ public class FractionTest {
 	public void testIsSimplified()  {
 		assertTrue(new Fraction("(2)/(3)").isSimplified());
 		assertTrue(new Fraction("(1)/(89)").isSimplified());
-		assertTrue(new Fraction("(-8)/(9)").isSimplified());
 		
+		assertFalse(new Fraction("(-8)/(9)").isSimplified());
 		assertFalse(new Fraction("(1)/(-12)").isSimplified());
 		assertFalse(new Fraction("(2)/(8)").isSimplified());
 		assertFalse(new Fraction("(3)/(12)").isSimplified());
