@@ -187,6 +187,7 @@ public class Solver {
 			algorList.add(new CombineLikeTerms(round));
 			algorList.add(new Multiply(round));
 			algorList.add(new Distribute(round));
+			algorList.add(new Divide(round));
 		}
 		return algorList;
 	}
