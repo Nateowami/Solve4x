@@ -106,48 +106,74 @@ public class Number extends AlgebraicParticle{
 	}	
 	
 	/**
-	 * Adds two numbers.
+	 * Adds two numbers. If you want to subtract, make the second number negative and add.
 	 * @param n1 The first number to add.
 	 * @param n2 The second number to add.
-	 * @param r The rounding rules to use when adding.
+	 * @param round The rounding rules to use when adding.
 	 * @return The value of the two numbers added.
 	 * @throws IllegalArgumentException
 	 */
-	public static Number add(Number n1, Number n2, RoundingRule r) throws IllegalArgumentException{
+	public static Number add(Number n1, Number n2, RoundingRule round) throws IllegalArgumentException{
 		//create the decimals and add
 		BigDecimal a = n1.toBigDecimal();
 		BigDecimal b = n2.toBigDecimal();
 		BigDecimal result = a.add(b);
 		
-		if(r.isCannedRule()){
-			if(shouldUsePrecisionRules(r, n1, n2)){
+		if(round.isCannedRule()){
+			if(shouldUsePrecisionRules(round, n1, n2)){
 				//use the smaller of the two scales
 				return toNumber(result.setScale(a.scale() > b.scale() ? b.scale() : a.scale(), RoundingMode.HALF_UP));
 			}
-			//don't use precision rules
-			else{
-				//use the greater scale
-				return toNumber(result);
-			}
+			//don't use precision rules; use the greater scale
+			else return toNumber(result);
 		}
 		//it's a custom rule, with r.getValue() the max number of significant decimal places to leave
 		else{
 			//use whichever is smaller of r.getValue() and result.scale()
-			return toNumber(result.setScale(r.getValue() < result.scale() ? r.getValue() : result.scale(), RoundingMode.HALF_UP));
+			return toNumber(result.setScale(round.getValue() < result.scale() ? round.getValue() : result.scale(), RoundingMode.HALF_UP));
 		}
 	}
 	
 	/**
-	 * @param number
-	 * @param number2
-	 * @param all
-	 * @return
+	 * Multiplies n1 by n2 and returns the result.
+	 * @param n1 The first number to multiply by.
+	 * @param n2 The second number ot multiply by.
+	 * @param round The RoundingRule to govern rounding.
+	 * @return n1 multiplied by n2.
 	 */
 	public static Number multiply(Number n1, Number n2, RoundingRule round) {
+		return multiplyOrDivide(n1, n2, round, true);
+	}
+	
+	/**
+	 * Divides n1 by n2 and returns the result.
+	 * @param n1 The dividend.
+	 * @param n2 The divisor.
+	 * @param round The RoundingRule to govern rounding.
+	 * @return n1 divided by n2.
+	 */
+	public static Number divide(Number n1, Number n2, RoundingRule round) {
+		return multiplyOrDivide(n1, n2, round, false);
+	}
+	
+	/**
+	 * Multiply or divide n1 and n2. It may seem odd to combine the two in one method, however the 
+	 * bulk of the logic is identical because the actual multiplying or dividing is handled by 
+	 * the BigDecimal class (Think in terms of significant figures). If multiplyOrDivide is true, 
+	 * multiplication is carried out. Otherwise n1 is divided by n2. The rounding rules are those 
+	 * specified by round.
+	 * @param n1 The first number to multiply, or the numerator.
+	 * @param n2 The second number to multiply, or the divisor.
+	 * @param round The rounding rule to use.
+	 * @param multiplyOrDivide Indicates whether division or multiplication should be carried out.
+	 * True indicates multiplication, while false indicates division.
+	 * @return A multiplied or divided by B.
+	 */
+	private static Number multiplyOrDivide(Number n1, Number n2, RoundingRule round, boolean multiplyOrDivide) {
 		//create the decimals and multiply
 		BigDecimal a = n1.toBigDecimal();
 		BigDecimal b = n2.toBigDecimal();
-		BigDecimal result = a.multiply(b);
+		BigDecimal result = multiplyOrDivide ? a.multiply(b) : a.divide(b);
 		
 		//if it's a canned rule
 		if(round.isCannedRule()){
@@ -157,9 +183,7 @@ public class Number extends AlgebraicParticle{
 				return toNumber(result.setScale(result.scale() + sigFigs - result.precision(), RoundingMode.HALF_UP));
 			}
 			//leave full insignificant figures (i.e., 2.2 * 1.2 = 2.64, rather than 2.6)
-			else{
-				return toNumber(result);
-			}
+			else return toNumber(result);
 		}
 		//leave as many decimal places as specified by round.getValue(), but dont' add extra zeros
 		else{
@@ -265,6 +289,15 @@ public class Number extends AlgebraicParticle{
 	 */
 	public String getDecimal() {
 		return decimal;
+	}
+	
+	/**
+	 * Tells if this Number is an integer, that is, that it has no decimal part and is not in 
+	 * scientific notation.
+	 * @return True if this number is an integer, otherwise false.
+	 */
+	public boolean isInteger() {
+		return this.decimal == null && this.sciExponent == null;
 	}
 	
 	/**
