@@ -17,7 +17,7 @@
  */
 package com.github.nateowami.solve4x.solver;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
@@ -57,6 +57,16 @@ public class EquationTest {
 	public void testRender()  {
 		Equation eq = new Equation("12x2y4(34+6xa(43x2+6+1(43)))=45+6x(4+85xy5)");
 		assertEquals("12x2y4(34+6xa(43x2+6+1(43)))=45+6x(4+85xy5)", eq.render());
+	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Equation#parsable(java.lang.String)}.
+	 * @ 
+	 */
+	@Test
+	public void testParsable()  {
+		assertTrue(Equation.parsable("2x=4"));
+		assertFalse(Equation.parsable("(2(xy-14)z)/((xy-14)6z)"));
 	}
 	
 	/**

@@ -71,6 +71,7 @@ public class Equation implements Algebra {
 	 */
 	public static boolean parsable(String eq){
 		int i = eq.indexOf('=');
+		if(i == -1) return false;
 		return AlgebraicParticle.parsable(eq.substring(0, i)) && AlgebraicParticle.parsable(eq.substring(i+1));
 	}
 	

@@ -56,7 +56,7 @@ public abstract class AlgebraicParticle implements Algebra, Cloneable {
 	public int exponent(){
 		return this.exponent;
 	}
-		
+	
 	/**
 	 * Constructs a new AlgebraicParticle and returns it. May be a Variable Number, Root, Fraction, Fraction, MixedNumber, Term, or Expression.
 	 * @param s The string to parse as an AlgebraicParticle.
