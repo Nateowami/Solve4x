@@ -27,9 +27,9 @@ import com.github.nateowami.solve4x.solver.*;
 /**
  * @author Nateowami
  */
-public class DivideTest {
+public class CancelFactorsTest {
 	
-	Divide d = new Divide(RoundingRule.FOR_SCIENTIFIC_NOTATION);
+	CancelFactors d = new CancelFactors();
 	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.algorithm.Divide#execute(com.github.nateowami.solve4x.solver.Algebra)}.
@@ -49,6 +49,7 @@ public class DivideTest {
 		assertEquals(a("4"), d.execute(a("(4)/(1)")).getChange());
 		assertEquals(a("4"), d.execute(a("-(4)/(-1)")).getChange());
 		assertEquals(a("4.2x²").render(), d.execute(a("(4.2x³)/(x)")).getChange().render());
+		assertEquals(a("(x+y)/(4)").render(), d.execute(a("(1(x+y)z)/(4z)")).getChange().render());
 	}
 
 	/**

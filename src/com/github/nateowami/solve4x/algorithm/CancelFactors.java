@@ -32,17 +32,13 @@ import com.github.nateowami.solve4x.solver.Number;
 /**
  * @author Nateowami
  */
-public class Divide extends Algorithm {
-	
-	private final RoundingRule roundingRule;
-	
+public class CancelFactors extends Algorithm {
+		
 	/**
 	 * Constructs a new Divide algorithm.
-	 * @param round The RoundingRule to use when dividing.
 	 */
-	public Divide(RoundingRule round) {
+	public CancelFactors() {
 		super(Fraction.class);
-		this.roundingRule = round;
 	}
 	
 	@Override
@@ -68,8 +64,8 @@ public class Divide extends Algorithm {
 			int resultNumBottom = numBottom - numToCancel;
 			
 			//set the new coefficient for every factor (canceling)
-			factorsTop.put(element, resultNumTop);  //add(element.cloneWithNewSignAndExponent(true, resultNumTop));
-			factorsBottom.put(element, resultNumBottom); //resultBottom.add(element.cloneWithNewSignAndExponent(true, resultNumBottom));
+			factorsTop.put(element, resultNumTop);
+			factorsBottom.put(element, resultNumBottom);
 		}
 		
 		//calculate the sign for the terms
@@ -77,9 +73,8 @@ public class Divide extends Algorithm {
 		sign = sign == frac.sign();
 		
 		//remove -1 & 1 from factors (if necessary) (have already tracked -1, so can ignore now)
-		factorsTop.remove(Number.NEGATIVE_ONE); //factorsTop.remove(Number.ONE);
-		factorsBottom.remove(Number.NEGATIVE_ONE); //factorsBottom.remove(Number.ONE);
-		//TODO not sure if those Number.ONE 's need to get removed or not. time will tell. I don't think it's necessary
+		factorsTop.remove(Number.NEGATIVE_ONE);
+		factorsBottom.remove(Number.NEGATIVE_ONE);
 		
 		//we factored integers; now multiply the ones that didn't cancel
 		multiplyIntegers(factorsTop);
