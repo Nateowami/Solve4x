@@ -150,8 +150,9 @@ public class Root extends AlgebraicParticle{
 	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
 	 */
 	@Override
-	public AlgebraicParticle cloneWithNewSign(Boolean sign) {
-		return new Root(sign == null ? this.sign() : sign,
+	public Root cloneWithNewSign(boolean sign) {
+		if(this.sign() == sign) return this;
+		return new Root(sign,
 				this.nthRoot,
 				this.expr,
 				this.exponent()

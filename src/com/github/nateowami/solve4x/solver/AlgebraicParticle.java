@@ -296,12 +296,12 @@ public abstract class AlgebraicParticle implements Algebra, Cloneable {
 	}
 	
 	/**
-	 * Clones the AlgebraicParticle with a new sign.
-	 * @param sign The sign for the new AlgebraicParticle. May be null, in which case the current sign will be used.
-	 * @return An almost-clone of AlgebraicParticle.
-	 * TODO this doesn't need to be defined in subclasses; see cloneWithNewSignAndExponent(boolean,sign)
+	 * Clones the AlgebraicParticle with a new sign. If the sign already equals the specified sign, 
+	 * implementations should simply return this instance rather than clone.
+	 * @param sign The sign for the new AlgebraicParticle.
+	 * @return An pseudo-clone of this AlgebraicParticle.
 	 */
-	public abstract AlgebraicParticle cloneWithNewSign(Boolean sign);
+	public abstract AlgebraicParticle cloneWithNewSign(boolean sign);
 	
 	/**
 	 * Tells if a equals this, without regard for signs or powers.
@@ -353,13 +353,16 @@ public abstract class AlgebraicParticle implements Algebra, Cloneable {
 	}
 	
 	/**
-	 * Makes a psudo-clone this object (psudo in that a variable or two may be changed, though not 
-	 * necessarily), optionally modifying two variables, sign and exponent.
+	 * Makes a clone of this object and sets the sign and exponent of the clone to the specified 
+	 * sign and exponent. If the sign and exponent are already at the specified values, no clone 
+	 * will occur, and this instance will simply be returned.
 	 * @param sign The sign of the returned object (if null, defaults to the sign of this).
 	 * @param exponent The exponent of the returned object (if null, defaults to the exponent of this).
-	 * @return A psudo-clone of this object
+	 * @return A pseudo-clone of this object
 	 */
 	public AlgebraicParticle cloneWithNewSignAndExponent(Boolean sign, Integer exponent){
+		//checks for null necessary otherwise auto unboxing will cause NullPointerException
+		if((sign == null || this.sign == sign) && (exponent  == null || this.exponent == exponent)) return this;
 		try {
 			AlgebraicParticle copy = (AlgebraicParticle) this.clone();
 			copy.sign = sign == null ? this.sign : sign;
@@ -370,5 +373,5 @@ public abstract class AlgebraicParticle implements Algebra, Cloneable {
 			throw new RuntimeException(e);
 		}
 	}
-		
+	
 }

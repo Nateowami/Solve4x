@@ -258,8 +258,9 @@ public class Number extends AlgebraicParticle{
 	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
 	 */
 	@Override
-	public Number cloneWithNewSign(Boolean sign){
-		return new Number(sign == null ? this.sign() : sign, 
+	public Number cloneWithNewSign(boolean sign){
+		if(this.sign() == sign) return this;
+		return new Number(sign, 
 				this.integer, 
 				this.decimal, 
 				this.sciExponent,

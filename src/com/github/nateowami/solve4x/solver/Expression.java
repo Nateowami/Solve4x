@@ -75,6 +75,10 @@ public class Expression extends AlgebraicCollection{
 		return termList.get(i);
 	}
 	
+	public ArrayList<AlgebraicParticle> toList(){
+		return (ArrayList<AlgebraicParticle>) this.termList.clone();
+	}
+	
 	/**
 	 * Fetches the expression in the form of a String.
 	 * This should not be used in most situations.
@@ -108,9 +112,9 @@ public class Expression extends AlgebraicCollection{
 	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
 	 */
 	@Override
-	public Expression cloneWithNewSign(Boolean sign) {
-		//construct a new expresion with the given sign (if given) and the current other fields
-		return new Expression(sign == null ? this.sign() : sign, 
+	public Expression cloneWithNewSign(boolean sign) {
+		if(this.sign() == sign) return this;
+		return new Expression(sign, 
 				this.termList.toArray(new AlgebraicParticle[this.termList.size()]),
 				this.exponent()
 				);

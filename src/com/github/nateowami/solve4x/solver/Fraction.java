@@ -182,8 +182,9 @@ public class Fraction extends AlgebraicParticle{
 	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
 	 */
 	@Override
-	public Fraction cloneWithNewSign(Boolean sign) {
-		return new Fraction(sign == null ? this.sign() : sign,
+	public Fraction cloneWithNewSign(boolean sign) {
+		if(this.sign() == sign) return this;
+		return new Fraction(sign,
 				this.top,
 				this.bottom,
 				this.exponent()

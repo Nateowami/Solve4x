@@ -155,8 +155,11 @@ public class AlgebraicParticleTest {
 	 */
 	@Test
 	public void cloneWithNewSignAndExponent() {
-		assertEquals(a("-2x"), a("2x").cloneWithNewSignAndExponent(false, null));
+		assertEquals(a("-2x").render(), a("2x").cloneWithNewSignAndExponent(false, null).render());
 		assertEquals(a("-(4(3-5))⁹"), a("-4(3-5)").cloneWithNewSignAndExponent(null, 9));
+		
+		AlgebraicParticle same = a("-4(3-5)");
+		assertSame(same, same.cloneWithNewSignAndExponent(false, 1));
 	}
 	
 	AlgebraicParticle a(String s){

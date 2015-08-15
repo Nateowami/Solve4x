@@ -166,4 +166,12 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 	 */
 	public abstract AlgebraicCollection cloneAndRemove(int i);
 	
+	/**
+	 * Converts this AlgebraicCollection to an ArrayList&lt;AlgebraicParticle&gt;. Naturally the 
+	 * sign and exponent cannot be included in such a list. Because AlgebraicCollections should be  
+	 * immutable, the list should be cloned so the instance cannot be modified in any way.
+	 * @return The AlgebraicCollection converted to an ArrayList of AlgebraicParticles.
+	 */
+	public abstract ArrayList<AlgebraicParticle> toList();
+		
 }

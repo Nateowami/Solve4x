@@ -75,6 +75,10 @@ public class Term extends AlgebraicCollection{
 		return this.parts.size();
 	}
 	
+	public ArrayList<AlgebraicParticle> toList() {
+		return (ArrayList<AlgebraicParticle>) this.parts.clone();
+	}
+	
 	/**
 	 * @return the first AlgebraicParticle of this term if it is constant (Number, MixedNumber,
 	 * or Fraction with top and bottom constant), otherwise one, with the same sign as this term.
@@ -191,8 +195,9 @@ public class Term extends AlgebraicCollection{
 	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
 	 */
 	@Override
-	public AlgebraicParticle cloneWithNewSign(Boolean sign) {
-		return new Term(sign == null ? this.sign() : sign,
+	public Term cloneWithNewSign(boolean sign) {
+		if(this.sign() == sign) return this;
+		else return new Term(sign,
 				this.parts,
 				this.exponent()
 				);

@@ -87,8 +87,9 @@ public class Variable extends AlgebraicParticle{
 	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
 	 */
 	@Override
-	public AlgebraicParticle cloneWithNewSign(Boolean sign) {
-		return new Variable(sign == null ? this.sign() : sign,
+	public Variable cloneWithNewSign(boolean sign) {
+		if(this.sign() == sign) return this;
+		return new Variable(sign,
 				this.var,
 				this.exponent()
 				);

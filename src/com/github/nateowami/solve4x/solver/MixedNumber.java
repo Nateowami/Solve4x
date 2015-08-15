@@ -121,8 +121,9 @@ public class MixedNumber extends AlgebraicParticle{
 	 * @see com.github.nateowami.solve4x.solver.AlgebraicParticle#cloneWithNewSign(java.lang.Boolean)
 	 */
 	@Override
-	public MixedNumber cloneWithNewSign(Boolean sign) {
-		return new MixedNumber(sign == null ? this.sign() : sign,
+	public MixedNumber cloneWithNewSign(boolean sign) {
+		if(this.sign() == sign) return this;
+		return new MixedNumber(sign,
 				this.numeral,
 				this.fraction,
 				this.exponent()
