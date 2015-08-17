@@ -17,9 +17,7 @@
  */
 package com.github.nateowami.solve4x.visual;
 
-import com.github.nateowami.solve4x.solver.AlgebraicParticle;
-import com.github.nateowami.solve4x.solver.Solution;
-import com.github.nateowami.solve4x.solver.Step;
+import com.github.nateowami.solve4x.solver.*;
 
 /**
  * A renderer for Solve4x equations. Currently outputs to the console.
@@ -52,11 +50,11 @@ public class Visual {
 	 * @param step The step to print
 	 */
 	private static void printStep(Step step){
-		//now print the explanation, which has strings and AlgebraicParticles
+		//now print the explanation, which has strings and Algebra
 		for(int i = 0; i < step.getExplanation().size(); i++){
 			Object o = step.getExplanation().get(i);
 			if(o instanceof String) System.out.print(o);
-			else System.out.print(((AlgebraicParticle)o).render());
+			else System.out.print(((Algebra)o).render());
 		}
 		System.out.println();
 		System.out.println("\t" + step.getAlgebraicExpression().render());

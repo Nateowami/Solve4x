@@ -85,13 +85,13 @@ public class Step {
 	}
 	
 	/**
-	 * Appends the given AlgebraicParticle a to the explanation. This is useful, if, for 
+	 * Appends the given Algebra a to the explanation. This is useful, if, for 
 	 * example, you need an explanation such as "combine 2x(3+4) and 2y". That way, algebra 
 	 * can be rendered however later. 
-	 * @param a The AlgebraicParticle to append.
+	 * @param a The Algebra to append.
 	 * @return Returns this so you can chain methods.
 	 */
-	public Step explain(AlgebraicParticle a){
+	public Step explain(Algebra a){
 		this.explanation.add(a);
 		return this;
 	}

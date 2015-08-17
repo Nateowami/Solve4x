@@ -182,6 +182,7 @@ public class Solver {
 		case SOLVE:
 			algorList.add(new ChangeSides());
 			algorList.add(new DivideBothSides());
+			algorList.add(new MultiplyBothSides());
 		case FACTOR:
 		case SIMPLIFY:
 			algorList.add(new CombineLikeTerms(round));
