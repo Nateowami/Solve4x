@@ -233,6 +233,14 @@ public class Util {
 	 */
 	public static Long[] primeFactors(long num) {
 		ArrayList<Long> primes = new ArrayList<Long>(1);
+		
+		//watch for negative numbers
+		if(num < 0) {
+			primes.add(-1L);
+			//just for fun let's pretend there's a =- operator! (this is equivalent to num*=-1)
+			num =- num;
+		}
+		
 		for(long i = 2; i*i <= num;) {
 			if(num % i == 0) {
 				primes.add((Long)i);

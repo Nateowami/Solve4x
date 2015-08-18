@@ -160,6 +160,7 @@ public class UtilTest {
 		assertArrayEquals(new Long[]{2L, 2L}, Util.primeFactors(4));
 		assertArrayEquals(new Long[]{5L}, Util.primeFactors(5));
 		assertArrayEquals(new Long[]{2L, 3L}, Util.primeFactors(6));
+		assertArrayEquals(new Long[]{-1L, 3L, 11L, 89L}, Util.primeFactors(-2937));
 	}
 	
 }

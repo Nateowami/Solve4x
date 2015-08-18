@@ -19,10 +19,13 @@ package com.github.nateowami.solve4x.algorithm;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+
 import org.junit.Test;
 
 import com.github.nateowami.solve4x.config.RoundingRule;
 import com.github.nateowami.solve4x.solver.*;
+import com.github.nateowami.solve4x.solver.Number;
 
 /**
  * @author Nateowami
@@ -32,7 +35,7 @@ public class CancelFactorsTest {
 	CancelFactors d = new CancelFactors();
 	
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.algorithm.Divide#execute(com.github.nateowami.solve4x.solver.Algebra)}.
+	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CancelFactorsTest#execute(com.github.nateowami.solve4x.solver.Algebra)}.
 	 */
 	@Test
 	public void testExecute() {
@@ -48,12 +51,12 @@ public class CancelFactorsTest {
 		assertEquals(a("-4"), d.execute(a("(4)/(-1)")).getChange());
 		assertEquals(a("4"), d.execute(a("(4)/(1)")).getChange());
 		assertEquals(a("4"), d.execute(a("-(4)/(-1)")).getChange());
-		assertEquals(a("4.2x²").render(), d.execute(a("(4.2x³)/(x)")).getChange().render());
-		assertEquals(a("(x+y)/(4)").render(), d.execute(a("(1(x+y)z)/(4z)")).getChange().render());
+		assertEquals(a("4.2x²"), d.execute(a("(4.2x³)/(x)")).getChange());
+		assertEquals(a("(x+y)/(4)"), d.execute(a("(1(x+y)z)/(4z)")).getChange());
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.algorithm.Divide#smarts(com.github.nateowami.solve4x.solver.Algebra)}.
+	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CancelFactorsTest#smarts(com.github.nateowami.solve4x.solver.Algebra)}.
 	 */
 	@Test
 	public void testSmarts() {
@@ -69,6 +72,17 @@ public class CancelFactorsTest {
 		assertEquals(0, d.smarts(a("(34xy³)/(az(4+x))")));
 		assertEquals(0, d.smarts(a("(5)/(3)")));
 		assertEquals(0, d.smarts(a("(5)/(8)")));
+	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.algorithm.CancelFactorsTest#factors()}.
+	 */
+	@Test
+	public void testFactors() {
+		HashMap<AlgebraicParticle, Integer> map = new HashMap<AlgebraicParticle, Integer>();
+		map.put(a("2"), 1);
+		map.put(Number.NEGATIVE_ONE, 1);
+		assertEquals(map, CancelFactors.factors(a("-2")));
 	}
 	
 	AlgebraicParticle a(String s) {

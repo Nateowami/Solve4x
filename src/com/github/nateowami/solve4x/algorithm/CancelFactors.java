@@ -96,11 +96,13 @@ public class CancelFactors extends Algorithm {
 
 		AlgebraicParticle[] commonFactorsArray = commonFactors.toArray(new AlgebraicParticle[commonFactors.size()]);
 		//if there were factors, explain. There aren't always factors; e.g. 4/1 simplifies to 4
-		if(commonFactorsArray.length != 0) {
-			step.explain("In the fraction ").explain(frac).explain(" the common factors are ")
+		int count = commonFactorsArray.length;
+		if(count != 0) {
+			step.explain("In the fraction ").explain(frac)
+			.explain(" the common factor" + (count == 1 ? " is " : "s are "))
 			.list(commonFactorsArray).explain(". Dividing top and bottom by ");
 			//specify the term to divide by if there's only 1, otherwise just say "these"
-			if(commonFactorsArray.length == 1) step.explain(commonFactorsArray[0]);
+			if(count == 1) step.explain(commonFactorsArray[0]);
 			else step.explain("these");
 			step.explain(" leaves ").explain(result).explain(".");
 		}
@@ -138,7 +140,7 @@ public class CancelFactors extends Algorithm {
 	 * @param algebra The AlgebraicParticle to factor.
 	 * @return The factors of algebra in a map paring each with the number of times it appears.
 	 */
-	private static Map<AlgebraicParticle, Integer> factors(AlgebraicParticle algebra){
+	protected static Map<AlgebraicParticle, Integer> factors(AlgebraicParticle algebra){
 		HashMap<AlgebraicParticle, Integer> factors = new HashMap<AlgebraicParticle, Integer>();
 		if(algebra instanceof Term){
 			Term term = (Term) algebra;
@@ -166,23 +168,28 @@ public class CancelFactors extends Algorithm {
 	 * will be either added or removed from the map, depending on whether one currently exists in 
 	 * the map. Thus, there will always be either 1 or 0 instances of -1 in the map, and if it 
 	 * exits, it will always be paired with an exponent of 1 (indicating that there is only one in 
-	 * existence).
+	 * existence). Adding -1 to the map simply results in the -1 being toggled onto or off of the 
+	 * map. Adding 1 has no effect.
 	 * @param map The map to which to add algebra to.
 	 * @param algebra The AlgebraicParticle to add to the map.
 	 */
 	private static void addToMap(Map<AlgebraicParticle, Integer> map, AlgebraicParticle algebra){
 		boolean sign = algebra.sign();
 		int exponent = algebra.exponent();
-		if(exponent != 1 || !sign) algebra = algebra.cloneWithNewSignAndExponent(true, 1);
 		
-		if(map.containsKey(algebra)) {
-			map.put(algebra, map.get(algebra) + exponent);
-		}
-		else map.put(algebra, exponent);
 		if(!sign) {
-			//can have 1 or 0 elements that are -1
+			//it's negative, so toggle the -1
 			if(map.containsKey(Number.NEGATIVE_ONE)) map.remove(Number.NEGATIVE_ONE);
 			else map.put(Number.NEGATIVE_ONE, 1);
+			//now make the sign positive
+		}
+		
+		algebra = algebra.cloneWithNewSignAndExponent(true, 1);
+		
+		//if it's not just a 1 (or a 1 to any power), add it to the map (or update the exponent in the map)
+		if(!algebra.equals(Number.ONE)) {
+			if(map.containsKey(algebra)) map.put(algebra, map.get(algebra) + exponent);
+			else map.put(algebra, exponent);
 		}
 	}
 	
