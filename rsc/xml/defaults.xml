@@ -5,15 +5,10 @@
     <style id="defaultPanelStyle">
         <opaque value="false" />
         <insets top="2" left="2" right="3" bottom="3" />
-
-        <state>
-            <color value="#FFFFFF" type="BACKGROUND" />
-        </state>
     </style>
     <bind style="defaultPanelStyle" type="region" key="Panel" />
     <!-- End Default Panel Style -->
-
-
+	
     <!-- Default Button Style -->
     <style id="defaultButtonStyle">
         <opaque value="false" />
@@ -38,18 +33,15 @@
     <bind style="defaultButtonStyle" type="region" key="Button" />
     <!-- End Default Button Style -->
 
-
     <!-- Default TextField Style -->
     <style id="textFieldStyle">
         <opaque value="false" />
         <insets top="7" left="3" right="8" bottom="11" />
         <state>
             <font name="SansSerif" size="16" style="BOLD" />
-            <color value="#CF0000" type="BACKGROUND" />
             <painter method="textFieldBackground" idref="myPainter" />
         </state>
         <state value="FOCUSED">
-            <color value="#BB0000" type="BACKGROUND" />
             <painter method="textFieldBackground" idref="myPainter" />
         </state>
     </style>

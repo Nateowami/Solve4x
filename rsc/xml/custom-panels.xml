@@ -1,7 +1,7 @@
 <synth>
 	<object id="roundPainter" class="com.github.nateowami.solve4x.ui.CustomPainter" />
 
-	<!-- Solver Panel Style -->
+	<!-- Solver Panel Style (for input and solve button) -->
 	<style id="solvePanelStyle">
 		<opaque value="false" />
 		<insets top="7" left="10" right="7" bottom="7" />
@@ -13,56 +13,14 @@
 	</style>
 	<bind style="solvePanelStyle" type="name" key="Panel.solve" />
 	<!-- End Solver Panel Style -->
-
-	<!-- Playback Controls Panel Style -->
-	<style id="playbackControlsPanelStyle">
-		<opaque value="false" />
-		<insets top="5" left="5" right="4" bottom="4" />
-
-		<state>
-			<color value="#00EE22" type="BACKGROUND" />
-			<painter method="panelBackground" idref="roundPainter" />
-		</state>
-	</style>
-	<bind style="playbackControlsPanelStyle" type="name" key="Panel.playbackControls" />
-	<!-- End Playback Controls Panel Style -->
 	
-		<!-- Slider Panel Style -->
-	<style id="sliderPanelStyle">
-		<opaque value="false" />
-		<insets top="0" left="5" right="10" bottom="6" />
-
-		<state>
-			<color value="#00BB22" type="BACKGROUND" />
-			<painter method="panelBackground" idref="roundPainter" />
-		</state>
-	</style>
-	<bind style="sliderPanelStyle" type="name" key="Panel.slider" />
-	<!-- Slider Controls Panel Style -->
-
-	
-	
-	<!-- Info Panel Style -->
-	<style id="infoPanelStyle">
-		<opaque value="false" />
-		<insets top="7" left="7" right="7" bottom="7" />
-
-		<state>
-			<color value="#222222" type="BACKGROUND" />
-			<painter method="panelBackground" idref="roundPainter" />
-		</state>
-	</style>
-	<bind style="infoPanelStyle" type="name" key="Panel.info" />
-	<!-- End Info Panel Style -->
-	
-
 	<!-- Drawing Panel Style -->
 	<style id="drawingPanelStyle">
 		<opaque value="false" />
 		<insets top="5" left="2" right="3" bottom="6" />
 
 		<state>
-			<color value="ORANGE" type="BACKGROUND" />
+			<color value="#F0F0F0" type="BACKGROUND" />
 			<painter method="panelBackground" idref="roundPainter" />
 		</state>
 	</style>

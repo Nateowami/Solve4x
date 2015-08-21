@@ -60,8 +60,6 @@ public class Util {
 	 * in which case they will be removed for easier parsing
 	 */
 	public static String removePar(String expr){
-		String arg = expr;
-		
 		//check to see if it starts and ends with parentheses
 		if((expr.length() >= 1) && expr.charAt(0) == '(' && expr.charAt(expr.length()-1) == ')'){
 
