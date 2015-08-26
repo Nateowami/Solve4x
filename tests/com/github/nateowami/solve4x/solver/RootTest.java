@@ -40,6 +40,7 @@ public class RootTest {
 		Root root2 = new Root("₂₀₉√(74xy2)");
 		assertEquals(209, root2.getNthRoot());
 		assertEquals("74xy2", root2.getExpr().render());
+		assertEquals("√(x+y)", new Root("√(x+y)").render());
 	}
 
 	/**

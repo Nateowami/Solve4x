@@ -68,9 +68,6 @@ public class Root extends AlgebraicParticle{
 		this.expr = expr;
 	}
 	
-
-
-
 	/**
 	 * Tells if root is a valid root, in the form of <i>subscript</i>√<i>expression</i>. 
 	 * e.g. ₄√(4x+6). Parentheses are only necessary for more than one term.
@@ -132,7 +129,7 @@ public class Root extends AlgebraicParticle{
 	public String render() {
 		return wrapWithSignParAndExponent(
 				//don't show nth root if it's 2 (default)
-				this.nthRoot == 2 ? "" : Util.toSubscript(Integer.toString(this.nthRoot))
+				(this.nthRoot == 2 ? "" : Util.toSubscript(Integer.toString(this.nthRoot)))
 				+ "√(" + expr.render() + ")",
 				true);
 	}
