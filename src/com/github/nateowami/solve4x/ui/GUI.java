@@ -39,7 +39,10 @@ import javax.swing.plaf.synth.SynthLookAndFeel;
 
 import com.github.nateowami.solve4x.Main;
 import com.github.nateowami.solve4x.config.RoundingRule;
+import com.github.nateowami.solve4x.solver.AlgebraicParticle;
+import com.github.nateowami.solve4x.solver.Equation;
 import com.github.nateowami.solve4x.solver.ParsingException;
+import com.github.nateowami.solve4x.solver.Solution;
 import com.github.nateowami.solve4x.solver.Solver;
 import com.github.nateowami.solve4x.visual.Visual;
 
@@ -100,17 +103,20 @@ public class GUI {
         final Field paintValue = sliderUIClass.getDeclaredField("paintValue");
         paintValue.setAccessible(true);
         
+        final SolutionPanel panelDrawing = new SolutionPanel();
+        panelDrawing.setName("Panel.draw");
+        
         //set the look and feel
         initLookAndFeel();
         //create the window
-        JFrame MainFrame = new JFrame();
+        JFrame window = new JFrame();
         //make a new GridBagLayout and add it to the window
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[]{0, 0};
         gridBagLayout.rowHeights = new int[]{0, 0, 0, 0};
         gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
         gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-        MainFrame.getContentPane().setLayout(gridBagLayout);
+        window.getContentPane().setLayout(gridBagLayout);
         
         //create a new JPanel for the top of the window and set all the layout stuff
         JPanel panelTop = new JPanel();
@@ -119,7 +125,7 @@ public class GUI {
         gbc_panelTop.fill = GridBagConstraints.HORIZONTAL;
         gbc_panelTop.gridx = 0;
         gbc_panelTop.gridy = 0;
-        MainFrame.getContentPane().add(panelTop, gbc_panelTop);
+        window.getContentPane().add(panelTop, gbc_panelTop);
         GridBagLayout gbl_panelTop = new GridBagLayout();
         gbl_panelTop.columnWidths = new int[]{0, 0, 0, 0, 0};
         gbl_panelTop.rowHeights = new int[]{0, 0, 0};
@@ -167,7 +173,16 @@ public class GUI {
                     //run the solver
                     Solver solver = new Solver(equation, Solver.SolveFor.SOLVE, RoundingRule.FOR_SCIENTIFIC_NOTATION);
                     //get the solution and display it to the user
-                    Visual.render(solver.getSolution());
+                	Visual.render(solver.getSolution());
+                    if(solver.getSolution() != null) {
+                    	panelDrawing.setSolution(solver.getSolution());
+                    }
+                    else {
+                    	//show the original equation (so we can verify the renderer works)
+                    	Solution solution = new Solution(equation.indexOf('=') == -1 ? AlgebraicParticle.getInstance(equation) : new Equation(equation));
+                    	panelDrawing.setSolution(solution);
+                    	txtfEquationEntry.setText("No solution found");
+                    }
                 } catch (ParsingException err) {
                     //there must have been a problem with the equation the user entered
                     err.printStackTrace();
@@ -213,33 +228,37 @@ public class GUI {
         gbc_btnNewButton_2_1_1.gridy = 0;
         panelTop.add(btnHelp, gbc_btnNewButton_2_1_1);
         
-        //create a JPanel for the main area where the solution is shown
-        JPanel panelDrawing = new JPanel();
-        panelDrawing.setName("Panel.draw");
+        //create a scroll pane for the main area where the solution is shown
+        //JScrollPane scrollPane = new JScrollPane(panelDrawing);
+        //scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        //
+        //NOTE: code commented out do to issues with wrapping content in the scroll pane. Can be 
+        //fixed and uncommented later.
+        //
         //set the layout
-        GridBagConstraints gbc_panelDrawing = new GridBagConstraints();
-        gbc_panelDrawing.insets = new Insets(-5, 3, 2, -2);
-        gbc_panelDrawing.fill = GridBagConstraints.BOTH;
-        gbc_panelDrawing.gridx = 0;
-        gbc_panelDrawing.gridy = 1;
-        MainFrame.getContentPane().add(panelDrawing, gbc_panelDrawing);
-        
+        GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+        gbc_scrollPane.insets = new Insets(-5, 3, 2, -2);
+        gbc_scrollPane.fill = GridBagConstraints.BOTH;
+        gbc_scrollPane.gridx = 0;
+        gbc_scrollPane.gridy = 1;
+        window.getContentPane().add(/*scrollPane*/panelDrawing, gbc_scrollPane);
+
         //do things with the size/location
         //set the size and location of the window
-        MainFrame.setBounds(0, 0, 715, 500);
+        window.setBounds(0, 0, 715, 500);
         //set the minimum size for the window
-        MainFrame.setMinimumSize(new Dimension(600, 400));
+        window.setMinimumSize(new Dimension(600, 400));
         //centralize the window
-        MainFrame.setLocationRelativeTo(null);
+        window.setLocationRelativeTo(null);
         
         //make the program end when the user clicks the X
-        MainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //set a background color
-        MainFrame.setBackground(new Color(240, 240, 240));
+        window.setBackground(new Color(240, 240, 240));
         //set the title of the window
-        MainFrame.setTitle("Solve4x");
+        window.setTitle("Solve4x");
         //make the window visible
-        MainFrame.setVisible(true);
+        window.setVisible(true);
         
     }
 
