@@ -28,14 +28,15 @@ import com.github.nateowami.solve4x.config.RoundingRule;
  * @author Nateowami
  */
 public class SolverTest {
-
+	
+	Solver.SolveFor solve = Solver.SolveFor.SOLVE;
+	RoundingRule round = RoundingRule.ALWAYS;
+	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Solver#getSolution()}.
 	 */
 	@Test
 	public void testGetSolution() {
-		Solver.SolveFor solve = Solver.SolveFor.SOLVE;
-		RoundingRule round = RoundingRule.ALWAYS;
 		assertEquals(new Equation("4=x"), new Solver("2+2=x", solve, round).getSolution().getLastAlgebraicExpression());
 		assertEquals(new Equation("4=x"), new Solver("4=3x-2x", solve, round).getSolution().getLastAlgebraicExpression());
 		//assertEquals(new Equation("4=x"), new Solver("2*2=x", solve, round).getSolution().getLastAlgebraicExpression());
@@ -45,20 +46,26 @@ public class SolverTest {
 	public void testDispatchAlgorithmWithResource() {
 		Equation eq1 = new Equation("2+2=x"), eq2 = new Equation("4=x");
 		
-		Step step = Solver.dispatchAlgorithmWithResource(new CombineLikeTerms(RoundingRule.ALWAYS), eq1.left(), eq1);
+		Step step = Solver.dispatchAlgorithmWithResource(new CombineLikeTerms(round), eq1.left(), eq1);
 		
 		assertEquals(step.getChange(), eq2.left());
 		assertEquals(step.getAlgebraicExpression(), eq2);
 		
 		Equation eq3 = new Equation("2x+3x=1");
-		Step step2 = Solver.dispatchAlgorithmWithResource(new CombineLikeTerms(RoundingRule.ALWAYS), eq3.left(), eq3);
+		Step step2 = Solver.dispatchAlgorithmWithResource(new CombineLikeTerms(round), eq3.left(), eq3);
 		assertEquals(AlgebraicParticle.getInstance("5x"), ((Equation)step2.getAlgebraicExpression()).left());
+	}
+	
+	@Test
+	public void testIsFirstDegreeExpression() {
+		assertTrue(Solver.isFirstDegreeExpression((Expression) AlgebraicParticle.getInstance("5x+2")));
+		assertTrue(Solver.isFirstDegreeExpression((Expression) AlgebraicParticle.getInstance("5x+2")));
 	}
 	
 	@Test
 	@Ignore("Not yet implimented.")
 	public void testXMadePositive() {
-		assertEquals("15=x", new Solver("3x+4-2=17+2x", Solver.SolveFor.SOLVE, RoundingRule.ALWAYS).getSolution().getLastAlgebraicExpression().render());
+		assertEquals("15=x", new Solver("3x+4-2=17+2x", solve, round).getSolution().getLastAlgebraicExpression().render());
 	}
 
 }

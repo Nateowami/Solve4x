@@ -19,7 +19,6 @@ package com.github.nateowami.solve4x.solver;
 
 import java.util.ArrayList;
 
-import com.github.nateowami.solve4x.Solve4x;
 import com.github.nateowami.solve4x.algorithm.*;
 import com.github.nateowami.solve4x.config.RoundingRule;
 
@@ -47,29 +46,42 @@ public class Solver {
 	
 	/**
 	 * Creates a new Solver so you can call getSolution().
-	 * @param equation The equation or expression to solve, simplify, 
-	 * factor, multiply, etc
+	 * @param input The equation or expression to solve, simplify, 
+	 * factor, multiply, etc.
 	 * @param solveFor The user's selection regarding what to solve for. Do they want this to be 
 	 * factored, solved, simplified, or what? See {@link Solver.SolveFor}.
 	 * @param round A RoundingRule for rounding arithmetic operations.
+	 * @throws IllegalArgumentException If solveFor is SOLVE but input was not an equation, or 
+	 * input was an equation, but solveFor was not SOLVE.
+	 * @throws ParsingException If the input cannot be parsed as algebra.
 	 */
-	public Solver(String equation, SolveFor solveFor, RoundingRule round) {
+	public Solver(String input, SolveFor solveFor, RoundingRule round) throws IllegalArgumentException, ParsingException {
 		
-		//remove spaces
-		equation = equation.replaceAll(" ", "");
+		//remove spaces TODO move this to the GUI level; this shouldn't be the solver's concern
+		input = input.replaceAll(" ", "");
 		//remove any commas that may be in numbers
-		equation = equation.replaceAll(",", "");
+		input = input.replaceAll(",", "");
 		
-		//validate the equation
-		if(!Equation.parsable(equation)){
-			throw new ParsingException("Validator says equation \"" + equation + "\" is invalid.");
+		Algebra parsedInput = null;
+		//if input doesn't have an equals sign
+		if(input.indexOf('=') == -1) {
+			if(AlgebraicParticle.parsable(input)) {
+				parsedInput = AlgebraicParticle.getInstance(input);
+				//if solving was requested, but it wasn't an equation
+				if(solveFor == SolveFor.SOLVE) throw new IllegalArgumentException("Solving requested but input was not an equation.");
+			}
+			else throw new ParsingException("Invalid input: " + input);
+		}
+		else {
+			parsedInput = new Equation(input);
+			if(solveFor != SolveFor.SOLVE) throw new IllegalArgumentException("Input was requested, but something other than solving was requested.");
 		}
 		
 		this.algorithms = getAlgorithms(solveFor, round);
 		
 		//create a list of solutions
 		ArrayList<Solution> currentSolutions = new ArrayList<Solution>();
-		currentSolutions.add(new Solution(new Equation(equation)));
+		currentSolutions.add(new Solution(parsedInput));
 		
 		// Loop until one of the following conditions is met:
 		// - No solutions have survived
@@ -85,11 +97,6 @@ public class Solver {
 				//now loop through the algorithms
 				currentSolutions.addAll(dispatchAlgorithms(solution, solveFor, round));
 			}
-			//for debugging purposes
-			if(currentSolutions.size() == 0){
-				Solve4x.debug("No solutions survived this iteration. Previous solutions: " + previousSolutions);
-			}
-			Solve4x.debug("currentSolutions.size() = " + currentSolutions.size());
 		}
 				
 		//set finalSolution
@@ -118,6 +125,58 @@ public class Solver {
 		else return false;
 	}
 	
+	/**
+	 * Tells if a given expression is first degree. A first degree expression must have exactly two  
+	 * terms, be positive, and have no exponent. Of its two terms, one must number, fraction, etc 
+	 * (which must be simplified), and the other must be a single variable, which may have a 
+	 * coefficient. The variable must not be raised to any power, and its coefficient must be 
+	 * fully simplified.
+	 * @param expr The expression to check.
+	 * @return If expr is a first degree expression (generally will look like 7x+6).
+	 */
+	protected static boolean isFirstDegreeExpression(Expression expr) {
+		if(expr.length() != 2 || !expr.sign() || expr.exponent() != 1) return false;
+		
+		AlgebraicParticle a = expr.get(0), b = expr.get(1);
+		//if one is a variable or variable with exponent, and the other is a number/mixed number/simplified fraction
+		if(Util.constant(a) && b instanceof Term && isVariableWithOptionalCoefficient((Term)b)) return true;
+		if(Util.constant(b) && a instanceof Term && isVariableWithOptionalCoefficient((Term)a)) return true;
+		else return false;
+	}
+	
+	/**
+	 * Tells if given algebra is a variable with (optionally) a simplified coefficient. There are 
+	 * two conditions under which this method will return true: the input is a variable with no 
+	 * exponent, or the input is a term with no exponent, containing a positive variable with no 
+	 * exponent, and a positive and simplified number, mixed number, or fraction (which can't have 
+	 * an exponent either). Examples: 2x -5.7y
+	 * @param algebra The term or variable to check.
+	 * @return If algebra is a variable with an optional coefficient.
+	 */
+	private static boolean isVariableWithOptionalCoefficient(AlgebraicParticle algebra) {
+		if(algebra.exponent() != 1)return false;
+		//if it's just a simple variable
+		if(algebra instanceof Variable) return true;
+		
+		//or it's just a simple term
+		Term t = (Term) algebra;
+		if(t.length() != 2) return false;
+		AlgebraicParticle a = t.get(0), b = t.get(1);
+		//if either has a negative sign or an exponent, return false
+		if(!a.sign() || !b.sign() || a.exponent() != 1 && b.exponent() != 1) return false;
+		//if one is a variable and the other is a number, MixedNumber, simplified fraction, etc.
+		if(Util.constant(a) && b instanceof Variable) return true;
+		if(Util.constant(b) && a instanceof Variable) return true;
+		else return false;
+	}
+	
+	/**
+	 * Tells if a given equation is solved. This means that either the left side is equal to the 
+	 * right side (an identity), or both sides are simple variables, numbers, mixed numbers, or 
+	 * simplified fractions.
+	 * @param eq The equation to check.
+	 * @return True if eq is fully solved, otherwise false.
+	 */
 	private boolean isSolved(Equation eq){
 		//identity
 		if(eq.left().equals(eq.right()))return true;
@@ -137,7 +196,7 @@ public class Solver {
 		case SOLVE:
 			return algebra instanceof Equation && isSolved((Equation) algebra);
 		case SIMPLIFY:
-			return algebra instanceof Expression && isSimplified((Expression) algebra);
+			return algebra instanceof Expression && isFirstDegreeExpression((Expression) algebra);
 		case FACTOR:
 			return algebra instanceof Term;
 		default: return false;
@@ -201,7 +260,7 @@ public class Solver {
 	 */
 	private ArrayList<Solution> dispatchAlgorithms(Solution s, SolveFor solveFor, RoundingRule round){
 		ArrayList<Solution> solutions = new ArrayList<Solution>();
-		for(Algorithm a : this.getAlgorithms(solveFor, round)) solutions.addAll(dispatchAlgorithm(s, a, round));
+		for(Algorithm a : this.algorithms) solutions.addAll(dispatchAlgorithm(s, a, round));
 		return solutions;
 	}
 	

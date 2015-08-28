@@ -20,7 +20,7 @@ package com.github.nateowami.solve4x.solver;
 import com.github.nateowami.solve4x.config.RoundingRule;
 
 /**
- * Holds a fraction and integer value, which can be used as an exponent.
+ * Holds a fraction and integer value, which are implicitly understood to be added.
  * @author Nateowami
  */
 public class MixedNumber extends AlgebraicParticle{

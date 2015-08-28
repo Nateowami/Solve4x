@@ -166,12 +166,13 @@ public class GUI {
         btnSolve.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 //get the equation from the text field
-                String equation = txtfEquationEntry.getText();
+                String input = txtfEquationEntry.getText();
 
                 //Check to see if the input was an equation or an expression
                 try {
-                    //run the solver
-                    Solver solver = new Solver(equation, Solver.SolveFor.SOLVE, RoundingRule.FOR_SCIENTIFIC_NOTATION);
+                	boolean equals = input.indexOf('=') != -1;
+                    //run the solver TODO need to account for factoring (not just solve & simplify)
+                    Solver solver = new Solver(input, equals ? Solver.SolveFor.SOLVE : Solver.SolveFor.SIMPLIFY, RoundingRule.FOR_SCIENTIFIC_NOTATION);
                     //get the solution and display it to the user
                 	Visual.render(solver.getSolution());
                     if(solver.getSolution() != null) {
@@ -179,7 +180,7 @@ public class GUI {
                     }
                     else {
                     	//show the original equation (so we can verify the renderer works)
-                    	Solution solution = new Solution(equation.indexOf('=') == -1 ? AlgebraicParticle.getInstance(equation) : new Equation(equation));
+                    	Solution solution = new Solution(equals ? new Equation(input) : AlgebraicParticle.getInstance(input));
                     	panelDrawing.setSolution(solution);
                     	txtfEquationEntry.setText("No solution found");
                     }
