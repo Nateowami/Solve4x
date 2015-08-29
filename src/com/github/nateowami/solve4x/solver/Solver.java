@@ -295,7 +295,7 @@ public class Solver {
 	 * @param algorithm The algorithm to dispatch.
 	 * @param resource The resource to give to the algorithm.
 	 * @param topLevel The top-level ancestor of resource (e.g. an equation that resource is a part 
-	 * of).
+	 * of). It could even be the resource itself.
 	 * @return A new solving step which uses the algorithm and resource.
 	 */
 	//protected so it can be tested
@@ -312,7 +312,7 @@ public class Solver {
 		//it was nested then
 		else {
 			if(topLevel instanceof Equation) result = ((Equation)topLevel).replace((AlgebraicParticle)out, (AlgebraicParticle)in);
-			else if(topLevel instanceof Expression) result = ((Expression)topLevel).replace((AlgebraicParticle)out, (AlgebraicParticle)in);
+			else if(topLevel instanceof AlgebraicCollection) result = ((AlgebraicCollection)topLevel).replace((AlgebraicParticle)out, (AlgebraicParticle)in);
 			else throw new IllegalArgumentException("Unknown something-a-rather error.");
 		}
 		

@@ -136,6 +136,10 @@ public class GraphicalRenderer {
 		for(int i = 0; i < expr.length(); i++) {
 			AlgebraicParticle term = expr.get(i);
 			BufferedImage image = render(term);
+			
+			//if it's an expression that wouldn't have had parentheses around it, add them now
+			if(term instanceof Expression && !needsPars(term)) image = parenthesize(image);
+			
 			terms.add(image);
 			
 			// Add the width of the term, and if it's positive (and not the first term), add width 
@@ -183,8 +187,8 @@ public class GraphicalRenderer {
 			previous = element;
 			
 			BufferedImage image = render(element);
-			//wrap with parentheses if it's an expression
-			if(element instanceof Expression) image = parenthesize(image);
+			//wrap with parentheses if it's an algebraic collection that wouldn't already be wrapped with pars
+			if(!needsPars(element) && element instanceof AlgebraicCollection) image = parenthesize(image);
 			images.add(image);
 			width += image.getWidth();
 			height = Math.max(height, image.getHeight());
@@ -294,6 +298,16 @@ public class GraphicalRenderer {
 	 */
 	
 	/**
+	 * Tells if the given algebraic particle needs to be wrapped in pars. This will return true if 
+	 * the exponent is not 1, unless the input is a variable or number.
+	 * @param a The algebraic particle to check.
+	 * @return If a needs to be wrapped with parentheses.
+	 */
+	private static boolean needsPars(AlgebraicParticle a) {
+		return a.exponent() != 1 && !(a instanceof Variable || a instanceof Number);
+	}
+	
+	/**
 	 * Wraps the given image with parentheses, sign, and exponent, if they are applicable. If the 
 	 * sign is positive, no sign will be rendered. Additionally, if the specified AlgebraicParticle 
 	 * <code>a</code> has an exponent of 1, no exponent will be rendered. In all cases except when 
@@ -306,7 +320,7 @@ public class GraphicalRenderer {
 	 */
 	private static BufferedImage wrapWithSignAndExponent(BufferedImage image, AlgebraicParticle a) {
 		//don't need pars if it's a number or variable (or if no exponent)
-		boolean pars = a.exponent() != 1 && !(a instanceof Variable || a instanceof Number);
+		boolean pars = needsPars(a);
 		
 		//pars may need to be big to wrap around the expression
 		Font parsFont = font.deriveFont((float) image.getHeight() * 0.8f);
