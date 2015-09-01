@@ -24,7 +24,7 @@ import java.util.Arrays;
  * Represents an algebraic equation
  * @author Nateowami
  */
-public class Equation implements Algebra {
+public class Equation extends Algebra {
 	
 	//exprs holds expressions (one if this equation is just representing an 
 	//expression, two if it's representing an equation

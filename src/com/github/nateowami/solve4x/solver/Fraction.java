@@ -25,7 +25,7 @@ import com.github.nateowami.solve4x.config.RoundingRule;
  */
 public class Fraction extends AlgebraicParticle{
 	
-	protected AlgebraicParticle top, bottom;
+	private AlgebraicParticle top, bottom;
 	
 	/**
 	 * Constructs a new Fraction.

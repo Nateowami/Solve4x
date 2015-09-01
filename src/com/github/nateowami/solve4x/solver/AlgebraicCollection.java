@@ -102,43 +102,13 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 	}
 	
 	/**
-	 * Flattens the structure of AlgebraicParticles and returns it as a single array. For example, 
-	 * if the AlgebraicCollection was 2x(3+4y), flattening it would yield the following result:<br>
-	 * [2, x, (3+4y), 3, 4y, 4, y]
-	 * @return A flattened version of this AlgebraicCollection.
-	 */
-	public AlgebraicParticle[] flatten(){
-		//the array we're building of flattened stuff
-		ArrayList<AlgebraicParticle> list = new ArrayList<AlgebraicParticle>();
-		//add this
-		list.add(this);
-		for(int i = 0; i < this.length(); i++){
-			//if this element is a collection, add it and its children
-			if(this.get(i) instanceof AlgebraicCollection){
-				list.addAll(Arrays.asList(
-								((AlgebraicCollection)this.get(i)).flatten()
-						));
-			}
-			//it's not a collection; just add it
-			else list.add(this.get(i));
-		}
-		return list.toArray(new AlgebraicParticle[list.size()]);
-	}
-	
-	/**
 	 * Flattens the collection as specified by {@link com.github.nateowami.solve4x.solver.AlgebraicCollection#flatten()
 	 *  flatten()}, then limits it to objects of type c.
 	 * @param c A class to limit objects to.
 	 * @return This collection flattened, with all objects that aren't instances of the specified class c removed.
 	 */
 	protected ArrayList<? extends AlgebraicParticle> flattenAndLimitByClass(Class<? extends AlgebraicParticle> c){
-		ArrayList<AlgebraicParticle> out = new ArrayList<AlgebraicParticle>();
-		for(AlgebraicParticle a : flatten()){
-			if(c.isInstance(a)){
-				out.add(a);
-			}
-		}
-		return out;
+		return Util.limit(this.flatten(), c);
 	}
 	
 	/**
@@ -147,7 +117,7 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<Term> terms(){
-		return (ArrayList<Term>) flattenAndLimitByClass(Term.class);
+		return (ArrayList<Term>) Util.limit(this.flatten(), Term.class);
 	}
 	
 	/**
@@ -156,7 +126,7 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<Expression> expressions(){
-		return (ArrayList<Expression>) flattenAndLimitByClass(Expression.class);
+		return (ArrayList<Expression>) Util.limit(this.flatten(), Expression.class);
 	}
 	
 	/**

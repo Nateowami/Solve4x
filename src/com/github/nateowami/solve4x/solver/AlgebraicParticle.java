@@ -23,7 +23,7 @@ import com.github.nateowami.solve4x.Solve4x;
  * Represents an AlgebraicParticle. Subclasses include Variable, Number, Root, Fraction, Fraction, MixedNumber, Term, and Expression.
  * @author Nateowami
  */
-public abstract class AlgebraicParticle implements Algebra, Cloneable {
+public abstract class AlgebraicParticle extends Algebra implements Cloneable {
 	
 	private int exponent = 1;
 	private boolean sign = true;

@@ -250,4 +250,32 @@ public class Util {
 		return primes.toArray(new Long[primes.size()]);
 	}
 	
+	/**
+	 * Limits the elements of a give ArrayList to those of a given class. A new list is 
+	 * constructed, and every element in the given list that is an instance of the given class c
+	 * will be added to the new list before it is returned.
+	 * @param list The list from which to filter elements.
+	 * @param c The class to limit by.
+	 * @return A new ArrayList that has only the elements of the given list that are instances of 
+	 * class c.
+	 */
+	public static <T> ArrayList<T> limit(ArrayList<? extends Algebra> list, Class<T> c) {
+		ArrayList<T> output = new ArrayList<T>();
+		for(int i = 0; i < list.size(); i++) {
+			if(c.isInstance(list.get(i))) output.add((T) list.get(i));
+		}
+		return output;
+	}
+	
+	/**
+	 * Constructs a new ArrayList from a given list of items. The type of the ArrayList depends on 
+	 * type of objects that are passed in. Note that this method accepts a variable list of 
+	 * arguments.
+	 * @param list A list of objects to add to an ArrayList.
+	 * @return An ArrayList with the specified elements.
+	 */
+	public static <T> ArrayList<T> list(T... list) {
+		return new ArrayList<T>(Arrays.asList(list));
+	}
+	
 }

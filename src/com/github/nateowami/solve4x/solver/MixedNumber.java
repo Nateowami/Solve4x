@@ -98,7 +98,7 @@ public class MixedNumber extends AlgebraicParticle{
 	 * @see com.github.nateowami.solve4x.solver.Fraction#isSimplified()
 	 */
 	public boolean isSimplified(){
-		return this.fraction.isSimplified() && ((Number) this.fraction.top).sign() == true;
+		return this.fraction.isSimplified() && ((Number) this.fraction.getTop()).sign() == true;
 	}
 	
 	/**
