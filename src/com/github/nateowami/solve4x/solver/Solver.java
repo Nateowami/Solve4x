@@ -19,6 +19,7 @@ package com.github.nateowami.solve4x.solver;
 
 import java.util.ArrayList;
 
+import com.github.nateowami.solve4x.Solve4x;
 import com.github.nateowami.solve4x.algorithm.*;
 import com.github.nateowami.solve4x.config.RoundingRule;
 
@@ -196,7 +197,7 @@ public class Solver {
 		case SOLVE:
 			return algebra instanceof Equation && isSolved((Equation) algebra);
 		case SIMPLIFY:
-			return algebra instanceof Expression && isFirstDegreeExpression((Expression) algebra);
+			return  isSimplified((AlgebraicParticle)algebra) || (isFirstDegreeExpression((Expression) algebra));
 		case FACTOR:
 			return algebra instanceof Term;
 		default: return false;
@@ -329,18 +330,20 @@ public class Solver {
 	 */
 	private ArrayList<? extends Algebra> resourcesForAlgorithm(Algebra algebra, Algorithm algorithm){
 		ArrayList<Algebra> list = new ArrayList<Algebra>();
-		if(algorithm.ALGORITHM_LEVEL.equals(algebra.getClass())){
+		//if we're working with equations
+		if(algebra instanceof Equation && algorithm.ALGORITHM_LEVEL.equals(Equation.class)) {
 			list.add(algebra);
 			return list;
 		}
-		else if(algebra instanceof AlgebraicCollection){
-			return ((AlgebraicCollection)algebra).flattenAndLimitByClass((Class<AlgebraicParticle>) algorithm.ALGORITHM_LEVEL);
+		
+		if(algebra instanceof AlgebraicCollection){
+			list.addAll(((AlgebraicCollection)algebra).flattenAndLimitByClass((Class<AlgebraicParticle>) algorithm.ALGORITHM_LEVEL));
+			return list;
 		}
 		else if(algebra instanceof Equation) {
 			return ((Equation)algebra).flattenAndLimitByClass((Class<AlgebraicParticle>) algorithm.ALGORITHM_LEVEL);
 		}
-		//return an empty list
-		else return list;
+		return list;
 	}
 	
 }
