@@ -118,6 +118,7 @@ public class CancelFactors extends Algorithm {
 		if(frac.isSimplified()) return 0;
 		//if the bottom is 1 or -1 we can simplify for sure
 		else if(frac.getBottom().equals(Number.ONE) || frac.getBottom().equals(Number.NEGATIVE_ONE)) return 7;
+		else if(!frac.getTop().sign() || !frac.getBottom().sign()) return 5;
 		else {
 			//get factors of top and bottom
 			Map<AlgebraicParticle, Integer> factorsTop = factors(frac.getTop()),

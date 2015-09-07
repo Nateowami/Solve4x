@@ -53,6 +53,7 @@ public class CancelFactorsTest {
 		assertEquals(a("4"), d.execute(a("-(4)/(-1)")).getChange());
 		assertEquals(a("4.2x²"), d.execute(a("(4.2x³)/(x)")).getChange());
 		assertEquals(a("(x+y)/(4)"), d.execute(a("(1(x+y)z)/(4z)")).getChange());
+		assertEquals(a("-(8)/(7)"), d.execute(a("(-8)/(7)")).getChange());
 	}
 
 	/**
@@ -68,6 +69,7 @@ public class CancelFactorsTest {
 		assertEquals(7, d.smarts(a("(2xyz24)/(3zbc)")));
 		assertEquals(7, d.smarts(a("(4)/(1)")));
 		assertEquals(7, d.smarts(a("(4xy(32-7³))/(-1)")));
+		assertEquals(5, d.smarts(a("(-8)/(7)")));
 		
 		assertEquals(0, d.smarts(a("(34xy³)/(az(4+x))")));
 		assertEquals(0, d.smarts(a("(5)/(3)")));

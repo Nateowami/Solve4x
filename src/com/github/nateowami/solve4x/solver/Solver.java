@@ -17,10 +17,17 @@
  */
 package com.github.nateowami.solve4x.solver;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.github.nateowami.solve4x.Solve4x;
 import com.github.nateowami.solve4x.algorithm.*;
@@ -87,6 +94,10 @@ public class Solver {
 		ArrayList<Solution> currentSolutions = new ArrayList<Solution>();
 		currentSolutions.add(new Solution(parsedInput));
 		
+		//as we solve, keep a set of all previous states we've reached
+		Set<Algebra> previousStates = new HashSet<Algebra>();
+		previousStates.add(parsedInput);
+		
 		// Loop until one of the following conditions is met:
 		// - No solutions have survived
 		// - A complete solution has been found
@@ -96,10 +107,17 @@ public class Solver {
 			ArrayList<Solution> previousSolutions = new ArrayList<Solution>(currentSolutions);
 			currentSolutions = new ArrayList<Solution>();
 			
-			//loop through the solutions
-			for(Solution solution : previousSolutions){
-				//now loop through the algorithms
-				currentSolutions.addAll(dispatchAlgorithms(solution, solveFor, round));
+			//loop through the solutions dispatching algorithms
+			for(Solution solution : previousSolutions) currentSolutions.addAll(dispatchAlgorithms(solution, previousStates));
+			//add each new solving state to the set of states we've reached
+			Iterator<Solution> itr = currentSolutions.iterator();
+			
+			//remove all solutions that reach states that have already been reached, while adding 
+			//new states to the list of previous states
+			while(itr.hasNext()) {
+				Algebra state = itr.next().getLastAlgebraicExpression();
+				if(previousStates.contains(state)) itr.remove();
+				else previousStates.add(state);
 			}
 		}
 				
@@ -256,30 +274,54 @@ public class Solver {
 		return algorList;
 	}
 	
-	private ArrayList<Solution> dispatchAlgorithms(Solution solution, SolveFor solveFor, RoundingRule round){
+	/**
+	 * Dispatches algorithms to work on a partial solution.
+	 * @param solution The solution to work on.
+	 * @return A list of solutions based off the provided solution.
+	 */
+	private ArrayList<Solution> dispatchAlgorithms(Solution solution, Set<Algebra> states){
 		ArrayList<Solution> solutions = new ArrayList<Solution>();
 		//iterate over algorithms
-		int maxSmarts = 0;
-		HashMap<Algorithm, Tree> map = new HashMap<Algorithm, Tree>();
+		//keep a list of all smarts, along with the respective algorithm and tree
+		ArrayList<AbstractMap.SimpleEntry<Integer, AbstractMap.SimpleEntry<Algorithm, Tree>>> list = new ArrayList<AbstractMap.SimpleEntry<Integer, AbstractMap.SimpleEntry<Algorithm, Tree>>>();
 		Tree tree = new Tree(solution.getLastAlgebraicExpression());
+		
 		//find the smarts and make a list of algorithms and the trees that represent the algebra to feed to them
 		for(Algorithm algorithm : this.algorithms) {
 			List<Tree> resources = tree.where(algorithm.ALGORITHM_LEVEL);
 			//iterate over resources for the algorithm
 			for(Tree node : resources) {
 				int smarts = algorithm.smarts(node.algebra());
-				if(smarts > maxSmarts) {
-					maxSmarts = smarts;
-					map = new HashMap<Algorithm, Tree>();
-					map.put(algorithm, node);
+				if(smarts > 0) {
+					list.add(new AbstractMap.SimpleEntry<Integer, AbstractMap.SimpleEntry<Algorithm, Tree>>(smarts, new AbstractMap.SimpleEntry<Algorithm, Tree>(algorithm, node)));
 				}
-				else if(smarts == maxSmarts) map.put(algorithm, node);
 			}
 		}
+		
+		//sort the list by smarts
+		Collections.sort(list, new Comparator<AbstractMap.SimpleEntry<Integer, AbstractMap.SimpleEntry<Algorithm, Tree>>>() {
+			public int compare(AbstractMap.SimpleEntry<Integer, AbstractMap.SimpleEntry<Algorithm, Tree>> a, AbstractMap.SimpleEntry<Integer, AbstractMap.SimpleEntry<Algorithm, Tree>> b) {
+				//sort DESC
+				return b.getKey() - a.getKey();
+			}
+		});
+		
+		//since list is sorted, max smarts is in the first element
+		//take care not to throw NPE even if list is empty
+		int maxSmarts = list.isEmpty() ? 0 : list.get(0).getKey();
+		
 		//now actually work with what we found
-		for(Entry<Algorithm, Tree> entry : map.entrySet()) {
-			Step step = entry.getKey().execute(entry.getValue().algebra());
-			step.setAlgebraicExpression(entry.getValue().considerReplacement(step.getChange()));
+		for(AbstractMap.SimpleEntry<Integer, AbstractMap.SimpleEntry<Algorithm, Tree>> entry : list) {
+			//if we've already got a solution on the list, and this isn't among the smartest algos to use
+			//TODO left off here 
+			if(!solutions.isEmpty() && entry.getKey() < maxSmarts) break;
+			
+			//pass the algebra to the algorithm
+			Step step = entry.getValue().getKey().execute(entry.getValue().getValue().algebra());
+			step.setAlgebraicExpression(entry.getValue().getValue().considerReplacement(step.getChange()));
+			
+			//skip this algorithm/algebra combination if it reaches a state already reached
+			if(states.contains(step.getAlgebraicExpression())) continue;
 			Solution newSolution = new Solution(solution);
 			newSolution.addStep(step);
 			solutions.add(newSolution);
