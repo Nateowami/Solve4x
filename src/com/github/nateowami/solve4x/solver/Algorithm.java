@@ -24,14 +24,14 @@ package com.github.nateowami.solve4x.solver;
  */
 public abstract class Algorithm {
 	
-	public final Class<? extends Object> ALGORITHM_LEVEL;
+	public final Class<? extends Algebra> ALGORITHM_LEVEL;
 	
 	/**
 	 * Constructs an Algorithm.
 	 * @param level The level at which the algorithm works. For example, if it adds terms, it would 
 	 * work at the expression level, whereas if it divides numbers it would work on fractions.
 	 */
-	protected Algorithm(Class<? extends Object> level) {
+	protected Algorithm(Class<? extends Algebra> level) {
 		this.ALGORITHM_LEVEL = level;
 	}
 	

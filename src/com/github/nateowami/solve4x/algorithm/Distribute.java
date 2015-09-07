@@ -136,7 +136,7 @@ public class Distribute extends Algorithm {
 				multiplied.add(multiply(a.get(i), b.get(j)));
 			}
 		}
-		return new Expression(true, multiplied.toArray(new AlgebraicParticle[multiplied.size()]), 1);
+		return new Expression(true, multiplied, 1);
 	}
 	
 	/**
@@ -152,7 +152,7 @@ public class Distribute extends Algorithm {
 		for(int i = 0; i < expression.length(); i++) {
 			multiplied.add(multiply(algebra, expression.get(i)));
 		}
-		return new Expression(true, multiplied.toArray(new AlgebraicParticle[multiplied.size()]), 1);
+		return new Expression(true, multiplied, 1);
 	}
 	
 	/**

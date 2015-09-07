@@ -18,7 +18,6 @@
 package com.github.nateowami.solve4x.solver;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * @author Nateowami
@@ -48,85 +47,14 @@ public abstract class AlgebraicCollection extends AlgebraicParticle {
 	 * @return A partial clone of the collection, with element at index swapped for element.
 	 */
 	public AlgebraicCollection cloneWithNewElement(int index, AlgebraicParticle element){
-		AlgebraicParticle[] terms = new AlgebraicParticle[this.length()];
-		for(int i = 0; i < terms.length; i++){
-			if(i == index) terms[i] = element;
-			else terms[i] = this.get(i); 
+		ArrayList<AlgebraicParticle> terms = new ArrayList<AlgebraicParticle>(this.length());
+		for(int i = 0; i < this.length(); i++){
+			if(i == index) terms.add(element);
+			else terms.add(this.get(i)); 
 		}
 		if(this instanceof Expression) return new Expression(this.sign(), terms, this.exponent());
-		else if(this instanceof Term) return new Term(this.sign(), new ArrayList(Arrays.asList(terms)), this.exponent());
+		else if(this instanceof Term) return new Term(this.sign(), terms, this.exponent());
 		else throw new IllegalArgumentException("This method is only applicable for Term and Expression.");
-	}
-	
-	/**
-	 * Finds element out within tree and replaces it with in, then returns the psudo-copy 
-	 * of tree. If out occurs multiple times within tree, only the first will be replaced 
-	 * with in.
-	 * @param tree The structure to search for out in.
-	 * @param out The AlgebraicParticle to remove.
-	 * @param in The AlgebraicParticle to replace out with.
-	 * @return A psudo-copy of tree with in swapped for out, or null, if there is nothing to be 
-	 * replaced.
-	 */
-	public AlgebraicParticle replace(AlgebraicParticle out, AlgebraicParticle in){
-		if(out == this)return in;
-		for(int i = 0; i < this.length(); i++){
-			AlgebraicParticle current = this.get(i);
-			//if the current element is the one we're supposed to replace
-			if(current == out){
-				// In cases like replacing 2x in 4+2x+3y with 4x+6, don't add it as 4+(4x+6)+3y, but 
-				// unwrap it so it's 4+(4x+6)+3y. Do likewise for Terms. Only applies if the sign is 
-				// the same as the sign of its parent.
-				if(in.getClass().equals(this.getClass()) && in.sign() == this.sign()) {
-					AlgebraicCollection collectionIn = (AlgebraicCollection) in;
-					ArrayList<AlgebraicParticle> elements = new ArrayList<AlgebraicParticle>(this.length() + collectionIn.length() - 1);
-					//add elements from before the replacement
-					for(int j = 0; j < i; j++) elements.add(this.get(j));
-					//add elements for the replacement
-					for(int j = 0; j < collectionIn.length(); j++) elements.add(collectionIn.get(j));
-					//add elements after the replacement
-					for(int j = i + 1; j < this.length(); j++) elements.add(this.get(j));
-					if(in instanceof Expression) return new Expression(in.sign(), elements.toArray(new AlgebraicParticle[elements.size()]), in.exponent());
-					else if(in instanceof Term) return new Term(in.sign(), elements, in.exponent());
-					else throw new RuntimeException("This wasn't supposed to happen. Throwing an exception won't help the least, but it's more helpful than a strange NPE.");
-				}
-				else return this.cloneWithNewElement(i, in);
-			}
-			//if the current one is NOT one we're supposed to replace, but it has children
-			else if(current instanceof AlgebraicCollection){
-				AlgebraicParticle replacement = ((AlgebraicCollection)current).replace(out, in);
-				if(replacement != null) return this.cloneWithNewElement(i, replacement);
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Flattens the collection as specified by {@link com.github.nateowami.solve4x.solver.AlgebraicCollection#flatten()
-	 *  flatten()}, then limits it to objects of type c.
-	 * @param c A class to limit objects to.
-	 * @return This collection flattened, with all objects that aren't instances of the specified class c removed.
-	 */
-	protected ArrayList<? extends AlgebraicParticle> flattenAndLimitByClass(Class<? extends AlgebraicParticle> c){
-		return Util.limit(this.flatten(), c);
-	}
-	
-	/**
-	 * @return All terms in this AlgebraicCollection after it has been flattened.
-	 * @see com.github.nateowami.solve4x.solver.AlgebraicCollection#flatten()
-	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList<Term> terms(){
-		return (ArrayList<Term>) Util.limit(this.flatten(), Term.class);
-	}
-	
-	/**
-	 * @return All expressions in this AlgebraicCollection after it has been flattened.
-	 * @see com.github.nateowami.solve4x.solver.AlgebraicCollection#flatten()
-	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList<Expression> expressions(){
-		return (ArrayList<Expression>) Util.limit(this.flatten(), Expression.class);
 	}
 	
 	/**

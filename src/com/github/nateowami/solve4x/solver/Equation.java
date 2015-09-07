@@ -76,69 +76,10 @@ public class Equation extends Algebra {
 	}
 	
 	/**
-	 * Replaces out with in in this equation, even if out is nested deeply in an AlgebraicParticle.
-	 * @param out The AlgebraicParticle to swap out.
-	 * @param in The AlgebraicParticle to swap in.
-	 * @return out swapped for in.
-	 */
-	public Equation replace(AlgebraicParticle out, AlgebraicParticle in){
-		//if one side of the equation needs to be completely replaced
-		if(this.a == out) return new Equation(in, b);
-		if(this.b == out) return new Equation(a, in);
-		//or one side is a term or expression and one of its decendents needs to be replaced
-		if(a instanceof AlgebraicCollection) {
-			AlgebraicCollection ac = (AlgebraicCollection) a;
-			AlgebraicParticle replaced = ac.replace(out, in);
-			if(replaced != null) return new Equation(replaced, b);
-		}
-		if(b instanceof AlgebraicCollection) {
-			AlgebraicCollection ac = (AlgebraicCollection) b;
-			AlgebraicParticle replaced = ac.replace(out, in);
-			if(replaced != null) return new Equation(a, replaced);
-		}
-		throw new IllegalArgumentException("Nothing to replace.");
-	}
-	
-	/**
 	 * @return A String representation of this equation. Example: 2x+x=5
 	 */
 	public String render(){
 		return a.render() + '=' + b.render();
-	}
-	
-	/**
-	 * Flattens the equation and AlgebraicParticles it contains, and then limits them to instances of 
-	 * class c.
-	 * @param c The class to limit objects to.
-	 * @return this flattened and all objects not an instance of c removed.
-	 */
-	protected ArrayList<? extends AlgebraicParticle> flattenAndLimitByClass(Class<? extends AlgebraicParticle> c){
-		ArrayList<AlgebraicParticle> out = new ArrayList<AlgebraicParticle>();
-		
-		//flatten this.a and this.b and add them to out
-		if(this.a instanceof AlgebraicCollection) out.addAll(((AlgebraicCollection)a).flattenAndLimitByClass(c));
-		else if(this.a.getClass().equals(c)) out.add(this.a);
-		
-		if(this.b instanceof AlgebraicCollection) out.addAll(((AlgebraicCollection)b).flattenAndLimitByClass(c));
-		else if(this.b.getClass().equals(c)) out.add(this.b);
-		
-		return out;
-	}
-	
-	/**
-	 * @return All terms in the flattened version of this equation.
-	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList<Term> terms(){
-		return (ArrayList<Term>)flattenAndLimitByClass(Term.class);
-	}
-	
-	/**
-	 * @return All expressions in the flattened version of this equation.
-	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList<Expression> expressions(){
-		return (ArrayList<Expression>)flattenAndLimitByClass(Expression.class);
 	}
 	
 	/* (non-Javadoc)

@@ -17,6 +17,11 @@
  */
 package com.github.nateowami.solve4x.algorithm;
 
+import static com.github.nateowami.solve4x.solver.Util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import com.github.nateowami.solve4x.solver.*;
 import com.github.nateowami.solve4x.solver.Number;
 
@@ -36,8 +41,8 @@ public class ChangeSides extends Algorithm {
 	public Step execute(Algebra algebra) {
 		Equation equation = (Equation) algebra;
 		AlgebraicParticle first = equation.left(), second = equation.right();
-		Expression left = first instanceof Expression ? (Expression) first : new Expression(true, new AlgebraicParticle[]{first}, 1),
-				right = second instanceof Expression ? (Expression) second : new Expression(true, new AlgebraicParticle[]{second}, 1);
+		Expression left = first instanceof Expression ? (Expression) first : new Expression(true, list(first), 1),
+				right = second instanceof Expression ? (Expression) second : new Expression(true, list(second), 1);
 		
 		boolean[] map1 = constantnessMap(left), map2 = constantnessMap(right);
 		//count how many are constant on each side
@@ -89,30 +94,30 @@ public class ChangeSides extends Algorithm {
 		}
 		
 		//create arrays of stuff to keep and stuff to move. calculate lengths from number constant/not constant
-		AlgebraicParticle[] move = new AlgebraicParticle[moveConstants ? sourceConst : sourceMap.length - sourceConst], 
-				keep = new AlgebraicParticle[moveConstants ? sourceMap.length - sourceConst : sourceConst];
+		ArrayList<AlgebraicParticle> move = new ArrayList<AlgebraicParticle>(moveConstants ? sourceConst : sourceMap.length - sourceConst), 
+				keep = new ArrayList<AlgebraicParticle>(moveConstants ? sourceMap.length - sourceConst : sourceConst);
 		//use these as pointers to keep track of where append the elements to the above arrays
 		int moveIndex = 0, keepIndex = 0;
 		for(int i = 0; i < source.length(); i++){
 			//if this is a constant and we're moving constants, or this is not constant, and we're moving non constants
 			if(sourceMap[i] == moveConstants){
-				move[moveIndex++] = source.get(i);
+				move.add(source.get(i));
 			}
 			else{
-				keep[keepIndex++] = source.get(i);
+				keep.add(source.get(i));
 			}
 		}
 		
-		AlgebraicParticle removed = keep.length == 0 ? Number.ZERO : unwrap(new Expression(true, keep, 1));
+		AlgebraicParticle removed = keep.size() == 0 ? Number.ZERO : unwrap(new Expression(true, keep, 1));
 		//concat move and dest to get the result
-		AlgebraicParticle[] calculateAdded = new AlgebraicParticle[dest.length() + move.length];
+		ArrayList<AlgebraicParticle> calculateAdded = new ArrayList<AlgebraicParticle>(dest.length() + move.size());
 		int i;
 		for(i = 0; i < dest.length(); i++){
-			calculateAdded[i] = dest.get(i);
+			calculateAdded.add(dest.get(i));
 		}
-		for(int j = 0; j < move.length; j++){
+		for(AlgebraicParticle a : move){
 			//change the sign when we copy the terms we're moving to the other side
-			calculateAdded[i++] = move[j].cloneWithNewSign(!move[j].sign());
+			calculateAdded.add(a.cloneWithNewSign(!a.sign()));
 		}	
 		AlgebraicParticle added = new Expression(true, calculateAdded, 1);
 		
@@ -120,7 +125,7 @@ public class ChangeSides extends Algorithm {
 		Equation eq = new Equation(putConstOnRight == moveConstants ? removed : added, putConstOnRight != moveConstants ? removed : added);
 		Step step = new Step(eq);
 		return step.explain("We need to move ").list(move)
-				.explain(" to the " + (putConstOnRight == moveConstants ? "right" : "left") + " and change the sign" + (move.length == 1 ? "" : "s") + ".");
+				.explain(" to the " + (putConstOnRight == moveConstants ? "right" : "left") + " and change the sign" + (move.size() == 1 ? "" : "s") + ".");
 	}
 
 	@Override

@@ -402,7 +402,7 @@ public class CombineLikeTerms extends Algorithm {
 				return new Term(resultingSign, list, exponent);
 			}
 		}
-		else return new Expression(sign, list.toArray(new AlgebraicParticle[list.size()]), exponent);
+		else return new Expression(sign, list, exponent);
 	}
 	
 	/**

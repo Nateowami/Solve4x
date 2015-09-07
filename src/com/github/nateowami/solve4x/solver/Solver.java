@@ -18,6 +18,9 @@
 package com.github.nateowami.solve4x.solver;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 
 import com.github.nateowami.solve4x.Solve4x;
 import com.github.nateowami.solve4x.algorithm.*;
@@ -253,97 +256,35 @@ public class Solver {
 		return algorList;
 	}
 	
-	/**
-	 * Dispatches an algorithm to work on equation s. This method will choose the proper algorithms 
-	 * to use, and if more than one is applicable, it will
-	 * @param e A Solution to work on solving.
-	 * @return An array of Solutions that that continue solving s.
-	 */
-	private ArrayList<Solution> dispatchAlgorithms(Solution s, SolveFor solveFor, RoundingRule round){
+	private ArrayList<Solution> dispatchAlgorithms(Solution solution, SolveFor solveFor, RoundingRule round){
 		ArrayList<Solution> solutions = new ArrayList<Solution>();
-		for(Algorithm a : this.algorithms) solutions.addAll(dispatchAlgorithm(s, a, round));
-		return solutions;
-	}
-	
-	/**
-	 * Dispatches a given algorithm with a given rounding rule and a partial solution. The solution 
-	 * is given so new solutions may be constructed off of it.
-	 * @param s The (unfinished) solution that we are extending by adding a step.
-	 * @param a The algorithm to use in solving.
-	 * @param round The rounding rule to use for arithmetic operations.
-	 * @return A list of solutions, each having one more step than the given solution. This list 
-	 * may be empty.
-	 */
-	private ArrayList<Solution> dispatchAlgorithm(Solution s, Algorithm a, RoundingRule round) {
-		ArrayList<Solution> list = new ArrayList<Solution>();
-		for(Algebra resource : resourcesForAlgorithm(s.getLastAlgebraicExpression(), a)) {
-			if(a.smarts(resource) > 3){
-				Solution solution = new Solution(s);
-				solution.addStep(dispatchAlgorithmWithResource(a, resource, s.getLastAlgebraicExpression()));
-				list.add(solution);
+		//iterate over algorithms
+		int maxSmarts = 0;
+		HashMap<Algorithm, Tree> map = new HashMap<Algorithm, Tree>();
+		Tree tree = new Tree(solution.getLastAlgebraicExpression());
+		//find the smarts and make a list of algorithms and the trees that represent the algebra to feed to them
+		for(Algorithm algorithm : this.algorithms) {
+			List<Tree> resources = tree.where(algorithm.ALGORITHM_LEVEL);
+			//iterate over resources for the algorithm
+			for(Tree node : resources) {
+				int smarts = algorithm.smarts(node.algebra());
+				if(smarts > maxSmarts) {
+					maxSmarts = smarts;
+					map = new HashMap<Algorithm, Tree>();
+					map.put(algorithm, node);
+				}
+				else if(smarts == maxSmarts) map.put(algorithm, node);
 			}
 		}
-		return list;
-	}
-	
-	/**
-	 * Dispatches an algorithm with a given resource and top-level expression. In other words, it 
-	 * takes an algorithm, a piece of algebra to feed to that algorithm, and the piece of algebra 
-	 * that the first piece belongs to. For example, if we wanted to combine like terms in x(2+4), 
-	 * algorithm would be an instance of CombineLikeTerms, the resource would be 2+4, and the 
-	 * top-level algebra would be x(2+4) (Unless, of course, the x(2+4) was part of another 
-	 * expression or equation, in which case it would be that).
-	 * @param algorithm The algorithm to dispatch.
-	 * @param resource The resource to give to the algorithm.
-	 * @param topLevel The top-level ancestor of resource (e.g. an equation that resource is a part 
-	 * of). It could even be the resource itself.
-	 * @return A new solving step which uses the algorithm and resource.
-	 */
-	//protected so it can be tested
-	protected static Step dispatchAlgorithmWithResource(Algorithm algorithm, Algebra resource, Algebra topLevel){
-		Step step = algorithm.execute(resource);
-		
-		//figure out what algebraic particle was modified, and what it was modified to
-		Algebra out = resource, in = step.getChange();
-		//the final top-level equation, expression, term, etc.
-		Algebra result = null;
-		
-		//if the top level expression was changed
-		if(resource == topLevel) result = step.getChange();
-		//it was nested then
-		else {
-			if(topLevel instanceof Equation) result = ((Equation)topLevel).replace((AlgebraicParticle)out, (AlgebraicParticle)in);
-			else if(topLevel instanceof AlgebraicCollection) result = ((AlgebraicCollection)topLevel).replace((AlgebraicParticle)out, (AlgebraicParticle)in);
-			else throw new IllegalArgumentException("Unknown something-a-rather error.");
+		//now actually work with what we found
+		for(Entry<Algorithm, Tree> entry : map.entrySet()) {
+			Step step = entry.getKey().execute(entry.getValue().algebra());
+			step.setAlgebraicExpression(entry.getValue().considerReplacement(step.getChange()));
+			Solution newSolution = new Solution(solution);
+			newSolution.addStep(step);
+			solutions.add(newSolution);
 		}
-		
-		step.setAlgebraicExpression(result);
-		
-		return step;
-	}
-	
-	/**
-	 * Calculates the Algebra to be sent to a given algorithm 
-	 * @param e
-	 * @param algorithm
-	 * @return
-	 */
-	private ArrayList<? extends Algebra> resourcesForAlgorithm(Algebra algebra, Algorithm algorithm){
-		ArrayList<Algebra> list = new ArrayList<Algebra>();
-		//if we're working with equations
-		if(algebra instanceof Equation && algorithm.ALGORITHM_LEVEL.equals(Equation.class)) {
-			list.add(algebra);
-			return list;
-		}
-		
-		if(algebra instanceof AlgebraicCollection){
-			list.addAll(((AlgebraicCollection)algebra).flattenAndLimitByClass((Class<AlgebraicParticle>) algorithm.ALGORITHM_LEVEL));
-			return list;
-		}
-		else if(algebra instanceof Equation) {
-			return ((Equation)algebra).flattenAndLimitByClass((Class<AlgebraicParticle>) algorithm.ALGORITHM_LEVEL);
-		}
-		return list;
+		return solutions;
 	}
 	
 }

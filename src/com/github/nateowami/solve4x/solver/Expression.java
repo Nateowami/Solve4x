@@ -46,9 +46,9 @@ public class Expression extends AlgebraicCollection{
 	 * Construct a new Expression from an array.
 	 * @param array The array of terms for this expression.
 	 */
-	public Expression(boolean sign, AlgebraicParticle[] termList, int exponent) {
+	public Expression(boolean sign, ArrayList<AlgebraicParticle> termList, int exponent) {
 		super(sign, exponent);
-		this.termList = new ArrayList<AlgebraicParticle>(Arrays.asList(termList));
+		this.termList = termList;
 	}
 		
 	/* (non-Javadoc)
@@ -115,7 +115,7 @@ public class Expression extends AlgebraicCollection{
 	public Expression cloneWithNewSign(boolean sign) {
 		if(this.sign() == sign) return this;
 		return new Expression(sign, 
-				this.termList.toArray(new AlgebraicParticle[this.termList.size()]),
+				new ArrayList<AlgebraicParticle>(this.termList),
 				this.exponent()
 				);
 	}
@@ -156,9 +156,9 @@ public class Expression extends AlgebraicCollection{
 
 	@Override
 	public AlgebraicCollection cloneAndRemove(int i) {
-		ArrayList<AlgebraicParticle> list = (ArrayList<AlgebraicParticle>) this.termList.clone();
+		ArrayList<AlgebraicParticle> list = new ArrayList<AlgebraicParticle>(this.termList);
 		list.remove(i);
-		return new Expression(this.sign(), list.toArray(new AlgebraicParticle[list.size()]), this.exponent());
+		return new Expression(this.sign(), list, this.exponent());
 	}
 	
 }

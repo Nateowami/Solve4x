@@ -28,7 +28,16 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ AlgebraicCollectionTest.class, AlgebraicParticleTest.class,
 		EquationTest.class, ExpressionTest.class, FractionTest.class,
 		MixedNumberTest.class, NumberTest.class, RootTest.class, SolutionTest.class,
-		SolverTest.class, TermTest.class, UtilTest.class, VariableTest.class })
+		SolverTest.class, TermTest.class, UtilTest.class, VariableTest.class, TreeTest.class })
 public class SolverTests {
-
+	
+	/**
+	 * Constructs a new AlgebraicParticle. This is a convenience method intended for test cases.
+	 * @param s The string from which to construct an AlgebraicParticle.
+	 * @return A newly constructed AlgebraicParticle.
+	 */
+	public static AlgebraicParticle a(String s) {
+		return AlgebraicParticle.getInstance(s);
+	}
+	
 }

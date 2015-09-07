@@ -41,23 +41,10 @@ public class SolverTest {
 		assertEquals(new Equation("4=x"), new Solver("2+2=x", solve, round).getSolution().getLastAlgebraicExpression());
 		assertEquals(new Equation("4=x"), new Solver("4=3x-2x", solve, round).getSolution().getLastAlgebraicExpression());
 		assertEquals(new Equation("4=x"), new Solver("2*2=x", solve, round).getSolution().getLastAlgebraicExpression());
+		assertEquals(new Equation("7=x"), new Solver("3+4=x", solve, round).getSolution().getLastAlgebraicExpression());
 		
 		assertEquals(AlgebraicParticle.getInstance("7"), new Solver("3+4", simplify, round).getSolution().getLastAlgebraicExpression());
 		assertEquals(AlgebraicParticle.getInstance("2x+7"), new Solver("5x+7-3x", simplify, round).getSolution().getLastAlgebraicExpression());
-	}
-	
-	@Test
-	public void testDispatchAlgorithmWithResource() {
-		Equation eq1 = new Equation("2+2=x"), eq2 = new Equation("4=x");
-		
-		Step step = Solver.dispatchAlgorithmWithResource(new CombineLikeTerms(round), eq1.left(), eq1);
-		
-		assertEquals(step.getChange(), eq2.left());
-		assertEquals(step.getAlgebraicExpression(), eq2);
-		
-		Equation eq3 = new Equation("2x+3x=1");
-		Step step2 = Solver.dispatchAlgorithmWithResource(new CombineLikeTerms(round), eq3.left(), eq3);
-		assertEquals(AlgebraicParticle.getInstance("5x"), ((Equation)step2.getAlgebraicExpression()).left());
 	}
 	
 	@Test

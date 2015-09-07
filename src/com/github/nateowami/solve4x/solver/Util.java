@@ -259,7 +259,7 @@ public class Util {
 	 * @return A new ArrayList that has only the elements of the given list that are instances of 
 	 * class c.
 	 */
-	public static <T> ArrayList<T> limit(ArrayList<? extends Algebra> list, Class<T> c) {
+	public static <T> ArrayList<T> limit(ArrayList<Algebra> list, Class<T> c) {
 		ArrayList<T> output = new ArrayList<T>();
 		for(int i = 0; i < list.size(); i++) {
 			if(c.isInstance(list.get(i))) output.add((T) list.get(i));
@@ -276,6 +276,15 @@ public class Util {
 	 */
 	public static <T> ArrayList<T> list(T... list) {
 		return new ArrayList<T>(Arrays.asList(list));
+	}
+	
+	/**
+	 * Constructs a new AlgebraicParticle. This is a convenience method intended for test cases.
+	 * @param s The string from which to construct an AlgebraicParticle.
+	 * @return A newly constructed AlgebraicParticle.
+	 */
+	public static AlgebraicParticle a(String s) {
+		return AlgebraicParticle.getInstance(s);
 	}
 	
 }
