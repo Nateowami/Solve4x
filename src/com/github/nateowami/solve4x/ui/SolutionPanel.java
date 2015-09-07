@@ -17,8 +17,10 @@
  */
 package com.github.nateowami.solve4x.ui;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.github.nateowami.solve4x.solver.Solution;
@@ -29,18 +31,29 @@ import com.github.nateowami.solve4x.solver.Step;
  */
 public class SolutionPanel extends JPanel{
 	
+	private static final Font font = new Font("SansSerif", Font.PLAIN, 14);
+	
 	public void setSolution(Solution solution) {
 		
 		this.setLayout(new GridLayout(0,1));
 		
 		this.removeAll();
 		
+		JLabel summaryLabel = new JLabel(solution.getSummary());
+		summaryLabel.setFont(font);
+		JPanel summary = new JPanel();
+		summary.add(summaryLabel);
+		
+		if(!solution.isSummaryLast()) this.add(summary);
+		
 		Step step = new Step(solution.getOriginalAlgebraicExpression());
 		step.setAlgebraicExpression(solution.getOriginalAlgebraicExpression());
-		this.add(new StepPanel(step));
+		this.add(new StepPanel(step, font));
 		for(int i = 0; i < solution.length(); i++) {
-			this.add(new StepPanel(solution.get(i)));
+			this.add(new StepPanel(solution.get(i), font));
 		}
+		if(solution.isSummaryLast()) this.add(summary);
+		
 		this.validate();
 		this.repaint();
 	}

@@ -33,9 +33,7 @@ import com.github.nateowami.solve4x.visual.GraphicalRenderer;
  */
 public class StepPanel extends JPanel {
 	
-	private static final Font font = new Font("SansSerif", Font.PLAIN, 14);
-
-	public StepPanel(Step step) {
+	public StepPanel(Step step, Font font) {
 		this.setLayout(new GridLayout(2, 1));
 		
 		JPanel top = new JPanel();

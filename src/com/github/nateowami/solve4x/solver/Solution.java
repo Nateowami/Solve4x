@@ -26,8 +26,10 @@ import java.util.ArrayList;
  */
 public class Solution {
 	
-	ArrayList <Step>steps = new ArrayList<Step>();//a list of steps
-	Algebra original;
+	private ArrayList <Step>steps = new ArrayList<Step>();//a list of steps
+	private Algebra original;
+	private String summary;
+	private boolean summaryLast = true;
 	
 	/**
 	 * Creates a new Solution from another Solution
@@ -88,6 +90,38 @@ public class Solution {
 		return this.steps.size() > 0 ? this.steps.get(this.steps.size() - 1).getAlgebraicExpression() : this.original;
 	}
 	
+	/**
+	 * @return The solutions's summary.
+	 */
+	public String getSummary() {
+		return summary;
+	}
+
+	/**
+	 * Sets the solution's summary.
+	 * @param summary The summary to set
+	 */
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+	
+	/**
+	 * Tells whether the summary is to be placed after the solution.
+	 * @return True if the summary should come after the solution, or false if it should come first.
+	 */
+	public boolean isSummaryLast() {
+		return summaryLast;
+	}
+
+	/**
+	 * Sets whether the summary should come last, that is, after the main part of the solution. Set 
+	 * to true if you want the summary at the end, otherwise false.
+	 * @param summaryLast True for a summary at the end, or false to place it at the beginning.
+	 */
+	public void setSummaryLast(boolean summaryLast) {
+		this.summaryLast = summaryLast;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -102,5 +136,6 @@ public class Solution {
 	public Algebra getOriginalAlgebraicExpression() {
 		return original;
 	}
-	
+
+		
 }

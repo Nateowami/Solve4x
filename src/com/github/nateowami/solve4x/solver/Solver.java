@@ -98,6 +98,10 @@ public class Solver {
 		Set<Algebra> previousStates = new HashSet<Algebra>();
 		previousStates.add(parsedInput);
 		
+		//keep track of the best solution we get (shortest result) so if we can't finish completely we have an OK result
+		Solution bestSoFar = null;
+		int bestLengthSoFar = -1;
+		
 		// Loop until one of the following conditions is met:
 		// - No solutions have survived
 		// - A complete solution has been found
@@ -119,10 +123,26 @@ public class Solver {
 				if(previousStates.contains(state)) itr.remove();
 				else previousStates.add(state);
 			}
+			
+			//find the best of the current solutions (i.e. the one that came the closest to solving)
+			for(Solution solution : currentSolutions) {
+				int length = solution.getLastAlgebraicExpression().render().length();
+				if(bestLengthSoFar == -1 || length < bestLengthSoFar) {
+					bestLengthSoFar = length;
+					bestSoFar = solution;
+				}
+			}
 		}
 				
 		//set finalSolution
-		finalSolution = findSolution(currentSolutions, solveFor);
+		this.finalSolution = findSolution(currentSolutions, solveFor);
+		//if there is no solution go with the best one
+		if(this.finalSolution == null) {
+			bestSoFar.setSummary("The problem could not be fully solved.");
+			//make the summary appear at the top
+			bestSoFar.setSummaryLast(false);
+			this.finalSolution = bestSoFar;
+		}
 	}
 	
 	/**
