@@ -270,6 +270,7 @@ public class Solver {
 			algorList.add(new Multiply(round));
 			algorList.add(new Distribute(round));
 			algorList.add(new CancelFactors());
+			algorList.add(new ConvertToMixedNumber());
 		}
 		return algorList;
 	}
@@ -306,16 +307,8 @@ public class Solver {
 			}
 		});
 		
-		//since list is sorted, max smarts is in the first element
-		//take care not to throw NPE even if list is empty
-		int maxSmarts = list.isEmpty() ? 0 : list.get(0).getKey();
-		
 		//now actually work with what we found
 		for(AbstractMap.SimpleEntry<Integer, AbstractMap.SimpleEntry<Algorithm, Tree>> entry : list) {
-			//if we've already got a solution on the list, and this isn't among the smartest algos to use
-			//TODO left off here 
-			if(!solutions.isEmpty() && entry.getKey() < maxSmarts) break;
-			
 			//pass the algebra to the algorithm
 			Step step = entry.getValue().getKey().execute(entry.getValue().getValue().algebra());
 			step.setAlgebraicExpression(entry.getValue().getValue().considerReplacement(step.getChange()));

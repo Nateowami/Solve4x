@@ -42,6 +42,7 @@ public class SolverTest {
 		assertEquals(new Equation("4=x"), new Solver("4=3x-2x", solve, round).getSolution().getLastAlgebraicExpression());
 		assertEquals(new Equation("4=x"), new Solver("2*2=x", solve, round).getSolution().getLastAlgebraicExpression());
 		assertEquals(new Equation("7=x"), new Solver("3+4=x", solve, round).getSolution().getLastAlgebraicExpression());
+		assertEquals(new Equation("x=1(1)/(2)"), new Solver("x=(3)/(2)", solve, round).getSolution().getLastAlgebraicExpression());
 		
 		assertEquals(AlgebraicParticle.getInstance("7"), new Solver("3+4", simplify, round).getSolution().getLastAlgebraicExpression());
 		assertEquals(AlgebraicParticle.getInstance("2x+7"), new Solver("5x+7-3x", simplify, round).getSolution().getLastAlgebraicExpression());
