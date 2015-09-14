@@ -40,12 +40,13 @@ public class ConvertToMixedNumber extends Algorithm {
 		top = top % bottom;
 		
 		Fraction properFraction = new Fraction(true, number(top), number(bottom), 1);
-		MixedNumber mn = new MixedNumber(frac.sign(), number(front), properFraction, frac.exponent());
+		boolean sign = frac.sign() == (frac.getTop().sign() == frac.getBottom().sign());
+		MixedNumber mn = new MixedNumber(sign, number(front), properFraction, frac.exponent());
 		
 		Step step = new Step(mn);
 		step.explain("Convert ").explain(frac).explain(" to a mixed number. ")
 				.explain(frac.getBottom()).explain(" goes into ").explain(frac.getTop())
-				.explain(number(front)).explain(" times leaving ")
+				.explain(number(front)).explain((front == 1 ? "time" : "times") +" leaving ")
 				.explain(mn.getFraction().getTop()).explain(".");
 		
 		return step;
@@ -54,8 +55,9 @@ public class ConvertToMixedNumber extends Algorithm {
 	@Override
 	public int smarts(Algebra algebra) {
 		Fraction frac = (Fraction) algebra;
-		//if the fraction is a positive number on top and bottom, but it's not fully simplified
-		if(frac.constant() && frac.getTop().sign() && frac.getBottom().sign() && !frac.isSimplified()) {
+		//if the fraction is a positive integer on top and bottom, but it's not fully simplified
+		if(frac.getTop() instanceof Number && frac.getBottom() instanceof Number && 
+				((Number)frac.getTop()).isInteger() && ((Number)frac.getBottom()).isInteger() && !frac.isSimplified()) {
 			Number top = (Number) frac.getTop(), bottom = (Number) frac.getBottom();
 			//if top and bottom has no common factors
 			if(Number.GCF(Long.parseLong(top.getInteger()), Long.parseLong(bottom.getInteger())) == 1) return 3;

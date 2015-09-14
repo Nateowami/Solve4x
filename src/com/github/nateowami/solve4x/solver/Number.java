@@ -193,13 +193,6 @@ public class Number extends AlgebraicParticle{
 	}
 	
 	/**
-	 * @return True if the number has no decimal place and is not multiplied by 10^n
-	 */
-	private boolean isWholeNumber() {
-		return this.decimal == null && this.sciExponent == null;
-	}
-
-	/**
 	 * Return a string representation of this Number, not the traditional toString()
 	 * @return This Number in a string format. 
 	 */
@@ -330,7 +323,7 @@ public class Number extends AlgebraicParticle{
 		return 
 				r == RoundingRule.ALWAYS || 
 				//or we're supposed to use precision rules for rounding except for whole numbers, and one isn't a whole number
-				(r == RoundingRule.FOR_SCIENTIFIC_NOTATION_AND_DECIMALS && (!n1.isWholeNumber() || !n2.isWholeNumber())) ||
+				(r == RoundingRule.FOR_SCIENTIFIC_NOTATION_AND_DECIMALS && (!n1.isInteger() || !n2.isInteger())) ||
 				//or we're supposed to use precision rules only for scientific notation, and one is in scientific notation 
 				(r == RoundingRule.FOR_SCIENTIFIC_NOTATION && (n1.sciExponent != null || n2.sciExponent != null));
 	}

@@ -36,6 +36,7 @@ public class ConvertToMixedNumberTest {
 		assertEquals(a("7(3)/(4)"), c.execute(a("(31)/(4)")).getChange());
 		assertEquals(a("1(2)/(3)"), c.execute(a("(5)/(3)")).getChange());
 		assertEquals(a("1(1)/(2)"), c.execute(a("(3)/(2)")).getChange());
+		assertEquals(a("1(1)/(2)"), c.execute(a("-(3)/(-2)")).getChange());
 	}
 	
 	@Test
@@ -43,9 +44,10 @@ public class ConvertToMixedNumberTest {
 		assertEquals(3, c.smarts(a("(5)/(3)")));
 		assertEquals(3, c.smarts(a("(3)/(2)")));
 		assertEquals(0, c.smarts(a("(4)/(20)")));
-		assertEquals(3, c.smarts(a("(31)/(4)")));
+		assertEquals(3, c.smarts(a("(-31)/(4)")));
 		assertEquals(0, c.smarts(a("(9)/(6)")));
 		assertEquals(0, c.smarts(a("(5)/(6)")));
+		assertEquals(0, c.smarts(a("(7.5)/(6)")));
 	}
 	
 	AlgebraicParticle a(String s) {
