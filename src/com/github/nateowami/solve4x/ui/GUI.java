@@ -87,7 +87,8 @@ public class GUI {
     }
 
     private static JTextField txtfEquationEntry;
-
+    private static final SolutionPanel panelDrawing = new SolutionPanel();
+    
     /**
      * Makes all the GUI widgets and puts the the GUI on-screen
      * @throws ClassNotFoundException
@@ -104,7 +105,6 @@ public class GUI {
         final Field paintValue = sliderUIClass.getDeclaredField("paintValue");
         paintValue.setAccessible(true);
         
-        final SolutionPanel panelDrawing = new SolutionPanel();
         panelDrawing.setName("Panel.draw");
         
         //set the look and feel
@@ -151,7 +151,7 @@ public class GUI {
         gbl_panelEquation.rowWeights = new double[]{0.0, Double.MIN_VALUE};
         panelEquation.setLayout(gbl_panelEquation);
         
-        //add a text field and set it's layout
+        //create the text field and set it's layout
         txtfEquationEntry = new JTextField();
         GridBagConstraints gbc_txtfEquationEntry = new GridBagConstraints();
         gbc_txtfEquationEntry.fill = GridBagConstraints.HORIZONTAL;
@@ -160,36 +160,19 @@ public class GUI {
         gbc_txtfEquationEntry.gridy = 0;
         panelEquation.add(txtfEquationEntry, gbc_txtfEquationEntry);
         txtfEquationEntry.setColumns(10);
+        txtfEquationEntry.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				answer();
+			}
+		});
         
         //make the "Solve" button
         JButton btnSolve = new JButton("Answer");
         //set the action listener for the button
         btnSolve.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                //get the equation from the text field
-                String input = txtfEquationEntry.getText();
-
-                //Check to see if the input was an equation or an expression
-                try {
-                	boolean equals = input.indexOf('=') != -1;
-                    //run the solver TODO need to account for factoring (not just solve & simplify)
-                    Solver solver = new Solver(input, equals ? Solver.SolveFor.SOLVE : Solver.SolveFor.SIMPLIFY, RoundingRule.FOR_SCIENTIFIC_NOTATION);
-                    //get the solution and display it to the user
-                	Visual.render(solver.getSolution());
-                    if(solver.getSolution() != null) {
-                    	panelDrawing.setSolution(solver.getSolution());
-                    }
-                    else {
-                    	//show the original equation (so we can verify the renderer works)
-                    	Solution solution = new Solution(equals ? new Equation(input) : AlgebraicParticle.getInstance(input));
-                    	panelDrawing.setSolution(solution);
-                    	txtfEquationEntry.setText("No solution found");
-                    }
-                } catch (ParsingException err) {
-                    //there must have been a problem with the equation the user entered
-                    err.printStackTrace();
-                    txtfEquationEntry.setText("ERROR: Malformed Entry.");
-                }
+                answer();
             }
         });
         //set the layout for the solving button
@@ -261,7 +244,37 @@ public class GUI {
         window.setVisible(true);
         
     }
+    
+    /**
+     * Runs the solver and updates the UI.
+     */
+    private static void answer() {
+    	//get the equation from the text field
+        String input = txtfEquationEntry.getText();
 
+        //Check to see if the input was an equation or an expression
+        try {
+        	boolean equals = input.indexOf('=') != -1;
+            //run the solver TODO need to account for factoring (not just solve & simplify)
+            Solver solver = new Solver(input, equals ? Solver.SolveFor.SOLVE : Solver.SolveFor.SIMPLIFY, RoundingRule.FOR_SCIENTIFIC_NOTATION);
+            //get the solution and display it to the user
+        	Visual.render(solver.getSolution());
+            if(solver.getSolution() != null) {
+            	panelDrawing.setSolution(solver.getSolution());
+            }
+            else {
+            	//show the original equation (so we can verify the renderer works)
+            	Solution solution = new Solution(equals ? new Equation(input) : AlgebraicParticle.getInstance(input));
+            	panelDrawing.setSolution(solution);
+            	txtfEquationEntry.setText("No solution found");
+            }
+        } catch (ParsingException err) {
+            //there must have been a problem with the equation the user entered
+            err.printStackTrace();
+            txtfEquationEntry.setText("ERROR: Malformed Entry.");
+        }
+    }
+    
     /**
      * Sets the look and feel to the Solve4x look and feel with Synths.
      * Loads the xml files that define the look and feel,
