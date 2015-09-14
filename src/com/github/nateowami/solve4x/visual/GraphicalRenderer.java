@@ -22,10 +22,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.font.TextAttribute;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +40,8 @@ import com.github.nateowami.solve4x.solver.Number;
  */
 public class GraphicalRenderer {
 	
+	private static final Canvas canvas = new Canvas();
+	
 	//keep a cache so we don't keep rendering the same algebra
 	private static final HashMap<Algebra, BufferedImage> cache = new HashMap<Algebra, BufferedImage>();
 	
@@ -50,7 +52,7 @@ public class GraphicalRenderer {
 	static {
 		try {
 			//setup default font
-			font = Font.createFont(Font.TRUETYPE_FONT, Main.class.getResourceAsStream("/fonts/KaTeX_Main-Regular.ttf")).deriveFont(18f);
+			font = Font.createFont(Font.TRUETYPE_FONT, Main.class.getResourceAsStream("/fonts/KaTeX_Main-Regular.ttf")).deriveFont(16f);
 			
 			//setup superscript font
 			HashMap<TextAttribute, Object> map = new HashMap<TextAttribute, Object>();
@@ -438,12 +440,13 @@ public class GraphicalRenderer {
 		Dimension dimensions = dimensions(s, font);
 		BufferedImage image = image(dimensions);
 		Graphics2D g = image.createGraphics();
-
+		
 		g.setColor(Color.BLACK);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setFont(font);
-
-		g.drawString(s, 0, dimensions.height - (dimensions.height * 0.15f));
+		
+		//draw the string just so many pixels from the bottom as the descent is
+		g.drawString(s, 0, image.getHeight() - canvas.getFontMetrics(font).getDescent());
 		return image;
 	}
 	
@@ -466,8 +469,10 @@ public class GraphicalRenderer {
 	 * font.
 	 */
 	private static Dimension dimensions(String string, Font font) {
-		Rectangle2D rect = new Canvas().getFontMetrics(font).getStringBounds(string, null);
-		return new Dimension((int)Math.round(rect.getWidth()), (int)Math.ceil(rect.getHeight()));
+		FontMetrics metrics = canvas.getFontMetrics(font);
+		int width = metrics.stringWidth(string);
+		int height = metrics.getAscent() + metrics.getDescent();
+		return new Dimension(width, height);
 	}
 	
 	/**

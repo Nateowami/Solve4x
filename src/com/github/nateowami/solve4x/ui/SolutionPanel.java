@@ -17,9 +17,9 @@
  */
 package com.github.nateowami.solve4x.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Rectangle;
 
 import javax.swing.BoxLayout;
@@ -28,9 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Scrollable;
 
-import com.github.nateowami.solve4x.solver.Algebra;
 import com.github.nateowami.solve4x.solver.Solution;
-import com.github.nateowami.solve4x.solver.Step;
 import com.github.nateowami.solve4x.visual.GraphicalRenderer;
 
 /**
@@ -38,9 +36,10 @@ import com.github.nateowami.solve4x.visual.GraphicalRenderer;
  */
 public class SolutionPanel extends JPanel implements Scrollable {
 	
-	private static final Font font = new Font("SansSerif", Font.PLAIN, 14);
+	private static final Font font = new Font("SansSerif", Font.PLAIN, 16);
 	
 	public void setSolution(Solution solution) {
+		this.setBackground(new Color(240, 240, 240)); // #f0f0f0
 		
 		//remove any elements that may be on the panel from a previous solutions
 		this.removeAll();
