@@ -106,8 +106,8 @@ public class SolutionPanel extends JPanel implements Scrollable {
 	
 	@Override
 	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-		//scroll 5 [pixels?] at a time
-		return 5;
+		//scroll 15 [pixels?] at a time
+		return 15;
 	}
 	
 }

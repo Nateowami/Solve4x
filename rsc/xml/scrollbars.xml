@@ -1,0 +1,36 @@
+<synth>
+	<object id="painter" class="com.github.nateowami.solve4x.ui.CustomPainter" />
+	
+	<!-- Scrollbar -->
+	<style id="scrollbar">
+		<insets top="0" left="5" right="5" bottom="0" />
+	</style>
+	<bind style="scrollbar" type="region" key="Scrollbar" />
+	
+	<!-- Scrollbar thumb -->
+	<style id="scrollbarThumb">
+		<painter method="scrollBarThumbBackground" idref="painter" />
+		<state>
+			<color value="#606060" type="BACKGROUND" />
+		</state>
+		<state value="MOUSE_OVER">
+			<color value="#707070" type="BACKGROUND" />
+		</state>
+	</style>
+	<bind style="scrollbarThumb" type="region" key="ScrollbarThumb" />
+	
+	<!-- Scrollbar arrows -->
+	<style id="scrollbarArrows">
+		<painter method="arrowButtonBackground" idref="painter" />
+		<painter method="arrowButtonForeground" idref="painter" />
+		<state>
+			<color value="#f0f0f0" type="FOREGROUND" />
+			<color value="#606060" type="BACKGROUND" />
+		</state>
+		<state value="MOUSE_OVER">
+			<color value="#707070" type="BACKGROUND" />
+		</state>
+	</style>
+	<bind style="scrollbarArrows" type="region" key="ArrowButton" />
+	
+</synth>
