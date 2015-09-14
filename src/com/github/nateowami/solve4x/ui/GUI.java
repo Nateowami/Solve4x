@@ -32,6 +32,7 @@ import java.text.ParseException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -230,19 +231,17 @@ public class GUI {
         panelTop.add(btnHelp, gbc_btnNewButton_2_1_1);
         
         //create a scroll pane for the main area where the solution is shown
-        //JScrollPane scrollPane = new JScrollPane(panelDrawing);
-        //scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        //
-        //NOTE: code commented out do to issues with wrapping content in the scroll pane. Can be 
-        //fixed and uncommented later.
-        //
+        JScrollPane scrollPane = new JScrollPane(panelDrawing);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        
         //set the layout
         GridBagConstraints gbc_scrollPane = new GridBagConstraints();
         gbc_scrollPane.insets = new Insets(-5, 3, 2, -2);
         gbc_scrollPane.fill = GridBagConstraints.BOTH;
         gbc_scrollPane.gridx = 0;
         gbc_scrollPane.gridy = 1;
-        window.getContentPane().add(/*scrollPane*/panelDrawing, gbc_scrollPane);
+        window.getContentPane().add(scrollPane, gbc_scrollPane);
 
         //do things with the size/location
         //set the size and location of the window

@@ -18,8 +18,8 @@
 package com.github.nateowami.solve4x.ui;
 
 import java.awt.Font;
-import java.awt.GridLayout;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,10 +34,14 @@ import com.github.nateowami.solve4x.visual.GraphicalRenderer;
 public class StepPanel extends JPanel {
 	
 	public StepPanel(Step step, Font font) {
-		this.setLayout(new GridLayout(2, 1));
+		//set the layout to have two rows and one column
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
+		//use a wrap layout for the explanation that goes in the top row
 		JPanel top = new JPanel();
+		top.setLayout(new WrapLayout());
 		
+		//iterate over the explanation and add text and rendered images to the top row
 		for(Object obj : step.getExplanation()) {
 			if(obj instanceof String) {
 				JLabel label = new JLabel((String) obj);
@@ -47,8 +51,16 @@ public class StepPanel extends JPanel {
 			else top.add(new JLabel(new ImageIcon(GraphicalRenderer.render((Algebra)obj))));
 		}
 		
+		//add the top row
 		this.add(top);
-		this.add(new JLabel(new ImageIcon(GraphicalRenderer.render(step.getAlgebraicExpression()))));
+		
+		//show what the equation looks like after it goes through this step
+		JLabel bottom = new JLabel(new ImageIcon(GraphicalRenderer.render(step.getAlgebraicExpression())));
+		bottom.setAlignmentX(CENTER_ALIGNMENT);
+		this.add(bottom);
+		
+		this.revalidate();
+		this.repaint();
 	}
 	
 }

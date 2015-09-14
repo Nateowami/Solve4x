@@ -91,7 +91,7 @@ public class Solution {
 	}
 	
 	/**
-	 * @return The solutions's summary.
+	 * @return The solutions's summary (may be null);
 	 */
 	public String getSummary() {
 		return summary;
