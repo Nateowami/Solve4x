@@ -22,9 +22,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.RenderingHints;
-import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -32,8 +30,6 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.synth.ColorType;
 import javax.swing.plaf.synth.SynthContext;
 import javax.swing.plaf.synth.SynthPainter;
-
-import com.github.nateowami.solve4x.Solve4x;
 
 /**
  * A custom painter for a synth look and feel
@@ -100,7 +96,7 @@ public class CustomPainter extends SynthPainter {
     	Graphics2D g = (Graphics2D) graphics;
     	g.setColor(context.getStyle().getColor(context, ColorType.FOREGROUND));
     	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	g.setStroke(new BasicStroke(2.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+    	g.setStroke(new BasicStroke(1.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
     	
     	//if the arrow is pointing upwards
     	boolean up = direction == SwingConstants.NORTH;

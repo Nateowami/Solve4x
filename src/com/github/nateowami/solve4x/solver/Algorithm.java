@@ -37,17 +37,17 @@ public abstract class Algorithm {
 	
 	/**
 	 * Applies the algorithm on the given equation and returns the step.
-	 * @param resource The equation to work on.
+	 * @param algebra The equation to work on.
 	 * @return The step for solving.
 	 */
-	public abstract Step execute(Algebra resource);
+	public abstract Step execute(Algebra algebra);
 	
 	/**
 	 * To return the approximate smartness of performing the solving technique
 	 * on the given equation.
-	 * @param equation The equation to evaluate
+	 * @param algebra The equation or expression to evaluate
 	 */
-	public abstract int smarts(Algebra equation);
+	public abstract int smarts(Algebra algebra);
 	
 	/**
 	 * Given a, if it is an Expression or Term with length one, it returns the AlgebraicParticle 

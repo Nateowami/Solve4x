@@ -291,6 +291,7 @@ public class Solver {
 			algorList.add(new Distribute(round));
 			algorList.add(new CancelFactors());
 			algorList.add(new ConvertToMixedNumber());
+			algorList.add(new Divide(round));
 		}
 		return algorList;
 	}

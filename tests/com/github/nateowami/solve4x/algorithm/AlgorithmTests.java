@@ -29,7 +29,8 @@ import com.github.nateowami.solve4x.solver.AlgebraicParticle;
 @RunWith(Suite.class)
 @SuiteClasses({ ChangeSidesTest.class, CombineLikeTermsTest.class, 
 			MultiplyTest.class, DivideBothSidesTest.class, DistributeTest.class,
-			CancelFactorsTest.class, MultiplyBothSidesTest.class, ConvertToMixedNumberTest.class})
+			CancelFactorsTest.class, MultiplyBothSidesTest.class, ConvertToMixedNumberTest.class,
+			DivideTest.class })
 public class AlgorithmTests {
 	
 	/**
