@@ -32,14 +32,14 @@ public class RoundingRule {
 	 * FOR_SCIENTIFIC_NOTATION_AND_DECIMALS:
 	 * Use the rules for significant figures and decimal places when performing operations on decimals and 
 	 * numbers in scientific notation. For whole numbers, only round when dividing, leaving two significant 
-	 * decimal places. For operations with whole numbers and decimals or scientific notation, use significant
+	 * decimal places. For operations with whole numbers and [decimals or scientific notation], use significant
 	 * figure and decimal place rounding rules.
 	 * FOR_SCIENTIFIC_NOTATION:
 	 * Use the rules for significant figures and decimal places when performing operations on numbers in 
 	 * scientific notation. For whole numbers and decimals, only round when dividing, leaving two significant 
-	 * decimal places. For operations with whole numbers or decimals and scientific notation, use significant
+	 * decimal places. For operations with [whole numbers or decimals] and scientific notation, use significant
 	 * figure and decimal place rounding rules.
-	 * Or a RoundingRule may be constructed from and int, and operations will be rounded out to that many 
+	 * Or a RoundingRule may be constructed from an int, and operations will be rounded out to that many 
 	 * significant decimal places when multiplying or dividing.
 	 * @author Nateowami
 	 */

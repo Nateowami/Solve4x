@@ -21,6 +21,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import static com.github.nateowami.solve4x.algorithm.AlgorithmTests.*;
+
 import com.github.nateowami.solve4x.config.RoundingRule;
 import com.github.nateowami.solve4x.config.RoundingRule.BySignificantFigures;
 
@@ -54,7 +56,7 @@ public class NumberTest {
 	}
 
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#add(com.github.nateowami.solve4x.solver.Number, com.github.nateowami.solve4x.solver.Number)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#add(Number, Number, RoundingRule)}.
 	 * @ 
 	 */
 	@Test
@@ -101,7 +103,7 @@ public class NumberTest {
 	}
 	
 	/**
-	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#multiply(com.github.nateowami.solve4x.solver.Number, com.github.nateowami.solve4x.solver.Number)}.
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#multiply(Number, Number, RoundingRule)}.
 	 * @ 
 	 */
 	@Test
@@ -114,6 +116,7 @@ public class NumberTest {
 		
 		assertEquals("2", Number.multiply(new Number("1"), new Number("2"), all).render());
 		assertEquals("3.4377", Number.multiply(new Number("1.637"), new Number("2.1"), forSci).render());
+		assertEquals("8.742", Number.multiply(new Number("2.35"), new Number("3.72"), forSci).render());
 		
 		assertEquals("-208", Number.multiply(
 				(Number) AlgebraicParticle.getInstance("-16"),
@@ -144,9 +147,23 @@ public class NumberTest {
 		//TEST CUSTOM ROUNDING RULE
 		assertEquals("85.9", Number.multiply(new Number("6.6"), new Number("13.02"), new RoundingRule(1)).render());
 		assertEquals("85.93", Number.multiply(new Number("6.6"), new Number("13.02"), new RoundingRule(2)).render());
-		assertEquals("85.932", Number.multiply(new Number("6.6"), new Number("13.02"), new RoundingRule(5)).render());
+		assertEquals("85.932", Number.multiply(new Number("6.6"), new Number("13.02"), new RoundingRule(3)).render());
 		assertEquals("-4467.82", Number.multiply(new Number("9.4"), new Number("-475.3"), new RoundingRule(2)).render());
 		assertEquals("-4468.6", Number.multiply(new Number("9.4"), new Number("-475.38"), new RoundingRule(1)).render());
+	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.solver.Number#divide(Number, Number, RoundingRule).
+	 * @ 
+	 */
+	@Test
+	public void testDivide() {
+		assertEquals(a("0.67"), Number.divide((Number)a("2"), (Number)a("3"), RoundingRule.FOR_SCIENTIFIC_NOTATION));
+		assertEquals(a("0.7").render(), Number.divide((Number)a("2.0"), (Number)a("3"), RoundingRule.FOR_SCIENTIFIC_NOTATION_AND_DECIMALS).render());
+		assertEquals(a("3.0*10⁷"), Number.divide((Number)a("2.3*10⁸"), (Number)a("7.6"), RoundingRule.FOR_SCIENTIFIC_NOTATION_AND_DECIMALS));
+		assertEquals("3.3*10⁻⁸", Number.divide((Number)a("7.6"), (Number)a("2.3*10⁸"), RoundingRule.FOR_SCIENTIFIC_NOTATION_AND_DECIMALS).render());
+		assertEquals("0.265", Number.divide((Number)a("13"), (Number)a("49"), new RoundingRule(3)).render());
+		assertEquals("2.08", Number.divide((Number)a("47.9"), (Number)a("23"), RoundingRule.FOR_SCIENTIFIC_NOTATION).render());
 	}
 	
 	/**

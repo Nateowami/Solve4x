@@ -21,6 +21,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.github.nateowami.solve4x.solver.AlgebraicParticle;
+
 /**
  * @author Nateowami
  */
@@ -29,5 +31,14 @@ import org.junit.runners.Suite.SuiteClasses;
 			MultiplyTest.class, DivideBothSidesTest.class, DistributeTest.class,
 			CancelFactorsTest.class, MultiplyBothSidesTest.class, ConvertToMixedNumberTest.class})
 public class AlgorithmTests {
-
+	
+	/**
+	 * Constructs a new AlgebraicParticle. This is a convenience method intended for test cases.
+	 * @param s The string from which to construct an AlgebraicParticle.
+	 * @return A newly constructed AlgebraicParticle.
+	 */
+	public static AlgebraicParticle a(String s) {
+		return AlgebraicParticle.getInstance(s);
+	}
+	
 }

@@ -25,7 +25,7 @@ import com.github.nateowami.solve4x.config.RoundingRule;
 
 /**
  * Represents a integer or decimal such as 35, 45.25, 56.36, 3.1415926535, 2.4*10⁴ and 
- * provides methods for adding, subtracting, multiplying, and dividing numbers. (TODO)
+ * provides methods for adding, subtracting, multiplying, and dividing numbers.
  * @author Nateowami
  */
 public class Number extends AlgebraicParticle{
@@ -101,7 +101,10 @@ public class Number extends AlgebraicParticle{
 		if(dot == -1) dot = e;
 		String integer = s.substring(bd.signum() == -1 ? 1 : 0, dot);
 		String decimal = dot >= e ? null : s.substring(dot+1, e);
-		Integer sciExponent = e < s.length() ? new Integer(s.substring(e+2)) : null;//+2 takes care of the 'e' and sign characters, e.g. "e+3"
+		Integer sciExponent = null;
+		//+2 takes care of the 'e' and sign characters, e.g. "e+3"; multiplying by -1 accounts for the sign
+		if(e < s.length()) sciExponent = new Integer(s.substring(e+2)) * (s.charAt(e+1) == '-' ? -1 : 1);
+		//set the sign for the sciExponent
 		return new Number(bd.signum() == -1 ? false : true, integer, decimal, sciExponent, 1);
 	}	
 	
@@ -142,7 +145,18 @@ public class Number extends AlgebraicParticle{
 	 * @return n1 multiplied by n2.
 	 */
 	public static Number multiply(Number n1, Number n2, RoundingRule round) {
-		return multiplyOrDivide(n1, n2, round, true);
+		BigDecimal a = n1.toBigDecimal();
+		BigDecimal b = n2.toBigDecimal();
+		boolean rules = shouldUsePrecisionRules(round, n1, n2);
+		
+		int precision = rules ? Math.min(a.precision(), b.precision()) : a.precision() + b.precision();
+		
+		BigDecimal result = a.multiply(b, new MathContext(precision));
+		//if it's a custom rule that specifies the max number of digits after the decimal point\
+		if(!round.isCannedRule() && result.scale() > round.getValue()) result = result.setScale(round.getValue(), RoundingMode.HALF_UP);
+		if(!rules) result = result.stripTrailingZeros();
+		
+		return toNumber(result);
 	}
 	
 	/**
@@ -153,43 +167,23 @@ public class Number extends AlgebraicParticle{
 	 * @return n1 divided by n2.
 	 */
 	public static Number divide(Number n1, Number n2, RoundingRule round) {
-		return multiplyOrDivide(n1, n2, round, false);
-	}
-	
-	/**
-	 * Multiply or divide n1 and n2. It may seem odd to combine the two in one method, however the 
-	 * bulk of the logic is identical because the actual multiplying or dividing is handled by 
-	 * the BigDecimal class (Think in terms of significant figures). If multiplyOrDivide is true, 
-	 * multiplication is carried out. Otherwise n1 is divided by n2. The rounding rules are those 
-	 * specified by round.
-	 * @param n1 The first number to multiply, or the numerator.
-	 * @param n2 The second number to multiply, or the divisor.
-	 * @param round The rounding rule to use.
-	 * @param multiplyOrDivide Indicates whether division or multiplication should be carried out.
-	 * True indicates multiplication, while false indicates division.
-	 * @return A multiplied or divided by B.
-	 */
-	private static Number multiplyOrDivide(Number n1, Number n2, RoundingRule round, boolean multiplyOrDivide) {
-		//create the decimals and multiply
 		BigDecimal a = n1.toBigDecimal();
 		BigDecimal b = n2.toBigDecimal();
-		BigDecimal result = multiplyOrDivide ? a.multiply(b) : a.divide(b);
+		boolean rules = shouldUsePrecisionRules(round, n1, n2);
 		
-		//if it's a canned rule
-		if(round.isCannedRule()){
-			//and in this situation we should use significant figure rules for rounding
-			if(shouldUsePrecisionRules(round, n1, n2)){
-				int sigFigs = a.precision() > b.precision() ? b.precision() : a.precision();
-				return toNumber(result.setScale(result.scale() + sigFigs - result.precision(), RoundingMode.HALF_UP));
-			}
-			//leave full insignificant figures (i.e., 2.2 * 1.2 = 2.64, rather than 2.6)
-			else return toNumber(result);
-		}
-		//leave as many decimal places as specified by round.getValue(), but dont' add extra zeros
-		else{
-			return toNumber(result.setScale(round.getValue() > result.scale() ? result.scale() : round.getValue(), RoundingMode.HALF_UP));
-		}
+		int precision = Math.min(a.precision(), b.precision());
 		
+		BigDecimal result = null;
+		//if using sig fig rules
+		if(rules) result = a.divide(b, new MathContext(precision));
+		//if it's a canned rule but not using sig fig rules, round to two decimal places
+		else if(round.isCannedRule()) result = a.divide(b, 2, RoundingMode.HALF_UP);
+		//not a canned rule, so used specified number of decimal places
+		else result = a.divide(b, round.getValue(), RoundingMode.HALF_UP);
+		
+		if(!rules) result = result.stripTrailingZeros();
+		
+		return toNumber(result);
 	}
 	
 	/**

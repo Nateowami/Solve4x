@@ -33,9 +33,10 @@ public class Util {
 	
 	//Unicode superscripts aren't all contiguous, so it's best to just list them
 	//we'll do regular ints and subscripts too for the sake of completeness
-	public static String superscriptInts = "⁰¹²³⁴⁵⁶⁷⁸⁹";
-	public static String charInts = "0123456789";
-	public static String subscriptInts = "₀₁₂₃₄₅₆₇₈₉";
+	public static final char superscriptNegative = '⁻', subscriptNegative = '₋'; 
+	public static final String superscriptInts = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+	public static final String charInts = "0123456789";
+	public static final String subscriptInts = "₀₁₂₃₄₅₆₇₈₉";
 	
 	/**
 	 * Tells if a string contains only numerals.
@@ -136,16 +137,17 @@ public class Util {
 	}
 	
 	/**
-	 * Tells if every char in s is a superscript. If the string is empty, false is returned.
+	 * Tells if every char in s is a superscript. If the string is empty, false is returned. The 
+	 * first character may optionally be a negative superscript.
 	 * @param s The string to check.
 	 * @return If every char in s is a valid superscript char.
 	 */
 	public static boolean isSuperscript(String s){
-		if(s.isEmpty())return false;
-		for(char c : s.toCharArray()){
-			if(superscriptInts.indexOf(c) == -1) return false;
+		for(int i = 0; i < s.length(); i++){
+			if(i == 0 && s.charAt(i) == superscriptNegative) continue;
+			if(superscriptInts.indexOf(s.charAt(i)) == -1) return false;
 		}
-		return true;
+		return s.length() != 0;
 	}
 	
 	/**
@@ -156,7 +158,8 @@ public class Util {
 	public static int superscriptToInt(String s){
 		char[] chars = s.toCharArray();
 		for (int i = 0; i < chars.length; i++){
-			chars[i] = charInts.charAt(superscriptInts.indexOf(chars[i]));
+			if(chars[i] == superscriptNegative) chars[i] = '-';  
+			else chars[i] = charInts.charAt(superscriptInts.indexOf(chars[i]));
 		}
 		return Integer.parseInt(new String(chars));
 	}
@@ -169,22 +172,24 @@ public class Util {
 	public static String toSuperscript(String s){
 		char[] chars = s.toCharArray();
 		for(int i = 0; i < chars.length; i++){
-			chars[i] = superscriptInts.charAt(charInts.indexOf(chars[i]));
+			if(chars[i] == '-') chars[i] = superscriptNegative; 
+			else chars[i] = superscriptInts.charAt(charInts.indexOf(chars[i]));
 		}
 		return new String(chars);
 	}
 	
 	/**
-	 * Tells if every char in s is a subscript. If the string is empty, false is returned.
+	 * Tells if every char in s is a subscript. If the string is empty, false is returned. It may 
+	 * optionaly begin with a negative subscript.
 	 * @param s The string to check.
 	 * @return If every char in s is a valid subscript char.
 	 */
 	public static boolean isSubscript(String s){
-		if(s.isEmpty())return false;
-		for(char c : s.toCharArray()){
-			if(subscriptInts.indexOf(c) == -1) return false;
+		for(int i = 0; i < s.length(); i++) {
+			if(i == 0 && s.charAt(i) == subscriptNegative) continue;
+			if(subscriptInts.indexOf(s.charAt(i)) == -1) return false;
 		}
-		return true;
+		return s.length() != 0;
 	}
 	
 	/**
@@ -195,7 +200,8 @@ public class Util {
 	public static int subscriptToInt(String s){
 		char[] chars = s.toCharArray();
 		for(int i = 0; i < chars.length; i++){
-			chars[i] = charInts.charAt(subscriptInts.indexOf(chars[i]));
+			if(chars[i] == subscriptNegative) chars[i] = '-';
+			else chars[i] = charInts.charAt(subscriptInts.indexOf(chars[i]));
 		}
 		return Integer.parseInt(new String(chars));
 	}
@@ -208,7 +214,8 @@ public class Util {
 	public static String toSubscript(String s){
 		char[] chars = s.toCharArray();
 		for(int i = 0; i < chars.length; i++){
-			chars[i] = subscriptInts.charAt(charInts.indexOf(chars[i])); 
+			if(chars[i] == '-') chars[i] = subscriptNegative;
+			else chars[i] = subscriptInts.charAt(charInts.indexOf(chars[i])); 
 		}
 		return new String(chars);
 	}

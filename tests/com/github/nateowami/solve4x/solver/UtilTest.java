@@ -85,7 +85,9 @@ public class UtilTest {
 	 */
 	@Test
 	public void testIsSuperscriptString() {
-		assertTrue(Util.isSuperscript("⁰⁴⁹"));
+		assertTrue(Util.isSuperscript("⁻⁰⁴⁹"));
+		assertTrue(Util.isSuperscript("⁴⁹"));
+		assertFalse(Util.isSuperscript("⁹⁻"));
 		assertFalse(Util.isSuperscript(""));
 	}
 
@@ -95,10 +97,10 @@ public class UtilTest {
 	@Test
 	public void testSuperscriptToInt() {
 		assertEquals(56, Util.superscriptToInt("⁵⁶"));
-		assertEquals(109, Util.superscriptToInt("¹⁰⁹"));
+		assertEquals(-109, Util.superscriptToInt("⁻¹⁰⁹"));
 		assertEquals(6372, Util.superscriptToInt("⁶³⁷²"));
 		assertEquals(4, Util.superscriptToInt("⁴"));
-		assertEquals(9, Util.superscriptToInt("⁹"));
+		assertEquals(-9, Util.superscriptToInt("⁻⁹"));
 	}
 
 	/**
@@ -106,7 +108,7 @@ public class UtilTest {
 	 */
 	@Test
 	public void testToSuperscript() {
-		assertEquals("⁶", Util.toSuperscript("6"));
+		assertEquals("⁻⁶", Util.toSuperscript("-6"));
 		assertEquals("⁰", Util.toSuperscript("0"));
 	}
 
@@ -117,8 +119,9 @@ public class UtilTest {
 	public void testIsSubscript() {
 		assertTrue(Util.isSubscript("₀"));
 		assertTrue(Util.isSubscript("₄"));
-		assertTrue(Util.isSubscript("₉"));
+		assertTrue(Util.isSubscript("₋₉"));
 		assertTrue(Util.isSubscript("₄₉"));
+		assertFalse(Util.isSubscript("₄₋"));
 		assertFalse(Util.isSuperscript(""));
 	}
 
@@ -129,6 +132,7 @@ public class UtilTest {
 	public void testSubscriptToInt() {
 		assertEquals(34, Util.subscriptToInt("₃₄"));
 		assertEquals(12, Util.subscriptToInt("₁₂"));
+		assertEquals(-68, Util.subscriptToInt("₋₆₈"));
 		assertEquals(472, Util.subscriptToInt("₄₇₂"));
 	}
 
@@ -139,7 +143,7 @@ public class UtilTest {
 	public void testToSubscript() {
 		assertEquals("₄₄", Util.toSubscript("44"));
 		assertEquals("₅₆", Util.toSubscript("56"));
-		assertEquals("₁₉₀", Util.toSubscript("190"));
+		assertEquals("₋₁₉₀", Util.toSubscript("-190"));
 		assertEquals("₈₄", Util.toSubscript("84"));
 	}
 	
