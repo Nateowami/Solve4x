@@ -46,7 +46,7 @@ public class GraphicalRenderer {
 	private static final HashMap<Algebra, BufferedImage> cache = new HashMap<Algebra, BufferedImage>();
 	
 	//keep commonly used fonts for simplicity and efficiency 
-	private static Font font, superscriptFont, subscriptFont;
+	private static Font font, superscriptFont;
 	
 	//initialize the fonts
 	static {
@@ -58,10 +58,6 @@ public class GraphicalRenderer {
 			HashMap<TextAttribute, Object> map = new HashMap<TextAttribute, Object>();
 			map.put(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUPER);
 			superscriptFont = font.deriveFont(map);
-			
-			//setup subscript font
-			map.put(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUB);
-			subscriptFont = font.deriveFont(map);
 			
 		} catch (FontFormatException e) {
 			e.printStackTrace();
@@ -268,7 +264,7 @@ public class GraphicalRenderer {
 	}
 	
 	private static BufferedImage renderRoot(Root root) {
-		BufferedImage degree = root.getNthRoot() == 2 ? null : renderSpecial(Integer.toString(root.getNthRoot()), subscriptFont, 0);
+		BufferedImage degree = root.getNthRoot() == 2 ? null : renderSpecial(Integer.toString(root.getNthRoot()), superscriptFont, 0);
 		BufferedImage radicand = render(root.getExpr());
 		BufferedImage radicalSign = render("√", font.deriveFont(((float)radicand.getHeight()*0.9f)));
 		
@@ -406,6 +402,7 @@ public class GraphicalRenderer {
 	 */
 	private static BufferedImage renderSpecial(String s, Font font, int shift) {
 		Dimension d = dimensions(s, superscriptFont);
+		d.height *= 1.15; // increase height for superscripts so they don't get cut off
 		BufferedImage image = image(d);
 		Graphics2D g = image.createGraphics();
 		g.setColor(Color.BLACK);
