@@ -47,7 +47,7 @@ public class DivideBothSides extends Algorithm {
 		//the number we need to divide by (Watch for signs. In -2x we divide by -2)
 		int indexOfNumeric = indexOfNumeric(from);
 		AlgebraicParticle numeric = from.get(indexOfNumeric);
-		Number divisor = (Number) (from.sign() ? numeric : numeric.cloneWithNewSign(false));
+		AlgebraicParticle divisor = numeric.cloneWithNewSign(from.sign());
 		
 		//now calculate the resulting fraction
 		Fraction frac = new Fraction(true, to, divisor, 1);

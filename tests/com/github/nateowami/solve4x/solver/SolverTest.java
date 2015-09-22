@@ -31,7 +31,7 @@ public class SolverTest {
 	
 	Solver.SolveFor solve = Solver.SolveFor.SOLVE,
 					simplify = Solver.SolveFor.SIMPLIFY;
-	RoundingRule round = RoundingRule.ALWAYS;
+	RoundingRule round = RoundingRule.FOR_SCIENTIFIC_NOTATION;
 	
 	/**
 	 * Test method for {@link com.github.nateowami.solve4x.solver.Solver#getSolution()}.
@@ -44,6 +44,7 @@ public class SolverTest {
 		assertEquals(new Equation("4=x"), new Solver("2*2=x", solve, round).getSolution().getLastAlgebraicExpression());
 		assertEquals(new Equation("7=x"), new Solver("3+4=x", solve, round).getSolution().getLastAlgebraicExpression());
 		assertEquals(new Equation("x=1(1)/(2)"), new Solver("x=(3)/(2)", solve, round).getSolution().getLastAlgebraicExpression());
+		assertEquals(new Equation("x=3.75").render(), new Solver("x=(3)/((4)/(5))", solve, round).getSolution().getLastAlgebraicExpression().render());
 		
 		//SIMPLIFY
 		assertEquals(AlgebraicParticle.getInstance("7"), new Solver("3+4", simplify, round).getSolution().getLastAlgebraicExpression());
