@@ -135,7 +135,7 @@ public class Multiply extends Algorithm {
 				Fraction frac =  new Fraction(
 						f1.sign() == f2.sign(),
 						Number.multiply((Number)f1.getTop(), (Number)f2.getTop(), this.roundingRule), 
-						Number.multiply((Number)f1.getTop(), (Number)f2.getTop(), this.roundingRule),
+						Number.multiply((Number)f1.getBottom(), (Number)f2.getBottom(), this.roundingRule),
 						f1.exponent() // trust that their exponents are equal
 						);
 				//if the top and bottom have different signs, reverse the sign of the fraction

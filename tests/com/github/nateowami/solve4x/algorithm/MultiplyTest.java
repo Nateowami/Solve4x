@@ -40,6 +40,7 @@ public class MultiplyTest {
 	public void testExecute() {
 		assertEquals(a("2x²"), m.execute(AlgebraicParticle.getInstance("2xx")).getChange());
 		assertEquals(a("4"), m.execute(AlgebraicParticle.getInstance("2*2")).getChange());
+		assertEquals(a("(4)/(3)").render(), m.execute(AlgebraicParticle.getInstance("2*(2)/(3)")).getChange().render());
 	}
 
 	/**
@@ -48,6 +49,7 @@ public class MultiplyTest {
 	@Test
 	public void testSmarts() {
 		assertEquals(9, m.smarts(AlgebraicParticle.getInstance("2(4)(8)")));
+		assertEquals(7, m.smarts(AlgebraicParticle.getInstance("2*(2)/(3)")));
 		assertEquals(9, m.smarts(AlgebraicParticle.getInstance("x(y-4)2x7y")));
 		assertEquals(7, m.smarts(AlgebraicParticle.getInstance("2*2")));
 	}
@@ -60,6 +62,14 @@ public class MultiplyTest {
 		assertTrue(m.multipliable(a("2"), a("3")));
 		assertTrue(m.multipliable(a("x"), a("x")));
 		assertFalse(m.multipliable(a("2"), a("x")));
+	}
+	
+	/**
+	 * Test method for {@link com.github.nateowami.solve4x.algorithm.Multiply#multiply(AlgebraicParticle, AlgebraicParticle)}.
+	 */
+	@Test
+	public void testMultiply() {
+		assertEquals(a("(4)/(3)"), m.multiply(a("2"), a("(2)/(3)")));
 	}
 	
 	/**

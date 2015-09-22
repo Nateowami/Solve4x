@@ -99,7 +99,7 @@ public class Solver {
 		previousStates.add(parsedInput);
 		
 		//keep track of the best solution we get (shortest result) so if we can't finish completely we have an OK result
-		Solution bestSoFar = null;
+		Solution bestSoFar = currentSolutions.get(0);
 		int bestLengthSoFar = -1;
 		
 		// Loop until one of the following conditions is met:
@@ -238,7 +238,7 @@ public class Solver {
 		case SOLVE:
 			return algebra instanceof Equation && isSolved((Equation) algebra);
 		case SIMPLIFY:
-			return  isSimplified((AlgebraicParticle)algebra) || (isFirstDegreeExpression((Expression) algebra));
+			return  algebra instanceof AlgebraicParticle && isSimplified((AlgebraicParticle)algebra) || algebra instanceof Expression && (isFirstDegreeExpression((Expression) algebra));
 		case FACTOR:
 			return algebra instanceof Term;
 		default: return false;

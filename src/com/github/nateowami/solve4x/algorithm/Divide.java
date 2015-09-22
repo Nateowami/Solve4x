@@ -84,9 +84,5 @@ public class Divide extends Algorithm {
 		}
 		return null;
 	}
-		
-	private boolean isNumber(AlgebraicParticle a) {
-		return a instanceof Number && ((Number)a).getDecimal() != null;
-	}
 	
 }
