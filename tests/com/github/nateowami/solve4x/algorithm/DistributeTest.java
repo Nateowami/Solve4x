@@ -46,6 +46,7 @@ public class DistributeTest {
 		assertEquals(a("-24x⁵+12x²(4+y)"), d.execute(a("-6x²(x³4-2(4+y))")).getChange());
 		assertEquals(a("2(x-6)x+8(x-6)"), d.execute(a("(x+4)2(x-6)")).getChange());
 		assertEquals(a("x²+6x+4x+24"), d.execute(a("(x+4)(x+6)")).getChange());
+		assertEquals(a("4(x+4)²x+24(x+4)²").render(), d.execute(a("(x+4)²(x+6)4")).getChange().render());
 	}
 	
 	/**
@@ -57,6 +58,7 @@ public class DistributeTest {
 		assertEquals(7, d.smarts(a("(2x+6)*5x²y")));
 		assertEquals(0, d.smarts(a("2((x+4)2)")));
 		assertEquals(7, d.smarts(a("(2+3)(x+y)")));
+		assertEquals(0, d.smarts(a("16*(x+2)²")));
 	}
 	
 	/**

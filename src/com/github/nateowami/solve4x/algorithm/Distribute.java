@@ -78,13 +78,14 @@ public class Distribute extends Algorithm {
 	}
 	
 	/**
-	 * Tells the first index of an Expression (using <code>instanceof</code> in the given Term.
+	 * Tells the first index of an Expression (using <code>instanceof</code> in the given Term. 
+	 * Only an Expression with no exponent (i.e. exponent of 1) will be considered.
 	 * @param term The term to check.
 	 * @return The index of the first Expression in <code>term</code>.
 	 */
 	private int indexOfFirstExpression(Term term) {
 		for(int i = 0; i < term.length(); i++) {
-			if(term.get(i) instanceof Expression)return i;
+			if(term.get(i) instanceof Expression && term.get(i).exponent() == 1)return i;
 		}
 		return -1;
 	}
