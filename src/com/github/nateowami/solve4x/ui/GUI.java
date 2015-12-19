@@ -87,7 +87,9 @@ public class GUI {
     }
 
     private static JTextField txtfEquationEntry;
-    private static final SolutionPanel panelDrawing = new SolutionPanel();
+    private static SolutionPanel panelDrawing;
+	private static JScrollPane scrollPane;// = new JScrollPane(panelDrawing);
+
     
     /**
      * Makes all the GUI widgets and puts the the GUI on-screen
@@ -104,7 +106,8 @@ public class GUI {
         sliderUIClass = Class.forName("javax.swing.plaf.synth.SynthSliderUI");
         final Field paintValue = sliderUIClass.getDeclaredField("paintValue");
         paintValue.setAccessible(true);
-        
+		
+		panelDrawing = new SolutionPanel();
         panelDrawing.setName("Panel.draw");
         
         //set the look and feel
@@ -205,6 +208,12 @@ public class GUI {
         //create the help button
         JButton btnHelp = new JButton("?");
         btnHelp.setName("Button.help");
+        btnHelp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				help();
+			}
+		});
         //set the layout for the help button
         GridBagConstraints gbc_btnNewButton_2_1_1 = new GridBagConstraints();
         gbc_btnNewButton_2_1_1.insets = new Insets(0, 0, 5, 5);
@@ -214,7 +223,7 @@ public class GUI {
         panelTop.add(btnHelp, gbc_btnNewButton_2_1_1);
         
         //create a scroll pane for the main area where the solution is shown
-        JScrollPane scrollPane = new JScrollPane(panelDrawing);
+        scrollPane = new JScrollPane(panelDrawing);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         
@@ -273,6 +282,12 @@ public class GUI {
             err.printStackTrace();
             txtfEquationEntry.setText("ERROR: Malformed Entry.");
         }
+		//make sure the solution is in the scroll pane
+		scrollPane.setViewportView(panelDrawing);
+    }
+    
+    private static void help() {
+    	scrollPane.setViewportView(HelpPanel.getHelpPanel());
     }
     
     /**

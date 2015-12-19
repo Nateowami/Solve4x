@@ -34,7 +34,7 @@ import com.github.nateowami.solve4x.visual.GraphicalRenderer;
 /**
  * @author Nateowami
  */
-public class SolutionPanel extends JPanel implements Scrollable {
+public class SolutionPanel extends VerticalScrollPane {
 	
 	private static final Font font = new Font("SansSerif", Font.PLAIN, 16);
 	
@@ -44,7 +44,7 @@ public class SolutionPanel extends JPanel implements Scrollable {
 		//remove any elements that may be on the panel from a previous solutions
 		this.removeAll();
 		
-		//grid layout with one column and any number of rows (0 -> any number of rows)
+		//vertical box layout with one column and any number of rows
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JPanel summary = null;
@@ -76,38 +76,6 @@ public class SolutionPanel extends JPanel implements Scrollable {
 		//revalidate and paint
 		this.revalidate();
 		this.repaint();
-	}
-	
-	/*
-	 * The following methods implement the Scrollable interface. See 
-	 * http://docs.oracle.com/javase/7/docs/api/javax/swing/Scrollable.html for documentation. 
-	 */
-	
-	@Override
-	public boolean getScrollableTracksViewportWidth() {
-        return true;
-    }
-	
-	@Override
-	public Dimension getPreferredScrollableViewportSize() {
-		return getPreferredSize();
-	}
-	
-	@Override
-	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-		//TODO, not sure this method is really applicable, see http://stackoverflow.com/a/1252514/3714913
-		return Math.max(visibleRect.height * 9 / 10, 1);
-	}
-	
-	@Override
-	public boolean getScrollableTracksViewportHeight() {
-		return false;
-	}
-	
-	@Override
-	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-		//scroll 15 [pixels?] at a time
-		return 15;
 	}
 	
 }
