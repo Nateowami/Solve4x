@@ -52,6 +52,7 @@ public class MultiplyTest {
 		assertEquals(7, m.smarts(AlgebraicParticle.getInstance("2*(2)/(3)")));
 		assertEquals(9, m.smarts(AlgebraicParticle.getInstance("x(y-4)2x7y")));
 		assertEquals(7, m.smarts(AlgebraicParticle.getInstance("2*2")));
+		assertEquals(0, m.smarts(AlgebraicParticle.getInstance("16*(x+2)²")));
 	}
 	
 	/**

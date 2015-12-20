@@ -64,7 +64,7 @@ public class Distribute extends Algorithm {
 			step = new Step(result);
 			step.explain("In the term ").explain(term).explain(" multiply ").explain(multiplicand)
 					.explain(" by each term in ").explain(term.get(expressionIndex))
-					.explain(" to get ").explain(result);
+					.explain(" to get ").explain(result).explain(".");
 		}
 		
 		return step;

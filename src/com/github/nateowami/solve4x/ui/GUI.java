@@ -88,7 +88,7 @@ public class GUI {
 
     private static JTextField txtfEquationEntry;
     private static SolutionPanel panelDrawing;
-	private static JScrollPane scrollPane;// = new JScrollPane(panelDrawing);
+	private static JScrollPane scrollPane;
 
     
     /**
@@ -224,6 +224,8 @@ public class GUI {
         
         //create a scroll pane for the main area where the solution is shown
         scrollPane = new JScrollPane(panelDrawing);
+        scrollPane.getVerticalScrollBar().setUI((new ButtonlessScrollBar()));
+        scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(10, 200));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         

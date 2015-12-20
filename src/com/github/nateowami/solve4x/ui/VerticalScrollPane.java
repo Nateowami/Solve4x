@@ -26,7 +26,7 @@ import javax.swing.Scrollable;
 /**
  * Implements methods of the Scrollable interface to facilitate vertical scrolling. This isn't a 
  * scrollpane, it's just a class that can be extended by JPanels that want to scroll at sensible 
- * increments, and <em>doesn't</em> want to allow vertical scrolling. This helps the JPanel's 
+ * increments, and <em>doesn't</em> want to allow horizontal scrolling. This helps the JPanel's 
  * layout manager know that it shouldn't allow the components to take all the horizontal width they 
  * want. 
  * @author Nateowami
