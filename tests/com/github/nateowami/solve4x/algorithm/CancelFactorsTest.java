@@ -85,6 +85,12 @@ public class CancelFactorsTest {
 		map.put(a("2"), 1);
 		map.put(Number.NEGATIVE_ONE, 1);
 		assertEquals(map, CancelFactors.factors(a("-2")));
+		
+		HashMap<AlgebraicParticle, Integer> map2 = new HashMap<AlgebraicParticle, Integer>();
+		map2.put(a("x"), 6);
+		map2.put(a("y"), 3);
+		map2.put(Number.NEGATIVE_ONE, 1);
+		assertEquals(map2, CancelFactors.factors(a("-x²y³x⁴")));
 	}
 	
 	AlgebraicParticle a(String s) {

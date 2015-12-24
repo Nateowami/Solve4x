@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.github.nateowami.solve4x.config.RoundingRule;
 import com.github.nateowami.solve4x.solver.*;
 import com.github.nateowami.solve4x.solver.Number;
 
@@ -145,7 +144,7 @@ public class CancelFactors extends Algorithm {
 		HashMap<AlgebraicParticle, Integer> factors = new HashMap<AlgebraicParticle, Integer>();
 		if(algebra instanceof Term){
 			Term term = (Term) algebra;
-			for(int i = 0; i < term.length(); i++) factors.putAll(factors(term.get(i)));
+			for(int i = 0; i < term.length(); i++) combine(factors, factors(term.get(i)));
 			if(!algebra.sign()) addToMap(factors, Number.NEGATIVE_ONE);
 		}
 		else if(algebra instanceof Number && ((Number)algebra).isInteger()){
@@ -182,7 +181,6 @@ public class CancelFactors extends Algorithm {
 			//it's negative, so toggle the -1
 			if(map.containsKey(Number.NEGATIVE_ONE)) map.remove(Number.NEGATIVE_ONE);
 			else map.put(Number.NEGATIVE_ONE, 1);
-			//now make the sign positive
 		}
 		
 		algebra = algebra.cloneWithNewSignAndExponent(true, 1);
@@ -273,6 +271,20 @@ public class CancelFactors extends Algorithm {
 		}
 		//add the product back into the map
 		if(product != 1) map.put(new Number(true, String.valueOf(product), null, null, 1), 1);
+	}
+	
+	/**
+	 * Takes all elements in map2 and adds them to map1. When both maps have the same key, the 
+	 * resulting pair will have the sum of the two values. For example, if both maps had 'x' paired 
+	 * with 2, the resulting entry in map1 would have 'x' paired with 4.
+	 * @param map1 The map to add elements to, or to update their values.
+	 * @param map2 The map of elements that need to be added to map1.
+	 */
+	private static void combine(Map<AlgebraicParticle, Integer> map1, Map<AlgebraicParticle, Integer> map2) {
+		for(Entry<AlgebraicParticle, Integer> entry : map2.entrySet()) {
+			//add or update the key in map1
+			map1.put(entry.getKey(), (map1.containsKey(entry.getKey()) ? map1.get(entry.getKey()) : 0) + entry.getValue());
+		}
 	}
 	
 }
