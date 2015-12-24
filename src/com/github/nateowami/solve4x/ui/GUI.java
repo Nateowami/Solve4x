@@ -305,7 +305,6 @@ public class GUI {
             lookAndFeel.load(Main.class.getResourceAsStream("/xml/defaults.xml"), Main.class);
             lookAndFeel.load(Main.class.getResourceAsStream("/xml/custom-panels.xml"), Main.class);
             lookAndFeel.load(Main.class.getResourceAsStream("/xml/custom-buttons.xml"), Main.class);
-            lookAndFeel.load(Main.class.getResourceAsStream("/xml/scrollbars.xml"), Main.class);
 
             UIManager.setLookAndFeel(lookAndFeel);
         }
