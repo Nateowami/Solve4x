@@ -137,11 +137,13 @@ public class Term extends AlgebraicCollection{
 		//this is so we can distinguish between 62 and 6(2), etc.
 		boolean prevHadPar = true;
 		String prevClass = "";//the name of the class of the previous part of the term
-		for(AlgebraicParticle p : this.parts){
+		for(int i = 0; i < this.parts.size(); i++){
+			AlgebraicParticle p = this.parts.get(i);
 			String curClass = p.getClass().getSimpleName();
 			
 			//if the exponent is not 1, the other class will take care of pars (if they're needed)
-			boolean needsPar =  p.exponent() == 1 && (curClass.equals("Expression") || curClass.equals("Fraction"));
+			//or if the sign is negative and it's not the first element, then it needs parentheses
+			boolean needsPar = p.exponent() == 1 && (!p.sign() && i != 0 || curClass.equals("Expression") || curClass.equals("Fraction"));
 			
 			//MixedNumber and Number should only be wrapped with pars if the previous part was a number and it didn't have pars
 			if((curClass.equals("MixedNumber") || curClass.equals("Number")) && prevClass.equals("Number")) needsPar = !prevHadPar;
@@ -177,7 +179,7 @@ public class Term extends AlgebraicCollection{
 			//make sure it doesn't have a sign
 			if(s.length() > 0 
 					//if the first char is * and this isn't the first one to be parsed, remove it before attempting to parse
-					&& AlgebraicParticle.parsable(numParsed > 0  && s.charAt(0) == '*' ? s.substring(1, i) : s.substring(0, i), Term.class)){
+					&& AlgebraicParticle.parsable(numParsed > 0  && i > 1 && s.charAt(0) == '*' ? s.substring(1, i) : s.substring(0, i), Term.class)){
 				numParsed++;
 				//reset the loop
 				s = s.substring(i);
