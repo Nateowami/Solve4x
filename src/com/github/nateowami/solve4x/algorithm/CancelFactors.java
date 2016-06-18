@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -141,7 +142,7 @@ public class CancelFactors extends Algorithm {
 	 * @return The factors of algebra in a map paring each with the number of times it appears.
 	 */
 	protected static Map<AlgebraicParticle, Integer> factors(AlgebraicParticle algebra){
-		HashMap<AlgebraicParticle, Integer> factors = new HashMap<AlgebraicParticle, Integer>();
+		LinkedHashMap<AlgebraicParticle, Integer> factors = new LinkedHashMap<AlgebraicParticle, Integer>();
 		if(algebra instanceof Term){
 			Term term = (Term) algebra;
 			for(int i = 0; i < term.length(); i++) combine(factors, factors(term.get(i)));

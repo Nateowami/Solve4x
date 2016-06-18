@@ -43,9 +43,12 @@ public class TreeTest {
 	 */
 	@Test
 	public void testConsiderReplacement() {
-		assertEquals(a("2x(5+3)").render(), new Tree(a("2x(4+3)")).get(2).get(0).considerReplacement(a("5")).render());
-		assertEquals(a("2x(5+3)*2(3)/(5)").render(), new Tree(a("2x(5+3)*2(4)/(5)")).get(3).get(1).get(0).considerReplacement(a("3")).render());
-		assertEquals(a("√(13)+18*9.5").render(), new Tree(a("√(4+9)+18*9.5")).get(0).get(0).considerReplacement(a("13")).render());
+		assertEquals(a("2x(5+3)"), new Tree(a("2x(4+3)")).get(2).get(0).considerReplacement(a("5")));
+		assertEquals(a("2x(5+3)*2(3)/(5)"), new Tree(a("2x(5+3)*2(4)/(5)")).get(3).get(1).get(0).considerReplacement(a("3")));
+		assertEquals(a("√(13)+18*9.5"), new Tree(a("√(4+9)+18*9.5")).get(0).get(0).considerReplacement(a("13")));
+		//TODO is this a bug? Should the expression be flattened to 3+2+1? Pretty sure that's the
+		//solver's job, but need to make sure it's handeled correctly.
+		assertEquals(a("3+(2+1)"), new Tree(a("3+2(4)/(4)")).get(1).get(1).considerReplacement(a("1")));
 	}
 	
 	/**

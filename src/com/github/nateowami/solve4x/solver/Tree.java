@@ -182,7 +182,10 @@ public class Tree {
 	 * {@link com.github.nateowami.solve4x.solver.Tree#children(Algebra)}. An instance of Algebra 
 	 * that is of the same type as the original Algebra is required in order to construct the right 
 	 * class. In general this will be the same Algebra (or a similar one) to the one that was 
-	 * "decomposed" into a list.
+	 * "decomposed" into a list. Note that the type of the returned object is not necessarily the 
+	 * same as the type of the <code>old</code> parameter. For example, if the fraction in a 
+	 * MixedNumber were replaced with a single number, this would return an expression with two 
+	 * number terms.
 	 * @param l The list of AlgebraicParticle from which to construct Algebra. 
 	 * @param old Any object that is of the type of the algebra we're constructing. 
 	 * @return The given list l constructed as algebra.
@@ -196,8 +199,12 @@ public class Tree {
 			e = a.exponent();
 		}
 		
+		
 		if(old instanceof Equation) return new Equation(l.get(0), l.get(1));
-		if(old instanceof Expression) return new Expression(s, l, e);
+		//if expression, or it's a mixed number but the fraction was replaced with something other than a fraction
+		if(old instanceof Expression || old instanceof MixedNumber && !(l.get(1) instanceof Fraction)) {
+			return new Expression(s, l, e);
+		}
 		if(old instanceof Term) return new Term(s, l, e);
 		if(old instanceof Fraction) return new Fraction(s, l.get(0), l.get(1), e);
 		if(old instanceof MixedNumber) return new MixedNumber(s, (Number) l.get(0), (Fraction) l.get(1), e);

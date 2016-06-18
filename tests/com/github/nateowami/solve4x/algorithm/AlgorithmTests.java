@@ -30,7 +30,7 @@ import com.github.nateowami.solve4x.solver.AlgebraicParticle;
 @SuiteClasses({ ChangeSidesTest.class, CombineLikeTermsTest.class, 
 			MultiplyTest.class, DivideBothSidesTest.class, DistributeTest.class,
 			CancelFactorsTest.class, MultiplyBothSidesTest.class, ConvertToMixedNumberTest.class,
-			DivideTest.class, InvertAndMultiplyTest.class })
+			DivideTest.class, InvertAndMultiplyTest.class, FactorTest.class })
 public class AlgorithmTests {
 	
 	/**
