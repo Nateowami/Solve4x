@@ -178,7 +178,7 @@ public class GraphicalRenderer {
 			
 			// Check if we need to add a dot (multiplication symbol) between this and the previous 
 			// element in order to keep it from being ambiguous.
-			if(previous instanceof Number && 
+			if(!element.sign() || previous instanceof Number && 
 					(element instanceof Number || element instanceof MixedNumber || element instanceof Fraction)) {
 				width += dot.getWidth();
 			}
@@ -201,7 +201,7 @@ public class GraphicalRenderer {
 			AlgebraicParticle element = term.get(i);
 			
 			//if we need to add a dot (multiplication symbol) between this and the previous element
-			if(previous instanceof Number && 
+			if(!element.sign() || previous instanceof Number && 
 					(element instanceof Number || element instanceof MixedNumber || element instanceof Fraction)) {
 				render(g, image.getHeight(), dot, location);
 				location += dot.getWidth();
