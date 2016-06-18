@@ -39,6 +39,9 @@ public class DivideBothSidesTest {
 		assertEquals(e("x=(4y)/(2.6)"), d.execute(e("2.6x=4y")).getChange());
 		assertEquals(e("x(x+4)=(4.3)/(4)"), d.execute(e("x(x+4)4=4.3")).getChange());
 		assertEquals(e("x(x+4)=((4.3)/(2))/(4)"), d.execute(e("x(x+4)4=(4.3)/(2)")).getChange());
+		assertEquals(e("(5)/(-1)=x³"), d.execute(e("5=x³*-1")).getChange());
+		assertEquals(e("(3)/(-2)=x*-2"), d.execute(e("3=-2x*-2")).getChange());
+		assertEquals(e("(5)/(1)=-x³").render(), d.execute(e("5=-x³1")).getChange().render());
 	}
 
 	/**

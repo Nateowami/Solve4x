@@ -58,11 +58,11 @@ public abstract class Algorithm {
 	protected Algebra unwrap(Algebra a){
 		if(a instanceof Term){
 			Term t = (Term) a;
-			return t.length() == 1 ? t.get(0) : t;
+			return t.length() == 1 ? t.get(0).cloneWithNewSign(t.sign() == t.get(0).sign()) : t;
 		}
 		else if(a instanceof Expression){
 			Expression e = (Expression) a;
-			return e.length() == 1 ? e.get(0) : e;
+			return e.length() == 1 ? e.get(0).cloneWithNewSign(e.sign() == e.get(0).sign()) : e;
 		}
 		else return a;
 	}

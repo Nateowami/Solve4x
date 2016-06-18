@@ -52,9 +52,7 @@ public class SolverTest {
 		
 		//PARTIAL SOLVING/SIMPLIFYING
 		//note that these will become obsolete as the solver improves
-		//TODO Broken. The problem appears to be in the Divide class, though it wasn't changed in the 
-		//commit that broke it.
-		//assertEquals(new Equation("5=-x³"), new Solver("3x³+5=2x³", solve, round).getSolution().getLastAlgebraicExpression());
+		assertEquals(new Equation("5=-x³"), new Solver("3x³+5=2x³", solve, round).getSolution().getLastAlgebraicExpression());
 	}
 	
 	@Test

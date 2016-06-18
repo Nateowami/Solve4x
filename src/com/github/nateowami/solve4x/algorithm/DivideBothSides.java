@@ -40,21 +40,24 @@ public class DivideBothSides extends Algorithm {
 	public Step execute(Algebra algebra) {
 		Equation eq =  (Equation) algebra;
 		
+		boolean fromRight = isNumeric(eq.left());
 		//set "from" and "to" to the sides of the equations we'll be moving from and to
-		Term from = (Term) (isNumeric(eq.left()) ? eq.right() : eq.left());
-		AlgebraicParticle to = (AlgebraicParticle) (from == eq.left() ? eq.right() : eq.left());
+		Term from = (Term) (fromRight ? eq.right() : eq.left());
+		AlgebraicParticle to = (AlgebraicParticle) (fromRight ? eq.left() : eq.right());
 		
 		//the number we need to divide by (Watch for signs. In -2x we divide by -2)
 		int indexOfNumeric = indexOfNumeric(from);
 		AlgebraicParticle numeric = from.get(indexOfNumeric);
-		AlgebraicParticle divisor = numeric.cloneWithNewSign(from.sign());
+		AlgebraicParticle divisor = numeric.cloneWithNewSign(indexOfNumeric == 0 ? from.sign() == numeric.sign() : numeric.sign());
 		
 		//now calculate the resulting fraction
 		Fraction frac = new Fraction(true, to, divisor, 1);
+		//the sign of the term we divide from could change if we divided by the first element
+		boolean fromSign = indexOfNumeric == 0 ? true : from.sign();
 		//and calculate the side we're moving from
-		AlgebraicParticle resultingFromSide = unwrap(from.cloneAndRemove(indexOfNumeric));
+		AlgebraicParticle resultingFromSide = unwrap(from.cloneAndRemove(indexOfNumeric).cloneWithNewSign(fromSign));
 		//calculate the final equation
-		Equation out = new Equation(resultingFromSide, frac);
+		Equation out = fromRight ? new Equation(frac, resultingFromSide) : new Equation(resultingFromSide, frac);
 		
 		//create a step and explain
 		Step step = new Step(out);
