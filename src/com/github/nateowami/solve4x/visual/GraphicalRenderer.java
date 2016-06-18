@@ -340,7 +340,7 @@ public class GraphicalRenderer {
 	 * @return The specified image wrapped with parentheses.
 	 */
 	private static BufferedImage parenthesize(BufferedImage image) {
-		Font parFont = font.deriveFont((float)image.getHeight());
+		Font parFont = font.deriveFont((image.getHeight() * 0.8f));
 		BufferedImage parLeft = render("(", parFont), parRight = render(")", parFont);
 		ArrayList<BufferedImage> list = new ArrayList<BufferedImage>(3);
 		list.add(parLeft);
