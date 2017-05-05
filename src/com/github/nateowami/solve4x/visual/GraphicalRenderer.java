@@ -173,12 +173,12 @@ public class GraphicalRenderer {
 		ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
 		int width = 0, height = 0;
 		AlgebraicParticle previous = null;
-		for(int i = 0; i < term.length(); i++) {			
+		for(int i = 0; i < term.length(); i++) {
 			AlgebraicParticle element = term.get(i);
 			
 			// Check if we need to add a dot (multiplication symbol) between this and the previous 
 			// element in order to keep it from being ambiguous.
-			if(!element.sign() || previous instanceof Number && 
+			if(i > 0 && !element.sign() || previous instanceof Number && 
 					(element instanceof Number || element instanceof MixedNumber || element instanceof Fraction)) {
 				width += dot.getWidth();
 			}
@@ -201,7 +201,7 @@ public class GraphicalRenderer {
 			AlgebraicParticle element = term.get(i);
 			
 			//if we need to add a dot (multiplication symbol) between this and the previous element
-			if(!element.sign() || previous instanceof Number && 
+			if(i > 0 && !element.sign() || previous instanceof Number && 
 					(element instanceof Number || element instanceof MixedNumber || element instanceof Fraction)) {
 				render(g, image.getHeight(), dot, location);
 				location += dot.getWidth();
